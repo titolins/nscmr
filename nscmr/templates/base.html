@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- CSS -->
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        crossorigin="anonymous">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}" >
+
+        <!-- /CSS -->
+
+        <!-- Page title -->
+        <title>E-commerce - {% block title %}{% endblock %}</title>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-static-top"
+            id="navbar-wrapper" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#catalog-nav" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url_for('index') }}">E-commerce</a>
+                </div>
+                <!-- /.navbar-header -->
+                <div class="navbar-collapse collapse" id="catalog-nav" aria-expanded="false" style="height: 1px;">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if not session.username %}
+                            <li>
+                                <a href="{{ url_for('login') }}">Login</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ url_for('showUser', user_id=session.user_id) }}">Profile</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('logout') }}">Logout</a>
+                            </li>
+                        {% endif %}
+                        {% if session.user_access_level == 1 %}
+                            <li>
+                                <a href="{{ url_for('admin.showPanel') }}">Admin</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        <!-- Page content -->
+        {% block page_content %} {% endblock %}
+        <!-- Footer -->
+        <div id="footer-wrapper">
+            <footer class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>E-comm App</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- /.container -->
+
+        <!-- JS Files -->
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <!-- Jinja block for adding any other scripts needed by any page
+            individually (such as OAuth scripts) -->
+        {% block scripts %}{% endblock %}
+
+    </body>
+</html>

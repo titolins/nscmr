@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ super() }}
+    {{ product.name }}
+{% endblock %}
+
+{% block page_content %}
+    <div id="product-page"
+        style="background: url({{product.background_picture}}) center center
+        no-repeat fixed;">
+        <div id="product-content" class="col-sm-offset-8 col-sm-4 gradient">
+            <div class="col-sm-12" id="product-nav">
+                <span>
+                    <a href="{{ url_for('index') }}">home</a> >
+                    <a href="{{ url_for('showCategory', category_id = category.id_) }}">{{ category.name }}</a>
+                    > {{ product.name }}
+                </span>
+            </div>
+            <div class="col-sm-12" id="product-title">
+                <h3>{{ product.name }}</h2>
+            </div>
+            <div class="col-sm-12 product-info">
+                <p>
+                    <h4>Descrição</h4>
+                    {{ product.description }}
+                </p>
+            </div>
+            <div class="col-sm-12 product-info">
+                <p>
+                    <h4>Dimensões</h4>
+                    {{ product.size }}
+                </p>
+            </div>
+            <div class="col-sm-12 product-info" id="product-buttons">
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-default btn-md">
+                        R$ {{ product.price }}
+                    </button>
+                </div>
+                <div class="col-xs-6">
+                    <button type="button" class="btn btn-default btn-md">
+                        <a href="#">Comprar</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

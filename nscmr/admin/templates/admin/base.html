@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>E-commerce | {% block title %} {% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+    <!-- CSS Libs -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/lib/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/lib/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/lib/animate.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/lib/bootstrap-switch.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/lib/checkbox3.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/lib/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/lib/dataTables.bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/lib/select2.min.css') }}">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static',
+        filename='css/lib/themes/flat-blue.css') }}">
+</head>
+<body class="flat-blue {% block body_class %} {% endblock %}">
+
+    {% block content %} {% endblock %}
+    <footer class="app-footer">
+        <div class="wrapper">
+            <span class="pull-right">2.1 <a href="#"><i class="fa fa-long-arrow-up"></i></a></span> © 2015 Copyright.
+        </div>
+    </footer>
+    <div>
+        <!-- Javascript Libs -->
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/Chart.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/bootstrap-switch.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/jquery.matchHeight-min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/jquery.dataTables.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/dataTables.bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/select2.full.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/ace/ace.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/ace/mode-html.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/ace/theme-github.js') }}"></script>
+        <!-- Javascript -->
+        <script type="text/javascript" src="{{ url_for('admin.static',
+            filename='js/lib/app.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('admin.static',
+            filename='js/lib/index.js') }}"></script>
+    </div>
+</body>
+
+</html>

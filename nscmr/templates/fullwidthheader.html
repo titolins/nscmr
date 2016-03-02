@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+        {% block header %} {% endblock %}
+        <div class="container" id="page-content-wrapper">
+            <div class="row" id="page-content">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="col-xs-12 alert alert-success">
+                            <ul>
+                                {% for message in messages %}
+                                    <li> <strong>{{ message }}</strong></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                {% block main_content %} {% endblock %}
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+{% endblock %}

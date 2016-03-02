@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link href="resources/css/_rand_cache_36213/jquery-ui-themes.css" type="text/css" rel="stylesheet"/>
+    <link href="resources/css/_rand_cache_36213/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/_rand_cache_36213/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/home/_rand_cache_36213/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="resources/scripts/_rand_cache_36213/jquery-1.7.1.min.js"></script>
+    <script src="resources/scripts/_rand_cache_36213/jquery-ui-1.8.10.custom.min.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/axQuery.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/globals.js"></script>
+    <script src="resources/scripts/_rand_cache_36213/axutils.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/annotation.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/axQuery.std.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/doc.js"></script>
+    <script src="data/_rand_cache_36213/document.js"></script>
+    <script src="resources/scripts/_rand_cache_36213/messagecenter.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/events.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/action.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/expr.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/geometry.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/flyout.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/ie.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/model.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/repeater.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/sto.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/utils.temp.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/variables.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/drag.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/move.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/visibility.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/style.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/adaptive.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/tree.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/init.temp.js"></script>
+    <script src="files/home/_rand_cache_36213/data.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/legacy.js"></script>
+    <script src="resources/scripts/axure/_rand_cache_36213/viewer.js"></script>
+    <script type="text/javascript">
+      $axure.utils.getTransparentGifPath = function() { return 'resources/images/_rand_cache_36213/transparent.gif'; };
+      $axure.utils.getOtherPath = function() { return 'resources/Other.html'; };
+      $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
+    </script>
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (Shape) -->
+      <div id="u0" class="ax_shape">
+        <img id="u0_img" class="img " src="images/home/_rand_cache_36213/u0.png"/>
+        <!-- Unnamed () -->
+        <div id="u1" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u2" class="ax_shape">
+        <img id="u2_img" class="img " src="images/home/_rand_cache_36213/u2.png"/>
+        <!-- Unnamed () -->
+        <div id="u3" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u4" class="ax_shape">
+        <img id="u4_img" class="img " src="images/home/_rand_cache_36213/u2.png"/>
+        <!-- Unnamed () -->
+        <div id="u5" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u6" class="ax_shape">
+        <img id="u6_img" class="img " src="images/home/_rand_cache_36213/u2.png"/>
+        <!-- Unnamed () -->
+        <div id="u7" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u8" class="ax_shape">
+        <img id="u8_img" class="img " src="images/home/_rand_cache_36213/u8.png"/>
+        <!-- Unnamed () -->
+        <div id="u9" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u10" class="ax_shape">
+        <img id="u10_img" class="img " src="images/home/_rand_cache_36213/u2.png"/>
+        <!-- Unnamed () -->
+        <div id="u11" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u12" class="ax_shape">
+        <img id="u12_img" class="img " src="images/home/_rand_cache_36213/u12.png"/>
+        <!-- Unnamed () -->
+        <div id="u13" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u14" class="ax_image">
+        <img id="u14_img" class="img " src="images/home/_rand_cache_36213/u14.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u15" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u16" class="ax_image">
+        <img id="u16_img" class="img " src="images/home/_rand_cache_36213/u16.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u17" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u18" class="ax_image">
+        <img id="u18_img" class="img " src="images/home/_rand_cache_36213/u18.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u19" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u20" class="ax_image">
+        <img id="u20_img" class="img " src="images/home/_rand_cache_36213/u20.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u21" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u22" class="ax_image">
+        <img id="u22_img" class="img " src="images/home/_rand_cache_36213/u22.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u23" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u24" class="ax_image">
+        <img id="u24_img" class="img " src="images/home/_rand_cache_36213/u22.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u25" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u26" class="ax_shape">
+        <img id="u26_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u27" class="text">
+          <p><span>MAIS </span><span>PROCURADOS</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u28" class="ax_shape">
+        <img id="u28_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u29" class="text">
+          <p><span>CATEGORIAS</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u30" class="ax_shape">
+        <img id="u30_img" class="img " src="images/home/_rand_cache_36213/u30.png"/>
+        <!-- Unnamed () -->
+        <div id="u31" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u32" class="ax_image">
+        <img id="u32_img" class="img " src="images/home/_rand_cache_36213/u16.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u33" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u34" class="ax_shape">
+        <img id="u34_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u35" class="text">
+          <p style="font-size:16px;text-align:left;"><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">&nbsp; &nbsp;&nbsp; </span><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">EDREDOM ESTAMPA FLORAL C</span><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">/ </span><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">TECIDO IMP</span><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">.</span></p><p style="font-size:13px;text-align:center;"><span style="font-family:'Arial Normal', 'Arial';font-size:13px;color:#333333;text-align:center;">&nbsp;</span></p><p style="font-size:13px;text-align:left;"><span style="font-family:'Candara Regular', 'Candara';font-size:13px;color:#333333;text-align:left;">&nbsp; &nbsp; &nbsp; </span><span style="font-family:'Candara Regular', 'Candara';font-size:13px;color:#333333;text-align:left;">&nbsp;</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u36" class="ax_shape">
+        <img id="u36_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u37" class="text">
+          <p><span> em até 3x!</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u38" class="ax_shape">
+        <img id="u38_img" class="img " src="images/home/_rand_cache_36213/u38.png"/>
+        <!-- Unnamed () -->
+        <div id="u39" class="text">
+          <p><span>o</span><span> que você procura?</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Vertical Line) -->
+      <div id="u40" class="ax_vertical_line">
+        <img id="u40_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u40_start"/>
+        <img id="u40_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u40_end"/>
+        <img id="u40_line" class="img " src="images/home/_rand_cache_36213/u40_line.png" alt="u40_line"/>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u41" class="ax_shape">
+        <img id="u41_img" class="img " src="images/home/_rand_cache_36213/u41.png"/>
+        <!-- Unnamed () -->
+        <div id="u42" class="text">
+          <p><span>nossos duvets</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u43" class="ax_shape">
+        <img id="u43_img" class="img " src="images/home/_rand_cache_36213/u43.png"/>
+        <!-- Unnamed () -->
+        <div id="u44" class="text">
+          <p><span>lençóis</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u45" class="ax_shape">
+        <img id="u45_img" class="img " src="images/home/_rand_cache_36213/u43.png"/>
+        <!-- Unnamed () -->
+        <div id="u46" class="text">
+          <p><span>colchas</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u47" class="ax_shape">
+        <img id="u47_img" class="img " src="images/home/_rand_cache_36213/u47.png"/>
+        <!-- Unnamed () -->
+        <div id="u48" class="text">
+          <p><span>nossas peseiras</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u49" class="ax_shape">
+        <img id="u49_img" class="img " src="images/home/_rand_cache_36213/u49.png"/>
+        <!-- Unnamed () -->
+        <div id="u50" class="text">
+          <p><span>toalhas de mesa</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u51" class="ax_shape">
+        <img id="u51_img" class="img " src="images/home/_rand_cache_36213/u51.png"/>
+        <!-- Unnamed () -->
+        <div id="u52" class="text">
+          <p><span>acessórios de housewarming</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u53" class="ax_shape">
+        <img id="u53_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u54" class="text">
+          <p><span>R$ 450,00</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u55" class="ax_shape">
+        <img id="u55_img" class="img " src="images/home/_rand_cache_36213/u55.png"/>
+        <!-- Unnamed () -->
+        <div id="u56" class="text">
+          <p><span>&lt;3</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u57" class="ax_shape">
+        <img id="u57_img" class="img " src="images/home/_rand_cache_36213/u55.png"/>
+        <!-- Unnamed () -->
+        <div id="u58" class="text">
+          <p><span>@</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u59" class="ax_shape">
+        <img id="u59_img" class="img " src="images/home/_rand_cache_36213/u59.png"/>
+        <!-- Unnamed () -->
+        <div id="u60" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u61" class="ax_image">
+        <img id="u61_img" class="img " src="images/home/_rand_cache_36213/u14.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u62" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u63" class="ax_shape">
+        <img id="u63_img" class="img " src="images/home/_rand_cache_36213/u63.png"/>
+        <!-- Unnamed () -->
+        <div id="u64" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u65" class="ax_shape">
+        <img id="u65_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u66" class="text">
+          <p style="font-size:16px;text-align:left;"><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">&nbsp; &nbsp;&nbsp; </span><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">EDREDOM ESTAMPA FLORAL C</span><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">/ </span><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">TECIDO IMP</span><span style="font-family:'Century Gothic Normal', 'Century Gothic';font-size:16px;color:#5E005E;text-align:left;">.</span></p><p style="font-size:13px;text-align:center;"><span style="font-family:'Arial Normal', 'Arial';font-size:13px;color:#333333;text-align:center;">&nbsp;</span></p><p style="font-size:13px;text-align:left;"><span style="font-family:'Candara Regular', 'Candara';font-size:13px;color:#333333;text-align:left;">&nbsp; &nbsp; &nbsp; </span><span style="font-family:'Candara Regular', 'Candara';font-size:13px;color:#333333;text-align:left;">&nbsp;</span><span style="font-family:'Candara Regular', 'Candara';font-size:13px;color:#000000;text-align:left;">.</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u67" class="ax_shape">
+        <img id="u67_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u68" class="text">
+          <p><span>R$ 450,00</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u69" class="ax_shape">
+        <img id="u69_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u70" class="text">
+          <p><span> em até 3x!</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u71" class="ax_shape">
+        <img id="u71_img" class="img " src="images/home/_rand_cache_36213/u71.png"/>
+        <!-- Unnamed () -->
+        <div id="u72" class="text">
+          <p><span>COMPRAR</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u73" class="ax_shape">
+        <img id="u73_img" class="img " src="images/home/_rand_cache_36213/u55.png"/>
+        <!-- Unnamed () -->
+        <div id="u74" class="text">
+          <p><span>&lt;3</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u75" class="ax_shape">
+        <img id="u75_img" class="img " src="images/home/_rand_cache_36213/u55.png"/>
+        <!-- Unnamed () -->
+        <div id="u76" class="text">
+          <p><span>@</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u77" class="ax_image">
+        <img id="u77_img" class="img " src="images/home/_rand_cache_36213/u20.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u78" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u79" class="ax_shape">
+        <img id="u79_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u80" class="text">
+          <p><span>&nbsp; &nbsp;&nbsp; </span><span>EDREDOM ESTAMPA FLORAL C</span><span>/ </span><span>TECIDO IMP</span><span>.</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u81" class="ax_shape">
+        <img id="u81_img" class="img " src="images/home/_rand_cache_36213/u71.png"/>
+        <!-- Unnamed () -->
+        <div id="u82" class="text">
+          <p><span>COMPRAR</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u83" class="ax_shape">
+        <img id="u83_img" class="img " src="images/home/_rand_cache_36213/u55.png"/>
+        <!-- Unnamed () -->
+        <div id="u84" class="text">
+          <p><span>&lt;3</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u85" class="ax_shape">
+        <img id="u85_img" class="img " src="images/home/_rand_cache_36213/u55.png"/>
+        <!-- Unnamed () -->
+        <div id="u86" class="text">
+          <p><span>@</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u87" class="ax_shape">
+        <img id="u87_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u88" class="text">
+          <p><span>R$ 450,00</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u89" class="ax_shape">
+        <img id="u89_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u90" class="text">
+          <p><span> em até 3x!</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u91" class="ax_image">
+        <img id="u91_img" class="img " src="images/home/_rand_cache_36213/u91.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u92" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u93" class="ax_shape">
+        <img id="u93_img" class="img " src="images/home/_rand_cache_36213/u93.png"/>
+        <!-- Unnamed () -->
+        <div id="u94" class="text">
+          <p><span style="font-family:'Arial Normal', 'Arial';">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span></p><p><span style="font-family:'Arial Normal', 'Arial';">&nbsp; &nbsp; &nbsp;&nbsp; </span><span style="font-family:'Century Gothic Normal', 'Century Gothic';">PESQUISE AQUI NO </span><span style="font-family:'Century Gothic Normal', 'Century Gothic';">NOSSO FILTRO DE SONHOS =)</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u95" class="ax_shape">
+        <img id="u95_img" class="img " src="images/home/_rand_cache_36213/u95.png"/>
+        <!-- Unnamed () -->
+        <div id="u96" class="text">
+          <p><span>Categoria</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u97" class="ax_shape">
+        <img id="u97_img" class="img " src="images/home/_rand_cache_36213/u97.png"/>
+        <!-- Unnamed () -->
+        <div id="u98" class="text">
+          <p><span>Tamanho</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u99" class="ax_shape">
+        <img id="u99_img" class="img " src="images/home/_rand_cache_36213/u99.png"/>
+        <!-- Unnamed () -->
+        <div id="u100" class="text">
+          <p><span> Ordem de </span><span>Preço </span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u101" class="ax_shape">
+        <img id="u101_img" class="img " src="images/home/_rand_cache_36213/u101.png"/>
+        <!-- Unnamed () -->
+        <div id="u102" class="text">
+          <p><span>go!</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u103" class="ax_shape">
+        <img id="u103_img" class="img " src="images/home/_rand_cache_36213/u103.png"/>
+        <!-- Unnamed () -->
+        <div id="u104" class="text">
+          <p><span>Digite aqui o que você procura.</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u105" class="ax_shape">
+        <img id="u105_img" class="img " src="images/home/_rand_cache_36213/u101.png"/>
+        <!-- Unnamed () -->
+        <div id="u106" class="text">
+          <p><span>go!</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u107" class="ax_shape">
+        <img id="u107_img" class="img " src="images/home/_rand_cache_36213/u107.png"/>
+        <!-- Unnamed () -->
+        <div id="u108" class="text">
+          <p><span>Material</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Vertical Line) -->
+      <div id="u109" class="ax_vertical_line">
+        <img id="u109_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u109_start"/>
+        <img id="u109_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u109_end"/>
+        <img id="u109_line" class="img " src="images/home/_rand_cache_36213/u109_line.png" alt="u109_line"/>
+      </div>
+
+      <!-- Unnamed (Vertical Line) -->
+      <div id="u110" class="ax_vertical_line">
+        <img id="u110_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u110_start"/>
+        <img id="u110_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u110_end"/>
+        <img id="u110_line" class="img " src="images/home/_rand_cache_36213/u110_line.png" alt="u110_line"/>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u111" class="ax_shape">
+        <img id="u111_img" class="img " src="images/home/_rand_cache_36213/u71.png"/>
+        <!-- Unnamed () -->
+        <div id="u112" class="text">
+          <p><span>COMPRAR</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u113" class="ax_shape">
+        <img id="u113_img" class="img " src="images/home/_rand_cache_36213/u113.png"/>
+        <!-- Unnamed () -->
+        <div id="u114" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u115" class="ax_shape">
+        <img id="u115_img" class="img " src="images/home/_rand_cache_36213/u115.png"/>
+        <!-- Unnamed () -->
+        <div id="u116" class="text">
+          <p><span>digite aqui o seu email :)</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u117" class="ax_shape">
+        <img id="u117_img" class="img " src="images/home/_rand_cache_36213/u117.png"/>
+        <!-- Unnamed () -->
+        <div id="u118" class="text">
+          <p><span>digite aqui o seu nome...</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u119" class="ax_shape">
+        <img id="u119_img" class="img " src="images/home/_rand_cache_36213/u119.png"/>
+        <!-- Unnamed () -->
+        <div id="u120" class="text">
+          <p><span>Ei! quer ficar por dentro do que acontece aqui no Studio?</span></p><p><span>&nbsp;</span></p><p><span>Assine a nossa newsletter =)</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u121" class="ax_shape">
+        <img id="u121_img" class="img " src="images/home/_rand_cache_36213/u121.png"/>
+        <!-- Unnamed () -->
+        <div id="u122" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u123" class="ax_shape">
+        <img id="u123_img" class="img " src="resources/images/_rand_cache_36213/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u124" class="text">
+          <p><span>Studio Duvet</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u125" class="ax_shape">
+        <img id="u125_img" class="img " src="images/home/_rand_cache_36213/u125.png"/>
+        <!-- Unnamed () -->
+        <div id="u126" class="text">
+          <p><span>&nbsp; &nbsp; login&nbsp; &nbsp; &nbsp;&nbsp; cadastro</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Horizontal Line) -->
+      <div id="u127" class="ax_horizontal_line">
+        <img id="u127_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u127_start"/>
+        <img id="u127_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u127_end"/>
+        <img id="u127_line" class="img " src="images/home/_rand_cache_36213/u127_line.png" alt="u127_line"/>
+      </div>
+
+      <!-- Unnamed (Horizontal Line) -->
+      <div id="u128" class="ax_horizontal_line">
+        <img id="u128_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u128_start"/>
+        <img id="u128_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u128_end"/>
+        <img id="u128_line" class="img " src="images/home/_rand_cache_36213/u127_line.png" alt="u128_line"/>
+      </div>
+
+      <!-- Unnamed (Horizontal Line) -->
+      <div id="u129" class="ax_horizontal_line">
+        <img id="u129_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u129_start"/>
+        <img id="u129_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u129_end"/>
+        <img id="u129_line" class="img " src="images/home/_rand_cache_36213/u127_line.png" alt="u129_line"/>
+      </div>
+
+      <!-- Unnamed (Horizontal Line) -->
+      <div id="u130" class="ax_horizontal_line">
+        <img id="u130_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u130_start"/>
+        <img id="u130_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u130_end"/>
+        <img id="u130_line" class="img " src="images/home/_rand_cache_36213/u127_line.png" alt="u130_line"/>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u131" class="ax_shape">
+        <img id="u131_img" class="img " src="images/home/_rand_cache_36213/u131.png"/>
+        <!-- Unnamed () -->
+        <div id="u132" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u133" class="ax_shape">
+        <img id="u133_img" class="img " src="images/home/_rand_cache_36213/u133.png"/>
+        <!-- Unnamed () -->
+        <div id="u134" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Vertical Line) -->
+      <div id="u135" class="ax_vertical_line">
+        <img id="u135_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u135_start"/>
+        <img id="u135_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u135_end"/>
+        <img id="u135_line" class="img " src="images/home/_rand_cache_36213/u135_line.png" alt="u135_line"/>
+      </div>
+
+      <!-- Unnamed (Vertical Line) -->
+      <div id="u136" class="ax_vertical_line">
+        <img id="u136_start" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u136_start"/>
+        <img id="u136_end" class="img " src="resources/images/_rand_cache_36213/transparent.gif" alt="u136_end"/>
+        <img id="u136_line" class="img " src="images/home/_rand_cache_36213/u135_line.png" alt="u136_line"/>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u137" class="ax_shape">
+        <img id="u137_img" class="img " src="images/home/_rand_cache_36213/u137.png"/>
+        <!-- Unnamed () -->
+        <div id="u138" class="text">
+          <p><span>QUEM SOMOS </span></p><p><span>&nbsp;</span></p><p><span>LAVANDERIA </span></p><p><span>&nbsp;</span></p><p><span>POLITICAS DE TROCA</span></p><p><span>&nbsp;</span></p><p><span>SOB MEDIDA</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u139" class="ax_shape">
+        <img id="u139_img" class="img " src="images/home/_rand_cache_36213/u139.png"/>
+        <!-- Unnamed () -->
+        <div id="u140" class="text">
+          <p><span>desenvolvido por T&amp;T project development</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u141" class="ax_image">
+        <img id="u141_img" class="img " src="images/home/_rand_cache_36213/u141.png"/>
+        <!-- Unnamed () -->
+        <div id="u142" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u143" class="ax_shape">
+        <img id="u143_img" class="img " src="images/home/_rand_cache_36213/u143.png"/>
+        <!-- Unnamed () -->
+        <div id="u144" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u145" class="ax_image">
+        <img id="u145_img" class="img " src="images/home/_rand_cache_36213/u145.png"/>
+        <!-- Unnamed () -->
+        <div id="u146" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u147" class="ax_shape">
+        <img id="u147_img" class="img " src="images/home/_rand_cache_36213/u147.png"/>
+        <!-- Unnamed () -->
+        <div id="u148" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Image) -->
+      <div id="u149" class="ax_image">
+        <img id="u149_img" class="img " src="images/home/_rand_cache_36213/u149.png"/>
+        <!-- Unnamed () -->
+        <div id="u150" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u151" class="ax_shape">
+        <img id="u151_img" class="img " src="images/home/_rand_cache_36213/u151.png"/>
+        <!-- Unnamed () -->
+        <div id="u152" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u153" class="ax_shape">
+        <img id="u153_img" class="img " src="images/home/_rand_cache_36213/u153.png"/>
+        <!-- Unnamed () -->
+        <div id="u154" class="text">
+          <p><span> CADASTRE-SE NA NOSSA NEWSLETTER !!</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u155" class="ax_shape">
+        <img id="u155_img" class="img " src="images/home/_rand_cache_36213/u155.png"/>
+        <!-- Unnamed () -->
+        <div id="u156" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u157" class="ax_shape">
+        <img id="u157_img" class="img " src="images/home/_rand_cache_36213/u155.png"/>
+        <!-- Unnamed () -->
+        <div id="u158" class="text">
+          <p><span/></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u159" class="ax_shape">
+        <img id="u159_img" class="img " src="images/home/_rand_cache_36213/u159.png"/>
+        <!-- Unnamed () -->
+        <div id="u160" class="text">
+          <p><span>Digite seu nome:</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (Shape) -->
+      <div id="u161" class="ax_shape">
+        <img id="u161_img" class="img " src="images/home/_rand_cache_36213/u159.png"/>
+        <!-- Unnamed () -->
+        <div id="u162" class="text">
+          <p><span>Digite seu email:</span></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
