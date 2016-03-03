@@ -44,8 +44,24 @@
                 <div class="navbar-collapse collapse" id="catalog-nav" aria-expanded="false" style="height: 1px;">
                     <ul class="nav navbar-nav navbar-right">
                         {% if not session.username %}
-                            <li>
-                                <a href="{{ url_for('login') }}">Login</a>
+                            <li class="dropdown">
+                                <!--
+                                <a href="url_for('login')">Login</a>
+                                -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                    aria-haspopup="true" arias-expanded="false">
+                                    Login<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <div id="login-popup-form">
+                                        <h4>Entre na sua conta</h4>
+                                        <form action="{{ url_for('login') }}" method="post">
+                                            <input type="email" name="email" placeholder="e-mail" autofocus></input>
+                                            <input type="password" name="password" placeholder="password"></input>
+                                            <input type="submit" value="login"></input>
+                                        </form>
+                                    </div>
+                                </ul>
                             </li>
                         {% else %}
                             <li>
