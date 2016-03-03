@@ -1,0 +1,74 @@
+{% extends 'sidebar.html' %}
+
+{% block sidebar_content %}
+    <div class="list-group">
+        <li class="list-group-item active">
+            <h3 class="list-group-item-heading">
+                {{ session.username }}
+            </h3>
+        </li>
+        <a href="#" class="list-group-item active" id="profile-btn">
+            Perfil
+        </a>
+        <a href="#" class="list-group-item" id="cart-btn">
+            Meu Carrinho
+        </a>
+        <a href="#" class="list-group-item" id="orders-btn">
+            Meus Pedidos
+        </a>
+         <a href="#" class="list-group-item" id="addresses-btn">
+            Livro de Endereços
+        </a>
+        <a href="#" class="list-group-item" id="payment-btn">
+            Formas de pagamento
+        </a>
+         <a href="#" class="list-group-item" id="wishlist-btn">
+            Lista de desejos
+        </a>
+        <a href="#" class="list-group-item" id="logout-btn">
+            Sair
+        </a>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        // function for changing user sections
+        $('.list-group-item').on('click', function() {
+            // get all items of the list, except the first one (which is always
+            // kept active)
+            items = $('.list-group-item:not(:first-child)');
+            // grab the id of the content relative to the calling element
+            show_id = "#" + $(this).prop("id").split("-")[0];
+
+            // iterate though all selected items
+            items.each(function(index) {
+                // if item is active, we found which one we have to hide
+                if ($(this).hasClass("active")) {
+                    // grab the id of the content relative to the active item
+                    hide_id = "#" + $(this).prop("id").split("-")[0];
+                    // hide the last active element content and show the
+                    // clicked element content
+                    $(hide_id).css('display','none');
+                    // the button to confirm logout has to be individually
+                    // handled, as it is not influenced by it's parent
+                    // visibility
+                    $("#logout-confirm-btn").css('display', 'none');
+                    $(show_id).css('display', 'inline');
+                    // in the case of the logout btn, we have to activate it
+                    // manually
+                    if (show_id == "#logout") {
+                        $("#logout-confirm-btn").css('display', 'inline');
+                    }
+                    // breaks the loop
+                    return false;
+                }
+            });
+            // lastly, deactivate the last active list-group-item and activated
+            // the clicked one
+            items.removeClass('active');
+            $(this).addClass('active');
+        });
+    </script>
+
+{% endblock %}
