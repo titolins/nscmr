@@ -45,6 +45,8 @@ a, a:link, a:hover, a:visited, a:active {
 .list-group-item.active:hover {
     background-color: #222;
     border-color: #222;
+    border-top-color: #ddd;
+    border-bottom-color: #ddd;
 }
 
 /*
