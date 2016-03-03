@@ -13,6 +13,7 @@ from nscmr import app #, session
 from nscmr.models import admin, users, user, categories, products
 
 from flask import session as login_session
+from functools import wraps
 
 import requests
 
@@ -50,13 +51,13 @@ def user_required(f):
 
 
 def admin_required(f):
-    ''' Decorator for use with pages that require the currently logged in user
+    ''' Decorator for use with pages that require admin privileges
     '''
     @wraps(f)
     def wrap(*args, **kwargs):
         if kwargs['user_access_level'] == login_session['user_access_level']:
             return f(*args, **kwargs)
-        flash("Only the user may have access to it's profile or delete it")
+        flash("Area restricted to admins only!")
         return redirect(url_for('index'))
     return wrap
 
@@ -80,15 +81,18 @@ def register():
 
 # Read
 @app.route('/user/<int:user_id>')
-def showUser():
-    return "<p>To be user page</p>"
+@user_required
+def showUser(user_id):
+    return render_template('user.html')
 
 # Update
+@user_required
 @app.route('/user/<int:user_id>/edit')
 def editUser(user_id):
     return "<p>To be user {} edit page</p>".format(user_id)
 
 # Delete
+@user_required
 @app.route('/user/<int:user_id>/delete')
 def deleteUser(user_id):
     return "<p>To be user {} delete page</p>".format(user_id)
