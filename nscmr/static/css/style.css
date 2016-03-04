@@ -1,3 +1,7 @@
+/*
+ * genneral settings
+ */
+
 body, html {
   height: 100%;
   width: 100%;
@@ -13,13 +17,18 @@ a:active:not(.link) {
   text-decoration: none;
 }
 
+/*
+ * navbar
+ */
+
 #navbar-wrapper {
   margin-bottom: 0;
 }
 
 /*
- * settings all header's width to 100%
+ * headers
 */
+
 #header, #myCarousel, .item, .carousel-inner, .header-img {
   width:100%;
 }
@@ -28,6 +37,19 @@ a:active:not(.link) {
  * login form stuff (base.html)
  */
 #login-dropdown-form {
+  padding: 5px 30px 15px 30px;
+}
+
+#login-dropdown-form > h4 {
+  margin-bottom: 20px;
+}
+
+#login-dropdown-form > form > input {
+  margin-bottom: 10px;
+}
+
+#register {
+  margin-top: 15px;
 }
 
 /*
@@ -74,8 +96,8 @@ a:active:not(.link) {
   opacity: 1;
 }
 
-/* product info
- *
+/*
+ * product info
  */
 
 #product-content {
@@ -118,6 +140,10 @@ a:active:not(.link) {
   border: 1px solid #ddd;
   border-top: 0px;
 }
+
+/*
+ * footer
+ */
 
 #footer-wrapper {
   background-color: #222;
