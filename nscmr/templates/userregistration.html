@@ -27,10 +27,11 @@
               <input type="date" name="dob"></input>
             </div>
             <div class="col-sm-12">
-              <input type="password" name="password" placeholder="senha"></input>
+              <input type="password" name="password" placeholder="senha" id="password-txt"></input>
             </div>
             <div class="col-sm-12">
-              <input type="password" name="confirm-password" placeholder="confirme sua senha"></input>
+              <input type="password" name="confirm-password" placeholder="confirme sua senha" id="confirm-password"></input>
+              <div id="check-passwords-match"></div>
             </div>
             <div class="col-sm-12">
               <input type="submit" value="registrar"></input>
@@ -40,4 +41,8 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/registration.js') }}"></script>
 {% endblock %}
