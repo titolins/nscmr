@@ -1,42 +1,40 @@
 {% extends "fullwidthheader.html" %}
 
 {% block title %}
-    {{ super() }}
-    Home
+  {{ super() }}
+  Home
 {% endblock %}
 
 {% block header %}
-    {% include 'partials/carousel.html' %}
+  {% include 'partials/carousel.html' %}
 {% endblock %}
 
 {% block main_content %}
-    <div class="row">
-        <div class="col-lg-12">
-            {% include 'partials/mostviewed.html' %}
-        </div>
+  <div class="row">
+    <div class="col-lg-12">
+      {% include 'partials/mostviewed.html' %}
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Categorias</h1>
-        </div>
-        {% for category in categories %}
-            <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4">
-                <a href="{{ url_for('showCategory', category_id = category.id_) }}">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="category-name">{{ category.name }}</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="img-holder">
-                                <img class="img img-responsive"
-                                src="{{ category.thumbnail }}"
-                                alt="Foto de {{ category.name }}">
-                            </div>
-                        </div>
-                    </div>
-                </a>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Categorias</h1>
+    </div>
+    {% for category in categories %}
+      <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4">
+        <a href="{{ url_for('showCategory', category_id = category.id_) }}">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="category-name">{{ category.name }}</h4>
             </div>
-        {% endfor %}
-    </div>
+            <div class="panel-body">
+              <div class="img-holder">
+                <img class="img img-responsive" src="{{ category.thumbnail }}" alt="Foto de {{ category.name }}">
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}
 
