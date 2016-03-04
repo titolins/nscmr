@@ -76,8 +76,8 @@ def admin_required(f):
 
 # Create
 @app.route('/user/new')
-def register():
-    return "<p>To be user registration</p>"
+def userRegistration():
+    return render_template('userregistration.html')
 
 # Read
 @app.route('/user/<int:user_id>')
