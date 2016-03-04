@@ -57,7 +57,7 @@ a:active:not(.link) {
 
 #sidebar-content-wrapper,
 #registration-content-wrapper {
-  height: calc(100% - 192px);
+  min-height: calc(100% - 192px);
   padding-top: 8em;
 }
 
