@@ -1,23 +1,33 @@
 body, html {
-    height: 100%;
-    width: 100%;
-    display: block;
+  height: 100%;
+  width: 100%;
+  display: block;
 }
 
-a, a:link, a:hover, a:visited, a:active {
-    color: inherit;
-    text-decoration: none;
+a:not(.link),
+a:link:not(.link),
+a:hover:not(.link),
+a:visited:not(.link),
+a:active:not(.link) {
+  color: inherit;
+  text-decoration: none;
 }
 
 #navbar-wrapper {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 /*
  * settings all header's width to 100%
 */
 #header, #myCarousel, .item, .carousel-inner, .header-img {
-    width:100%;
+  width:100%;
+}
+
+/*
+ * login form stuff (base.html)
+ */
+#login-dropdown-form {
 }
 
 /*
@@ -25,17 +35,17 @@ a, a:link, a:hover, a:visited, a:active {
  */
 
 #sidebar-content-wrapper {
-    height: calc(100% - 192px);
-    padding-top: 8em;
+  height: calc(100% - 192px);
+  padding-top: 8em;
 }
 
 #sidebar-content-wrapper > .row {
-    height: 100%;
+  height: 100%;
 }
 
 #main-content > h4:first-child {
-    padding-top: 0;
-    margin-top: 0;
+  padding-top: 0;
+  margin-top: 0;
 }
 
 .list-group-item.active,
@@ -43,25 +53,25 @@ a, a:link, a:hover, a:visited, a:active {
 .list-group-item.active:visited,
 .list-group-item.active:active,
 .list-group-item.active:hover {
-    background-color: #222;
-    border-color: #222;
-    border-top-color: #ddd;
-    border-bottom-color: #ddd;
+  background-color: #222;
+  border-color: #222;
+  border-top-color: #ddd;
+  border-bottom-color: #ddd;
 }
 
 /*
  * product background
  */
 #product-page {
-    width: 100%;
-    height: calc(100% - 51px);
-    background-size: cover;
+  width: 100%;
+  height: calc(100% - 51px);
+  background-size: cover;
 }
 
 .gradient {
-    height: 100%;
-    background-image: linear-gradient(to right, transparent, #161616);
-    opacity: 1;
+  height: 100%;
+  background-image: linear-gradient(to right, transparent, #161616);
+  opacity: 1;
 }
 
 /* product info
@@ -69,24 +79,24 @@ a, a:link, a:hover, a:visited, a:active {
  */
 
 #product-content {
-    padding-top: 2em;
-    color: white;
+  padding-top: 2em;
+  color: white;
 }
 
 #product-nav {
-    text-align: right;
+  text-align: right;
 }
 
 #product-title {
-    margin-top: 4em;
+  margin-top: 4em;
 }
 
 .product-info {
-    margin-top: 2em;
+  margin-top: 2em;
 }
 
 .product-info > h4 {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 
@@ -94,29 +104,29 @@ a, a:link, a:hover, a:visited, a:active {
  * tweaking with panel's border style
  */
 .panel {
-    border: 0px;
-    border-radius: 0px;
+  border: 0px;
+  border-radius: 0px;
 }
 
 .panel > .panel-heading {
-    border-radius: 0px;
-    background-color: #8497a9;
-    border: 1px solid #8497a9;
+  border-radius: 0px;
+  background-color: #8497a9;
+  border: 1px solid #8497a9;
 }
 
 .panel > .panel-body {
-    border: 1px solid #ddd;
-    border-top: 0px;
+  border: 1px solid #ddd;
+  border-top: 0px;
 }
 
 #footer-wrapper {
-    background-color: #222;
-    color: #9d9d9d;
-    border-top: 1px solid #080808;
-    width: 100%;
+  background-color: #222;
+  color: #9d9d9d;
+  border-top: 1px solid #080808;
+  width: 100%;
 }
 
 footer {
-    margin-top: 20px;
-    height: 120px;
+  margin-top: 20px;
+  height: 120px;
 }
