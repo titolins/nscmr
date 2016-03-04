@@ -87,8 +87,8 @@ def showUser(user_id):
     # what we need (addresses, wishlist, etc..)?
     # Remember to change the template if we decide to pass only the needed
     # properties.
-    user = getCurrentUser()
-    return render_template('user.html', user=user)
+    logged_user = getCurrentUser()
+    return render_template('user.html', user=logged_user)
 
 # Update
 @user_required
