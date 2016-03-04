@@ -147,6 +147,14 @@ a:active:not(.link) {
 }
 
 /*
+ * user page stuff
+ */
+
+#profile-panel {
+  border: 1px solid #ddd;
+}
+
+/*
  * footer
  */
 
