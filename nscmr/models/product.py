@@ -15,10 +15,13 @@
 #####                                                      #############
 ########################################################################
 
+from nscmr.models.category import CategoryFactory
+
 class ProductFactory(object):
     # TODO:
     # Create a getter by category id for products
     def __init__(self):
+        cf = CategoryFactory()
         self.name = 'Lençol com estampa florida c/ tecido importado'
         self.description = '''
                 FEITO COM PERCAL 7000 FIOS DA ÍNDIA ORIENTAL
@@ -28,6 +31,7 @@ class ProductFactory(object):
         self.size = "3.50m x 2.50m"
         self.thumbnail = "http://placehold.it/400x300"
         self.background_picture = "http://placehold.it/1920x1080"
+        self.category = cf.getCategories()[0]
 
     def getProducts(self):
         return [
@@ -38,13 +42,14 @@ class ProductFactory(object):
                     price = self.price,
                     size = self.size,
                     thumbnail = self.thumbnail,
-                    background_picture = self.background_picture) \
+                    background_picture = self.background_picture,
+                    category = self.category) \
                 for i in range(8)]
 
 
 class Product(object):
     def __init__(self, id_, name, description, price, size, thumbnail,
-            background_picture):
+            background_picture, category):
         self.id_ = id_
         self.name = name
         self.description = description
@@ -52,6 +57,7 @@ class Product(object):
         self.size = size
         self.thumbnail = thumbnail
         self.background_picture = background_picture
+        self.category = category
 
 
 if __name__ == '__main__':
