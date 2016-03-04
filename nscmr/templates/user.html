@@ -15,7 +15,7 @@
   {% include 'partials/user/orders.html' %}
   {% include 'partials/user/addresses.html' %}
   {% include 'partials/user/payment.html' %}
-  {% include 'partials/user/wishlist.html' %}
+  {% with wishlist=user.wishlist %}{% include 'partials/user/wishlist.html' %}{% endwith %}
   {% include 'partials/user/logout.html' %}
 {% endblock %}
 

@@ -1,7 +1,5 @@
-{% from "macros.html" import product_panel with context %}
+{% from "macros.html" import build_product_list with context %}
 
 <div id="wishlist" style="display:none;">
-  {% for product in user.wishlist %}
-    {{ product_panel(product.category.id_, product) }}
-  {% endfor %}
+  {{ build_product_list(wishlist) }}
 </div>

@@ -1,16 +1,22 @@
+{% macro build_product_list(products) %}
+  {% for product in products %}
+    {{ product_panel(product.category.id_, product) }}
+  {% endfor %}
+{% endmacro %}
+
 {% macro product_panel(category_id, product) %}
-<div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4">
-  <a href="{{ url_for('showProduct', category_id = category_id, product_id = product.id_) }}">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="product-name">{{ product.name }}</h4>
-      </div>
-      <div class="panel-body">
-        <div class="img-holder">
-          <img class="img img-responsive" src="{{ product.thumbnail }}" alt="Foto de {{ product.name }}"></img>
+  <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4">
+    <a href="{{ url_for('showProduct', category_id = category_id, product_id = product.id_) }}">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="product-name">{{ product.name }}</h4>
+        </div>
+        <div class="panel-body">
+          <div class="img-holder">
+            <img class="img img-responsive" src="{{ product.thumbnail }}" alt="Foto de {{ product.name }}"></img>
+          </div>
         </div>
       </div>
-    </div>
-  </a>
-</div>
+    </a>
+  </div>
 {% endmacro %}
