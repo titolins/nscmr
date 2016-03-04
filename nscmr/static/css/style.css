@@ -161,3 +161,7 @@ footer {
   margin-top: 20px;
   height: 120px;
 }
+
+#brand {
+  text-align: right;
+}
