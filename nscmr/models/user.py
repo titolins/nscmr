@@ -15,8 +15,11 @@
 #####                                                      #############
 ########################################################################
 
+from nscmr.models.product import ProductFactory
+
 class UserFactory(object):
     def __init__(self, max_users=2):
+        pf = ProductFactory()
         self._max_users = max_users
         self.count = 0
         self.names = [
@@ -31,6 +34,7 @@ class UserFactory(object):
                 'c00lp455',
                 'wooow1876',
         ]
+        self.wishlist = pf.getProducts()
         self.addresses = [
                 [
                     {
@@ -88,6 +92,7 @@ class UserFactory(object):
             gender = self.getGender(),
             addresses = self.addresses[self.getIndex()],
             access_level = access_level,
+            wishlist = self.wishlist,
         )
 
     def getRegularUser(self):
@@ -98,7 +103,7 @@ class UserFactory(object):
 
 
 class User(object):
-    def __init__(self, id_, email, password, name, gender, addresses,
+    def __init__(self, id_, email, password, name, gender, addresses, wishlist,
             access_level=0):
         self._password = password
         self._cart = None
@@ -110,6 +115,7 @@ class User(object):
         self.password_hash = hash(password)
         self.addresses = addresses
         self.access_level = access_level
+        self.wishlist = wishlist
 
     @property
     def password(self):
