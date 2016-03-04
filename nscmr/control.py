@@ -157,7 +157,7 @@ def showProduct(category_id, product_id):
 ####################### login ###########################
 #########################################################
 
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login():
     return """
         <h1>Login Page</h1>
