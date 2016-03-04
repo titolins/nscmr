@@ -1,4 +1,5 @@
 {% extends 'sidebar.html' %}
+{% from "macros.html" import build_product_list with context %}
 
 {% block title %}
   {{ super() }}
@@ -15,7 +16,9 @@
   {% include 'partials/user/orders.html' %}
   {% include 'partials/user/addresses.html' %}
   {% include 'partials/user/payment.html' %}
-  {% include 'partials/user/wishlist.html' %}
+  <div id="wishlist" style="display:none;">
+    {{ build_product_list(user.wishlist) }}
+  </div>
   {% include 'partials/user/logout.html' %}
 {% endblock %}
 
