@@ -83,7 +83,12 @@ def userRegistration():
 @app.route('/user/<int:user_id>')
 @user_required
 def showUser(user_id):
-    return render_template('user.html')
+    # dev code below. Still thinking, should we pass the whole user or only
+    # what we need (addresses, wishlist, etc..)?
+    # Remember to change the template if we decide to pass only the needed
+    # properties.
+    user = getCurrentUser()
+    return render_template('user.html', user=user)
 
 # Update
 @user_required
@@ -191,21 +196,31 @@ def logout():
 ################# development code ######################
 #########################################################
 
+
 @app.route('/login/logRegularUser')
 def logRegularUser():
     login_session['user_id'] = user.id_
     login_session['user_access_level'] = user.access_level
     login_session['username'] = user.name
-    login_session['email'] = user.name
+    login_session['email'] = user.email
     return redirect(url_for('index'))
+
 
 @app.route('/login/logAdminUser')
 def logAdminUser():
     login_session['user_id'] = admin.id_
     login_session['user_access_level'] = admin.access_level
     login_session['username'] = admin.name
-    login_session['email'] = admin.name
+    login_session['email'] = admin.email
     return redirect(url_for('index'))
+
+
+def getCurrentUser():
+    if login_session['user_access_level'] > 0:
+        return admin
+    else:
+        return user
+
 
 def getCategoryById(category_id):
     for category in categories:
