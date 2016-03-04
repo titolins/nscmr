@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
 
 {% block page_content %}
-    <div id="sidebar-content-wrapper" class="container">
-        <div class="row">
-            <div id="sidebar" class="col-md-3">
-                {% block sidebar_content %} {% endblock %}
-            </div>
-
-            <div id="main-content" class="col-md-9">
-                {% block main_content %} {% endblock %}
-            </div>
-        </div>
+  <div id="sidebar-content-wrapper" class="container">
+    <div class="row">
+      <div id="sidebar" class="col-md-3">
+        {% block sidebar_content %} {% endblock %}
+      </div>
+      <div id="main-content" class="col-md-9">
+        {% block main_content %} {% endblock %}
+      </div>
     </div>
+  </div>
 {% endblock %}
 
 
