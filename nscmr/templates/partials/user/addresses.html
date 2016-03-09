@@ -1,4 +1,30 @@
 <div id="addresses" style="display:none;">
-  <h1>addresses</h1>
+  {% for address in user.addresses %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span class="h4">{{ address.title }}</span>
+        <span class="options-btn">
+          <a href="#">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            alterar
+          </a>
+          <a href="#">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            remover
+          </a>
+        </span>
+      </div>
+      <div class="panel-body">
+        <span>{{ address.street_address_1 }}</span>
+        <span>{{ address.street_address_2 }}</span></br>
+        <span>{{ address.city }} - {{ address.postal_code }}</span></br>
+        <span>{{ address.state }}</span>
+        <span>{{ address.country }}</span></br>
+        {% if address.phone %}
+          <span>{{ address.phone }}</span>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
 </div>
 
