@@ -2,7 +2,9 @@
 
 ## Description
 nscmr will be an python e-commerce application based on
-[satchless](https://github.com/mirumee/satchless).
+[satchless](https://github.com/mirumee/satchless),
+[flask](http://flask.pocoo.org/) and
+[mongodb](https://www.google.com.br/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjO6pyTz7TLAhWMkJAKHawuB9sQFggdMAA&url=https%3A%2F%2Fwww.mongodb.org%2F&usg=AFQjCNE3DSenqpJf_ccFT8F4W0RQfaGb3w&sig2=jK5NinRr8peGNPjy77U9mw).
 
 As per the above, nscmr is still under development and not ready for use.
 
@@ -18,11 +20,11 @@ As per the above, nscmr is still under development and not ready for use.
 
 ### templates
     * rearrange flash messages in fullwidthheader.html
+    * add 'add to wishlist' button
 
 ## Development
 Current development server is being hosted at
 [pythonanywhere.com](http://tls.pythonanywhere.com).
 
 ## Known bugs
-    * pythonanywhere is currently unable to render the user profile pages
-      (aparently, it can't find parameters passed from flask to jinja?).
+    * not working.. ;)
