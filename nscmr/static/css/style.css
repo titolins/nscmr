@@ -1,5 +1,5 @@
 /*
- * genneral settings
+ * general settings
  */
 
 body, html {
@@ -16,6 +16,10 @@ a:active:not(.link) {
   text-decoration: none;
 }
 
+.text-right {
+  align-text: right;
+}
+
 /*
  * navbar
  */
@@ -30,6 +34,57 @@ a:active:not(.link) {
 
 #header, #myCarousel, .item, .carousel-inner, .header-img {
   width:100%;
+}
+
+/*
+ * index stuff
+ */
+
+#index-content-wrapper {
+  width: 100%;
+}
+
+.category-panel {
+  padding: 0 0 30px 0;
+  text-align: center;
+  background-color: lightblue;
+}
+
+.img-holder > img {
+  width: 80%;
+  margin: auto;
+}
+
+#category-panel-1 {
+  background-color: lightgreen;
+}
+
+#category-panel-2 {
+  background-color: grey;
+}
+
+#category-panel-3 {
+  background-color: red;
+}
+
+#category-panel-4 {
+  background-color: lightgrey;
+}
+
+#category-panel-5 {
+  background-color: orange;
+}
+
+#front-page-text-container {
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
+
+#front-page-text {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
 }
 
 /*
@@ -105,10 +160,6 @@ a:active:not(.link) {
   color: white;
 }
 
-#product-nav {
-  text-align: right;
-}
-
 #product-nav > span > a {
   color:inherit;
 }
@@ -139,11 +190,23 @@ a:active:not(.link) {
   border: 1px solid #ddd;
   border-bottom: 0;
   background-color: white;
+  display: flex;
+  justify-content: space-between;
 }
 
 .panel > .panel-body {
   border: 1px solid #ddd;
   border-top: 0px;
+}
+
+/*
+ * edit / remove buttons added to panel's heading.
+ * we add 10px of margin top and bottom to equal those of h4, thus making both
+ * aligned vertically inside the heading.
+ */
+.options-btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 /*
@@ -170,6 +233,3 @@ footer {
   height: 120px;
 }
 
-#brand {
-  text-align: right;
-}
