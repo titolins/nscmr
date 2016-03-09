@@ -16,6 +16,9 @@
 ########################################################################
 
 from nscmr.models.product import ProductFactory
+from nscmr.models.address import AddressFactory
+
+# TODO: Read about storing passwords on db.
 
 class UserFactory(object):
     def __init__(self, max_users=2):
@@ -35,40 +38,7 @@ class UserFactory(object):
                 'wooow1876',
         ]
         self.wishlist = pf.getProducts()
-        self.addresses = [
-                [
-                    {
-                        'name': 'home',
-                        'stAdd': 'example street, 201',
-                        'city': 'example city',
-                        'country': 'example country',
-                        'zipCode': '00000-000',
-                    },
-                    {
-                        'name': 'office',
-                        'stAdd': 'example street, 301',
-                        'city': 'example city',
-                        'country': 'example country',
-                        'zipCode': '00000-000',
-                    }
-                ],
-                [
-                    {
-                        'name': 'home',
-                        'stAdd': 'bingo street, 1000',
-                        'city': 'cool city',
-                        'country': 'country',
-                        'zipCode': '99999-666',
-                    },
-                    {
-                        'name': 'office',
-                        'stAdd': 'else street, 301',
-                        'city': 'city',
-                        'country': 'example',
-                        'zipCode': '12345-000',
-                    }
-                ]
-        ]
+
 
     def getIndex(self):
         i = self.count
@@ -84,13 +54,15 @@ class UserFactory(object):
     def getNewUser(self, access_level=0, randomize_al=False):
         if randomize_al:
             access_level = self.getIndex()
+        id_ = self.getId()
+        af = AddressFactory()
         return User(
-            id_ = self.getId(),
+            id_ = id_,
             email = self.emails[self.getIndex()],
             password = self.passwords[self.getIndex()],
             name = self.names[self.getIndex()],
             gender = self.getGender(),
-            addresses = self.addresses[self.getIndex()],
+            addresses = af.getUserAddresses(id_),
             access_level = access_level,
             wishlist = self.wishlist,
         )
