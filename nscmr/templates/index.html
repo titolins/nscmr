@@ -14,7 +14,7 @@
     <div id="front-page-text-container"><span id="front-page-text"><b>Entregas para todo o Brasil parcelado em até 3x.</b></span></div>
   </div>
   {% for category in categories %}
-    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 category-panel" id="category-panel-{{loop.index}}">
+    <div class="col-xs-12 col-sm-6 col-md-4 category-panel" id="category-panel-{{loop.index}}">
       <a href="{{ url_for('showCategory', category_id = category.id_) }}">
         <h4 class="category-name">{{ category.name }}</h4>
         <div class="img-holder">
