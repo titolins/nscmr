@@ -75,14 +75,15 @@ def admin_required(f):
 ##################
 
 # Create
-@app.route('/user/new')
+@app.route('/usuario/novo')
 def userRegistration():
     return render_template('userregistration.html')
 
 # Read
-@app.route('/user/<int:user_id>')
+@app.route('/usuario/<int:user_id>')
+@app.route('/usuario/<int:user_id>/<string:slug>')
 @user_required
-def showUser(user_id):
+def showUser(user_id, slug = None):
     # dev code below. Still thinking, should we pass the whole user or only
     # what we need (addresses, wishlist, etc..)?
     # Remember to change the template if we decide to pass only the needed
@@ -92,14 +93,16 @@ def showUser(user_id):
 
 # Update
 @user_required
-@app.route('/user/<int:user_id>/edit')
-def editUser(user_id):
+@app.route('/usuario/<int:user_id>/editar')
+@app.route('/usuario/<int:user_id>/<string:slug>/editar')
+def editUser(user_id, slug = None):
     return "<p>To be user {} edit page</p>".format(user_id)
 
 # Delete
 @user_required
-@app.route('/user/<int:user_id>/delete')
-def deleteUser(user_id):
+@app.route('/usuario/<int:user_id>/deletar')
+@app.route('/usuario/<int:user_id>/<string:slug>/deletar')
+def deleteUser(user_id, slug = None):
     return "<p>To be user {} delete page</p>".format(user_id)
 
 
@@ -115,16 +118,17 @@ def deleteUser(user_id):
 # only the admin can create new categories
 
 # Read
-@app.route('/catalog/<int:category_id>')
-def showCategory(category_id):
+@app.route('/catalogo/<int:category_id>')
+@app.route('/catalogo/<int:category_id>/<string:slug>')
+def showCategory(category_id, slug = None):
     return render_template(
             'category.html',
             category=getCategoryById(category_id),
             products=products)
 
 # Update
-
 # Delete
+# only the admin can update and delete categories
 
 ##################
 # end Category   #
@@ -138,8 +142,16 @@ def showCategory(category_id):
 # only admin will be able to create products
 
 # Read
-@app.route('/catalog/<int:category_id>/<int:product_id>')
-def showProduct(category_id, product_id):
+@app.route('/catalogo/<int:category_id>/<int:product_id>')
+@app.route(
+        '/catalogo/{}/{}/{}/{}'.format(
+            '<int:category_id>',
+            '<string:category_slug>',
+            '<int:product_id>',
+            '<int:product_slug>',)
+        )
+def showProduct(category_id, product_id, category_slug = None,
+        product_slug = None):
     category = getCategoryById(category_id)
     return render_template(
             'product.html',
@@ -147,8 +159,8 @@ def showProduct(category_id, product_id):
             product = products[0])
 
 # Update
-
 # Delete
+# only admin can update or delete products
 
 ##################
 # end Product    #
@@ -162,7 +174,7 @@ def showProduct(category_id, product_id):
 ####################### login ###########################
 #########################################################
 
-@app.route('/login', methods=['POST'])
+@app.route('/entrar', methods=['POST'])
 def login():
     return """
         <h1>Login Page</h1>
@@ -180,7 +192,7 @@ def login():
     """.format(url_for('logRegularUser'), url_for('logAdminUser'))
 
 
-@app.route('/logout')
+@app.route('/sair')
 def logout():
     del login_session['user_id']
     del login_session['user_access_level']
@@ -191,6 +203,7 @@ def logout():
 #########################################################
 ####################### end login #######################
 #########################################################
+
 
 #########################################################
 ################# development code ######################
