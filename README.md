@@ -9,10 +9,13 @@ nscmr will be an python e-commerce application based on
 As per the above, nscmr is still under development and not ready for use.
 
 ## TODO's
+### controller
+    * see how to correctly
+    [send static files](http://flask.pocoo.org/docs/0.10/api/).
 ### models
     * see python currencies
     * see python countries
-    * see python login/auth/user management
+    * see python login/[auth](https://github.com/raddevon/flask-permissions)/user management
     * see python phone
 
 ### DB
