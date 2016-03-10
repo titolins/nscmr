@@ -15,6 +15,7 @@
 #####                                                      #############
 ########################################################################
 
+from nscmr.helper import slugify
 
 class AddressFactory(object):
     def getUserAddresses(self, user_id):
@@ -42,6 +43,9 @@ class Address(object):
         self.state = state
         self.phone = phone
 
+    @property
+    def slug(self):
+        return slugify(self.title)
 
 if __name__ == '__main__':
     pass

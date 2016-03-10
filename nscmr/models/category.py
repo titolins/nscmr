@@ -14,16 +14,18 @@
 #####                                                      #############
 ########################################################################
 
+from nscmr.helper import slugify
+
+
 class CategoryFactory(object):
     def __init__(self):
         self.names = {
-                'Duvet': 4,
-                'Lençol': 1,
-                'Colcha': 5,
-                'Cobertor': 2,
-                'Peseira': 6,
-                'Toalha de mesa': 7,
-                'Acessorio': 3,
+                'Duvets': 3,
+                'Lençois': 1,
+                'Colchas': 4,
+                'Peseiras': 5,
+                'Toalhas de mesa': 6,
+                'Acessórios': 2,
         }
         self.thumbnail = "http://placehold.it/400x300"
         self.header_picture = "http://placehold.it/1400x400"
@@ -44,6 +46,10 @@ class Category(object):
         self.name = name
         self.thumbnail = thumbnail
         self.header_picture = header_picture
+
+    @property
+    def slug(self):
+        return slugify(self.name)
 
 if __name__ == '__main__':
     cf = CategoryFactory()

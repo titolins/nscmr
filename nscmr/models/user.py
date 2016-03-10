@@ -18,6 +18,8 @@
 from nscmr.models.product import ProductFactory
 from nscmr.models.address import AddressFactory
 
+from nscmr.helper import slugify
+
 # TODO: Read about storing passwords on db.
 
 class UserFactory(object):
@@ -97,6 +99,10 @@ class User(object):
     def password(self, password):
         self._password = password
         self.password_hash = hash(password)
+
+    @property
+    def slug(self):
+        return slugiify(self.name)
 
     def __str__(self):
         return str(

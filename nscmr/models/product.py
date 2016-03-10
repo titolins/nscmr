@@ -16,6 +16,7 @@
 ########################################################################
 
 from nscmr.models.category import CategoryFactory
+from nscmr.helper import slugify
 
 class ProductFactory(object):
     # TODO:
@@ -58,6 +59,10 @@ class Product(object):
         self.thumbnail = thumbnail
         self.background_picture = background_picture
         self.category = category
+
+    @property
+    def slug(self):
+        return slugify(self.name)
 
 
 if __name__ == '__main__':
