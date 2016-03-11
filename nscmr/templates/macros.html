@@ -1,12 +1,12 @@
 {% macro build_product_list(products) %}
   {% for product in products %}
-    {{ product_panel(product.category.id_, product) }}
+    {{ product_panel(product.category, product) }}
   {% endfor %}
 {% endmacro %}
 
-{% macro product_panel(category_id, product) %}
+{% macro product_panel(category, product) %}
   <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4">
-    <a href="{{ url_for('showProduct', category_id = category_id, product_id = product.id_) }}">
+    <a href="{{ url_for('showProduct', category_id = category.id_, product_id = product.id_, category_slug = category.slug, product_slug = product.slug) }}">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="product-name">{{ product.name }}</h4>
