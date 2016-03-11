@@ -18,6 +18,13 @@ As per the above, nscmr is still under development and not ready for use.
     * see python login/[auth](https://github.com/raddevon/flask-permissions)/user management
     * see python phone
 
+#### user / cart
+    * cart should be a subdocument of user? remember mongodb has no joins.
+
+#### category
+    * category model should have a reference to parent and to ancestors (makes
+      it really easy to create subcategories).
+
 ### DB
     * read about storing payment options on db
 
