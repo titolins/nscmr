@@ -9,5 +9,5 @@ def slugify(text, delim=u'-'):
     for word in _punct_re.split(text.lower()):
         word = normalize('NFKD', word).encode('ascii', 'ignore')
         if word:
-            result.append(word)
-    return unicode(delim.join(result))
+            result.append(str(word, 'utf-8'))
+    return delim.join(result)
