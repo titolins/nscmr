@@ -119,7 +119,6 @@ def deleteUser(user_id, slug = None):
 # only the admin can create new categories
 
 # Read
-@app.route('/catalogo/<int:category_id>')
 @app.route('/catalogo/<int:category_id>/<string:slug>')
 def showCategory(category_id, slug = None):
     return render_template(
@@ -143,13 +142,12 @@ def showCategory(category_id, slug = None):
 # only admin will be able to create products
 
 # Read
-@app.route('/catalogo/<int:category_id>/<int:product_id>')
 @app.route(
         '/catalogo/{}/{}/{}/{}'.format(
             '<int:category_id>',
             '<string:category_slug>',
             '<int:product_id>',
-            '<int:product_slug>',)
+            '<string:product_slug>',)
         )
 def showProduct(category_id, product_id, category_slug = None,
         product_slug = None):
