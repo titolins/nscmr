@@ -7,9 +7,10 @@ from flask import (
     jsonify,
     make_response)
 
-from nscmr import app #, session
+#from . import app #, session
+from nscmr import app
 
-# import forms and models --> development only
+# import forms and models --> development models only
 from nscmr.models import admin, users, user, categories, products
 
 from flask import session as login_session

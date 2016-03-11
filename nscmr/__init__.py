@@ -23,4 +23,4 @@ install_secret_key(app)
 # DBSession = sessionmaker(bind=engine)
 # session = DBSession()
 
-import nscmr.control
+from nscmr import views
