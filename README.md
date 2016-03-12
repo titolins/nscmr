@@ -12,6 +12,9 @@ As per the above, nscmr is still under development and not ready for use.
 ### controller
     * see how to correctly
     [send static files](http://flask.pocoo.org/docs/0.10/api/).
+    * slugs should be checked against the id of the object to see if they are
+      correct!!
+
 ### models
     * see python currencies
     * see python countries
