@@ -11,7 +11,7 @@ from flask import (
 from nscmr import app
 
 # import forms and models --> development models only
-from nscmr.models import admin, users, user, categories, products
+from nscmr.admin.models import admin, users, user, categories, products
 
 from flask import session as login_session
 from functools import wraps

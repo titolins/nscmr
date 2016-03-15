@@ -15,10 +15,10 @@
 #####                                                      #############
 ########################################################################
 
-from nscmr.models.product import ProductFactory
-from nscmr.models.address import AddressFactory
+from nscmr.admin.models.product import ProductFactory
+from nscmr.admin.models.address import AddressFactory
 
-from nscmr.helper import slugify
+from nscmr.admin.helper import slugify
 
 # TODO: Read about storing passwords on db.
 

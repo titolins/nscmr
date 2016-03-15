@@ -14,7 +14,7 @@
 #####                                                      #############
 ########################################################################
 
-from nscmr.helper import slugify
+from nscmr.admin.helper import slugify
 
 
 class CategoryFactory(object):

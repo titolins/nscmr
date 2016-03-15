@@ -15,8 +15,8 @@
 #####                                                      #############
 ########################################################################
 
-from nscmr.models.category import CategoryFactory
-from nscmr.helper import slugify
+from nscmr.admin.models.category import CategoryFactory
+from nscmr.admin.helper import slugify
 
 class ProductFactory(object):
     # TODO:

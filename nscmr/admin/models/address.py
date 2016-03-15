@@ -15,7 +15,7 @@
 #####                                                      #############
 ########################################################################
 
-from nscmr.helper import slugify
+from nscmr.admin.helper import slugify
 
 class AddressFactory(object):
     def getUserAddresses(self, user_id):
