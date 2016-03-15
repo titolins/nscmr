@@ -18,5 +18,4 @@ def config_app(app):
     #CsrfProtect(app)
 
     app.config.from_object(config[os.environ.get('FLASK_APP_MODE', 'default')])
-    print(app.config)
 
