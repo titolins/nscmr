@@ -1,6 +1,6 @@
-from nscmr.admin.models.user import User, UserFactory
-from nscmr.admin.models.category import Category, CategoryFactory
-from nscmr.admin.models.product import Product, ProductFactory
+from nscmr.admin.models.dev.user import User, UserFactory
+from nscmr.admin.models.dev.category import Category, CategoryFactory
+from nscmr.admin.models.dev.product import Product, ProductFactory
 
 ## users
 uf = UserFactory()

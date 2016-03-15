@@ -15,8 +15,8 @@
 #####                                                      #############
 ########################################################################
 
-from nscmr.admin.models.product import ProductFactory
-from nscmr.admin.models.address import AddressFactory
+from nscmr.admin.models.dev.product import ProductFactory
+from nscmr.admin.models.dev.address import AddressFactory
 
 from nscmr.admin.helper import slugify
 
