@@ -1,21 +1,20 @@
 from flask import Flask
-from instance.secret import install_secret_key
 
-#from flask_bootstrap import Bootstrap
-#from flask_wtf.csrf import CsrfProtect
+from instance.config import config_app
 
 #from sqlalchemy import create_engine
 #from sqlalchemy.orm import sessionmaker
-# import models
-import nscmr.admin
 
-app = Flask(__name__)
-app.register_blueprint(admin.bp, url_prefix='/admin')
+def build_app():
+    # import blueprints and register
+    import nscmr.admin
+    app = Flask(__name__)
+    app.register_blueprint(admin.bp, url_prefix='/admin')
+    # config app and return
+    config_app(app)
+    return app
 
-install_secret_key(app)
-
-#Bootstrap(app)
-#CsrfProtect(app)
+app = build_app()
 
 # create db engine
 # engine = create_engine('path/to/db')
