@@ -18,7 +18,7 @@ As per the above, nscmr is still under development and not ready for use.
 ### models
     * see python currencies
     * see python countries
-    * see python login/[auth](https://github.com/raddevon/flask-permissions)/user management
+    * see python [login/user management](https://blog.openshift.com/use-flask-login-to-add-user-authentication-to-your-python-application/)/[auth](https://github.com/raddevon/flask-permissions)
     * see python phone
 
 #### user / cart
