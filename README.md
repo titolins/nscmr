@@ -28,7 +28,9 @@ FLASK_APP_MODE=testing python runserver.py
 FLASK_APP_MODE=production python runserver.py
 ```
 
-The configuration for each mode is located in the nscmr.config module.
+The configuration for each mode is located in the nscmr.config module. If you
+don't set any of the above mentioned settings, the app will fallback to it's
+default configuration (development currently).
 
 NOTE: Please note that the examples below are all using flask's development
 server. This is ok for development (and perhaps testing) but not for
