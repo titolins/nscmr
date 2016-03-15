@@ -8,6 +8,34 @@ nscmr will be an python e-commerce application based on
 
 As per the above, nscmr is still under development and not ready for use.
 
+## Instructions
+* Install pip
+* Install requirements
+```pip install -r requirements.txt```
+
+### App modes
+The app may be run in development, testing or production modes. To trigger the
+correct configuration for each mode, the user must set the FLASK_APP_MODE
+environment variable, as per the below:
+```
+# running in development mode
+FLASK_APP_MODE=developement python runserver.py
+
+# running in testing mode
+FLASK_APP_MODE=testing python runserver.py
+
+# running in production mode
+FLASK_APP_MODE=production python runserver.py
+```
+
+The configuration for each mode is located in the nscmr.config module.
+
+NOTE: Please note that the examples below are all using flask's development
+server. This is ok for development (and perhaps testing) but not for
+production! This is just an example on how to trigger the correct configuration
+for the desired app's mode.
+
+
 ## TODO's
 ### controller
     * see how to correctly

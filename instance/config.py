@@ -1,37 +1,22 @@
-class Config(object):
-    DEBUG = False
-    TESTING = False
+import os
 
-    # update this when db is ready
-    # DATABASE_URI = ""
+config = {
+    "development": "nscmr.config.DevelopmentConfig",
+    "testing": "nscmr.config.TestingConfig",
+    "production": "nscmr.config.ProductionConfig",
+    "default": "nscmr.config.DevelopmentConfig"
+}
 
-class ProductionConfig(Config):
-    # update this when db is ready
-    # DATABASE_URI = ""
-    pass
-
-class DevelopmentConfig(Config):
-    DEBUG = True
-
-class TestingConfig(Config):
-    TESTING = True
-
-def config_app(app, app_mode = 'debug'):
+def config_app(app):
     from instance.secret import install_secret_key
     #from flask_bootstrap import Bootstrap
     #from flask_wtf.csrf import CsrfProtect
 
     install_secret_key(app)
-    app.config.from_object(Config)
-    # implement those later on..
+    # add those later on..
     #Bootstrap(app)
     #CsrfProtect(app)
 
-    if app_mode == 'debug':
-        app.config.from_object(DevelopmentConfig)
-    elif app_mode == 'testing':
-        app.config.from_object(TestingConfig)
-    else:
-        app.config.from_object(ProductionConfig)
-
+    app.config.from_object(config[os.environ.get('FLASK_APP_MODE', 'default')])
+    print(app.config)
 
