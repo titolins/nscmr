@@ -18,8 +18,15 @@ class TestingConfig(Config):
 
 def config_app(app, app_mode = 'debug'):
     from instance.secret import install_secret_key
+    #from flask_bootstrap import Bootstrap
+    #from flask_wtf.csrf import CsrfProtect
+
     install_secret_key(app)
     app.config.from_object(Config)
+    # implement those later on..
+    #Bootstrap(app)
+    #CsrfProtect(app)
+
     if app_mode == 'debug':
         app.config.from_object(DevelopmentConfig)
     elif app_mode == 'testing':
