@@ -50,10 +50,8 @@
     <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/ace/mode-html.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/lib/ace/theme-github.js') }}"></script>
     <!-- Javascript -->
-    <script type="text/javascript" src="{{ url_for('admin.static',
-        filename='js/lib/app.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('admin.static',
-        filename='js/lib/index.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('admin.static', filename='js/lib/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
   </div>
 </body>
 

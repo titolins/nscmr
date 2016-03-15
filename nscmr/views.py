@@ -77,33 +77,33 @@ def admin_required(f):
 
 # Create
 @app.route('/usuario/novo')
-def userRegistration():
-    return render_template('userregistration.html')
+def registration():
+    return render_template('registration.html')
 
 # Read
 @app.route('/usuario/<int:user_id>')
 @app.route('/usuario/<int:user_id>/<string:slug>')
 @user_required
-def showUser(user_id, slug = None):
+def user(user_id, slug = None):
     # dev code below. Still thinking, should we pass the whole user or only
     # what we need (addresses, wishlist, etc..)?
     # Remember to change the template if we decide to pass only the needed
     # properties.
-    logged_user = getCurrentUser()
+    logged_user = get_current_user()
     return render_template('user.html', user=logged_user)
 
 # Update
 @user_required
 @app.route('/usuario/<int:user_id>/editar')
 @app.route('/usuario/<int:user_id>/<string:slug>/editar')
-def editUser(user_id, slug = None):
+def edit_user(user_id, slug = None):
     return "<p>To be user {} edit page</p>".format(user_id)
 
 # Delete
 @user_required
 @app.route('/usuario/<int:user_id>/deletar')
 @app.route('/usuario/<int:user_id>/<string:slug>/deletar')
-def deleteUser(user_id, slug = None):
+def delete_user(user_id, slug = None):
     return "<p>To be user {} delete page</p>".format(user_id)
 
 
@@ -120,10 +120,10 @@ def deleteUser(user_id, slug = None):
 
 # Read
 @app.route('/catalogo/<int:category_id>/<string:slug>')
-def showCategory(category_id, slug = None):
+def category(category_id, slug = None):
     return render_template(
             'category.html',
-            category=getCategoryById(category_id),
+            category=get_category_by_id(category_id),
             products=products)
 
 # Update
@@ -149,9 +149,9 @@ def showCategory(category_id, slug = None):
             '<int:product_id>',
             '<string:product_slug>',)
         )
-def showProduct(category_id, product_id, category_slug = None,
+def product(category_id, product_id, category_slug = None,
         product_slug = None):
-    category = getCategoryById(category_id)
+    category = get_category_by_id(category_id)
     return render_template(
             'product.html',
             category = category,
@@ -188,7 +188,7 @@ def login():
                 Admin user
             </a>
         </div>
-    """.format(url_for('logRegularUser'), url_for('logAdminUser'))
+    """.format(url_for('log_regular_user'), url_for('log_admin_user'))
 
 
 @app.route('/sair')
@@ -209,8 +209,8 @@ def logout():
 #########################################################
 
 
-@app.route('/login/logRegularUser')
-def logRegularUser():
+@app.route('/login/log_user')
+def log_regular_user():
     login_session['user_id'] = user.id_
     login_session['user_access_level'] = user.access_level
     login_session['username'] = user.name
@@ -218,8 +218,8 @@ def logRegularUser():
     return redirect(url_for('index'))
 
 
-@app.route('/login/logAdminUser')
-def logAdminUser():
+@app.route('/login/log_admin')
+def log_admin_user():
     login_session['user_id'] = admin.id_
     login_session['user_access_level'] = admin.access_level
     login_session['username'] = admin.name
@@ -227,14 +227,14 @@ def logAdminUser():
     return redirect(url_for('index'))
 
 
-def getCurrentUser():
+def get_current_user():
     if login_session['user_access_level'] > 0:
         return admin
     else:
         return user
 
 
-def getCategoryById(category_id):
+def get_category_by_id(category_id):
     for category in categories:
         if category.id_ == category_id:
             return category

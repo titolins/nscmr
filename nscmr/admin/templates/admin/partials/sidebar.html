@@ -12,8 +12,8 @@
       </div>
       <ul class="nav navbar-nav">
         <li class="active">
-          <a href="index.html">
-            <span class="icon fa fa-tachometer"></span><span class="title">Dashboard</span> </a>
+          <a href="{{ url_for('admin.index') }}">
+            <span class="icon fa fa-tachometer"></span><span class="title">Dashboard</span></a>
         </li>
         <li class="panel panel-default dropdown">
           <a data-toggle="collapse" href="#dropdown-element">
@@ -23,27 +23,27 @@
           <div id="dropdown-element" class="panel-collapse collapse">
             <div class="panel-body">
               <ul class="nav navbar-nav">
-                <li><a href="ui-kits/theming.html">Theming</a>
+                <li><a href="{{ url_for('admin.theming') }}">Theming</a>
                 </li>
-                <li><a href="ui-kits/grid.html">Grid</a>
+                <li><a href="{{ url_for('admin.grid') }}">Grid</a>
                 </li>
-                <li><a href="ui-kits/button.html">Buttons</a>
+                <li><a href="{{ url_for('admin.button') }}">Buttons</a>
                 </li>
-                <li><a href="ui-kits/card.html">Cards</a>
+                <li><a href="{{ url_for('admin.card') }}">Cards</a>
                 </li>
-                <li><a href="ui-kits/list.html">Lists</a>
+                <li><a href="{{ url_for('admin.list') }}">Lists</a>
                 </li>
-                <li><a href="ui-kits/modal.html">Modals</a>
+                <li><a href="{{ url_for('admin.modal') }}">Modals</a>
                 </li>
-                <li><a href="ui-kits/alert.html">Alerts & Toasts</a>
+                <li><a href="{{ url_for('admin.alert') }}">Alerts & Toasts</a>
                 </li>
-                <li><a href="ui-kits/panel.html">Panels</a>
+                <li><a href="{{ url_for('admin.panel') }}">Panels</a>
                 </li>
-                <li><a href="ui-kits/loader.html">Loaders</a>
+                <li><a href="{{ url_for('admin.loader') }}">Loaders</a>
                 </li>
-                <li><a href="ui-kits/step.html">Tabs & Steps</a>
+                <li><a href="{{ url_for('admin.step') }}">Tabs & Steps</a>
                 </li>
-                <li><a href="ui-kits/other.html">Other</a>
+                <li><a href="{{ url_for('admin.other') }}">Other</a>
                 </li>
               </ul>
             </div>
@@ -57,9 +57,9 @@
           <div id="dropdown-table" class="panel-collapse collapse">
             <div class="panel-body">
               <ul class="nav navbar-nav">
-                <li><a href="table/table.html">Table</a>
+                <li><a href="{{ url_for('admin.table') }}">Table</a>
                 </li>
-                <li><a href="table/datatable.html">Datatable</a>
+                <li><a href="{{ url_for('admin.data_table') }}">Datatable</a>
                 </li>
               </ul>
             </div>
@@ -73,7 +73,7 @@
           <div id="dropdown-form" class="panel-collapse collapse">
             <div class="panel-body">
               <ul class="nav navbar-nav">
-                <li><a href="form/ui-kits.html">Form UI Kits</a>
+                <li><a href="{{ url_for('admin.ui_kits') }}">Form UI Kits</a>
                 </li>
               </ul>
             </div>
@@ -88,9 +88,9 @@
           <div id="component-example" class="panel-collapse collapse">
             <div class="panel-body">
               <ul class="nav navbar-nav">
-                <li><a href="components/pricing-table.html">Pricing Table</a>
+                <li><a href="{{ url_for('admin.pricing_table') }}">Pricing Table</a>
                 </li>
-                <li><a href="components/chartjs.html">Chart.JS</a>
+                <li><a href="{{ url_for('admin.chartjs') }}">Chart.JS</a>
                 </li>
               </ul>
             </div>
@@ -105,9 +105,9 @@
           <div id="dropdown-example" class="panel-collapse collapse">
             <div class="panel-body">
               <ul class="nav navbar-nav">
-                <li><a href="pages/login.html">Login</a>
+                <li><a href="{{ url_for('admin.login') }}">Login</a>
                 </li>
-                <li><a href="pages/index.html">Landing Page</a>
+                <li><a href="{{ url_for('admin.index') }}">Landing Page</a>
                 </li>
               </ul>
             </div>
@@ -122,16 +122,16 @@
           <div id="dropdown-icon" class="panel-collapse collapse">
             <div class="panel-body">
               <ul class="nav navbar-nav">
-                <li><a href="icons/glyphicons.html">Glyphicons</a>
+                <li><a href="{{ url_for('admin.glyphicons') }}">Glyphicons</a>
                 </li>
-                <li><a href="icons/font-awesome.html">Font Awesomes</a>
+                <li><a href="{{ url_for('admin.font_awesome') }}">Font Awesomes</a>
                 </li>
               </ul>
             </div>
           </div>
         </li>
         <li>
-          <a href="license.html">
+          <a href="{{ url_for('admin.license') }}">
             <span class="icon fa fa-thumbs-o-up"></span><span class="title">License</span>
           </a>
         </li>
