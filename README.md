@@ -65,6 +65,10 @@ for the desired app's mode.
     * rearrange flash messages in fullwidthheader.html
     * add 'add to wishlist' button
 
+### tracking
+    * after building the initial db, configure
+      [Flask-Analytics](https://github.com/citruspi/Flask-Analytics).
+
 ## Development
 Current development server is being hosted at
 [pythonanywhere.com](http://tls.pythonanywhere.com).
