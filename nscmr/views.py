@@ -26,7 +26,7 @@ def index():
     return render_template(
             'index.html',
             categories=categories,
-            form=LoginForm())
+            login_form=LoginForm())
 
 #########################################################
 ###################### decorators #######################
@@ -84,7 +84,7 @@ def admin_required(f):
 # Create
 @app.route('/usuario/novo')
 def registration():
-    return render_template('registration.html', form=LoginForm())
+    return render_template('registration.html', login_form=LoginForm())
 
 # Read
 @app.route('/usuario/<string:user_id>')
@@ -131,7 +131,7 @@ def category(category_id, slug = None):
             'category.html',
             category=get_category_by_id(category_id),
             products=products,
-            form=LoginForm())
+            login_form=LoginForm())
 
 # Update
 # Delete
@@ -163,7 +163,7 @@ def product(category_id, product_id, category_slug = None,
             'product.html',
             category = category,
             product = products[0],
-            form=LoginForm())
+            login_form=LoginForm())
 
 # Update
 # Delete
@@ -203,7 +203,7 @@ def login():
         return render_template(
                 'index.html',
                 categories=categories,
-                form=form,
+                login_form=form,
                 login_fail=True)
 
 
