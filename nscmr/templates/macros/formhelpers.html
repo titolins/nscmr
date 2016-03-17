@@ -1,0 +1,18 @@
+{% macro render_field(field) %}
+  <dt>{{ field.label }}
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class="alert alert-danger alert-login">
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    {# if there aren't any errors, we still render the error field with
+    style='display:none;' for use with javascript validators #}
+    <ul class="alert alert-danger alert-login hidden" id="{{ field.id }}-error">
+      <li></li>
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}
