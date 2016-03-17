@@ -47,6 +47,7 @@ for the desired app's mode.
     * see how to correctly [send static files].
     * slugs should be checked against the id of the object to see if they are
       correct!!
+    * create custom error in case of wrong login/password
 
 ### models
     * see python currencies
@@ -54,7 +55,10 @@ for the desired app's mode.
     * see python [login/user management]/[auth]
     * see python phone
 
-#### user / cart
+#### user
+    * implement password hashing and ssl support.
+
+#### cart
     * cart should be a subdocument of user? remember mongodb has no joins.
 
 #### category
@@ -72,6 +76,8 @@ for the desired app's mode.
 ### templates
     * rearrange flash messages in fullwidthheader.html
     * add 'add to wishlist' button to products
+    * finish login validation (button should be deactivated until valid email
+      and password are filled)
 
 ### tracking
     * after building the initial db, configure [Flask-Analytics].
