@@ -1,17 +1,17 @@
 # nscmr
 
 ## Description
-nscmr will be an python e-commerce application based on
-[satchless](https://github.com/mirumee/satchless),
-[flask](http://flask.pocoo.org/) and
-[mongodb](https://www.google.com.br/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjO6pyTz7TLAhWMkJAKHawuB9sQFggdMAA&url=https%3A%2F%2Fwww.mongodb.org%2F&usg=AFQjCNE3DSenqpJf_ccFT8F4W0RQfaGb3w&sig2=jK5NinRr8peGNPjy77U9mw).
+nscmr will be an python e-commerce application based on [satchless], [flask]
+and [mongodb].
 
 As per the above, nscmr is still under development and not ready for use.
 
 ## Instructions
 * Install pip
 * Install requirements
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
 ### App modes
 The app may be run in development, testing or production modes. To trigger the
@@ -28,6 +28,10 @@ FLASK_APP_MODE=testing python runserver.py
 FLASK_APP_MODE=production python runserver.py
 ```
 
+### Interactive shell
+A get_interactive bash script is provided herein for easy access to a
+interactive shell for the app. run `./get_interactive help` to see it's usage.
+
 The configuration for each mode is located in the nscmr.config module. If you
 don't set any of the above mentioned settings, the app will fallback to it's
 default configuration (development currently).
@@ -40,15 +44,14 @@ for the desired app's mode.
 
 ## TODO's
 ### controller
-    * see how to correctly
-    [send static files](http://flask.pocoo.org/docs/0.10/api/).
+    * see how to correctly [send static files].
     * slugs should be checked against the id of the object to see if they are
       correct!!
 
 ### models
     * see python currencies
     * see python countries
-    * see python [login/user management](https://blog.openshift.com/use-flask-login-to-add-user-authentication-to-your-python-application/)/[auth](https://github.com/raddevon/flask-permissions)
+    * see python [login/user management]/[auth]
     * see python phone
 
 #### user / cart
@@ -60,18 +63,35 @@ for the desired app's mode.
 
 ### DB
     * read about storing payment options on db
+    * read about storing passwords options on db
+    * [configure indexes].
+    * mongodb references
+        * [manual ref vs dbref]
+        * [mongo ref docs]
 
 ### templates
     * rearrange flash messages in fullwidthheader.html
-    * add 'add to wishlist' button
+    * add 'add to wishlist' button to products
 
 ### tracking
-    * after building the initial db, configure
-      [Flask-Analytics](https://github.com/citruspi/Flask-Analytics).
+    * after building the initial db, configure [Flask-Analytics].
 
 ## Development
-Current development server is being hosted at
-[pythonanywhere.com](http://tls.pythonanywhere.com).
+Current development server is being hosted at [pythonanywhere.com].
 
 ## Known bugs
     * not working.. ;)
+
+[satchless]:https://github.com/mirumee/satchless
+[flask]:http://flask.pocoo.org/
+[mongodb]:https://www.mongodb.org/
+
+[send static files]:http://flask.pocoo.org/docs/0.10/api/
+[auth]:https://github.com/raddevon/flask-permissions
+[login/user management]:https://blog.openshift.com/use-flask-login-to-add-user-authentication-to-your-python-application/
+[configure indexes]:https://docs.mongodb.org/manual/tutorial/create-indexes-to-support-queries/
+[manual ref vs dbref]:http://dba.stackexchange.com/questions/82970/mongodb-manual-references-vs-dbref
+[mongo ref docs]:https://docs.mongodb.org/manual/reference/database-references/#document-reference://docs.mongodb.org/manual/reference/database-references/#document-references
+
+[Flask-Analytics]:https://github.com/citruspi/Flask-Analytics
+[python anywhere]:http://tls.pythonanywhere.com
