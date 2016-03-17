@@ -22,6 +22,14 @@ class NsClient(MongoClient):
 
 
 def build_db(app):
+    """
+    Creates the client and returns the db handler.
+
+    NOTE: Perhaps the client wrapper class should be dismissed, considering the
+    amount of work and the extra method created just for retrieving it's db
+    handler.. Another option is to dismiss this method and get the db when of
+    the app's initialization.
+    """
     return NsClient(app).db
 
 
