@@ -1,4 +1,4 @@
-{% from "macros.html" import build_product_list with context %}
+{% from "macros/producthelpers.html" import build_product_list with context %}
 
 <div id="wishlist" style="display:none;">
   {{ build_product_list(user.wishlist) }}
