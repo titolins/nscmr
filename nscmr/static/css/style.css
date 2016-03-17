@@ -119,6 +119,10 @@ a:active:not(.link) {
   margin-left: 15px;
 }
 
+#login-btn {
+  margin-top: 5px;
+}
+
 /*
  * sidebar pages settings (for now used only in the profile page)
  */
