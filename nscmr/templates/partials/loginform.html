@@ -7,17 +7,17 @@
     <div id="login-dropdown-form">
       <h4>Entre na sua conta</h4>
       <form action="{{ url_for('login') }}" method="post">
-        {{ form.csrf_token }}
-        {% if form.csrf_token.errors %}
+        {{ login_form.csrf_token }}
+        {% if login_form.csrf_token.errors %}
           <ul class="alert alert-danger alert-login">
-            {% for error in form.csrf_token.errors %}
+            {% for error in login_form.csrf_token.errors %}
               <li>{{ error }}</li>
             {% endfor %}
           </ul>
         {% endif %}
         <dl>
-          {{ render_field(form.email) }}
-          {{ render_field(form.password) }}
+          {{ render_field(login_form.email) }}
+          {{ render_field(login_form.password) }}
         <dl>
           <p><input id="login-btn" type="submit" value="entrar"></input></p>
       </form>
