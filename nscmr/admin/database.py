@@ -32,12 +32,3 @@ def build_db(app):
     """
     return NsClient(app).db
 
-
-if __name__ == '__main__':
-    from flask import Flask
-    test_app = Flask('test')
-    test_app.config['DEBUG'] = True
-    test_app.config['MONGO_HOST'] = 'localhost'
-    test_app.config['MONGO_PORT'] = 27017
-    client = NsClient(test_app)
-    db = client.db
