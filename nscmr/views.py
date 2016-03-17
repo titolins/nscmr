@@ -7,11 +7,14 @@ from flask import (
     jsonify,
     make_response)
 
-#from . import app #, session
 from nscmr import app
 
 # import forms and models --> development models only
 from nscmr.admin.models import admin, users, user, categories, products
+
+# started forms
+from nscmr.forms import LoginForm
+from nscmr.admin.models.userprofile import get_profile_by_email
 
 from flask import session as login_session
 from functools import wraps
@@ -20,7 +23,10 @@ import requests
 
 @app.route('/')
 def index():
-    return render_template('index.html', categories=categories)
+    return render_template(
+            'index.html',
+            categories=categories,
+            form=LoginForm())
 
 #########################################################
 ###################### decorators #######################
@@ -35,7 +41,7 @@ def login_required(f):
             return f(*args, **kwargs)
         else:
             flash("You need to login for that!")
-            return redirect(url_for('login'))
+            return redirect(url_for('index'))
     return wrap
 
 
@@ -78,11 +84,11 @@ def admin_required(f):
 # Create
 @app.route('/usuario/novo')
 def registration():
-    return render_template('registration.html')
+    return render_template('registration.html', form=LoginForm())
 
 # Read
-@app.route('/usuario/<int:user_id>')
-@app.route('/usuario/<int:user_id>/<string:slug>')
+@app.route('/usuario/<string:user_id>')
+@app.route('/usuario/<string:user_id>/<string:slug>')
 @user_required
 def user(user_id, slug = None):
     # dev code below. Still thinking, should we pass the whole user or only
@@ -94,15 +100,15 @@ def user(user_id, slug = None):
 
 # Update
 @user_required
-@app.route('/usuario/<int:user_id>/editar')
-@app.route('/usuario/<int:user_id>/<string:slug>/editar')
+@app.route('/usuario/<string:user_id>/editar')
+@app.route('/usuario/<string:user_id>/<string:slug>/editar')
 def edit_user(user_id, slug = None):
     return "<p>To be user {} edit page</p>".format(user_id)
 
 # Delete
 @user_required
-@app.route('/usuario/<int:user_id>/deletar')
-@app.route('/usuario/<int:user_id>/<string:slug>/deletar')
+@app.route('/usuario/<string:user_id>/deletar')
+@app.route('/usuario/<string:user_id>/<string:slug>/deletar')
 def delete_user(user_id, slug = None):
     return "<p>To be user {} delete page</p>".format(user_id)
 
@@ -119,12 +125,13 @@ def delete_user(user_id, slug = None):
 # only the admin can create new categories
 
 # Read
-@app.route('/catalogo/<int:category_id>/<string:slug>')
+@app.route('/catalogo/<string:category_id>/<string:slug>')
 def category(category_id, slug = None):
     return render_template(
             'category.html',
             category=get_category_by_id(category_id),
-            products=products)
+            products=products,
+            form=LoginForm())
 
 # Update
 # Delete
@@ -144,9 +151,9 @@ def category(category_id, slug = None):
 # Read
 @app.route(
         '/catalogo/{}/{}/{}/{}'.format(
-            '<int:category_id>',
+            '<string:category_id>',
             '<string:category_slug>',
-            '<int:product_id>',
+            '<string:product_id>',
             '<string:product_slug>',)
         )
 def product(category_id, product_id, category_slug = None,
@@ -155,7 +162,8 @@ def product(category_id, product_id, category_slug = None,
     return render_template(
             'product.html',
             category = category,
-            product = products[0])
+            product = products[0],
+            form=LoginForm())
 
 # Update
 # Delete
@@ -173,22 +181,30 @@ def product(category_id, product_id, category_slug = None,
 ####################### login ###########################
 #########################################################
 
+def log_user(user):
+    login_session['user_id'] = str(user['_id'])
+    login_session['user_access_level'] = int(user['access_level'])
+    login_session['username'] = user['name']
+    login_session['email'] = user['email']
+
+
 @app.route('/entrar', methods=['POST'])
 def login():
-    return """
-        <h1>Login Page</h1>
-
-        <div style='background: lightblue; width: 200px; height:50px;'>
-            <a href="{0}">
-                Regular user
-            </a>
-        </div>
-        <div style='background: lightgreen; width: 200px; height:50px;'>
-            <a href="{1}">
-                Admin user
-            </a>
-        </div>
-    """.format(url_for('log_regular_user'), url_for('log_admin_user'))
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        profile = get_profile_by_email(form.email.data)
+        # no hashing or ssl implemented for now
+        if profile['password'] == form.password.data:
+            log_user(profile)
+            return form.redirect('index')
+        # in case of wrong login/password, return to last page with custom
+        # error message
+    else:
+        return render_template(
+                'index.html',
+                categories=categories,
+                form=form,
+                login_fail=True)
 
 
 @app.route('/sair')
@@ -211,7 +227,7 @@ def logout():
 
 @app.route('/login/log_user')
 def log_regular_user():
-    login_session['user_id'] = user.id_
+    login_session['user_id'] = user._id_
     login_session['user_access_level'] = user.access_level
     login_session['username'] = user.name
     login_session['email'] = user.email
