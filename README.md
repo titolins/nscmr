@@ -76,8 +76,6 @@ for the desired app's mode.
 ### templates
     * rearrange flash messages in fullwidthheader.html
     * add 'add to wishlist' button to products
-    * finish login validation (button should be deactivated until valid email
-      and password are filled)
 
 ### tracking
     * after building the initial db, configure [Flask-Analytics].
