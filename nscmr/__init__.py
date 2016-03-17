@@ -1,13 +1,14 @@
 from flask import Flask
 
 from instance.config import config_app
-
-#from sqlalchemy import create_engine
-#from sqlalchemy.orm import sessionmaker
+from nscmr.admin.database import build_db
 
 def build_app():
+    '''
+    Method for creating and configuring a flask app instance
+    '''
     # import blueprints and register
-    import nscmr.admin
+    import nscmr.admin as admin
     app = Flask(__name__)
     app.register_blueprint(admin.bp, url_prefix='/admin')
     # config app and return
@@ -15,11 +16,6 @@ def build_app():
     return app
 
 app = build_app()
-
-# create db engine
-# engine = create_engine('path/to/db')
-# Base.metadata.bind = engine
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
+db = build_db(app)
 
 from nscmr import views
