@@ -20,6 +20,10 @@ a:active:not(.link) {
   align-text: right;
 }
 
+.hidden {
+  display: none;
+}
+
 /*
  * navbar
  */
@@ -104,6 +108,15 @@ a:active:not(.link) {
 
 #register {
   margin-top: 15px;
+}
+
+.alert-login {
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.alert-login > li {
+  margin-left: 15px;
 }
 
 /*
