@@ -18,11 +18,18 @@ def get_user_by_id(user_id):
 
 
 def persist_user(user_form):
-    # substitue for datatime.now() and use a tz
+    '''Try to persist a user into the db
+
+    :user_form - form submitted via post request
+    '''
+    # substitute for datatime.now() and use a tz
     date = datetime.utcnow()
-    print(user_form)
+    # use email as _id and delete email so we don't get repeated fields
     user_form['_id'] = user_form['email']
+    # converts date object to datetime, as pymongo only support the later
+    user_form['dob'] = datetime.combine(user_form['dob'], datetime.min.time())
     del(user_form['email'])
+    # delete next
     del(user_form['next'])
     collection.insert_one(user_form)
     return User(user_form)
