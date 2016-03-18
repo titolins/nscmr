@@ -42,7 +42,7 @@
         <!-- /.navbar-header -->
         <div class="navbar-collapse collapse" id="catalog-nav" aria-expanded="false" style="height: 1px;">
           <ul class="nav navbar-nav navbar-right">
-            {% if not session.username %}
+            {% if not current_user.is_authenticated %}
               {% include 'partials/loginform.html' %}
             {% else %}
               <li>
@@ -50,11 +50,6 @@
               </li>
               <li>
                 <a href="{{ url_for('logout') }}">Sair</a>
-              </li>
-            {% endif %}
-            {% if session.user_access_level == 1 %}
-              <li>
-                <a href="{{ url_for('admin.index') }}">Admin</a>
               </li>
             {% endif %}
           </ul>
