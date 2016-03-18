@@ -1,5 +1,5 @@
 {% from "macros/producthelpers.html" import build_product_list with context %}
 
 <div id="wishlist" style="display:none;">
-  {{ build_product_list(user.wishlist) }}
+  {{ build_product_list(current_user.wishlist) }}
 </div>

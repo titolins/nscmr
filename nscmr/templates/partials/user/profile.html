@@ -2,11 +2,9 @@
   <div class="panel panel-default">
     <div class="panel-body" id="profile-panel">
       <h4>Nome:</h4>
-      <span>{{ session.username }}</span>
-      <h4>Id:</h4>
-      <span>{{ session.user_id }}</span>
+      <span>{{ current_user.name }}</span>
       <h4>Email:</h4>
-      <span>{{ session.email }}</span>
+      <span>{{ current_user.get_id() }}</span>
     </div>
   </div>
 </div>

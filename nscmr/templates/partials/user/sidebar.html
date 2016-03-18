@@ -1,7 +1,7 @@
 <div class="list-group">
   <li class="list-group-item active">
     <h3 class="list-group-item-heading">
-      {{ session.username }}
+      {{ current_user.name }}
     </h3>
   </li>
   <a href="#" class="list-group-item active" id="profile-btn" data-toggle="#profile">
@@ -16,9 +16,11 @@
    <a href="#" class="list-group-item" id="addresses-btn" data-toggle="#addresses">
     Livro de Endereços
   </a>
+  {# Removed for now.. To be implemented in later
   <a href="#" class="list-group-item" id="payment-btn" data-toggle="#payment">
     Formas de pagamento
   </a>
+  #}
   <a href="#" class="list-group-item" id="wishlist-btn" data-toggle="#wishlist">
     Lista de desejos
   </a>
