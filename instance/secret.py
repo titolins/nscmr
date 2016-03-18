@@ -10,5 +10,5 @@ def install_secret_key(app, filename='secret_key'):
         print('Error: No secret key. Create it with:')
         if not os.path.isdir(os.path.dirname(filename)):
             print('mkdir -p', os.path.dirname(filename))
-        print('heade -c 24 /dev/urandom >', filename)
+        print('head -c 24 /dev/urandom >', filename)
         sys.exit(1)
