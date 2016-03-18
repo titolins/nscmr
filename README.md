@@ -59,14 +59,14 @@ for the desired app's mode.
     * implement password hashing and ssl support.
 
 #### cart
-    * cart should be a subdocument of user? remember mongodb has no joins.
+    * cart should be a subdocument of user? yes!!
 
 #### category
     * category model should have a reference to parent and to ancestors (makes
       it really easy to create subcategories).
 
 ### DB
-    * read about storing payment options on db
+    * read about storing payment options on db -> *postponed to another moment*
     * read about storing passwords options on db
     * [configure indexes].
     * mongodb references

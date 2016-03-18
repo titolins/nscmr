@@ -1,5 +1,4 @@
 from flask.ext.wtf import Form
-from nscmr.admin.forms import RedirectForm
 
 from wtforms import (
     TextField,
@@ -12,7 +11,7 @@ from wtforms.fields.html5 import DateField
 
 from wtforms.validators import input_required, email, equal_to, Optional
 
-class LoginForm(RedirectForm):
+class LoginForm(Form):
     email = TextField(
         'email',
         validators=[
@@ -22,7 +21,7 @@ class LoginForm(RedirectForm):
     password = PasswordField('senha', [input_required("Campo necessário!")])
 
 
-class RegistrationForm(RedirectForm):
+class RegistrationForm(Form):
     name = TextField('nome', validators=[input_required("Campo necessário!")])
     email = TextField(
         'email',
@@ -31,7 +30,6 @@ class RegistrationForm(RedirectForm):
             email("Email inválido!")])
     dob = DateField(
             "data de nascimento",
-            format='%d/%m/%Y',
             validators=[Optional()])
     password = PasswordField(
             'senha',
