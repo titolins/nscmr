@@ -7,7 +7,6 @@ from flask import (
     jsonify,
     make_response)
 
-from pymongo.errors import DuplicateKeyError
 from nscmr import app
 
 # Flask-Login
@@ -17,6 +16,11 @@ from flask.ext.login import (
     login_required,
     current_user)
 
+from pymongo.errors import DuplicateKeyError
+
+from functools import wraps
+import requests
+
 # import forms and models --> development models only
 from nscmr.admin.models import admin, users, user, categories, products
 
@@ -24,10 +28,9 @@ from nscmr.admin.models import admin, users, user, categories, products
 from nscmr.forms import LoginForm, RegistrationForm
 from nscmr.admin.models.user import get_user_by_id, persist_user
 
-from flask import session as login_session
-from functools import wraps
+# helpers
+from nscmr.helper import back
 
-import requests
 
 @app.route('/')
 def index():
@@ -41,6 +44,7 @@ def index():
 #########################################################
 
 
+"""
 def admin_required(f):
     ''' Decorator for use with pages that require admin privileges
     '''
@@ -51,6 +55,7 @@ def admin_required(f):
         flash("Area restricted to admins only!")
         return redirect(url_for('index'))
     return wrap
+"""
 
 
 #########################################################
@@ -74,7 +79,8 @@ def registration():
             user = persist_user(form.data)
             flash('Cadastro bem sucedido! Você já pode fazer suas compras')
             login_user(user)
-            return redirect(url_for('index'))
+            #return redirect(url_for('index'))
+            return back.redirect()
         except DuplicateKeyError:
             flash('Este email já está cadastrado em nosso site')
             return redirect(url_for('registration'))
@@ -125,6 +131,7 @@ def delete_user():
 
 # Read
 @app.route('/catalogo/<string:category_id>/<string:slug>')
+@back.anchor
 def category(category_id, slug = None):
     return render_template(
             'category.html',
@@ -155,6 +162,7 @@ def category(category_id, slug = None):
             '<string:product_id>',
             '<string:product_slug>',)
         )
+@back.anchor
 def product(category_id, product_id, category_slug = None,
         product_slug = None):
     category = get_category_by_id(category_id)
@@ -180,12 +188,6 @@ def product(category_id, product_id, category_slug = None,
 ####################### login ###########################
 #########################################################
 
-def log_user(user):
-    login_session['user_id'] = str(user['_id'])
-    login_session['user_access_level'] = int(user['access_level'])
-    login_session['username'] = user['name']
-    login_session['email'] = user['email']
-
 
 @app.route('/entrar', methods=['POST'])
 def login():
@@ -198,9 +200,13 @@ def login():
             # Flask-Login
             login_user(user)
             flash('Logged in successfully!')
-            return form.redirect('index')
+            #return form.redirect('index')
+            #return redirect(url_for('index'))
+            return back.redirect()
         # in case of wrong login/password, return to last page with custom
         # error message
+        flash("E-mail ou senha incorreto(s)")
+        return back.redirect()
     else:
         return render_template(
                 'index.html',
@@ -213,7 +219,9 @@ def login():
 def logout():
     logout_user()
     flash('Logged out')
-    return redirect(url_for('index'))
+    #return redirect(url_for('index'))
+    return back.redirect()
+
 
 #########################################################
 ####################### end login #######################
@@ -223,24 +231,6 @@ def logout():
 #########################################################
 ################# development code ######################
 #########################################################
-
-
-@app.route('/login/log_user')
-def log_regular_user():
-    login_session['user_id'] = user._id_
-    login_session['user_access_level'] = user.access_level
-    login_session['username'] = user.name
-    login_session['email'] = user.email
-    return redirect(url_for('index'))
-
-
-@app.route('/login/log_admin')
-def log_admin_user():
-    login_session['user_id'] = admin.id_
-    login_session['user_access_level'] = admin.access_level
-    login_session['username'] = admin.name
-    login_session['email'] = admin.email
-    return redirect(url_for('index'))
 
 
 def get_category_by_id(category_id):
