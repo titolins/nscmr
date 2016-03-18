@@ -7,14 +7,22 @@ from flask import (
     jsonify,
     make_response)
 
+from pymongo.errors import DuplicateKeyError
 from nscmr import app
+
+# Flask-Login
+from flask.ext.login import (
+    login_user,
+    logout_user,
+    login_required,
+    current_user)
 
 # import forms and models --> development models only
 from nscmr.admin.models import admin, users, user, categories, products
 
 # started forms
-from nscmr.forms import LoginForm
-from nscmr.admin.models.userprofile import get_profile_by_email
+from nscmr.forms import LoginForm, RegistrationForm
+from nscmr.admin.models.user import get_user_by_id, persist_user
 
 from flask import session as login_session
 from functools import wraps
@@ -31,30 +39,6 @@ def index():
 #########################################################
 ###################### decorators #######################
 #########################################################
-
-def login_required(f):
-    ''' Decorator for use with pages that require login access
-    '''
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'username' in login_session:
-            return f(*args, **kwargs)
-        else:
-            flash("You need to login for that!")
-            return redirect(url_for('index'))
-    return wrap
-
-
-def user_required(f):
-    ''' Decorator for use with pages that require the currently logged in user
-    '''
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if kwargs['user_id'] == login_session['user_id']:
-            return f(*args, **kwargs)
-        flash("Only the user may have access to it's profile or delete it")
-        return redirect(url_for('index'))
-    return wrap
 
 
 def admin_required(f):
@@ -82,35 +66,50 @@ def admin_required(f):
 ##################
 
 # Create
-@app.route('/usuario/novo')
+@app.route('/usuario/novo', methods=['GET', 'POST'])
 def registration():
-    return render_template('registration.html', login_form=LoginForm())
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate_on_submit():
+        try:
+            user = persist_user(form.data)
+            flash('Cadastro bem sucedido! Você já pode fazer suas compras')
+            login_user(user)
+            return redirect(url_for('index'))
+        except DuplicateKeyError:
+            flash('Este email já está cadastrado em nosso site')
+            return redirect(url_for('registration'))
+        except Exception as e:
+            flash(
+                ('Ocorreu um erro. Por favor, tente novamente. Se o erro, '
+                'persistir, contate-nos em: {}\nMensagem de erro:\n{}').\
+                        format(app.config.get('SUPPORT_CONTACT', ''), str(e)))
+            return redirect(url_for('registration'))
+    return render_template(
+            'registration.html',
+            login_form=LoginForm(),
+            registration_form=form)
 
 # Read
-@app.route('/usuario/<string:user_id>')
-@app.route('/usuario/<string:user_id>/<string:slug>')
-@user_required
-def user(user_id, slug = None):
+@app.route('/usuario')
+@login_required
+def user():
     # dev code below. Still thinking, should we pass the whole user or only
     # what we need (addresses, wishlist, etc..)?
     # Remember to change the template if we decide to pass only the needed
     # properties.
-    logged_user = get_current_user()
-    return render_template('user.html', user=logged_user)
+    return render_template('user.html')
 
 # Update
-@user_required
-@app.route('/usuario/<string:user_id>/editar')
-@app.route('/usuario/<string:user_id>/<string:slug>/editar')
-def edit_user(user_id, slug = None):
-    return "<p>To be user {} edit page</p>".format(user_id)
+@app.route('/usuario/editar')
+@login_required
+def edit_user():
+    return "<p>To be user {} edit page</p>".format(current_user.get_id())
 
 # Delete
-@user_required
-@app.route('/usuario/<string:user_id>/deletar')
-@app.route('/usuario/<string:user_id>/<string:slug>/deletar')
-def delete_user(user_id, slug = None):
-    return "<p>To be user {} delete page</p>".format(user_id)
+@app.route('/usuario/deletar')
+@login_required
+def delete_user():
+    return "<p>To be user {} delete page</p>".format(current_user.get_id())
 
 
 ##################
@@ -191,11 +190,14 @@ def log_user(user):
 @app.route('/entrar', methods=['POST'])
 def login():
     form = LoginForm(request.form)
+    print(request.referrer)
     if form.validate_on_submit():
-        profile = get_profile_by_email(form.email.data)
+        user = get_user_by_id(form.email.data)
         # no hashing or ssl implemented for now
-        if profile['password'] == form.password.data:
-            log_user(profile)
+        if user['password'] == form.password.data:
+            # Flask-Login
+            login_user(user)
+            flash('Logged in successfully!')
             return form.redirect('index')
         # in case of wrong login/password, return to last page with custom
         # error message
@@ -209,10 +211,8 @@ def login():
 
 @app.route('/sair')
 def logout():
-    del login_session['user_id']
-    del login_session['user_access_level']
-    del login_session['username']
-    del login_session['email']
+    logout_user()
+    flash('Logged out')
     return redirect(url_for('index'))
 
 #########################################################
@@ -241,13 +241,6 @@ def log_admin_user():
     login_session['username'] = admin.name
     login_session['email'] = admin.email
     return redirect(url_for('index'))
-
-
-def get_current_user():
-    if login_session['user_access_level'] > 0:
-        return admin
-    else:
-        return user
 
 
 def get_category_by_id(category_id):
