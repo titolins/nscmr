@@ -2,6 +2,7 @@ class Config(object):
     DEBUG = False
     TESTING = False
 
+    SUPPORT_CONTACT = 'example@example.com'
     MONGO_HOST = 'localhost'
     MONGO_PORT = 27017
 
