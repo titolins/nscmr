@@ -1,57 +1,72 @@
 from datetime import datetime
 from bson.objectid import ObjectId
 
-from nscmr import db
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from nscmr.admin.models.document import Document
 from nscmr import login_manager
 
-# should i create manager classes or even classes representing the documents
-# instead of this approach?
-collection = db.users
-
-#########
-# Helpers
-#########
-
-
-def get_user_by_id(user_id):
-    return User(collection.find_one({'_id': user_id}))
-
-
-def persist_user(user_form):
-    '''Try to persist a user into the db
-
-    :user_form - form submitted via post request
-    '''
-    # substitute for datatime.now() and use a tz
-    date = datetime.utcnow()
-    # use email as _id and delete email so we don't get repeated fields
-    user_form['_id'] = user_form['email']
-    # converts date object to datetime, as pymongo only support the later
-    user_form['dob'] = datetime.combine(user_form['dob'], datetime.min.time())
-    del(user_form['email'])
-    # delete next
-    del(user_form['next'])
-    collection.insert_one(user_form)
-    return User(user_form)
-
-
-#############
-# Flask-Login
-#############
+from nscmr.admin.helper.validators import min_length
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return get_user_by_id(user_id)
+    return User.get_user_by_id(user_id)
 
 
-class User(dict):
-    '''User class for Flask-Login
+class User(Document):
+    '''User class
 
-    This class is the same as the Flask-Login UserMixin class, but has been
-    implemented as a dictionary considering that we are using pymongo driver
-    directly.
+    :content - form data received as dictionary
     '''
+    __collection__ = 'users'
+    # required fields
+    required_fields = ['name', 'password']
+    PASS_LEN = 8
+    # field validators - dict containing ==> field: [validator, error_msg]
+    validators = {
+        'password': [
+            min_length(PASS_LEN),
+            "Campo 'password' deve conter ao menos {} caracteres".\
+                    format(PASS_LEN)]
+    }
+
+    @staticmethod
+    def get_user_by_id(user_id):
+        user = User(User.collection.find_one({'_id': user_id}))
+        user
+        return user
+
+    @staticmethod
+    def from_form(form_data):
+        # used as timestamp substitute for datatime.now() and use a tz
+        date = datetime.utcnow()
+
+        # use email as _id and delete email so we don't get repeated fields
+        form_data['_id'] = form_data['email']
+        del(form_data['email'])
+
+        # converts date object to datetime, as pymongo only support the latter
+        if form_data['dob'] is not None:
+            form_data['dob'] = form_data(
+                form_data['dob'], datetime.min.time())
+
+        # hash password
+        form_data['password'] = generate_password_hash(
+            form_data['password'])
+        user = User(form_data)
+        return user
+
+    @property
+    def dob(self):
+        if self.content['dob'] is not None:
+            return "{:%d/%m/%Y}".format(self.content['dob'])
+        return None
+
+    @property
+    def name(self):
+        return self.content['name']
+
     @property
     def is_active(self):
         return True
@@ -65,7 +80,14 @@ class User(dict):
         return False
 
     def get_id(self):
-        return str(self['_id'])
+        return str(self.content['_id'])
+
+    def save(self):
+        self.validate()
+        self.collection.insert_one(self.content)
+
+    def check_password(self, password):
+        return check_password_hash(self.content['password'], password)
 
     def __eq__(self, other):
         '''
@@ -83,3 +105,6 @@ class User(dict):
         if equal is NotImplemented:
             return NotImplemented
         return not equal
+
+    def __repr__(self):
+        return str(self.content)
