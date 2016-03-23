@@ -2,6 +2,9 @@
 # python3)
 
 from bson import InvalidDocument
+from pymongo.errors import DuplicateKeyError
+
+from datetime import datetime
 
 # import db so we have access to the collections through the models
 from nscmr import db
@@ -20,6 +23,16 @@ class DocumentProperties(type):
 class Document(object, metaclass=DocumentProperties):
     '''
     Base document class/interface for pymongo
+
+    Methods/attributes to be overridden by child classes are:
+        :required_fields - states which fields are required
+        :validators - dictionary containing:
+                {field_name: [validator,error_msg]}
+        (if using validation, which was disabled as of now considering that we
+        are using wtforms validation already)
+        :from_form - used to parse form_data into the object
+        :save
+
     '''
     required_fields = None
     validators = None
@@ -52,6 +65,38 @@ class Document(object, metaclass=DocumentProperties):
         return str(self.content['_id'])
 
     def save(self):
+        # validate is working, but for now it may be better to disable it
+        # (mainly because of the password validation -- it must only be
+        # validated on creation or password update...)
+        # besides that, we are already using wtforms for validation, so it
+        # seems like a bit too much for now...
+        #self.validate()
+
+        # try to insert the document into the db
+        try:
+            self.collection.insert_one(self.content)
+        # if it already exists, update the 'updated_at' field and replace it
+        # entirely
+        except DuplicateKeyError:
+            self.content['updated_at'] = datetime.utcnow()
+            self.collection.replace_one({'_id': self.get_id()}, self.content)
+
+    def __str__(self):
+        return str(self.content)
+
+    def __eq__(self, other):
+        '''
+        Compares two objects by their id's
+        '''
+        if isinstance(other, User):
+            return self.get_id() == other.get_id()
         return NotImplemented
 
-
+    def __ne__(self, other):
+        '''
+        Inequality comparator
+        '''
+        equal = self.__eq__(other)
+        if equal is NotImplemented:
+            return NotImplemented
+        return not equal
