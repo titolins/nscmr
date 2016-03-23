@@ -24,15 +24,18 @@ import requests
 # import forms and models --> development models only
 from nscmr.admin.models import admin, users, user, categories, products
 
+# real models
+from nscmr.admin.models.user import User
+
 # started forms
 from nscmr.forms import LoginForm, RegistrationForm
-from nscmr.admin.models.user import get_user_by_id, persist_user
 
 # helpers
 from nscmr.helper import back
 
 
 @app.route('/')
+@back.anchor
 def index():
     return render_template(
             'index.html',
@@ -76,10 +79,10 @@ def registration():
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
         try:
-            user = persist_user(form.data)
+            user = User.from_form(form.data)
+            user.save()
             flash('Cadastro bem sucedido! Você já pode fazer suas compras')
             login_user(user)
-            #return redirect(url_for('index'))
             return back.redirect()
         except DuplicateKeyError:
             flash('Este email já está cadastrado em nosso site')
@@ -192,16 +195,13 @@ def product(category_id, product_id, category_slug = None,
 @app.route('/entrar', methods=['POST'])
 def login():
     form = LoginForm(request.form)
-    print(request.referrer)
     if form.validate_on_submit():
-        user = get_user_by_id(form.email.data)
+        user = User.get_user_by_id(form.email.data)
         # no hashing or ssl implemented for now
-        if user['password'] == form.password.data:
+        if user.check_password(form.password.data):
             # Flask-Login
             login_user(user)
             flash('Logged in successfully!')
-            #return form.redirect('index')
-            #return redirect(url_for('index'))
             return back.redirect()
         # in case of wrong login/password, return to last page with custom
         # error message
@@ -219,7 +219,6 @@ def login():
 def logout():
     logout_user()
     flash('Logged out')
-    #return redirect(url_for('index'))
     return back.redirect()
 
 
