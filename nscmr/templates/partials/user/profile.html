@@ -5,6 +5,10 @@
       <span>{{ current_user.name }}</span>
       <h4>Email:</h4>
       <span>{{ current_user.get_id() }}</span>
+      {% if current_user.dob is not none %}
+        <h4>Data de nascimento:</h4>
+        <span>{{ current_user.dob }}</span>
+      {% endif %}
     </div>
   </div>
 </div>
