@@ -39,9 +39,9 @@ function validateForm() {
 }
 
 $(document).ready(function() {
-  $("#email").keyup(validateEmail);
+  $("#email").change(validateEmail);
 });
 
 $(document).ready(function() {
-  $("#password").keyup(validateForm);
+  $("#password").change(validateForm);
 });

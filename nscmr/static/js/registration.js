@@ -9,5 +9,5 @@ function checkPassword() {
 };
 
 $(document).ready(function() {
-  $("#confirm-password").keyup(checkPassword);
+  $("#confirm-password").change(checkPassword);
 });
