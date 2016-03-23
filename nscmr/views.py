@@ -196,12 +196,12 @@ def product(category_id, product_id, category_slug = None,
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        user = User.get_user_by_id(form.email.data)
+        user = User.get_by_id(form.email.data)
         # no hashing or ssl implemented for now
         if user.check_password(form.password.data):
             # Flask-Login
             login_user(user)
-            flash('Logged in successfully!')
+            flash('Log-in bem sucedido! Você já pode fazer suas compras')
             return back.redirect()
         # in case of wrong login/password, return to last page with custom
         # error message

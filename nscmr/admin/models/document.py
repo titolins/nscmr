@@ -14,21 +14,26 @@ class DocumentProperties(type):
         if '__collection__' in dct:
             # get the collection name and set the handler from the db
             dct['collection'] = db[dct['__collection__']]
-            # create a get_document_by_id static methods
-            getter_name = 'get_{}_by_id'.format(name.lower())
-            dct[getter_name] = lambda x: dct['collection'].find_one({'_id': x})
         return super(DocumentProperties, cls).__new__(cls, name, parents, dct)
 
 
 class Document(object, metaclass=DocumentProperties):
     '''
-    Base document class for pymongo
+    Base document class/interface for pymongo
     '''
     required_fields = None
     validators = None
 
     def __init__(self, content):
         self.content = content
+
+    @staticmethod
+    def from_form(self):
+        return NotImplemented
+
+    @classmethod
+    def get_by_id(cls, doc_id):
+        return cls(cls.collection.find_one({'_id': doc_id}))
 
     def validate(self):
         # validates existence of fields first
@@ -42,6 +47,9 @@ class Document(object, metaclass=DocumentProperties):
             for field in self.validators:
                 if not self.validators[field][0](self.content[field]):
                     raise InvalidDocument(self.validators[field][1])
+
+    def get_id(self):
+        return str(self.content['_id'])
 
     def save(self):
         return NotImplemented

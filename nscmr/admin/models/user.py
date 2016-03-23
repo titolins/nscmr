@@ -11,13 +11,11 @@ from nscmr.admin.helper.validators import min_length
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get_user_by_id(user_id)
+    return User.get_by_id(user_id)
 
 
 class User(Document):
     '''User class
-
-    :content - form data received as dictionary
     '''
     __collection__ = 'users'
     # required fields
@@ -33,7 +31,7 @@ class User(Document):
 
     @staticmethod
     def from_form(form_data):
-        # used as timestamp substitute for datatime.now() and use a tz
+        # used as timestamp. substitute for datatime.now() and use a tz
         date = datetime.utcnow()
 
         # use email as _id and delete email so we don't get repeated fields
@@ -73,9 +71,6 @@ class User(Document):
     def is_anonymous(self):
         return False
 
-    def get_id(self):
-        return str(self.content['_id'])
-
     def save(self):
         # validate is working, but for now it may be better to disable it
         # (mainly because of the password validation -- it must only be
@@ -105,5 +100,5 @@ class User(Document):
             return NotImplemented
         return not equal
 
-    def __repr__(self):
+    def __str__(self):
         return str(self.content)
