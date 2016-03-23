@@ -32,12 +32,6 @@ class User(Document):
     }
 
     @staticmethod
-    def get_user_by_id(user_id):
-        user = User(User.collection.find_one({'_id': user_id}))
-        user
-        return user
-
-    @staticmethod
     def from_form(form_data):
         # used as timestamp substitute for datatime.now() and use a tz
         date = datetime.utcnow()

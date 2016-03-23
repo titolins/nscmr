@@ -12,7 +12,11 @@ class DocumentProperties(type):
     """
     def __new__(cls, name, parents, dct):
         if '__collection__' in dct:
+            # get the collection name and set the handler from the db
             dct['collection'] = db[dct['__collection__']]
+            # create a get_document_by_id static methods
+            getter_name = 'get_{}_by_id'.format(name.lower())
+            dct[getter_name] = lambda x: dct['collection'].find_one({'_id': x})
         return super(DocumentProperties, cls).__new__(cls, name, parents, dct)
 
 
