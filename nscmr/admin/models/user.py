@@ -83,7 +83,12 @@ class User(Document):
         return str(self.content['_id'])
 
     def save(self):
-        self.validate()
+        # validate is working, but for now it may be better to disable it
+        # (mainly because of the password validation -- it must only be
+        # validated on creation or password update...)
+        # besides that, we are already using wtforms for validation, so it
+        # seems like a bit too much for now...
+        #self.validate()
         self.collection.insert_one(self.content)
 
     def check_password(self, password):
