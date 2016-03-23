@@ -32,7 +32,7 @@ class User(Document):
     @staticmethod
     def from_form(form_data):
         # used as timestamp. substitute for datatime.now() and use a tz
-        date = datetime.utcnow()
+        form_data['created_at'] = form_data['updated_at'] = datetime.utcnow()
 
         # use email as _id and delete email so we don't get repeated fields
         form_data['_id'] = form_data['email']
@@ -46,6 +46,9 @@ class User(Document):
         # hash password
         form_data['password'] = generate_password_hash(
             form_data['password'])
+        # delete confirm field
+        del(form_data['confirm'])
+
         user = User(form_data)
         return user
 
@@ -55,9 +58,17 @@ class User(Document):
             return "{:%d/%m/%Y}".format(self.content['dob'])
         return None
 
+    @dob.setter
+    def dob(self, dob):
+        self.content['dob'] = dob
+
     @property
     def name(self):
         return self.content['name']
+
+    @name.setter
+    def name(self, name):
+        self.content['name'] = name
 
     @property
     def is_active(self):
@@ -71,34 +82,7 @@ class User(Document):
     def is_anonymous(self):
         return False
 
-    def save(self):
-        # validate is working, but for now it may be better to disable it
-        # (mainly because of the password validation -- it must only be
-        # validated on creation or password update...)
-        # besides that, we are already using wtforms for validation, so it
-        # seems like a bit too much for now...
-        #self.validate()
-        self.collection.insert_one(self.content)
-
     def check_password(self, password):
         return check_password_hash(self.content['password'], password)
 
-    def __eq__(self, other):
-        '''
-        Compares two user objects by their id's
-        '''
-        if isinstance(other, User):
-            return self.get_id() == other.get_id()
-        return NotImplemented
 
-    def __ne__(self, other):
-        '''
-        Inequality comparator
-        '''
-        equal = self.__eq__(other)
-        if equal is NotImplemented:
-            return NotImplemented
-        return not equal
-
-    def __str__(self):
-        return str(self.content)
