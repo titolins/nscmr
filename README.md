@@ -66,12 +66,14 @@ for the desired app's mode.
       it really easy to create subcategories).
 
 ### DB
-    * read about storing payment options on db -> *postponed to another moment*
-    * read about storing passwords options on db
-    * [configure indexes].
+    * read about storing payment options on db -> _postponed to another moment_
+    * [configure indexes]
     * mongodb references
         * [manual ref vs dbref]
         * [mongo ref docs]
+    * read about user input validation:
+        * should we validate only on form or when saving to db too?\
+        * implement javascript/[html validation] on forms
 
 ### templates
     * rearrange flash messages in fullwidthheader.html
@@ -99,3 +101,4 @@ Current development server is being hosted at [pythonanywhere.com].
 
 [Flask-Analytics]:https://github.com/citruspi/Flask-Analytics
 [python anywhere]:http://tls.pythonanywhere.com
+[html validation]:https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
