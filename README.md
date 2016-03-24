@@ -51,9 +51,10 @@ for the desired app's mode.
 
 ### models
     * see python currencies
-    * see python countries
-    * see python [login/user management]/[auth]
-    * see python phone
+    * see python countries -> _not necessary right now_
+    * see python [login/user management] -> *OK*
+    * see python [auth]
+    * see python phone -> _not necessary as of now_
 
 #### user
     * implement password hashing and ssl support.
