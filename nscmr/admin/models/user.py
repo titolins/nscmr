@@ -18,6 +18,7 @@ class User(Document):
     '''User class
     '''
     __collection__ = 'users'
+    fields = ['name', 'dob']
     # required fields
     required_fields = ['name', 'password']
     PASS_LEN = 8
@@ -52,23 +53,10 @@ class User(Document):
         user = User(form_data)
         return user
 
-    @property
-    def dob(self):
-        if self.content['dob'] is not None:
-            return "{:%d/%m/%Y}".format(self.content['dob'])
+    def get_dob(self):
+        if 'dob' in self._content and self._content['dob'] is not None:
+            return "{:%d/%m/%Y}".format(self._content['dob'])
         return None
-
-    @dob.setter
-    def dob(self, dob):
-        self.content['dob'] = dob
-
-    @property
-    def name(self):
-        return self.content['name']
-
-    @name.setter
-    def name(self, name):
-        self.content['name'] = name
 
     @property
     def is_active(self):
@@ -83,6 +71,6 @@ class User(Document):
         return False
 
     def check_password(self, password):
-        return check_password_hash(self.content['password'], password)
+        return check_password_hash(self._content['password'], password)
 
 
