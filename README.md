@@ -57,7 +57,10 @@ for the desired app's mode.
     * see python phone -> _not necessary as of now_
 
 #### user
-    * implement password hashing and ssl support.
+    * implement ssl support.
+    * change datetime.utcnow() @ User.from_form and Document.insert to use the
+      correct tz.
+    * implement address (and phone?) form field(s) and it's validations.
 
 #### cart
     * cart should be a subdocument of user? yes!!
@@ -79,6 +82,10 @@ for the desired app's mode.
 ### templates
     * rearrange flash messages in fullwidthheader.html
     * add 'add to wishlist' button to products
+    * incorporate admin css into studio duvet (registration page)
+        * Think if user page should not use card as well (instead of sidebar)
+        * Use the already existing js to make the transitions in user page
+            (jquery or bootstrap??) - basically delete user.js
 
 ### tracking
     * after building the initial db, configure [Flask-Analytics].
