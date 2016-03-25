@@ -1,4 +1,6 @@
 from pymongo import MongoClient
+from .models.user import User
+from .models.category import Category
 
 
 class NsClient(MongoClient):
@@ -11,6 +13,7 @@ class NsClient(MongoClient):
             host=app.config['MONGO_HOST'],
             port=app.config['MONGO_PORT'])
         self._db_name = app.config.get('MONGO_DB', app.name)
+        self.collections = {}
 
     @property
     def db(self):
@@ -19,6 +22,11 @@ class NsClient(MongoClient):
         (dev, test or production).
         """
         return getattr(self, self._db_name)
+
+    def register_collection(self, document):
+        if hasattr(document, '__collection__'):
+            document.collection = self.db[getattr(document, '__collection__')]
+
 
 
 def build_db(app):
@@ -30,5 +38,9 @@ def build_db(app):
     handler.. Another option is to dismiss this method and get the db when of
     the app's initialization.
     """
-    return NsClient(app).db
+    documents = [User, Category]
+    client = NsClient(app)
+    for d in documents:
+        client.register_collection(d)
+    return client.db
 
