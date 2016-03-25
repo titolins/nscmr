@@ -5,9 +5,8 @@ from flask import (
     redirect,
     flash,
     jsonify,
-    make_response)
-
-from nscmr import app
+    make_response,
+    current_app)
 
 # Flask-Login
 from flask.ext.login import (
@@ -16,23 +15,36 @@ from flask.ext.login import (
     login_required,
     current_user)
 
+from flask.ext.principal import (
+    identity_changed,
+    Identity,
+    AnonymousIdentity)
+
 from pymongo.errors import DuplicateKeyError
 
 from functools import wraps
 import requests
 
 # import forms and models --> development models only
-from nscmr.admin.models import admin, users, user, categories, products
+from nscmr.admin.models import categories, products
 
 # real models
 from nscmr.admin.models.user import User
 
 # started forms
-from nscmr.forms import LoginForm, RegistrationForm
+from nscmr.forms import LoginForm, ProfileForm, AddressForm, RegistrationForm
 
 # helpers
-from nscmr.helper import back
+from nscmr.helper.back import Back
 
+# app
+from nscmr import app
+
+#########################################################
+######################## routes #########################
+#########################################################
+
+back = Back()
 
 @app.route('/')
 @back.anchor
@@ -42,28 +54,6 @@ def index():
             categories=categories,
             login_form=LoginForm())
 
-#########################################################
-###################### decorators #######################
-#########################################################
-
-
-"""
-def admin_required(f):
-    ''' Decorator for use with pages that require admin privileges
-    '''
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if kwargs['user_access_level'] == login_session['user_access_level']:
-            return f(*args, **kwargs)
-        flash("Area restricted to admins only!")
-        return redirect(url_for('index'))
-    return wrap
-"""
-
-
-#########################################################
-################### end decorators ######################
-#########################################################
 
 #########################################################
 ######################## CRUD ###########################
@@ -76,27 +66,37 @@ def admin_required(f):
 # Create
 @app.route('/usuario/novo', methods=['GET', 'POST'])
 def registration():
-    form = RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate_on_submit():
+    registration_form = RegistrationForm(request.form)
+    print("\n\n\n==============================\n\n\n")
+    print(registration_form.email.errors)
+    print("\n\n\n==============================\n\n\n")
+    # we should probably validate using our odm, since wtforms validation will
+    # not work for WTForms FormFields..
+    if request.method == 'POST' and registration_form.validate_on_submit():
         try:
-            user = User.from_form(form.data)
-            user.save()
+            user = User.from_form(registration_form.data)
+            user.insert()
             flash('Cadastro bem sucedido! Você já pode fazer suas compras')
             login_user(user)
             return back.redirect()
         except DuplicateKeyError:
-            flash('Este email já está cadastrado em nosso site')
-            return redirect(url_for('registration'))
+            registration_form.email.errors.append(
+                'Este email já está cadastrado em nosso site')
+            return render_template(
+                    'registration.html',
+                    login_form=LoginForm(),
+                    registration_form=registration_form)
         except Exception as e:
             flash(
                 ('Ocorreu um erro. Por favor, tente novamente. Se o erro, '
                 'persistir, contate-nos em: {}\nMensagem de erro:\n{}').\
-                        format(app.config.get('SUPPORT_CONTACT', ''), str(e)))
+                        format(app.config.get(
+                            'SUPPORT_CONTACT', ''), str(e)))
             return redirect(url_for('registration'))
     return render_template(
             'registration.html',
             login_form=LoginForm(),
-            registration_form=form)
+            registration_form=registration_form)
 
 # Read
 @app.route('/usuario')
@@ -201,6 +201,9 @@ def login():
         if user.check_password(form.password.data):
             # Flask-Login
             login_user(user)
+            identity_changed.send(
+                    current_app._get_current_object(),
+                    identity=Identity(user.id))
             flash('Log-in bem sucedido! Você já pode fazer suas compras')
             return back.redirect()
         # in case of wrong login/password, return to last page with custom
@@ -218,14 +221,19 @@ def login():
 @app.route('/sair')
 def logout():
     logout_user()
-    flash('Logged out')
+    identity_changed.send(
+        current_app._get_current_object(),
+        identity=AnonymousIdentity())
+    flash('Você saiu da sua conta')
     return back.redirect()
-
 
 #########################################################
 ####################### end login #######################
 #########################################################
 
+#########################################################
+###################### end routes  ######################
+#########################################################
 
 #########################################################
 ################# development code ######################
@@ -237,6 +245,12 @@ def get_category_by_id(category_id):
         if category.id_ == category_id:
             return category
 
+
+@app.route('/clear_session')
+def clear():
+    return redirect('logout')
+
 #########################################################
 ################# end development code ##################
 #########################################################
+
