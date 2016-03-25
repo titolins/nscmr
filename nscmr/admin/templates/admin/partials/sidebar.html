@@ -17,6 +17,22 @@
         </li>
         <li class="panel panel-default dropdown">
           <a data-toggle="collapse" href="#dropdown-element">
+              <span class="icon fa fa-desktop"></span><span class="title">Usuários</span>
+          </a>
+          <div id="dropdown-element" class="panel-collapse collapse">
+            <div class="panel-body">
+              <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('admin.create_user') }}">Criar</a>
+                </li>
+                <li><a href="{{ url_for('admin.users') }}">Gerenciar</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="panel panel-default dropdown">
+          <a data-toggle="collapse" href="#dropdown-element">
               <span class="icon fa fa-desktop"></span><span class="title">UI Kits</span>
           </a>
           <!-- Dropdown level 1 -->
@@ -105,7 +121,7 @@
           <div id="dropdown-example" class="panel-collapse collapse">
             <div class="panel-body">
               <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('admin.login') }}">Login</a>
+                <li><a href="#">Login</a>
                 </li>
                 <li><a href="{{ url_for('admin.index') }}">Landing Page</a>
                 </li>
