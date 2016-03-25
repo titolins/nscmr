@@ -3,7 +3,7 @@ from nscmr.admin.models.document import Document
 class Category(Document):
 
     __collection__ = 'categories'
-    fields = ['name', 'parent', 'ancestors', 'thumbnail', 'header']
+    fields = ['name', 'slug', 'parent', 'ancestors', 'thumbnail', 'header']
 
     ''' attributtes used by dev class:
     id
@@ -12,6 +12,7 @@ class Category(Document):
     header_picture
     '''
 
-    def from_form(self):
+    @staticmethod
+    def from_form(form_data):
         return NotImplemented
 
