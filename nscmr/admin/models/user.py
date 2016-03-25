@@ -4,21 +4,22 @@ from bson.objectid import ObjectId
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from nscmr.admin.models.document import Document
-from nscmr import login_manager
 
 from nscmr.admin.helper.validators import min_length
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get_by_id(user_id)
 
 
 class User(Document):
     '''User class
     '''
     __collection__ = 'users'
-    fields = ['name', 'dob']
+    fields = ['name','dob','roles','addresses','wishlist','orders','cart']
+    defaults = {
+        'roles': ['user'],
+        'addresses': [],
+        'wishlist': [],
+        'orders': [],
+        'cart': []
+    }
     # required fields
     required_fields = ['name', 'password']
     PASS_LEN = 8
@@ -32,9 +33,6 @@ class User(Document):
 
     @staticmethod
     def from_form(form_data):
-        # used as timestamp. substitute for datatime.now() and use a tz
-        form_data['created_at'] = form_data['updated_at'] = datetime.utcnow()
-
         # use email as _id and delete email so we don't get repeated fields
         form_data['_id'] = form_data['email']
         del(form_data['email'])
@@ -50,7 +48,9 @@ class User(Document):
         # delete confirm field
         del(form_data['confirm'])
 
+        # init object and set default values
         user = User(form_data)
+        user.set_defaults()
         return user
 
     def get_dob(self):
