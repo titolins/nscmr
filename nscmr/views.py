@@ -20,16 +20,15 @@ from flask.ext.principal import (
     Identity,
     AnonymousIdentity)
 
+from bson import ObjectId
+
 from pymongo.errors import DuplicateKeyError
 
 from functools import wraps
 import requests
 
-# import forms and models --> development models only
-from nscmr.admin.models import categories, products
-
-# real models
-from nscmr.admin.models.user import User
+# models
+from nscmr.admin.models import User, Category, Product
 
 # started forms
 from nscmr.forms import LoginForm, ProfileForm, AddressForm, RegistrationForm
@@ -51,7 +50,8 @@ back = Back()
 def index():
     return render_template(
             'index.html',
-            categories=categories,
+            # get the objects as we need the slug
+            categories=Category.get_all(to_obj=True),
             login_form=LoginForm())
 
 
@@ -102,10 +102,6 @@ def registration():
 @app.route('/usuario')
 @login_required
 def user():
-    # dev code below. Still thinking, should we pass the whole user or only
-    # what we need (addresses, wishlist, etc..)?
-    # Remember to change the template if we decide to pass only the needed
-    # properties.
     return render_template('user.html')
 
 # Update
@@ -135,10 +131,17 @@ def delete_user():
 # Read
 @app.route('/catalogo/<string:category_id>/<string:slug>')
 @back.anchor
-def category(category_id, slug = None):
+def category(category_id, slug):
+    # get objects so we may retrieve the category from any of the products
+    # and get category object because we need the slug
+    products = Product.get_by_category(ObjectId(category_id), to_obj=True)
     return render_template(
             'category.html',
-            category=get_category_by_id(category_id),
+            # we don't need to access both category and products collection,
+            # considering that each product has a manual reference to the
+            # category it belongs.. good opportunity to see which category
+            # fields we need in the products ref
+            category=products[0].category,
             products=products,
             login_form=LoginForm())
 
@@ -159,20 +162,17 @@ def category(category_id, slug = None):
 
 # Read
 @app.route(
-        '/catalogo/{}/{}/{}/{}'.format(
-            '<string:category_id>',
-            '<string:category_slug>',
-            '<string:product_id>',
-            '<string:product_slug>',)
-        )
+    '/catalogo/{}/{}/{}'.format(
+        '<string:category_slug>',
+        '<string:product_id>',
+        '<string:product_slug>'))
 @back.anchor
-def product(category_id, product_id, category_slug = None,
-        product_slug = None):
-    category = get_category_by_id(category_id)
+def product(category_slug, product_id, product_slug):
+    product = Product.get_by_id(ObjectId(product_id))
     return render_template(
             'product.html',
-            category = category,
-            product = products[0],
+            category = product.category,
+            product = product,
             login_form=LoginForm())
 
 # Update
@@ -198,7 +198,7 @@ def login():
     if form.validate_on_submit():
         user = User.get_by_id(form.email.data)
         # no hashing or ssl implemented for now
-        if user.check_password(form.password.data):
+        if user is not None and user.check_password(form.password.data):
             # Flask-Login
             login_user(user)
             identity_changed.send(
@@ -209,11 +209,13 @@ def login():
         # in case of wrong login/password, return to last page with custom
         # error message
         flash("E-mail ou senha incorreto(s)")
+        # test code
+        #form.errors['form'].append("E-mail ou senha incorreto(s)")
         return back.redirect()
     else:
         return render_template(
                 'index.html',
-                categories=categories,
+                categories=Category.get_all(),
                 login_form=form,
                 login_fail=True)
 
@@ -233,24 +235,5 @@ def logout():
 
 #########################################################
 ###################### end routes  ######################
-#########################################################
-
-#########################################################
-################# development code ######################
-#########################################################
-
-
-def get_category_by_id(category_id):
-    for category in categories:
-        if category.id_ == category_id:
-            return category
-
-
-@app.route('/clear_session')
-def clear():
-    return redirect('logout')
-
-#########################################################
-################# end development code ##################
 #########################################################
 
