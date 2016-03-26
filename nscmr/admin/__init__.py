@@ -4,7 +4,7 @@ from flask import session as login_session
 
 from flask.ext.principal import RoleNeed, Permission
 
-from .models import User
+from .models import User, Category, Product
 
 
 def build_admin_bp():
@@ -33,10 +33,6 @@ def build_admin_bp():
     def index():
         return render_template('admin/index.html')
 
-    @bp.route('/painel/categorias')
-    def categories():
-        return "To be categories panel"
-
     @bp.route('/profile')
     def profile():
         return "<h1>To be admin profile page</h1>"
@@ -48,15 +44,38 @@ def build_admin_bp():
 
     # Users
     ## Create
-    @bp.route('/users/new')
+    @bp.route('/usuarios/novo')
     def create_user():
         return "<h1>To be new user</h1>"
 
-
-    # Read/Update/Delete
-    @bp.route('/users')
+    ## Read/Update/Delete
+    @bp.route('/usuarios')
     def users():
         return render_template('admin/users.html', users=User.get_all())
+
+    # Categories
+    ## Create
+    @bp.route('/categorias/nova')
+    def create_category():
+        return "<h1>To be new category page</h1>"
+
+    ## Read/Update/Delete
+    @bp.route('/categorias')
+    def categories():
+        return render_template('admin/categories.html',
+                categories=Category.get_all())
+
+    # Produtos
+    ## Create
+    @bp.route('/produtos/novo')
+    def create_product():
+        return "<h1>To be new product page</h1>"
+
+    ## Read/Update/Delete
+    @bp.route('/produtos')
+    def products():
+        return render_template('admin/products.html',
+                products=Product.get_all())
 
     ######################################
     # end CRUD                           #
