@@ -15,7 +15,7 @@
   </div>
   {% for category in categories %}
     <div class="col-xs-12 col-sm-6 col-md-4 category-panel" id="category-panel-{{loop.index}}">
-      <a href="{{ url_for('category', category_id = category.id_, slug=category.slug) }}">
+      <a href="{{ url_for('category', category_id=category.id, slug=category.slug) }}">
         <h4 class="category-name">{{ category.name }}</h4>
         <div class="img-holder">
           <img class="img img-responsive" src="{{ category.thumbnail }}" alt="Foto de {{ category.name }}">

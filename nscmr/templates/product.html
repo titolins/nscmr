@@ -6,12 +6,12 @@
 {% endblock %}
 
 {% block page_content %}
-  <div id="product-page" style="background:url({{product.background_picture}}) center center no-repeat fixed;">
+  <div id="product-page" style="background:url({{product.background}}) center center no-repeat fixed;">
     <div id="product-content" class="col-sm-offset-8 col-sm-4 gradient">
       <div class="col-sm-12 text-right" id="product-nav">
         <span>
           <a href="{{ url_for('index') }}">home</a> >
-          <a href="{{ url_for('category', category_id = category.id_, slug = category.slug) }}">{{ category.name }}</a>
+          <a href="{{ url_for('category', category_id = category.id, slug = category.slug) }}">{{ category.name }}</a>
           > {{ product.name }}
         </span>
       </div>

@@ -1,5 +1,5 @@
 {% extends "fullwidthheader.html" %}
-{% from "macros/producthelpers.html" import build_product_list with context %}
+{% from "macros/producthelpers.html" import product_panel with context %}
 
 {% block title %}
   {{ super() }}
@@ -8,7 +8,8 @@
 
 {% block header %}
   <div id="header">
-    <img class="header-img img img-responsive" src="{{ category.header_picture }}" alt="Imagem da categoria">
+    <img class="header-img img img-responsive" src="{{ category.header }}"
+    alt="Imagem de {{ category.name }}">
   </div>
 {% endblock %}
 
@@ -16,6 +17,8 @@
   <div class="col-lg-12">
     <h1 class="page-header">{{ category.name }}</h1>
   </div>
-  {{ build_product_list(products) }}
+  {% for product in products %}
+    {{ product_panel(product) }}
+  {% endfor %}
 {% endblock %}
 
