@@ -1,0 +1,58 @@
+{% extends 'admin/navigation.html' %}
+
+{% block title %}
+  {{ super() }}
+  Gerenciador de categorias
+{% endblock %}
+
+{% block main_content %}
+<!-- Main Content -->
+  <div class="container-fluid">
+    <div class="side-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><div class="title">Categorias</div></div>
+            </div>
+            <div class="card-body">
+            <table class="datatable table table-striped" cellspacing="0" width="100%">
+              <thead>
+                  <tr>
+                      <th>Id</th>
+                      <th>Nome</th>
+                      <th>Categoria pai</th>
+                      <th>Categorias ancestrais</th>
+                      <th>Thumbnail</th>
+                      <th>Imagem de cabeçalho</th>
+                  </tr>
+              </thead>
+              <tfoot>
+                  <tr>
+                      <th>Id</th>
+                      <th>Nome</th>
+                      <th>Categoria pai</th>
+                      <th>Categorias ancestrais</th>
+                      <th>Thumbnail</th>
+                      <th>Imagem de cabeçalho</th>
+                  </tr>
+              </tfoot>
+              <tbody>
+                {% for category in categories %}
+                  <tr>
+                    <td>{{ category['_id'] }}</td>
+                    <td>{{ category['name'] }}</td>
+                    <td>{{ category['parent'] }}</td>
+                    <td>{{ category['ancestors'] }}</td>
+                    <td>{{ category['thumbnail'] }}</td>
+                    <td>{{ category['header'] }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'admin/navigation.html' %}
+
+{% block title %}
+  {{ super() }}
+  Gerenciador de produtos
+{% endblock %}
+
+{% block main_content %}
+<!-- Main Content -->
+  <div class="container-fluid">
+    <div class="side-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><div class="title">Produtos</div></div>
+            </div>
+            <div class="card-body">
+            <table class="datatable table table-striped" cellspacing="0" width="100%">
+              <thead>
+                  <tr>
+                      <th>Id</th>
+                      <th>Categoria</th>
+                      <th>Nome</th>
+                      <th>Descrição</th>
+                      <th>Preço</th>
+                      <th>Tamanho</th>
+                      <th>Imagem</th>
+                  </tr>
+              </thead>
+              <tfoot>
+                  <tr>
+                      <th>Id</th>
+                      <th>Categoria</th>
+                      <th>Nome</th>
+                      <th>Descrição</th>
+                      <th>Preço</th>
+                      <th>Tamanho</th>
+                      <th>Imagem</th>
+                  </tr>
+              </tfoot>
+              <tbody>
+                {% for product in products %}
+                  <tr>
+                    <td>{{ product['_id'] }}</td>
+                    <td>{{ product['category']['name'] }}</td>
+                    <td>{{ product['name'] }}</td>
+                    <td>{{ product['description'] }}</td>
+                    <td>{{ product['price'] }}</td>
+                    <td>{{ product['size'] }}</td>
+                    <td>{{ product['thumbnail'] }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
