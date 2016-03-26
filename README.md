@@ -61,12 +61,15 @@ for the desired app's mode.
       correct tz.
     * implement address (and phone?) form field(s) and it's validations.
 
-#### cart
+##### cart
     * cart should be a subdocument of user? yes!!
 
 #### category
     * category model should have a reference to parent and to ancestors (makes
       it really easy to create subcategories).
+
+#### product
+    * product should have an array of images
 
 ### DB
     * read about storing payment options on db -> _postponed to another moment_
