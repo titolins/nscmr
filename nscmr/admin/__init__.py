@@ -4,7 +4,7 @@ from flask import session as login_session
 
 from flask.ext.principal import RoleNeed, Permission
 
-from .models.user import User
+from .models import User
 
 
 def build_admin_bp():
