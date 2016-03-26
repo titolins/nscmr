@@ -1,8 +1,7 @@
 # nscmr
 
 ## Description
-nscmr will be an python e-commerce application based on [satchless], [flask]
-and [mongodb].
+nscmr will be an python e-commerce application based on [flask] and [mongodb].
 
 As per the above, nscmr is still under development and not ready for use.
 
@@ -87,6 +86,10 @@ for the desired app's mode.
         * Use the already existing js to make the transitions in user page
             (jquery or bootstrap??) - basically delete user.js
 
+### forms
+    * manage to pass generic form errors (when of wrong email/login, e.g.) to
+        be rendered above fields..
+
 ### tracking
     * after building the initial db, configure [Flask-Analytics].
 
@@ -96,7 +99,6 @@ Current development server is being hosted at [pythonanywhere.com].
 ## Known bugs
     * not working.. ;)
 
-[satchless]:https://github.com/mirumee/satchless
 [flask]:http://flask.pocoo.org/
 [mongodb]:https://www.mongodb.org/
 
