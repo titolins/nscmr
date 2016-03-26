@@ -6,6 +6,7 @@ from pymongo.errors import DuplicateKeyError
 
 from datetime import datetime
 
+from nscmr.admin.helper import slugify
 
 class DocumentProperties(type):
     """
@@ -71,18 +72,18 @@ class DocumentProperties(type):
                 accessors[field] = [None, None, None]
             for name, (getter, setter, deler) in accessors.items():
                 if getter is None:
-                    getter = lambda self, name=name: self._content[name] if \
-                            name in self._content else None
+                    getter = lambda self, name=name: self._content.get(name)
                 if setter is None:
                     setter = \
                         lambda self,v,name=name:self._content.update({name:v})
                 setattr(self, name, property(getter, setter, deler, ""))
             # add the id by hand, considering that it should not have a setter
-            # nor a deler
+            # nor a deler (and that the getter is in the document class)
             setattr(self, 'id', property(
-                lambda self: self._content['_id'] if '_id' in self._content \
-                    else None,
-                None, None, ""))
+                lambda self: self._content.get('_id'), None, None, ""))
+            # set the slugs
+            setattr(self, 'slug', property(
+                lambda self: slugify(self.name), None, None, ""))
 
 
 class Document(object, metaclass=DocumentProperties):
@@ -102,6 +103,7 @@ class Document(object, metaclass=DocumentProperties):
             these two attributes should be overriden if using the document
             class validation, which is not being used as of now, considering
             that we are using wtforms validation already)
+        :indexes - indexes to be created on the respective collection
         :from_form - used to parse form_data into the object
 
     Methods supplied:
@@ -109,6 +111,8 @@ class Document(object, metaclass=DocumentProperties):
         :validate - validates fields based on the required_fields and
             validators class attributes. not in use right now, as per the
             above
+        :create_indexes - create the collection indexes as specified in the
+            indexes list
 
         :insert - tries to insert a new document in the db
         :update - updates an already existing document
@@ -121,6 +125,7 @@ class Document(object, metaclass=DocumentProperties):
     defaults = {}
     required_fields = []
     validators = {}
+    indexes = []
 
     def __init__(self, content):
         self._content = content
@@ -130,14 +135,24 @@ class Document(object, metaclass=DocumentProperties):
         return NotImplemented
 
     @classmethod
+    def create_indexes(cls):
+        if cls.indexes not in ([],):
+            for k,v in cls.indexes.items():
+                cls.collection.create_index(k, **v)
+
+    @classmethod
     def get_by_id(cls, doc_id):
         return cls(cls.collection.find_one({'_id': doc_id}))
 
     @classmethod
-    def get_all(cls):
-        # returns a cursor, not instances of documents as it is faster and we
-        # we'll use this to pass to the admin templates
-        return cls.collection.find()
+    def _get_many(cls, to_obj, cond=None):
+        if to_obj:
+            return [cls(document) for document in cls.collection.find(cond)]
+        return cls.collection.find(cond)
+
+    @classmethod
+    def get_all(cls, to_obj=False):
+        return cls._get_many(to_obj)
 
     def validate(self):
         # validates existence of fields first
