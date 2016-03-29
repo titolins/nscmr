@@ -7,10 +7,8 @@ As per the above, nscmr is still under development and not ready for use.
 
 ## Instructions
 * Install pip
-* Install requirements
-```
-pip install -r requirements.txt
-```
+* Install requirements with `pip install -r requirements.txt`
+* Generate secret key
 
 ### App modes
 The app may be run in development, testing or production modes. To trigger the
@@ -97,7 +95,7 @@ for the desired app's mode.
     * after building the initial db, configure [Flask-Analytics].
 
 ## Development
-Current development server is being hosted at [pythonanywhere.com].
+    * Current development server is being hosted at [python anywhere].
 
 ## Known bugs
     * not working.. ;)
