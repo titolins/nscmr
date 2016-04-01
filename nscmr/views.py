@@ -129,19 +129,20 @@ def delete_user():
 # only the admin can create new categories
 
 # Read
-@app.route('/catalogo/<string:category_id>/<string:slug>')
+@app.route('/catalogo/<string:permalink>')
 @back.anchor
-def category(category_id, slug):
+def category(permalink):
     # get objects so we may retrieve the category from any of the products
     # and get category object because we need the slug
-    products = Product.get_by_category(ObjectId(category_id), to_obj=True)
+    category = Category.get_by_permalink(permalink)
+    products = Product.get_by_category(category['_id'])
     return render_template(
             'category.html',
             # we don't need to access both category and products collection,
             # considering that each product has a manual reference to the
             # category it belongs.. good opportunity to see which category
             # fields we need in the products ref
-            category=products[0].category,
+            category=category,
             products=products,
             login_form=LoginForm())
 
@@ -161,17 +162,14 @@ def category(category_id, slug):
 # only admin will be able to create products
 
 # Read
-@app.route(
-    '/catalogo/{}/{}/{}'.format(
-        '<string:category_slug>',
-        '<string:product_id>',
-        '<string:product_slug>'))
+@app.route('/catalogo/<string:c_permalink>/<string:p_permalink>')
 @back.anchor
-def product(category_slug, product_id, product_slug):
-    product = Product.get_by_id(ObjectId(product_id))
+def product(c_permalink, p_permalink):
+    product = Product.get_by_permalink(p_permalink)
+    category = Category.get_by_id(product['category_id'])
     return render_template(
             'product.html',
-            category = product.category,
+            category = category,
             product = product,
             login_form=LoginForm())
 

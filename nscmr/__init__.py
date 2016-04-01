@@ -72,13 +72,14 @@ if __name__ == '__main__':
     # create admin
     from werkzeug.security import generate_password_hash
     from nscmr.admin.models import User, Category, Product
+    from nscmr.admin.helper import slugify
     user_content = {
         '_id': 'admin@studioduvet.com',
         'name': 'administrador',
         'password': generate_password_hash('admin'),
         'roles': ['user','admin'],
     }
-    u = User.get_by_id('admin@studioduvet.com')
+    u = User.get_by_id('admin@studioduvet.com',to_obj=True)
     try:
         u.id
     except:
@@ -109,6 +110,7 @@ if __name__ == '__main__':
         'Duvets', 'Colchas']
     for category in categories:
         category_content['name'] = category
+        category_content['permalink'] = slugify(category)
         c = Category(category_content.copy())
         try:
             c.insert()
@@ -117,19 +119,26 @@ if __name__ == '__main__':
 
     def insert_products(n=9):
         categories = Category.get_all()
+        products = [
+            '{} com estampa florida c/ tecido importado',
+            '{} sem estampa c/ tecido importado',
+            '{} com estampa customizada c/ tecido importado',
+        ]
         for category in categories:
-            for i in range(9):
+            for product in products:
                 description = (
                         'FEITO COM PERCAL 7000 FIOS DA ÍNDIA ORIENTAL',
                         'IDEAL PARA CASAS DE CAMPO, SÍTIOS, FAZENDAS ETC.')
+                name = product.format(category['name'])
                 product_content = {
-                    'name': 'Lençol com estampa florida c/ tecido importado',
+                    'name': name,
                     'description': description,
                     'price': 450.00,
                     'size': "3.50m x 2.50m",
                     'thumbnail': "http://placehold.it/400x300",
                     'background': "http://placehold.it/1920x1080",
-                    'category': category
+                    'category_id': category['_id'],
+                    'permalink': slugify(name),
                 }
                 p = Product(product_content)
                 p.insert()

@@ -1,9 +1,10 @@
 from datetime import datetime
 from bson.objectid import ObjectId
+from pymongo import ASCENDING
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from nscmr.admin.models.document import Document
+from nscmr.admin.models.document import Document, SlugDocument
 
 from nscmr.admin.helper.validators import min_length
 
@@ -74,14 +75,18 @@ class User(Document):
         return check_password_hash(self._content['password'], password)
 
 
-class Category(Document):
+class Category(SlugDocument):
 
     __collection__ = 'categories'
 
-    fields = ['name', 'parent', 'ancestors', 'thumbnail', 'header']
+    fields = ['name', 'parent', 'ancestors', 'thumbnail', 'header',
+            'permalink']
 
+    # supports both dicts to pass constraint indexes such as unique, and simple
+    # values to pass single field indexes (compound indexes do not work yet)
     indexes = {
         'name': { 'unique': True },
+        'permalink': ASCENDING,
     }
 
     @staticmethod
@@ -89,14 +94,19 @@ class Category(Document):
         return NotImplemented
 
 
-class Product(Document):
+class Product(SlugDocument):
     __collection__ = 'products'
     fields = ['name', 'description', 'price', 'size', 'thumbnail',
-            'background', 'category']
+            'background', 'category', 'permalink']
+
+    indexes = {
+        'name': { 'unique': True },
+        'permalink': ASCENDING,
+    }
 
     @classmethod
     def get_by_category(cls, category_id, to_obj=False):
-        return cls._get_many(to_obj, { "category._id": category_id })
+        return cls._get_many(to_obj, { "category_id": category_id })
 
     @staticmethod
     def from_form(form_data):
@@ -105,3 +115,7 @@ class Product(Document):
     def get_category(self):
         return Category(self._content.get('category'))
 
+
+class Variant(Document):
+    __collection__ = 'variants'
+    fields = ['product_id', 'attributes']
