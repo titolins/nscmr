@@ -67,11 +67,6 @@ def index():
 @app.route('/usuario/novo', methods=['GET', 'POST'])
 def registration():
     registration_form = RegistrationForm(request.form)
-    print("\n\n\n==============================\n\n\n")
-    print(registration_form.email.errors)
-    print("\n\n\n==============================\n\n\n")
-    # we should probably validate using our odm, since wtforms validation will
-    # not work for WTForms FormFields..
     if request.method == 'POST' and registration_form.validate_on_submit():
         try:
             user = User.from_form(registration_form.data)
