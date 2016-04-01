@@ -194,7 +194,7 @@ def product(c_permalink, p_permalink):
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        user = User.get_by_id(form.email.data)
+        user = User.get_by_id(form.email.data, to_obj=True)
         # no hashing or ssl implemented for now
         if user is not None and user.check_password(form.password.data):
             # Flask-Login

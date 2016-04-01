@@ -34,7 +34,7 @@ def build_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.get_by_id(user_id)
+        return User.get_by_id(user_id, to_obj=True)
 
     ###################
     # Flask-Principal #
