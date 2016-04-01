@@ -166,10 +166,8 @@ def category(permalink):
 @back.anchor
 def product(c_permalink, p_permalink):
     product = Product.get_by_permalink(p_permalink)
-    category = Category.get_by_id(product['category_id'])
     return render_template(
             'product.html',
-            category = category,
             product = product,
             login_form=LoginForm())
 

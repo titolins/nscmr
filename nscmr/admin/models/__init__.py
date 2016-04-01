@@ -106,7 +106,7 @@ class Product(SlugDocument):
 
     @classmethod
     def get_by_category(cls, category_id, to_obj=False):
-        return cls._get_many(to_obj, { "category_id": category_id })
+        return cls._get_many(to_obj, { "category._id": category_id })
 
     @staticmethod
     def from_form(form_data):

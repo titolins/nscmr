@@ -1,6 +1,6 @@
 {% macro product_panel(product) %}
   <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4">
-    <a href="{{ url_for('product', c_permalink = category['permalink'], p_permalink = product['permalink']) }}">
+    <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink']) }}">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="product-name">{{ product['name'] }}</h4>
