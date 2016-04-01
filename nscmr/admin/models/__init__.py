@@ -112,9 +112,6 @@ class Product(SlugDocument):
     def from_form(form_data):
         return NotImplemented
 
-    def get_category(self):
-        return Category(self._content.get('category'))
-
 
 class Variant(Document):
     __collection__ = 'variants'
