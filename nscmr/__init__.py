@@ -137,11 +137,7 @@ if __name__ == '__main__':
                     'size': "3.50m x 2.50m",
                     'thumbnail': "http://placehold.it/400x300",
                     'background': "http://placehold.it/1920x1080",
-                    'category': {
-                        '_id': category['_id'],
-                        'name': category['name'],
-                        'permalink': category['permalink'],
-                    },
+                    'category_id': category['_id'],
                     'permalink': slugify(name),
                 }
                 p = Product(product_content)

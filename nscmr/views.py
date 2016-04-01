@@ -165,9 +165,11 @@ def category(permalink):
 @app.route('/catalogo/<string:c_permalink>/<string:p_permalink>')
 @back.anchor
 def product(c_permalink, p_permalink):
+    category = Category.get_by_permalink(c_permalink)
     product = Product.get_by_permalink(p_permalink)
     return render_template(
             'product.html',
+            category = category,
             product = product,
             login_form=LoginForm())
 
