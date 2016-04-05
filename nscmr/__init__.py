@@ -8,7 +8,7 @@ from flask.ext.principal import (
     UserNeed,
     Permission)
 
-from instance.config import config_app
+#from instance.config import config_app
 from nscmr.admin import build_admin_bp
 from nscmr.admin.database import build_db
 from nscmr.admin.models import User
@@ -17,11 +17,17 @@ def build_app():
     '''
     Method for creating and configuring a flask app instance
     '''
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.register_blueprint(build_admin_bp(), url_prefix='/admin')
 
-    # config app environment
-    config_app(app)
+    # Load the default configuration
+    app.config.from_object('nscmr.config.default')
+
+    # Load the configuration from the instance folder
+    app.config.from_pyfile('config.py')
+
+    # Load the configuration specified by the APP_CONFIG_FILE environment var
+    app.config.from_envvar('APP_CONFIG_FILE')
 
     # config extensions
 
