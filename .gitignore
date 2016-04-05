@@ -1,4 +1,6 @@
 *.pyc
 __pycache__/
 */__pycache__/
-instance/secret_key
+instance/
+start.sh
+get_interactive
