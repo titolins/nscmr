@@ -90,6 +90,7 @@ for the desired app's mode.
 ### forms
     * manage to pass generic form errors (when of wrong email/login, e.g.) to
         be rendered above fields..
+    * implement file validators on admin panel
 
 ### tracking
     * after building the initial db, configure [Flask-Analytics].
