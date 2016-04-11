@@ -1,4 +1,4 @@
-{% extends "fullwidthheader.html" %}
+{% extends "sidebar.html" %}
 {% from "macros/producthelpers.html" import product_panel with context %}
 
 {% block title %}
@@ -6,19 +6,20 @@
   Home
 {% endblock %}
 
-{% block header %}
-  <div id="header">
-    <img class="header-img img img-responsive" src="{{ category['header'] }}"
-    alt="Imagem de {{ category['name'] }}">
-  </div>
+{% block sidebar_content %}
+  <ul>
+    <li>{{ category.name }}</li>
+    {% for c in categories %}
+      <li><a href="{{ url_for('category', permalink=c.permalink) }}">{{ c.name }}</a></li>
+    {% endfor %}
+  </ul>
 {% endblock %}
 
 {% block main_content %}
-  <div class="col-lg-12">
-    <h1 class="page-header">{{ category['name'] }}</h1>
+  <div class="row">
+    {% for product in products %}
+      {{ product_panel(product) }}
+    {% endfor %}
   </div>
-  {% for product in products %}
-    {{ product_panel(product) }}
-  {% endfor %}
 {% endblock %}
 
