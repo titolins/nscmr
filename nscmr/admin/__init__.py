@@ -1,10 +1,19 @@
-from flask import Blueprint
-from flask import render_template, redirect, request, abort, url_for
-from flask import session as login_session
+from flask import (
+    Blueprint,
+    render_template,
+    redirect,
+    request,
+    abort,
+    url_for,
+    current_app)
+
+from pymongo.errors import DuplicateKeyError
 
 from flask.ext.principal import RoleNeed, Permission
 
 from .models import User, Category, Product
+
+from .forms import NewCategoryForm, category_images
 
 
 def build_admin_bp():
@@ -60,10 +69,29 @@ def build_admin_bp():
         return "<h1>To be new category page</h1>"
 
     ## Read/Update/Delete
-    @bp.route('/categorias')
+    @bp.route('/categorias', methods=['GET', 'POST'])
     def categories():
+        categories = Category.get_all(to_obj=True)
+        form = NewCategoryForm()
+        # Filling the selectfield choices, first we add the none choice
+        form.parent.choices = [('None','Nenhuma')]
+        # then we fill it with all available categories
+        for c in categories:
+            form.parent.choices.append((str(c.id), c.name))
+        if form.validate_on_submit():
+            img_filename = category_images.save(form.base_img.data,
+                    name="{}.".format(form.name.data))
+            form.base_img.data = category_images.url(img_filename)
+            print(form.base_img.data)
+            category = Category.from_form(form.data)
+            try:
+                category.insert()
+            except DuplicateKeyError:
+                form.name.errors.append(
+                    'Já existe uma categoria com esse nome')
         return render_template('admin/categories.html',
-                categories=Category.get_all())
+                form=form,
+                categories=categories)
 
     # Produtos
     ## Create
