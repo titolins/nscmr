@@ -8,10 +8,13 @@ from flask.ext.principal import (
     UserNeed,
     Permission)
 
-#from instance.config import config_app
 from nscmr.admin import build_admin_bp
 from nscmr.admin.database import build_db
 from nscmr.admin.models import User
+from nscmr.admin.forms import category_images
+
+from flask_wtf import CsrfProtect
+from flask_uploads import configure_uploads
 
 def build_app():
     '''
@@ -62,7 +65,21 @@ def build_app():
 
     # end config extensions
 
+    #############
+    # Flask-WTF #
+    #############
+
+    CsrfProtect(app)
+
+    #################
+    # Flask-Uploads #
+    #################
+
+    configure_uploads(app, (category_images,))
+
+
     return app
+
 
 app = build_app()
 db = build_db(app)
@@ -109,8 +126,7 @@ if __name__ == '__main__':
         'name': '',
         'parent': None,
         'ancestors': [],
-        'thumbnail' : 'http://placehold.it/400x300',
-        'header': 'http://placehold.it/1400x400',
+        'base_img' : 'http://placehold.it/400x300',
     }
     categories = ['Lençóis', 'Toalhas de mesa', 'Peseiras', 'Acessórios',
         'Duvets', 'Colchas']
