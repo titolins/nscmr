@@ -66,8 +66,8 @@ def index():
 # Create
 @app.route('/usuario/novo', methods=['GET', 'POST'])
 def registration():
-    registration_form = RegistrationForm(request.form)
-    if request.method == 'POST' and registration_form.validate_on_submit():
+    registration_form = RegistrationForm()
+    if registration_form.validate_on_submit():
         try:
             user = User.from_form(registration_form.data)
             user.insert()
@@ -127,10 +127,10 @@ def delete_user():
 @app.route('/catalogo/<string:permalink>')
 @back.anchor
 def category(permalink):
-    # get objects so we may retrieve the category from any of the products
-    # and get category object because we need the slug
-    category = Category.get_by_permalink(permalink)
-    products = Product.get_by_category(category['_id'])
+    categories = Category.get_all(to_obj=True)
+    category = [c for c in categories if c.permalink == permalink][0]
+    categories.remove(category)
+    products = Product.get_by_category(category.id, to_obj=True)
     return render_template(
             'category.html',
             # we don't need to access both category and products collection,
@@ -138,6 +138,7 @@ def category(permalink):
             # category it belongs.. good opportunity to see which category
             # fields we need in the products ref
             category=category,
+            categories=categories,
             products=products,
             login_form=LoginForm())
 
@@ -187,9 +188,9 @@ def product(c_permalink, p_permalink):
 
 @app.route('/entrar', methods=['POST'])
 def login():
-    form = LoginForm(request.form)
+    form = LoginForm()
     if form.validate_on_submit():
-        user = User.get_by_id(form.email.data, to_obj=True)
+        user = User.get_by_id(form.email.data.lower(), to_obj=True)
         # no hashing or ssl implemented for now
         if user is not None and user.check_password(form.password.data):
             # Flask-Login
