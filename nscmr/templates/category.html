@@ -6,6 +6,10 @@
   Home
 {% endblock %}
 
+{% block description %}
+  {{ category.meta_description }}
+{% endblock %}
+
 {% block sidebar_content %}
   <ul>
     <li>{{ category.name }}</li>
