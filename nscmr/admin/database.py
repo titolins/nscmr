@@ -9,9 +9,9 @@ class NsClient(MongoClient):
     """
     def __init__(self, app):
         super().__init__(
-            host=app.config['MONGO_HOST'],
-            port=app.config['MONGO_PORT'])
-        self._db_name = app.config.get('MONGO_DB', app.name)
+            host=app.config['MONGODB_HOST'],
+            port=app.config['MONGODB_PORT'])
+        self._db_name = app.config.get('MONGODB_DB', app.name)
         self.collections = {}
 
     @property

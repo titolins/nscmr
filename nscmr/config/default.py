@@ -1,9 +1,12 @@
 import os
 
+basedir = '/var/www/nscmr'
+
+UPLOADS_DEFAULT_DEST = os.path.join(basedir, 'instance/uploads')
+#UPLOADS_IMAGES_DEST = os.path.join(UPLOADS_DEFAULT_DEST, 'img/')
+
 DEBUG = False
 TESTING = False
 
-#UPLOAD_FOLDER = os.path.join(root_path, 'static/images/')
 SUPPORT_CONTACT = 'contato@studioduvet.com.br'
-MONGO_HOST = 'localhost'
-MONGO_PORT = 27017
+MONGODB_DB = 'nscmr'

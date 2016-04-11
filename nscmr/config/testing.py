@@ -1,2 +1,2 @@
 TESTING = True
-MONGO_DB = 'nscmr_test'
+MONGODB_DB = 'nscmr_test'
