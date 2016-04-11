@@ -168,8 +168,8 @@ class Document(object, metaclass=DocumentProperties):
         '''
         Compares two objects by their id's
         '''
-        if isinstance(other, User):
-            return self.get_id() == other.get_id()
+        if isinstance(other, self.__class__):
+            return self.id == other.id
         return NotImplemented
 
     def __ne__(self, other):
