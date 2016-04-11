@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from nscmr.admin.models.document import Document, SlugDocument
 
-from nscmr.admin.helper.validators import min_length
+from nscmr.admin.helper import slugify
 
 
 class User(Document):
@@ -23,19 +23,11 @@ class User(Document):
     }
     # required fields
     required_fields = ['name', 'password']
-    PASS_LEN = 8
-    # field validators - dict containing ==> field: [validator, error_msg]
-    validators = {
-        'password': [
-            min_length(PASS_LEN),
-            "Campo 'password' deve conter ao menos {} caracteres".\
-                    format(PASS_LEN)]
-    }
 
     @staticmethod
     def from_form(form_data):
         # use email as _id and delete email so we don't get repeated fields
-        form_data['_id'] = form_data['email']
+        form_data['_id'] = form_data['email'].lower()
         del(form_data['email'])
 
         # converts date object to datetime, as pymongo only support the latter
@@ -79,19 +71,23 @@ class Category(SlugDocument):
 
     __collection__ = 'categories'
 
-    fields = ['name', 'parent', 'ancestors', 'thumbnail', 'header',
-            'permalink']
+    fields = ['name', 'parent', 'ancestors', 'base_img', 'permalink',
+    'meta_description']
 
     # supports both dicts to pass constraint indexes such as unique, and simple
     # values to pass single field indexes (compound indexes do not work yet)
     indexes = {
         'name': { 'unique': True },
+        'permalink': { 'unique': True },
         'permalink': ASCENDING,
     }
 
     @staticmethod
     def from_form(form_data):
-        return NotImplemented
+        # remember to lowercase name and any other stuff
+        form_data['name'] = form_data['name'].lower()
+        form_data['permalink'] = slugify(form_data['name'])
+        return Category(form_data)
 
 
 class Product(SlugDocument):
@@ -106,11 +102,14 @@ class Product(SlugDocument):
 
     @classmethod
     def get_by_category(cls, category_id, to_obj=False):
-        return cls._get_many(to_obj, { "category._id": category_id })
+        return cls._get_many(to_obj, { "category_id": category_id })
 
     @staticmethod
     def from_form(form_data):
         return NotImplemented
+
+    def get_category(self):
+        return Category.get_by_id(self._content['category_id'])
 
 
 class Variant(Document):
