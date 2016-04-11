@@ -1,4 +1,4 @@
-from flask.ext.wtf import Form
+from flask_wtf import Form
 
 from wtforms import (
     TextField,
@@ -16,7 +16,10 @@ from wtforms.validators import (
     email,
     equal_to,
     Optional,
-    Regexp)
+    Regexp,
+    length)
+
+MIN_PASS_LEN = 6
 
 class LoginForm(Form):
     email = TextField(
@@ -78,6 +81,10 @@ class RegistrationForm(Form):
             'Senha',
             validators=[
                 input_required("Campo necessário!"),
+                length(
+                    min=MIN_PASS_LEN,
+                    message="A senha deve conter ao menos {} caractéres.".\
+                        format(MIN_PASS_LEN)),
                 equal_to('confirm', message="As senhas precisam ser iguais")])
     confirm = PasswordField(
             'Confirme sua senha', [input_required("Campo necessário!")])
