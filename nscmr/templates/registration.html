@@ -37,7 +37,7 @@
                 </ul>
                 <div class="tab-content">
                   <div role="tabpanel" class="tab-pane active" id="profile">
-                    {{ registration_form.csrf_token }}
+                    {{ registration_form.hidden_tag() }}
                     {% if registration_form.csrf_token.errors %}
                       <ul class="alert alert-danger alert-login">
                         {% for error in registration_form.csrf_token.errors %}
