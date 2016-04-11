@@ -7,7 +7,7 @@
     <div id="login-dropdown-form">
       <h4>Entre na sua conta</h4>
       <form action="{{ url_for('login') }}" method="post">
-        {{ login_form.csrf_token }}
+        {{ login_form.hidden_tag() }}
         {% if login_form.csrf_token.errors %}
           <ul class="alert alert-danger alert-login">
             {% for error in login_form.csrf_token.errors %}
