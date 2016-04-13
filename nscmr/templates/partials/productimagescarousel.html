@@ -1,0 +1,45 @@
+<div id="product-carousel" class="carousel slide" data-interval="false">
+  <div class="carousel-inner">
+    {% for image in product['images'] %}
+      <div class="item {% if loop.index0 == 0 %}active{% endif %}">
+        <img src="{{ image['big'] }}">
+      </div>
+    {% endfor %}
+  </div>
+  <a class="left carousel-control" href="#product-carousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Anterior</span>
+  </a>
+  <a class="right carousel-control" href="#product-carousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Próxima</span>
+  </a>
+</div>
+<div id="product-thumbs-carousel" class="carousel slide" data-interval="false">
+  <div class="carousel-inner">
+    {% for image in product['images'] %}
+      {% if loop.index0 % 4 == 0 %}
+        <div class="item {% if loop.index0 == 0 %}active{% endif %}">
+          <div class="row">
+      {% endif %}
+      <div class="col-md-3">
+        <div data-target="#product-carousel" data-slide-to="{{loop.index0}}" class="product-thumb">
+          <img class="img-responsive" src="{{ image['thumb'] }}">
+        </div>
+      </div>
+      {% if loop.index0 % 4 == 3  or loop.last %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <a class="left carousel-control thumb-control" href="#product-thumbs-carousel" role="button" data-slide="prev">
+    ‹
+    <span class="sr-only">Anterior</span>
+  </a>
+  <a class="right carousel-control thumb-control" href="#product-thumbs-carousel" role="button" data-slide="next">
+    ›
+    <span class="sr-only">Próxima</span>
+  </a>
+</div>
+
