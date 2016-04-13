@@ -3,6 +3,9 @@
 ## Description
 nscmr will be an python e-commerce application based on [flask] and [mongodb].
 
+As the admin panel, we chose [flat admin v.2] because of it's neat design :)
+(probably our best choice so far hehe)
+
 As per the above, nscmr is still under development and not ready for use.
 
 ## Instructions
@@ -12,17 +15,17 @@ As per the above, nscmr is still under development and not ready for use.
 
 ### App modes
 The app may be run in development, testing or production modes. To trigger the
-correct configuration for each mode, the user must set the FLASK_APP_MODE
-environment variable, as per the below:
+correct configuration for each mode, the user must point the APP_CONFIG_FILE
+environment variable to the corresponding config file, as per the below:
 ```
 # running in development mode
-FLASK_APP_MODE=developement python runserver.py
+APP_CONFIG_FILE=$APP_ROOT/nscmr/nscmr/config/development.py python runserver.py
 
 # running in testing mode
-FLASK_APP_MODE=testing python runserver.py
+APP_CONFIG_FILE=$APP_ROOT/nscmr/config/testing.py python runserver.py
 
 # running in production mode
-FLASK_APP_MODE=production python runserver.py
+APP_CONFIG_FILE=$APP_ROOT/nscmr/config/production.py python runserver.py
 ```
 
 ### Interactive shell
@@ -72,6 +75,8 @@ for the desired app's mode.
 ### DB
     * read about storing payment options on db -> _postponed to another moment_
     * [configure indexes]
+        * indexes should be created on the background in production and only if
+            they don't already exist.
     * mongodb references
         * [manual ref vs dbref]
         * [mongo ref docs]
@@ -103,6 +108,7 @@ for the desired app's mode.
 
 [flask]:http://flask.pocoo.org/
 [mongodb]:https://www.mongodb.org/
+[flat admin v.2]:https://github.com/tui2tone/flat-admin-bootstrap-templates
 
 [send static files]:http://flask.pocoo.org/docs/0.10/api/
 [auth]:https://github.com/raddevon/flask-permissions
