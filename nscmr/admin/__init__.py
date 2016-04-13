@@ -82,7 +82,6 @@ def build_admin_bp():
             img_filename = category_images.save(form.base_img.data,
                     name="{}.".format(form.name.data))
             form.base_img.data = category_images.url(img_filename)
-            print(form.base_img.data)
             category = Category.from_form(form.data)
             try:
                 category.insert()
