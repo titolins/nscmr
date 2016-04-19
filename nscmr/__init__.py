@@ -11,7 +11,7 @@ from flask.ext.principal import (
 from nscmr.admin import build_admin_bp
 from nscmr.admin.database import build_db
 from nscmr.admin.models import User
-from nscmr.admin.forms import category_images
+from nscmr.admin.forms import category_images, product_images
 
 from flask_wtf import CsrfProtect
 from flask_uploads import configure_uploads
@@ -75,7 +75,7 @@ def build_app():
     # Flask-Uploads #
     #################
 
-    configure_uploads(app, (category_images,))
+    configure_uploads(app, (category_images, product_images))
 
 
     return app
@@ -91,7 +91,8 @@ if __name__ == '__main__':
 
     # create admin
     from werkzeug.security import generate_password_hash
-    from nscmr.admin.models import User
+    from nscmr.admin.helper import slugify
+    from nscmr.admin.models import User, Product, Category
     user_content = {
         '_id': 'admin@studioduvet.com',
         'name': 'administrador',
@@ -105,4 +106,26 @@ if __name__ == '__main__':
         u = User(user_content)
         u.set_defaults()
         u.insert()
+
+    def insert_product(category_permalink):
+        category = Category.get_by_permalink(category_permalink)
+        description = "{} feito com percal 5000 fios".format(category['name'])
+        name = "{} estampado".format(category['name'])
+        permalink = slugify(name)
+        price = "450.00"
+        big_image = "http://placehold.it/1920x1080"
+        thumb_image = "http://placehold.it/128x128"
+        image = { 'big': big_image, 'thumb': thumb_image }
+        images = [image for i in range(20)]
+        cat = { 'name' : category['name'], '_id': category['_id'] }
+        product = {
+            'name': name,
+            'description': description,
+            'category': cat,
+            'images': images,
+            'permalink': permalink
+        }
+        p = Product(product)
+        p.insert()
+
 
