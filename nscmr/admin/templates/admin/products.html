@@ -13,6 +13,16 @@
         <div class="col-xs-12">
           <div class="card">
             <div class="card-header">
+              <div class="card-title"><div class="title">Criar produto</div></div>
+            </div>
+            <div class="card-body">
+              {% include 'admin/partials/productform.html' %}
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="card">
+            <div class="card-header">
               <div class="card-title"><div class="title">Produtos</div></div>
             </div>
             <div class="card-body">
@@ -58,4 +68,73 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+  $(":checkbox").change(function() {
+    if ($(this).is(':checked')) {
+      $(this).val("true");
+      $($(this).data("enable")).show();
+      $($(this).data("disable")).hide();
+    } else {
+      $(this).val("false");
+      $($(this).data("enable")).hide();
+      $($(this).data("disable")).show();
+    }
+  });
+});
+
+/*
+$(function() {
+  $("button[data-toggle=fieldset-add-row]").on('click', function() {
+    var target = $($(this).data("target"));
+    var oldrow = target.
+  });
+});
+*/
+
+$(function() {
+  $("div[data-toggle=fieldset]").each(function() {
+    var $this = $(this);
+    //Add new entry
+    $this.find("button[data-toggle=fieldset-add-row]").click(function() {
+      var target = $($(this).data("target"));
+      console.log(target);
+      var oldrow = target.find("[data-toggle=fieldset-entry]:last");
+      var row = oldrow.clone(true, true);
+      console.log(row.find(":input")[0]);
+      var elem_num = parseInt(row.attr("data-id")) + 1;
+      row.attr('data-id', elem_num);
+      row.find(":input").each(function() {
+        console.log(this);
+        var id = $(this).attr('id').replace('-' + (elem_num - 1), '-' + (elem_num));
+        $(this).attr('name', id).attr('id', id).val('').removeAttr("checked");
+      });
+      oldrow.after(row);
+    }); //End add new entry
+
+    //Remove row
+    $this.find("button[data-toggle=fieldset-remove-row]").click(function() {
+      if($this.find("[data-toggle=fieldset-entry]").length > 1) {
+        var thisRow = $(this).closest("[data-toggle=fieldset-entry]");
+        var entries = thisRow.nextAll();
+        var elem_num = parseInt(thisRow.attr('data-id'));
+        thisRow.remove();
+        entries.each(function() {
+          $(this).attr('data-id', elem_num);
+          $(this).find(":input").each(function() {
+            var id = $(this).attr('id').replace(/-(\d{1,4})/m, '-' + elem_num);
+            $(this).attr('name', id).attr('id', id).val('').removeAttr("checked");
+          });
+          elem_num += 1;
+        });
+      }
+    }); //End remove row
+
+  });
+
+});
+</script>
 {% endblock %}
