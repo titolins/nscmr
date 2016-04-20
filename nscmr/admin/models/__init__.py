@@ -89,11 +89,13 @@ class Category(SlugDocument):
         form_data['permalink'] = slugify(form_data['name'])
         return Category(form_data)
 
+    def get_name(self):
+        return self._content['name'].capitalize()
+
 
 class Product(SlugDocument):
     __collection__ = 'products'
-    fields = ['name', 'description', 'price', 'size', 'thumbnail',
-            'background', 'category', 'permalink']
+    fields = ['name', 'description', 'category', 'permalink']
 
     indexes = {
         'name': { 'unique': True },
@@ -102,16 +104,27 @@ class Product(SlugDocument):
 
     @classmethod
     def get_by_category(cls, category_id, to_obj=False):
-        return cls._get_many(to_obj, { "category_id": category_id })
+        return cls._get_many(to_obj, { "category._id": category_id })
 
     @staticmethod
     def from_form(form_data):
         return NotImplemented
 
     def get_category(self):
-        return Category.get_by_id(self._content['category_id'])
+        return Category.get_by_id(self._content['category']['_id'])
 
 
 class Variant(Document):
     __collection__ = 'variants'
-    fields = ['product_id', 'attributes']
+    fields = ['product', 'images', 'sku', 'price' 'attributes']
+    # images must have the following format { 'big': <url>, 'thumb': <url> }
+    # attributes should contain: size, color, etc.. and any other
+    # later on though
+    # product should contain 'name' and '_id'
+
+    @staticmethod
+    def from_form(form_data):
+        return NotImplemented
+
+    def get_product(self):
+        return Product.get_by_id(self._content['product_id'])
