@@ -1,12 +1,8 @@
 from flask_wtf import Form
 
-from wtforms import (
-    TextField,
+from wtforms.fields import (
+    StringField,
     PasswordField,
-    SubmitField,
-    ValidationError,
-    FieldList,
-    FormField
 )
 
 from wtforms.fields.html5 import DateField
@@ -22,7 +18,7 @@ from wtforms.validators import (
 MIN_PASS_LEN = 6
 
 class LoginForm(Form):
-    email = TextField(
+    email = StringField(
         'Email',
         validators=[
             input_required("Campo necessário!"),
@@ -32,8 +28,8 @@ class LoginForm(Form):
 
 
 class ProfileForm(Form):
-    name = TextField('Nome', validators=[input_required("Campo necessário!")])
-    email = TextField(
+    name = StringField('Nome', validators=[input_required("Campo necessário!")])
+    email = StringField(
         'Email',
         validators=[
             input_required("Campo necessário!"),
@@ -51,25 +47,25 @@ class ProfileForm(Form):
 
 
 class AddressForm(Form):
-    name = TextField('Nome', validators=[input_required("Campo necessário!")])
-    street_address_1 = TextField('Nome',
+    name = StringField('Nome', validators=[input_required("Campo necessário!")])
+    street_address_1 = StringField('Nome',
         validators=[input_required("Campo necessário!")])
-    street_address_2 = TextField('Complemento')
-    city = TextField('Cidade',validators=[input_required("Campo necessário!")])
-    zip_code = TextField('Cep',
+    street_address_2 = StringField('Complemento')
+    city = StringField('Cidade',validators=[input_required("Campo necessário!")])
+    zip_code = StringField('Cep',
         validators=[
             input_required("Campo necessário!"),
             Regexp(r'[0-9]{5}-[0-9]{3}', message="Formato inválido")
         ])
-    state = TextField('Estado', [input_required("Campo necessário!")])
+    state = StringField('Estado', [input_required("Campo necessário!")])
     # not needed for now..
     #country
     #phone??
 
 
 class RegistrationForm(Form):
-    name = TextField('Nome', validators=[input_required("Campo necessário!")])
-    email = TextField(
+    name = StringField('Nome', validators=[input_required("Campo necessário!")])
+    email = StringField(
         'Email',
         validators=[
             input_required("Campo necessário!"),
