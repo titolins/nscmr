@@ -13,7 +13,11 @@ from flask.ext.principal import RoleNeed, Permission
 
 from .models import User, Category, Product
 
-from .forms import NewCategoryForm, category_images
+from .forms import (
+    NewCategoryForm,
+    category_images,
+    NewProductForm,
+    product_images)
 
 
 def build_admin_bp():
@@ -99,10 +103,18 @@ def build_admin_bp():
         return "<h1>To be new product page</h1>"
 
     ## Read/Update/Delete
-    @bp.route('/produtos')
+    @bp.route('/produtos', methods=['GET', 'POST'])
     def products():
+        categories = Category.get_all(to_obj=True)
+        products = Product.get_all()
+        form = NewProductForm()
+        form.category.choices = [(str(c.id), c.name) for c in categories]
+        if form.validate_on_submit():
+            print(form.data)
+            pass
         return render_template('admin/products.html',
-                products=Product.get_all())
+                products=products,
+                form=form)
 
     ######################################
     # end CRUD                           #
