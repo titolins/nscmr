@@ -19,6 +19,7 @@
             <table class="datatable table table-striped" cellspacing="0" width="100%">
               <thead>
                   <tr>
+                      <th>Id</th>
                       <th>Nome</th>
                       <th>Email</th>
                       <th>Data de nascimento</th>
@@ -29,6 +30,7 @@
               </thead>
               <tfoot>
                   <tr>
+                      <th>Id</th>
                       <th>Nome</th>
                       <th>Email</th>
                       <th>Data de nascimento</th>
@@ -40,8 +42,9 @@
               <tbody>
                 {% for user in users %}
                   <tr>
-                    <td>{{ user['name'] }}</td>
                     <td>{{ user['_id'] }}</td>
+                    <td>{{ user['name'] }}</td>
+                    <td>{{ user['email'] }}</td>
                     <td>{{ user['dob'] }}</td>
                     <td>{{ user['addresses'] }}</td>
                     <td>{{ user['orders'] }}</td>
