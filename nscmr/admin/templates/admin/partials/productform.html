@@ -26,8 +26,10 @@
         <table class="table">
           <thead>
             <tr>
-              <th>Cor</th>
-              <th>Tamanho</th>
+              <th>Variação 1</th>
+              <th>Valor</th>
+              <th>Variação 2</th>
+              <th>Valor</th>
               <th>Preço</th>
               <th>Quantidade</th>
               <th>SKU</th>
@@ -38,8 +40,10 @@
           <tbody>
             {% for variant in form.variants %}
               <tr data-toggle="fieldset-entry" data-id="{{ loop.index0 }}">
-                <td>{{ variant.color()|safe }}</td>
-                <td>{{ variant.size()|safe }}</td>
+                <td>{{ variant.attr_1_name(style='width:100%')|safe }}</td>
+                <td>{{ variant.attr_1_value()|safe }}</td>
+                <td>{{ variant.attr_2_name(style='width:100%')|safe }}</td>
+                <td>{{ variant.attr_2_value()|safe }}</td>
                 <td>{{ variant.price()|safe }}</td>
                 <td>{{ variant.quantity()|safe }}</td>
                 <td>{{ variant.sku()|safe }}</td>
@@ -53,6 +57,39 @@
                     <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                   </button>
                 </td>
+              </tr>
+              <tr>
+                  {% if variant.attr_1_name.errors or variant.attr_1_value.errors or
+                        variant.attr_2_name.errors or variant.attr_2_value.errors or
+                        variant.price.errors or variant.quantity.errors or
+                        variant.sku.errors or variant.images.errors %}
+                    <ul class="alert alert-danger alert-login">
+                      {% for error in variant.attr_1_name.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                      {% for error in variant.attr_1_value.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                      {% for error in variant.attr_2_name.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                      {% for error in variant.attr_2_value.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                      {% for error in variant.price.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                      {% for error in variant.quantity.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                      {% for error in variant.sku.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                      {% for error in variant.images.errors %}
+                        <li>{{ error }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
               </tr>
             {% endfor %}
           </tbody>
@@ -69,12 +106,19 @@
         </button>
         {% for image_field in form.images %}
           <div data-toggle="fieldset-entry" data-id="{{ loop.index0 }}">
-            {{ render_field(image_field) }}
-              <button class="btn btn-default" type="button" data-toggle="fieldset-remove-row" id="images-{{loop.index0}}-remove">
-                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-              </button>
+            {{ image_field()|safe }}
+            <button class="btn btn-default" type="button" data-toggle="fieldset-remove-row" id="images-{{loop.index0}}-remove">
+              <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+            </button>
           </div>
         {% endfor %}
+        {% if form.images.errors %}
+          <ul class="alert alert-danger alert-login">
+            {% for error in form.images.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
       </div>
     </div>
   </dl>
