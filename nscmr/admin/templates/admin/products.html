@@ -30,35 +30,32 @@
               <thead>
                   <tr>
                       <th>Id</th>
-                      <th>Categoria</th>
                       <th>Nome</th>
                       <th>Descrição</th>
-                      <th>Preço</th>
-                      <th>Tamanho</th>
-                      <th>Imagem</th>
+                      <th>Categoria</th>
+                      <th>Meta-description</th>
+                      <th>Permalink</th>
                   </tr>
               </thead>
               <tfoot>
                   <tr>
                       <th>Id</th>
-                      <th>Categoria</th>
                       <th>Nome</th>
                       <th>Descrição</th>
-                      <th>Preço</th>
-                      <th>Tamanho</th>
-                      <th>Imagem</th>
+                      <th>Categoria</th>
+                      <th>Meta-description</th>
+                      <th>Permalink</th>
                   </tr>
               </tfoot>
               <tbody>
                 {% for product in products %}
                   <tr>
-                    <td>{{ product['_id'] }}</td>
-                    <td>{{ product['category']['name'] }}</td>
-                    <td>{{ product['name'] }}</td>
-                    <td>{{ product['description'] }}</td>
-                    <td>{{ product['price'] }}</td>
-                    <td>{{ product['size'] }}</td>
-                    <td>{{ product['thumbnail'] }}</td>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.category['name'] }}</td>
+                    <td>{{ product.meta_description }}</td>
+                    <td>{{ product.permalink }}</td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -73,7 +70,7 @@
 {% block scripts %}
 <script>
 $(document).ready(function() {
-  $(":checkbox").change(function() {
+  $("#has_variants").change(function() {
     if ($(this).is(':checked')) {
       $(this).val("true");
       $($(this).data("enable")).show();
@@ -84,7 +81,19 @@ $(document).ready(function() {
       $($(this).data("disable")).show();
     }
   });
+  $("#has_variants").trigger('click');
+  $("#has_variants").trigger('click');
+  /*
+    var select data
+  var selectData = [{id: 'color', text: 'Cor'}, {id: 'size', text: 'Tamanho'}];
+
+  $(".select2").select2({
+    data: selectData,
+    allowClear: true,
+  });
+  */
 });
+
 
 /*
 $(function() {
@@ -103,6 +112,8 @@ $(function() {
       var target = $($(this).data("target"));
       console.log(target);
       var oldrow = target.find("[data-toggle=fieldset-entry]:last");
+      // destroy select2 before cloning
+      oldrow.find("select").select2('destroy');
       var row = oldrow.clone(true, true);
       console.log(row.find(":input")[0]);
       var elem_num = parseInt(row.attr("data-id")) + 1;
@@ -113,6 +124,9 @@ $(function() {
         $(this).attr('name', id).attr('id', id).val('').removeAttr("checked");
       });
       oldrow.after(row);
+      // re-enable select2 after insertion
+      oldrow.find("select").select2();
+      row.find("select").select2();
     }); //End add new entry
 
     //Remove row
