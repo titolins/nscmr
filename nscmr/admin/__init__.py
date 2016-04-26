@@ -11,7 +11,7 @@ from pymongo.errors import DuplicateKeyError
 
 from flask.ext.principal import RoleNeed, Permission
 
-from .models import User, Category, Product
+from .models import User, Category, Product, Variant
 
 from .forms import (
     NewCategoryForm,
@@ -19,6 +19,7 @@ from .forms import (
     NewProductForm,
     product_images)
 
+from .helper import make_thumb
 
 def build_admin_bp():
     bp = Blueprint(
@@ -89,6 +90,7 @@ def build_admin_bp():
             category = Category.from_form(form.data)
             try:
                 category.insert()
+                #flash("Categoria criada!")
             except DuplicateKeyError:
                 form.name.errors.append(
                     'Já existe uma categoria com esse nome')
@@ -106,18 +108,121 @@ def build_admin_bp():
     @bp.route('/produtos', methods=['GET', 'POST'])
     def products():
         categories = Category.get_all(to_obj=True)
-        products = Product.get_all()
+        products = Product.get_all(to_obj=True)
         form = NewProductForm()
-        form.category.choices = [(str(c.id), c.name) for c in categories]
+        form.category.choices = [('_'.join([str(c.id), c.name]), c.name) \
+            for c in categories]
         if form.validate_on_submit():
-            print(form.data)
-            pass
+            # first we build the product data to create the product itself
+            c_info = form.category.data.split('_')
+            category = {
+                '_id': c_info[0],
+                'name': c_info[1],
+            }
+            product_data = {
+                'category': category,
+                'name': form.name.data,
+                'description': form.description.data,
+                'meta_description': form.meta_description.data,
+            }
+            # create and insert product, catching duplicate name errors
+            product = Product.from_form(product_data)
+            try:
+                product.insert()
+            except DuplicateKeyError:
+                form.name.errors.append(
+                    'Já existe um produto com esse nome')
+            # then we check for the has_variants data. If it's false, we'll
+            # create a single variant with all additional product info (sku,
+            # price, images, etc..)
+            if not form.has_variants.data:
+                # get the id of the just inserted product and create and
+                # insert the variant
+                var_data = create_variant_data(form.data, product)
+                #var_data['product'] = product.id
+                variant = Variant.from_form(var_data)
+                variant.insert()
+            # If, however, the product has several variants, we'll need to
+            # iterate them and create all of them.
+            else:
+                for var in form.variants:
+                    var_data = create_variant_data(var.data, product,
+                        is_var=True)
+                    variant = Variant.from_form(var_data)
+                    variant.insert()
+            # import flash
+            #flash("Produto criado!")
+            products = Product.get_all(to_obj=True)
         return render_template('admin/products.html',
                 products=products,
                 form=form)
 
+
     ######################################
     # end CRUD                           #
+    ######################################
+
+    ######################################
+    # start helpers                      #
+    ######################################
+
+
+    def create_variant_data(form_data, product, is_var=False):
+        images = []
+        # save the image, create the thumbnail and build the array of
+        # the images
+        for img in form_data['images']:
+            if img.filename not in ('', None):
+                # if it's a variant, we use the variant attributes to generate
+                # the filename
+                if is_var:
+                    img_filename = "{}-{}.".format(product.permalink,
+                        '_'.join([
+                            form_data['attr_1_value'],
+                            form_data['attr_2_value']]))
+                # else, we just use the permalink
+                else:
+                    img_filename = "{}.".format(product.permalink)
+
+                # save the regular image
+                img_filename = product_images.save(img, name=img_filename)
+                # get it's url
+                img = product_images.url(img_filename)
+                # create the thumbnail and get it's url
+                thumb = product_images.url(make_thumb(img_filename,
+                            product_images.default_dest(current_app)))
+                # create this image dict and append to the whole
+                img_dict = {'big': img, 'thumb': thumb}
+                images.append(img_dict)
+        # construct the price (stopped using floats as per several
+        # recommendations, besides pymongo encoding error to decimal
+        price = {
+            'currency': 'BRL',
+            'major': int(form_data['price']),
+            'minor': int((form_data['price']*100)%100)
+        }
+        # build the product and variant data
+        var_data = {
+            'product_id': product.id,
+            'images': images,
+            'sku': form_data['sku'],
+            'price': price,
+            'quantity': form_data['quantity'],
+        }
+        # if we have multiple variants, we need to get the attributes from the
+        # form..
+        if is_var:
+            attrs = {
+                form_data['attr_1_name']: form_data['attr_1_value'],
+                form_data['attr_2_name']: form_data['attr_2_value'],
+            }
+            var_data['attributes'] = attrs
+
+        return var_data
+
+
+    ######################################
+    # end helpers                        #
     ######################################
 
     ######################################
