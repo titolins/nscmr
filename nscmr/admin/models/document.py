@@ -5,6 +5,8 @@ from bson import InvalidDocument
 from pymongo.errors import DuplicateKeyError
 from pymongo import IndexModel
 
+from bson import ObjectId
+
 from datetime import datetime
 
 class DocumentProperties(type):
@@ -116,7 +118,7 @@ class Document(object, metaclass=DocumentProperties):
 
     @classmethod
     def get_by_id(cls, doc_id, to_obj=False):
-        return cls._get_one(to_obj, {'_id': doc_id})
+        return cls._get_one(to_obj, {'_id': ObjectId(doc_id)})
 
     @classmethod
     def _get_many(cls, to_obj, query=None):
@@ -146,9 +148,9 @@ class Document(object, metaclass=DocumentProperties):
 
     def insert(self):
         # set timestamps for all
+        # creation time is already present on mongo ObjectId
         d = datetime.utcnow()
-        for field in ('created_at', 'updated_at'):
-            setattr(self, field, d)
+        setattr(self, 'updated_at', d)
         self.collection.insert_one(self._content)
 
     def update(self):
@@ -186,3 +188,4 @@ class SlugDocument(Document):
     @classmethod
     def get_by_permalink(cls, permalink, to_obj=False):
         return cls._get_one(to_obj, {'permalink': permalink})
+
