@@ -14,15 +14,16 @@ def slugify(text, delim=u'-'):
     return delim.join(result)
 
 def make_thumb(image, path, size=(128,128)):
+    full_img_path = os.path.join(path, image)
     ext = image.rsplit('.',1)[1]
     filename = image.split('.',1)[0]
     thumb_filename = '{}_{}.{}'.format(filename, 'thumbnail', ext)
     output_file = os.path.join(path, thumb_filename)
     try:
-        im = Image.open(image).thumbnail(size)
+        im = Image.open(full_img_path)
         im.thumbnail(size)
         im.save(output_file, ext)
-        return output_file
+        return thumb_filename
     except IOError as e:
         print('Erro criando thumbnail de {}'.format(image))
         print(e)
