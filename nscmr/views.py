@@ -20,8 +20,6 @@ from flask.ext.principal import (
     Identity,
     AnonymousIdentity)
 
-from bson import ObjectId
-
 from pymongo.errors import DuplicateKeyError
 
 from functools import wraps
@@ -162,11 +160,12 @@ def category(permalink):
 @back.anchor
 def product(c_permalink, p_permalink):
     category = Category.get_by_permalink(c_permalink)
-    product = Product.get_by_permalink(p_permalink)
+    product = Product.get_by_permalink(p_permalink, to_obj=True)
     return render_template(
             'product.html',
             category = category,
             product = product,
+            variants = product.variants,
             login_form=LoginForm())
 
 # Update
@@ -190,14 +189,14 @@ def product(c_permalink, p_permalink):
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.get_by_id(form.email.data.lower(), to_obj=True)
+        user = User.get_by_email(form.email.data.lower(), to_obj=True)
         # no hashing or ssl implemented for now
         if user is not None and user.check_password(form.password.data):
             # Flask-Login
             login_user(user)
             identity_changed.send(
                     current_app._get_current_object(),
-                    identity=Identity(user.id))
+                    identity=Identity(str(user.id)))
             flash('Log-in bem sucedido! Você já pode fazer suas compras')
             return back.redirect()
         # in case of wrong login/password, return to last page with custom
