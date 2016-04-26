@@ -63,8 +63,6 @@ def build_app():
             for role in current_user.roles:
                 identity.provides.add(RoleNeed(role))
 
-    # end config extensions
-
     #############
     # Flask-WTF #
     #############
@@ -77,6 +75,7 @@ def build_app():
 
     configure_uploads(app, (category_images, product_images))
 
+    # end config extensions
 
     return app
 
@@ -94,12 +93,12 @@ if __name__ == '__main__':
     from nscmr.admin.helper import slugify
     from nscmr.admin.models import User, Product, Category
     user_content = {
-        '_id': 'admin@studioduvet.com',
+        'email': 'admin@studioduvet.com.br',
         'name': 'administrador',
         'password': generate_password_hash('admin'),
         'roles': ['user','admin'],
     }
-    u = User.get_by_id('admin@studioduvet.com',to_obj=True)
+    u = User.get_by_email('admin@studioduvet.com.br',to_obj=True)
     try:
         u.id
     except:
