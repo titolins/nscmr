@@ -38,6 +38,7 @@ function validateForm() {
   }
 }
 
+/*
 $(document).ready(function() {
   $("#email").change(validateEmail);
 });
@@ -45,3 +46,4 @@ $(document).ready(function() {
 $(document).ready(function() {
   $("#password").change(validateForm);
 });
+*/
