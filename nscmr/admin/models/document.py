@@ -99,6 +99,28 @@ class Document(object, metaclass=DocumentProperties):
     def from_form(form_data):
         return NotImplemented
 
+    @staticmethod
+    def as_dict(objects):
+        '''
+        wrapper method for object results
+        this method will return a dictionary with the documents id's as keys
+        of another dict with it's fields
+
+        despite being an wrapper of the objects result set (which itself is a
+        wrapper of the cursor result) - so a wrapper of a wrapper, the
+        advantage here is that we get the properties of the documents, that
+        may, or may not, be in the db (or even if it is in the db, the format
+        of the property should be friendlier - see the price of the variant to
+        get a grip of what we're talking about)
+        '''
+        result = {}
+        for o in objects:
+            result[str(o.id)] = {}
+            for k in o._content.keys():
+                if k != '_id':
+                    result[str(o.id)][k] = getattr(o, k)
+        return result
+
     @classmethod
     def create_indexes(cls):
         if cls.indexes not in ([],):
