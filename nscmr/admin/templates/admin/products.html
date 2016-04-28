@@ -27,22 +27,27 @@
             </div>
             <div class="card-body">
             <table class="datatable table table-striped" cellspacing="0" width="100%">
+              <button id="delete-product-btn" class="btn btn-default">Deletar seleção</button>
               <thead>
                   <tr>
+                      <th></th>
                       <th>Id</th>
                       <th>Nome</th>
                       <th>Descrição</th>
                       <th>Categoria</th>
+                      <th>Atributos</th>
                       <th>Meta-description</th>
                       <th>Permalink</th>
                   </tr>
               </thead>
               <tfoot>
                   <tr>
+                      <th></th>
                       <th>Id</th>
                       <th>Nome</th>
                       <th>Descrição</th>
                       <th>Categoria</th>
+                      <th>Atributos</th>
                       <th>Meta-description</th>
                       <th>Permalink</th>
                   </tr>
@@ -50,12 +55,19 @@
               <tbody>
                 {% for product in products %}
                   <tr>
-                    <td>{{ product.id }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.description }}</td>
-                    <td>{{ product.category['name'] }}</td>
-                    <td>{{ product.meta_description }}</td>
-                    <td>{{ product.permalink }}</td>
+                    <td>
+                      <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
+                        <input data-toggle="product-selection" id="edit-box-{{ loop.index0 }}" type="checkbox"></input>
+                        <label for="edit-box-{{ loop.index0 }}"></label>
+                      </div>
+                    </td>
+                    <td class="product-id">{{ product.id }}</td>
+                    <td class="product-name">{{ product.name }}</td>
+                    <td class="product-description" >{{ product.description }}</td>
+                    <td class="product-category">{{ product.category.name }}</td>
+                    <td class="product-attributes">{{ product.attributes }}</td>
+                    <td class="product-metadescription">{{ product.meta_description }}</td>
+                    <td class="product-permalink">{{ product.permalink }}</td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -70,6 +82,17 @@
 {% block scripts %}
 <script>
 $(document).ready(function() {
+  // preparing csrf for future ajax requests
+  var csrftoken = $('meta[name=csrf-token]').attr('content');
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+      }
+    }
+  });
+  // this code hides or shows the variants attributes (on the creation form)
+  // and correctly sets it's value, as used by our backend
   $("#has_variants").change(function() {
     if ($(this).is(':checked')) {
       $(this).val("true");
@@ -81,17 +104,32 @@ $(document).ready(function() {
       $($(this).data("disable")).show();
     }
   });
+  // just triggering the event twice to make sure the visitors are in the same
+  // place than they were before in case of page reload
   $("#has_variants").trigger('click');
   $("#has_variants").trigger('click');
-  /*
-    var select data
-  var selectData = [{id: 'color', text: 'Cor'}, {id: 'size', text: 'Tamanho'}];
 
-  $(".select2").select2({
-    data: selectData,
-    allowClear: true,
+
+  // product selection stuff (from viewer)
+  $("#delete-product-btn").on("click", function() {
+    var selectedProducts = [];
+    $("input[data-toggle=product-selection]:checked").each(function() {
+      var parent = $(this).closest("tr");
+      selectedProducts.push($(parent).find(".product-id").text());
+    });
+    $.ajax({
+      type: "POST",
+      url: "{{ url_for('admin.delete_products') }}",
+      data: JSON.stringify(selectedProducts, null, '\t'),
+      contentType: 'application/json;charset=UTF-8',
+      success: function(response) {
+        console.log(response);
+        location.reload();
+      },
+    });
+
   });
-  */
+
 });
 
 
