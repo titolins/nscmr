@@ -158,10 +158,11 @@ class NewProductForm(Form):
                     var.attr_1_name.errors = ['Tipo de variação inválida']
                 if var.attr_2_name.data not in VALID_VARIATIONS:
                     var.attr_2_name.errors = ['Tipo de variação inválida']
-                if var.attr_1_value.data in ('', None):
-                    var.attr_1_value.errors = ['Valor de variação necessário!']
-                if var.attr_2_value.data in ('', None):
-                    var.attr_2_value.errors = ['Valor de variação necessário!']
+                if var.attr_1_value.data in ('', None) and \
+                        var.attr_2_value.data in ('', None):
+                    error_str = 'Ao menos um valor de variação deve ser dado'
+                    var.attr_1_value.errors = [error_str]
+                    var.attr_2_value.errors = [error_str]
                 try:
                     price = float(var.price.data)
                     if price <= 0:
