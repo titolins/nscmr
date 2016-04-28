@@ -252,7 +252,8 @@ def build_admin_bp():
                     field_data = form_data[field]
 
                 var_data[field] = field_data
-        print("var_data=========\n{}".format(var_data))
+        # last but not least, add the product_id
+        var_data['product_id'] = product.id
         return var_data
 
 
