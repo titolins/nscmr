@@ -123,7 +123,7 @@ class Product(SlugDocument):
         return Product(form_data)
 
     def get_category(self):
-        return Category.get_by_id(self._content['category']['_id'])
+        return Category.get_by_id(self._content['category']['_id'],to_obj=True)
 
     def get_name(self):
         return self._content['name'].capitalize()
@@ -139,6 +139,10 @@ class Variant(Document):
     # attributes should contain: size, color, etc.. and any other
     # later on though
 
+    indexes = {
+        'product_id': ASCENDING,
+    }
+
     @staticmethod
     def from_form(form_data):
         form_data['sku'] = form_data['sku'].upper()
@@ -151,3 +155,10 @@ class Variant(Document):
 
     def get_product(self):
         return Product.get_by_id(self._content['product_id'])
+
+    def get_price(self):
+        major = self._content['price']['major']
+        minor = self._content['price']['minor']
+        price = major + (float(minor)/100)
+        return "{} {}".format(self._content['price']['currency'], price)
+
