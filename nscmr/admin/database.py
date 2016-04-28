@@ -27,7 +27,7 @@ class NsClient(MongoClient):
             # set the collection handler
             document.collection = self.db[getattr(document, '__collection__')]
             # create indexes
-            document.create_indexes()
+            #document.create_indexes()
 
 
 
