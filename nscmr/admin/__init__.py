@@ -61,24 +61,13 @@ def build_admin_bp():
     # CRUD                               #
     ######################################
 
-    # Users
-    ## Create
-    @bp.route('/usuarios/novo')
-    def create_user():
-        return "<h1>To be new user</h1>"
 
     ## Read/Update/Delete
     @bp.route('/usuarios')
     def users():
         return render_template('admin/users.html', users=User.get_all())
 
-    # Categories
-    ## Create
-    @bp.route('/categorias/nova')
-    def create_category():
-        return "<h1>To be new category page</h1>"
-
-    ## Read/Update/Delete
+    ## Create/Read/Update/Delete
     @bp.route('/categorias', methods=['GET', 'POST'])
     def categories():
         categories = Category.get_all(to_obj=True)
@@ -103,11 +92,6 @@ def build_admin_bp():
                 form=form,
                 categories=categories)
 
-    # Produtos
-    ## Create
-    @bp.route('/produtos/novo')
-    def create_product():
-        return "<h1>To be new product page</h1>"
 
     ## Read/Create/Update
     @bp.route('/produtos', methods=['GET', 'POST'])
