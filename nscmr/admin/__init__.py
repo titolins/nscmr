@@ -151,11 +151,21 @@ def build_admin_bp():
             # If, however, the product has several variants, we'll need to
             # iterate them and create all of them.
             else:
+                attributes = []
                 for var in form.variants:
-                    var_data = create_variant_data(var.data, product)#,
-                        #is_var=True)
+                    var_data = create_variant_data(var.data, product)
                     variant = Variant.from_form(var_data)
                     variant.insert()
+                    for k in variant.attributes.keys():
+                        if k not in attributes:
+                            attributes += [k]
+                # update product with all of it's available variations
+                Product.collection.update_one(
+                    {'_id': product.id },
+                    {'$set':
+                        {'attributes': attributes }
+                    })
+
             # import flash
             #flash("Produto criado!")
             products = Product.get_all(to_obj=True)
