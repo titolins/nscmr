@@ -44,32 +44,44 @@
             </div>
             <div class="card-body">
               <table class="datatable table table-striped" cellspacing="0" width="100%">
+                <button id="delete-btn" class="btn btn-default">Deletar seleção</button>
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Nome</th>
-                        <th>Categoria pai</th>
-                        <th>Base image</th>
-                        <th>Meta-description</th>
+                      <th></th>
+                      <th>Id</th>
+                      <th>Nome</th>
+                      <th>Categoria pai</th>
+                      <th>Base image</th>
+                      <th>Meta-description</th>
+                      <th>Permalink</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Id</th>
-                        <th>Nome</th>
-                        <th>Categoria pai</th>
-                        <th>Base image</th>
-                        <th>Meta-description</th>
+                      <th></th>
+                      <th>Id</th>
+                      <th>Nome</th>
+                      <th>Categoria pai</th>
+                      <th>Base image</th>
+                      <th>Meta-description</th>
+                      <th>Permalink</th>
                     </tr>
                 </tfoot>
                 <tbody>
                   {% for category in categories %}
                     <tr>
-                      <td>{{ category.id }}</td>
-                      <td>{{ category.name }}</td>
-                      <td>{{ category.parent }}</td>
-                      <td><a href="{{ category.base_img }}">Ver imagem</a></td>
-                      <td>{{ category.meta_description }}</td>
+                      <td>
+                        <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
+                          <input data-toggle="row-selection" id="edit-box-{{ loop.index0 }}" type="checkbox"></input>
+                          <label for="edit-box-{{ loop.index0 }}"></label>
+                        </div>
+                      </td>
+                      <td class="id">{{ category.id }}</td>
+                      <td class="name">{{ category.name }}</td>
+                      <td class="parent">{{ category.parent }}</td>
+                      <td class="base_img"><a href="{{ category.base_img }}">Ver imagem</a></td>
+                      <td class="meta_description">{{ category.meta_description }}</td>
+                      <td class="permalink">{{ category.permalink }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -80,4 +92,10 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block scripts %}
+<script>
+  window.deleteUri = "{{ url_for('admin.delete_categories') }}";
+</script>
+<script src="{{ url_for('admin.static', filename='js/rest.js') }}"></script>
 {% endblock %}
