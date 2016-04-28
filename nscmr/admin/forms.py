@@ -34,10 +34,7 @@ product_images = UploadSet(
         default_dest=\
             lambda app: os.path.join(app.instance_path,'uploads/img/product'))
 
-VALID_VARIATIONS = {
-        'color': 'Cor',
-        'size': 'Tamanho',
-}
+VALID_VARIATIONS = [ 'cor', 'tamanho' ]
 
 class NsTextInput(TextInput):
     def __init__(self, ns_class='form-control'):
@@ -74,7 +71,7 @@ class VarAttrSelectField(SelectField):
     def __init__(
             self, label='', validators=None, remove_duplicates=True, **kwargs):
         super().__init__(label, validators, **kwargs)
-        self.choices = [ (k, v) for k,v in VALID_VARIATIONS.items() ]
+        self.choices = [ (var, var.capitalize()) for var in VALID_VARIATIONS ]
 
 
 class NewCategoryForm(Form):
@@ -157,9 +154,9 @@ class NewProductForm(Form):
             default_fields_errors = True
         if self.has_variants.data:
             for var in self.variants:
-                if var.attr_1_name.data not in VALID_VARIATIONS.keys():
+                if var.attr_1_name.data not in VALID_VARIATIONS:
                     var.attr_1_name.errors = ['Tipo de variação inválida']
-                if var.attr_2_name.data not in VALID_VARIATIONS.keys():
+                if var.attr_2_name.data not in VALID_VARIATIONS:
                     var.attr_2_name.errors = ['Tipo de variação inválida']
                 if var.attr_1_value.data in ('', None):
                     var.attr_1_value.errors = ['Valor de variação necessário!']
