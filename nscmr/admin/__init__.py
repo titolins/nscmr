@@ -98,7 +98,8 @@ def build_admin_bp():
         print(request.json)
         cs_deleted = 0
         for k in request.json:
-            cs_deleted += Category.collection.delete_many({'_id':ObjectId(k)})
+            result = Category.collection.delete_many({'_id':ObjectId(k)})
+            cs_deleted += result.deleted_count
         response = make_response(
             json.dumps(
                 '{} category(ies)succesfuly deleted!'.format(cs_deleted)),
