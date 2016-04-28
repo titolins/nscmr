@@ -5,7 +5,10 @@ from flask import (
     request,
     abort,
     url_for,
-    current_app)
+    current_app,
+    make_response)
+
+from bson.objectid import ObjectId
 
 from pymongo.errors import DuplicateKeyError
 
@@ -20,6 +23,8 @@ from .forms import (
     product_images)
 
 from .helper import make_thumb
+
+import json
 
 def build_admin_bp():
     bp = Blueprint(
@@ -104,7 +109,7 @@ def build_admin_bp():
     def create_product():
         return "<h1>To be new product page</h1>"
 
-    ## Read/Update/Delete
+    ## Read/Create/Update
     @bp.route('/produtos', methods=['GET', 'POST'])
     def products():
         categories = Category.get_all(to_obj=True)
@@ -113,18 +118,20 @@ def build_admin_bp():
         form.category.choices = [('_'.join([str(c.id), c.name]), c.name) \
             for c in categories]
         if form.validate_on_submit():
-            # first we build the product data to create the product itself
-            c_info = form.category.data.split('_')
-            category = {
-                '_id': c_info[0],
-                'name': c_info[1],
-            }
-            product_data = {
-                'category': category,
-                'name': form.name.data,
-                'description': form.description.data,
-                'meta_description': form.meta_description.data,
-            }
+            product_data = {}
+            form_data = form.data
+            for field in form_data.keys():
+                field_data = None
+                if field == 'category':
+                    category_info = form_data[field].split('_')
+                    field_data = { '_id': category_info[0],
+                            'name': category_info[1] }
+                elif field in ('name', 'description', 'meta_description'):
+                    field_data = form_data[field]
+                # skip variants related info
+                else:
+                    continue
+                product_data[field] = field_data
             # create and insert product, catching duplicate name errors
             product = Product.from_form(product_data)
             try:
@@ -135,19 +142,18 @@ def build_admin_bp():
             # then we check for the has_variants data. If it's false, we'll
             # create a single variant with all additional product info (sku,
             # price, images, etc..)
+            print(form)
+            print(form.data)
             if not form.has_variants.data:
-                # get the id of the just inserted product and create and
-                # insert the variant
                 var_data = create_variant_data(form.data, product)
-                #var_data['product'] = product.id
                 variant = Variant.from_form(var_data)
                 variant.insert()
             # If, however, the product has several variants, we'll need to
             # iterate them and create all of them.
             else:
                 for var in form.variants:
-                    var_data = create_variant_data(var.data, product,
-                        is_var=True)
+                    var_data = create_variant_data(var.data, product)#,
+                        #is_var=True)
                     variant = Variant.from_form(var_data)
                     variant.insert()
             # import flash
@@ -156,6 +162,24 @@ def build_admin_bp():
         return render_template('admin/products.html',
                 products=products,
                 form=form)
+
+    @bp.route('/produtos/deletar', methods=['POST'])
+    def delete_products():
+        # implement img deletion!!!!!!
+        print(request.json)
+        vs_deleted = ps_deleted = 0
+        for k in request.json:
+            vs_res = Variant.collection.delete_many({'product_id':ObjectId(k)})
+            p_res = Product.collection.delete_one({ '_id': ObjectId(k) })
+            vs_deleted += vs_res.deleted_count
+            ps_deleted += p_res.deleted_count
+        response = make_response(
+            json.dumps(
+                '{} product(s) and {} variant(s) succesfuly deleted!'.format(
+                    ps_deleted, vs_deleted)),
+            200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
 
 
     ######################################
@@ -167,57 +191,58 @@ def build_admin_bp():
     ######################################
 
 
-    def create_variant_data(form_data, product, is_var=False):
-        images = []
-        # save the image, create the thumbnail and build the array of
-        # the images
-        for img in form_data['images']:
-            if img.filename not in ('', None):
-                # if it's a variant, we use the variant attributes to generate
-                # the filename
-                if is_var:
-                    img_filename = "{}-{}.".format(product.permalink,
-                        '_'.join([
-                            form_data['attr_1_value'],
-                            form_data['attr_2_value']]))
-                # else, we just use the permalink
+    def create_variant_data(form_data, product):#, is_var=False):
+        var_data = {}
+        for field in form_data.keys():
+            # skip product form related fields and variants values
+            if field in ('has_variants','variants','category','attr_1_value',
+                    'attr_2_value'):
+                continue
+            elif form_data[field] not in ('', None):
+                field_data = None
+                if field in ('attr_1_name', 'attr_2_name'):
+                    field_value = \
+                        form_data['attr_{}_value'.format(field.split('_')[1])]
+                    if field_value not in ('', None):
+                        if 'attributes' not in var_data.keys():
+                            var_data['attributes'] = {}
+                        var_data['attributes'][form_data[field]] = field_value
+                    continue
+                elif field == 'images':
+                    field_data = []
+                    # save the image, create the thumbnail and build the array
+                    # of the images
+                    for img in form_data[field]:
+                        if img.filename not in ('', None):
+                            # if it's a variant, we use the variant attributes
+                            # to generate
+                            # the filename
+                            img_filename = "{}.".format(product.permalink)
+                            # save the regular image
+                            img_filename = product_images.save(img,
+                                name=img_filename)
+                            # get it's url
+                            img = product_images.url(img_filename)
+                            # create the thumbnail and get it's url
+                            thumb = product_images.url(make_thumb(img_filename,
+                                product_images.default_dest(current_app)))
+                            # create this image dict and append to the whole
+                            img_dict = {'big': img, 'thumb': thumb}
+                            field_data.append(img_dict)
+                elif field == 'price':
+                    # construct the price (stopped using floats as per several
+                    # recommendations, besides pymongo encoding error to
+                    # decimal
+                    field_data = {
+                        'currency': 'BRL',
+                        'major': int(form_data['price']),
+                        'minor': int((form_data['price']*100)%100)
+                    }
                 else:
-                    img_filename = "{}.".format(product.permalink)
+                    field_data = form_data[field]
 
-                # save the regular image
-                img_filename = product_images.save(img, name=img_filename)
-                # get it's url
-                img = product_images.url(img_filename)
-                # create the thumbnail and get it's url
-                thumb = product_images.url(make_thumb(img_filename,
-                            product_images.default_dest(current_app)))
-                # create this image dict and append to the whole
-                img_dict = {'big': img, 'thumb': thumb}
-                images.append(img_dict)
-        # construct the price (stopped using floats as per several
-        # recommendations, besides pymongo encoding error to decimal
-        price = {
-            'currency': 'BRL',
-            'major': int(form_data['price']),
-            'minor': int((form_data['price']*100)%100)
-        }
-        # build the product and variant data
-        var_data = {
-            'product_id': product.id,
-            'images': images,
-            'sku': form_data['sku'],
-            'price': price,
-            'quantity': form_data['quantity'],
-        }
-        # if we have multiple variants, we need to get the attributes from the
-        # form..
-        if is_var:
-            attrs = {
-                form_data['attr_1_name']: form_data['attr_1_value'],
-                form_data['attr_2_name']: form_data['attr_2_value'],
-            }
-            var_data['attributes'] = attrs
-
+                var_data[field] = field_data
+        print("var_data=========\n{}".format(var_data))
         return var_data
 
 
