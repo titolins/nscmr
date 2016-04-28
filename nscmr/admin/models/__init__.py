@@ -160,5 +160,7 @@ class Variant(Document):
         major = self._content['price']['major']
         minor = self._content['price']['minor']
         price = major + (float(minor)/100)
+        if self._content['price']['currency'] == 'BRL':
+            return "{} {}".format('R$', price)
         return "{} {}".format(self._content['price']['currency'], price)
 
