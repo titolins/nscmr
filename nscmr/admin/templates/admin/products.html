@@ -26,51 +26,52 @@
               <div class="card-title"><div class="title">Produtos</div></div>
             </div>
             <div class="card-body">
-            <table class="datatable table table-striped" cellspacing="0" width="100%">
-              <button id="delete-product-btn" class="btn btn-default">Deletar seleção</button>
-              <thead>
-                  <tr>
-                      <th></th>
-                      <th>Id</th>
-                      <th>Nome</th>
-                      <th>Descrição</th>
-                      <th>Categoria</th>
-                      <th>Atributos</th>
-                      <th>Meta-description</th>
-                      <th>Permalink</th>
-                  </tr>
-              </thead>
-              <tfoot>
-                  <tr>
-                      <th></th>
-                      <th>Id</th>
-                      <th>Nome</th>
-                      <th>Descrição</th>
-                      <th>Categoria</th>
-                      <th>Atributos</th>
-                      <th>Meta-description</th>
-                      <th>Permalink</th>
-                  </tr>
-              </tfoot>
-              <tbody>
-                {% for product in products %}
-                  <tr>
-                    <td>
-                      <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
-                        <input data-toggle="product-selection" id="edit-box-{{ loop.index0 }}" type="checkbox"></input>
-                        <label for="edit-box-{{ loop.index0 }}"></label>
-                      </div>
-                    </td>
-                    <td class="product-id">{{ product.id }}</td>
-                    <td class="product-name">{{ product.name }}</td>
-                    <td class="product-description" >{{ product.description }}</td>
-                    <td class="product-category">{{ product.category.name }}</td>
-                    <td class="product-attributes">{{ product.attributes }}</td>
-                    <td class="product-metadescription">{{ product.meta_description }}</td>
-                    <td class="product-permalink">{{ product.permalink }}</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
+              <table class="datatable table table-striped" cellspacing="0" width="100%">
+                <button id="delete-product-btn" class="btn btn-default">Deletar seleção</button>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Atributos</th>
+                        <th>Meta-description</th>
+                        <th>Permalink</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>Id</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                        <th>Atributos</th>
+                        <th>Meta-description</th>
+                        <th>Permalink</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                  {% for product in products %}
+                    <tr>
+                      <td>
+                        <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
+                          <input data-toggle="product-selection" id="edit-box-{{ loop.index0 }}" type="checkbox"></input>
+                          <label for="edit-box-{{ loop.index0 }}"></label>
+                        </div>
+                      </td>
+                      <td class="product-id">{{ product.id }}</td>
+                      <td class="product-name">{{ product.name }}</td>
+                      <td class="product-description" >{{ product.description }}</td>
+                      <td class="product-category">{{ product.category.name }}</td>
+                      <td class="product-attributes">{{ product.attributes }}</td>
+                      <td class="product-metadescription">{{ product.meta_description }}</td>
+                      <td class="product-permalink">{{ product.permalink }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
