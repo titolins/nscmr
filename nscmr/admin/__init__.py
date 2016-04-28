@@ -92,6 +92,20 @@ def build_admin_bp():
                 form=form,
                 categories=categories)
 
+    @bp.route('/categorias/deletar', methods=['POST'])
+    def delete_categories():
+        # implement img deletion!!!!!!
+        print(request.json)
+        cs_deleted = 0
+        for k in request.json:
+            cs_deleted += Category.collection.delete_many({'_id':ObjectId(k)})
+        response = make_response(
+            json.dumps(
+                '{} category(ies)succesfuly deleted!'.format(cs_deleted)),
+            200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
 
     ## Read/Create/Update
     @bp.route('/produtos', methods=['GET', 'POST'])
