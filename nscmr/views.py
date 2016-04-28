@@ -162,11 +162,12 @@ def product(c_permalink, p_permalink):
     category = Category.get_by_permalink(c_permalink)
     product = Product.get_by_permalink(p_permalink, to_obj=True)
     return render_template(
-            'product.html',
-            category = category,
-            product = product,
-            variants = product.variants,
-            login_form=LoginForm())
+        'product.html',
+        category = category,
+        product = product,
+        variants = product.variants,
+        attributes = product.attributes,
+        login_form=LoginForm())
 
 # Update
 # Delete
