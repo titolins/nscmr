@@ -26,14 +26,17 @@
               </span>
             </p>
             <p>{{ product['name'] }}</p>
-            <p>{{ product['price'] }}</p>
+            <p>{{ variants[0].price }}</p>
             <hr>
           </div>
           <div class="col-md-12">
             <p>Descrição</p>
-            <p>{{ product['description'] }}</p>
-            <p>Tamanho</p>
-            <p>{{ product['size'] }}</p>
+            <p>{{ product.description }}</p>
+            {% for a in attributes %}
+              <div>
+                <span>{{ a.capitalize() }}: </span>
+              </div>
+            {% endfor %}
             <hr>
           </div>
           <div class="col-md-12">
