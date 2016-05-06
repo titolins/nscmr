@@ -63,12 +63,12 @@ def build_admin_bp():
 
 
     ## Read/Update/Delete
-    @bp.route('/usuarios')
+    @bp.route('/usuarios/gerenciar')
     def users():
         return render_template('admin/users.html', users=User.get_all())
 
-    ## Create/Read/Update/Delete
-    @bp.route('/categorias', methods=['GET', 'POST'])
+    ## Create/Read/Update
+    @bp.route('/categorias/gerenciar', methods=['GET', 'POST'])
     def categories():
         categories = Category.get_all(to_obj=True)
         form = NewCategoryForm()
@@ -88,31 +88,43 @@ def build_admin_bp():
             except DuplicateKeyError:
                 form.name.errors.append(
                     'Já existe uma categoria com esse nome')
+            categories = Category.get_all(to_obj=True)
         return render_template('admin/categories.html',
                 form=form,
                 categories=categories)
 
+
     @bp.route('/categorias/deletar', methods=['POST'])
     def delete_categories():
         # implement img deletion!!!!!!
-        print(request.json)
         cs_deleted = 0
-        for k in request.json:
-            result = Category.collection.delete_many({'_id':ObjectId(k)})
-            cs_deleted += result.deleted_count
+        ps_deleted = 0
+        vs_deleted = 0
+        for k in request.json['categories']:
+            if k not in ('', None):
+                products = Product.get_by_category(k)
+                for p in products:
+                    vs_deleted += Variant.delete_by_product(p['_id']).deleted_count
+                ps_deleted += Product.delete_by_category(k).deleted_count
+                cs_deleted = Category.delete_by_id(k).deleted_count
+        if cs_deleted == 0:
+            response = make_response(
+                json.dumps('Não foi possível localizar nenhuma categoria'), 404)
+            response.headers['Content-Type'] = 'application/json'
+            return response
         response = make_response(
             json.dumps(
-                '{} category(ies)succesfuly deleted!'.format(cs_deleted)),
+                '{} categoria(s), {} produto(s) e {} variante(s) deletados'.\
+                    format(cs_deleted, ps_deleted, vs_deleted)),
             200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
 
-    ## Read/Create/Update
-    @bp.route('/produtos', methods=['GET', 'POST'])
+    ## Create/Read
+    @bp.route('/produtos/gerenciar', methods=['GET', 'POST'])
     def products():
         categories = Category.get_all(to_obj=True)
-        products = Product.get_all(to_obj=True)
         form = NewProductForm()
         form.category.choices = [('_'.join([str(c.id), c.name]), c.name) \
             for c in categories]
@@ -141,8 +153,6 @@ def build_admin_bp():
             # then we check for the has_variants data. If it's false, we'll
             # create a single variant with all additional product info (sku,
             # price, images, etc..)
-            print(form)
-            print(form.data)
             if not form.has_variants.data:
                 var_data = create_variant_data(form.data, product)
                 variant = Variant.from_form(var_data)
@@ -167,25 +177,95 @@ def build_admin_bp():
 
             # import flash
             #flash("Produto criado!")
-            products = Product.get_all(to_obj=True)
         return render_template('admin/products.html',
-                products=products,
                 form=form)
 
+
+    #Read
+    @bp.route('/produtos/json', methods=['GET'])
+    def get_products():
+        products = Product.get_all(to_obj=True)
+        data = []
+        if len(products) > 0:
+            for p in products:
+                data.append(p.as_dict())
+        result = { 'data': data }
+        response = make_response(json.dumps(result), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+
+    #Delete
     @bp.route('/produtos/deletar', methods=['POST'])
     def delete_products():
         # implement img deletion!!!!!!
-        print(request.json)
         vs_deleted = ps_deleted = 0
-        for k in request.json:
-            vs_res = Variant.collection.delete_many({'product_id':ObjectId(k)})
-            p_res = Product.collection.delete_one({ '_id': ObjectId(k) })
-            vs_deleted += vs_res.deleted_count
-            ps_deleted += p_res.deleted_count
+        for field in ['variants', 'products']:
+            for k in request.json[field]:
+                if k not in ('', None):
+                    if field == 'variants':
+                        p = Variant.get_by_id(k, to_obj=True).product
+                        if str(p.id) not in request.json['products']:
+                            vs_deleted += Variant.delete_by_id(k).deleted_count
+                            if len(p.variants) == 0:
+                                ps_deleted += Product.delete_by_id(p.id).\
+                                    deleted_count
+                    elif field == 'products':
+                        vs_res = Variant.delete_by_product(k)
+                        p_res = Product.delete_by_id(k)
+                        vs_deleted += vs_res.deleted_count
+                        ps_deleted += p_res.deleted_count
+        if ps_deleted + vs_deleted == 0:
+            response = make_response(
+                json.dumps('Não foi possível localizar nenhum produto'), 404)
+            response.headers['Content-Type'] = 'application/json'
+            return response
         response = make_response(
             json.dumps(
-                '{} product(s) and {} variant(s) succesfuly deleted!'.format(
+                '{} produto(s) e {} variante(s) deletado(s)!'.format(
                     ps_deleted, vs_deleted)),
+            200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
+    #Edit
+    @bp.route('/produtos/editar', methods=['POST'])
+    def edit_products():
+        print(request.json)
+        ps_modified = vs_modified = 0
+        for field in ('variants', 'products'):
+            for item in request.json[field]:
+                item_id = item['id']
+                data = {}
+                for k in item.keys():
+                    if item[k] not in ('', None):
+                        if k == 'id':
+                            continue
+                        if k == 'category':
+                            category_fields = item[k].split('_')
+                            data['category._id'] = category_fields[0]
+                            data['category.name'] = category_fields[1]
+                            continue
+                        if k == 'price':
+                            price = float(item['price'])
+                            data['price.major'] = int(price)
+                            data['price.minor'] = int((price*100)%100)
+                            continue
+                        data[k] = item[k]
+
+                if field == 'variants':
+                    result = Variant.update_by_id(item_id, data)
+                    vs_modified += result.modified_count
+                    print(result)
+                    continue
+                result = Product.update_by_id(item_id, data)
+                ps_modified += result.modified_count
+                print(result)
+
+        response = make_response(
+            json.dumps(
+                '{} produto(s) e {} variante(s) modificado(s)!'.format(
+                    ps_modified, vs_modified)),
             200)
         response.headers['Content-Type'] = 'application/json'
         return response
