@@ -1,0 +1,32 @@
+
+#datatable tbody tr:not(.child):hover {
+  background-color: #F9F9F9;
+}
+/*
+table.dataTable.hover tbody tr:not(.child):hover,
+table.dataTable.display tbody tr:not(.child):hover {
+  background-color: #f6f6f6;
+}
+#datatable tbody tr.odd:not(.selected) {
+  background-color: #F9F9F9;
+}
+*/
+
+.child-row-table {
+  width: 60%;
+  margin-left: 2%;
+}
+
+/* used to correct paddings on datatable checkboxes
+*/
+td.dt-body-center .checkbox3 label {
+  padding: 11px 0 11px 30px;
+}
+
+.hidden {
+  display: none;
+}
+
+tr.edited, td.edited {
+  background-color: #FFFFD2;
+}
