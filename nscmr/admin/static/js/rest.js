@@ -8,22 +8,56 @@ $(document).ready(function() {
       }
     }
   });
-
   $("#delete-btn").on("click", function() {
-    var selectedProducts = [];
-    $("input[data-toggle=row-selection]:checked").each(function() {
-      var parent = $(this).closest("tr");
-      selectedProducts.push($(parent).find(".id").text());
-    });
-    $.ajax({
-      type: "POST",
-      url: deleteUri,
-      data: JSON.stringify(selectedProducts, null, '\t'),
-      contentType: 'application/json;charset=UTF-8',
-      success: function(response) {
-        console.log(response);
-        location.reload();
-      },
-    });
+    var selection;
+    try {
+      selection = getDeleteData();
+      var result = confirm("Tem certeza de que deseja deletar a seleção?");
+      if (result) {
+        $.ajax({
+          type: "POST",
+          url: deleteUri,
+          data: JSON.stringify(selection, null, '\t'),
+          contentType: 'application/json;charset=UTF-8',
+          success: function(response) {
+            alert(response);
+            console.log(response);
+            location.reload();
+          },
+          error: function(response) {
+            alert(response.responseText);
+            console.log(response.responseText);
+          },
+        });
+      }
+    } catch (e) {
+      alert(e.message);
+    }
+  });
+  $("#edit-btn").on('click', function() {
+    var selection;
+    try {
+      selection = getEditData();
+      var result = confirm("Tem certeza de que deseja fazer as edições indicadas?");
+      if (result) {
+        $.ajax({
+          type: "POST",
+          url: editUri,
+          data: JSON.stringify(selection, null, '\t'),
+          contentType: 'application/json;charset=UTF-8',
+          success: function(response) {
+            alert(response);
+            console.log(response);
+            location.reload();
+          },
+          error: function(response) {
+            alert(response.responseText);
+            console.log(response.responseText);
+          },
+        });
+      }
+    } catch (e) {
+      alert(e.message);
+    }
   });
 });
