@@ -110,11 +110,16 @@ class Product(SlugDocument):
         'name': { 'unique': True },
         'permalink': { 'unique': True },
         'permalink': ASCENDING,
+        'category._id': ASCENDING,
     }
 
     @classmethod
     def get_by_category(cls, category_id, to_obj=False):
         return cls._get_many(to_obj, { "category._id": str(category_id) })
+
+    @classmethod
+    def delete_by_category(cls, category_id):
+        return cls._delete_many({'category._id':category_id})
 
     @staticmethod
     def from_form(form_data):
@@ -130,6 +135,25 @@ class Product(SlugDocument):
 
     def get_variants(self, to_obj=True):
         return Variant._get_many(to_obj, { "product_id": self.id })
+
+    def as_dict(self):
+        p_dict = {}
+        p_dict['id'] = str(self.id)
+        for field in self.fields:
+            field_data = None
+            if field == 'updated_at':
+                continue
+            elif field == 'variants':
+                vs = []
+                for v in self.variants:
+                    vs.append(v.as_dict())
+                field_data = vs
+            elif field == 'category':
+                field_data = self.category.name
+            else:
+                field_data = getattr(self, field)
+            p_dict[field] = field_data
+        return p_dict
 
 
 class Variant(Document):
@@ -153,8 +177,14 @@ class Variant(Document):
             form_data['attributes'] = attrs
         return Variant(form_data)
 
+    @classmethod
+    def delete_by_product(cls, product_id):
+        if isinstance(product_id, ObjectId):
+            return cls._delete_many({'product_id':product_id})
+        return cls._delete_many({'product_id':ObjectId(product_id)})
+
     def get_product(self):
-        return Product.get_by_id(self._content['product_id'])
+        return Product.get_by_id(self._content['product_id'], to_obj=True)
 
     def get_price(self):
         major = self._content['price']['major']
@@ -163,4 +193,13 @@ class Variant(Document):
         if self._content['price']['currency'] == 'BRL':
             return "{} {}".format('R$', price)
         return "{} {}".format(self._content['price']['currency'], price)
+
+    def as_dict(self):
+        v_dict = {}
+        v_dict['id'] = str(self.id)
+        for field in self.fields:
+            if field in ('updated_at', 'created_at', 'product_id'):
+                continue
+            v_dict[field] = getattr(self, field)
+        return v_dict
 
