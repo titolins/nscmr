@@ -5,6 +5,11 @@
   Gerenciador de produtos
 {% endblock %}
 
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static', filename='css/style.css') }}">
+{% endblock %}
+
 {% block main_content %}
 <!-- Main Content -->
   <div class="container-fluid">
@@ -26,8 +31,9 @@
               <div class="card-title"><div class="title">Produtos</div></div>
             </div>
             <div class="card-body">
-              <table class="datatable table table-striped" cellspacing="0" width="100%">
-                <button id="delete-btn" class="btn btn-default">Deletar seleção</button>
+              <button id="edit-btn" class="btn btn-default">Confirmar edições</button>
+              <button id="delete-btn" class="btn btn-default">Deletar seleção</button>
+              <table id="datatable" class="display" width="100%">
                 <thead>
                     <tr>
                         <th></th>
@@ -52,25 +58,6 @@
                         <th>Permalink</th>
                     </tr>
                 </tfoot>
-                <tbody>
-                  {% for product in products %}
-                    <tr>
-                      <td>
-                        <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
-                          <input data-toggle="row-selection" id="edit-box-{{ loop.index0 }}" type="checkbox"></input>
-                          <label for="edit-box-{{ loop.index0 }}"></label>
-                        </div>
-                      </td>
-                      <td class="id">{{ product.id }}</td>
-                      <td class="name">{{ product.name }}</td>
-                      <td class="description" >{{ product.description }}</td>
-                      <td class="category">{{ product.category.name }}</td>
-                      <td class="attributes">{{ product.attributes }}</td>
-                      <td class="meta_description">{{ product.meta_description }}</td>
-                      <td class="permalink">{{ product.permalink }}</td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
               </table>
             </div>
           </div>
@@ -81,88 +68,21 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
 <script>
-$(document).ready(function() {
-  // this code hides or shows the variants attributes (on the creation form)
-  // and correctly sets it's value, as used by our backend
-  $("#has_variants").change(function() {
-    if ($(this).is(':checked')) {
-      $(this).val("true");
-      $($(this).data("enable")).show();
-      $($(this).data("disable")).hide();
-    } else {
-      $(this).val("false");
-      $($(this).data("enable")).hide();
-      $($(this).data("disable")).show();
-    }
-  });
-  // just triggering the event twice to make sure the visitors are in the same
-  // place than they were before in case of page reload
-  $("#has_variants").trigger('click');
-  $("#has_variants").trigger('click');
-
-
-  // items selection stuff (from viewer)
-  window.deleteUri = "{{ url_for('admin.delete_products') }}";
-
-});
-
-
-/*
-$(function() {
-  $("button[data-toggle=fieldset-add-row]").on('click', function() {
-    var target = $($(this).data("target"));
-    var oldrow = target.
-  });
-});
-*/
-
-$(function() {
-  $("div[data-toggle=fieldset]").each(function() {
-    var $this = $(this);
-    //Add new entry
-    $this.find("button[data-toggle=fieldset-add-row]").click(function() {
-      var target = $($(this).data("target"));
-      console.log(target);
-      var oldrow = target.find("[data-toggle=fieldset-entry]:last");
-      // destroy select2 before cloning
-      oldrow.find("select").select2('destroy');
-      var row = oldrow.clone(true, true);
-      console.log(row.find(":input")[0]);
-      var elem_num = parseInt(row.attr("data-id")) + 1;
-      row.attr('data-id', elem_num);
-      row.find(":input").each(function() {
-        console.log(this);
-        var id = $(this).attr('id').replace('-' + (elem_num - 1), '-' + (elem_num));
-        $(this).attr('name', id).attr('id', id).val('').removeAttr("checked");
-      });
-      oldrow.after(row);
-      // re-enable select2 after insertion
-      oldrow.find("select").select2();
-      row.find("select").select2();
-    }); //End add new entry
-
-    //Remove row
-    $this.find("button[data-toggle=fieldset-remove-row]").click(function() {
-      if($this.find("[data-toggle=fieldset-entry]").length > 1) {
-        var thisRow = $(this).closest("[data-toggle=fieldset-entry]");
-        var entries = thisRow.nextAll();
-        var elem_num = parseInt(thisRow.attr('data-id'));
-        thisRow.remove();
-        entries.each(function() {
-          $(this).attr('data-id', elem_num);
-          $(this).find(":input").each(function() {
-            var id = $(this).attr('id').replace(/-(\d{1,4})/m, '-' + elem_num);
-            $(this).attr('name', id).attr('id', id).val('').removeAttr("checked");
-          });
-          elem_num += 1;
-        });
-      }
-    }); //End remove row
-
-  });
-
-});
+// items selection stuff (from viewer)
+// should stay here
+var editCategoryField = $('{{ form.category(style="width:100%")|safe }}');
+var editDescriptionField = $('{{ form.description()|safe }}');
+var editNameField = $('{{ form.name()|safe }}');
+var editSKUField = $('{{ form.sku()|safe }}');
+var editPriceField = $('{{ form.price()|safe }}');
+var editQtyField = $('{{ form.quantity()|safe }}');
+var editMetaField = $('{{ form.meta_description()|safe }}');
+var getUri = "{{ url_for('admin.get_products') }}";
+var deleteUri = "{{ url_for('admin.delete_products') }}";
+var editUri = "{{ url_for('admin.edit_products') }}";
 </script>
 <script src="{{ url_for('admin.static', filename='js/rest.js') }}"></script>
+<script src="{{ url_for('admin.static', filename='js/product.js') }}"></script>
 {% endblock %}
