@@ -20,9 +20,10 @@ $(document).ready(function() {
           data: JSON.stringify(selection, null, '\t'),
           contentType: 'application/json;charset=UTF-8',
           success: function(response) {
-            alert(response);
-            console.log(response);
-            location.reload();
+            alert(response.text);
+            console.log(response.text);
+            window.location = response.redirect;
+            //location.reload();
           },
           error: function(response) {
             alert(response.responseText);
@@ -43,12 +44,13 @@ $(document).ready(function() {
         $.ajax({
           type: "POST",
           url: editUri,
-          data: JSON.stringify(selection, null, '\t'),
-          contentType: 'application/json;charset=UTF-8',
+          data: selection,
+          processData: false,
+          contentType: false,
           success: function(response) {
             alert(response);
             console.log(response);
-            location.reload();
+            window.location = response.redirect;
           },
           error: function(response) {
             alert(response.responseText);
