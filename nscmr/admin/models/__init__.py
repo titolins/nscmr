@@ -87,14 +87,32 @@ class Category(SlugDocument):
         'name': { 'unique': True },
         'permalink': { 'unique': True },
         'permalink': ASCENDING,
+        'parent._id': ASCENDING,
     }
 
     @staticmethod
     def from_form(form_data):
-        # remember to lowercase name and any other stuff
-        form_data['name'] = form_data['name'].lower()
-        form_data['permalink'] = slugify(form_data['name'])
-        return Category(form_data)
+        data = {}
+        for k in form_data.keys():
+            field_data = form_data[k]
+            if k == 'name':
+                field_data = form_data[k].lower()
+                data['permalink'] = slugify(field_data)
+            elif k == 'parent':
+                parent_info = form_data[k].split('_')
+                if parent_info[0] not in (None, "None"):
+                    field_data = {
+                        '_id': parent_info[0],
+                        'name': parent_info[1],
+                    }
+                else:
+                    field_data = None
+            data[k] = field_data
+        return Category(data)
+
+    @staticmethod
+    def get_by_parent(parent_id, to_obj=False):
+        return Category._get_many(to_obj, { "parent._id": str(parent_id) })
 
     def get_name(self):
         return self._content['name'].capitalize()
@@ -113,13 +131,13 @@ class Product(SlugDocument):
         'category._id': ASCENDING,
     }
 
-    @classmethod
-    def get_by_category(cls, category_id, to_obj=False):
-        return cls._get_many(to_obj, { "category._id": str(category_id) })
+    @staticmethod
+    def get_by_category(category_id, to_obj=False):
+        return Product._get_many(to_obj, { "category._id": str(category_id) })
 
-    @classmethod
-    def delete_by_category(cls, category_id):
-        return cls._delete_many({'category._id':category_id})
+    @staticmethod
+    def delete_by_category(category_id):
+        return Product._delete_many({'category._id':category_id})
 
     @staticmethod
     def from_form(form_data):
@@ -177,11 +195,11 @@ class Variant(Document):
             form_data['attributes'] = attrs
         return Variant(form_data)
 
-    @classmethod
-    def delete_by_product(cls, product_id):
+    @staticmethod
+    def delete_by_product(product_id):
         if isinstance(product_id, ObjectId):
-            return cls._delete_many({'product_id':product_id})
-        return cls._delete_many({'product_id':ObjectId(product_id)})
+            return Variant._delete_many({'product_id':product_id})
+        return Variant._delete_many({'product_id':ObjectId(product_id)})
 
     def get_product(self):
         return Product.get_by_id(self._content['product_id'], to_obj=True)
