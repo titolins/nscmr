@@ -108,7 +108,6 @@ function buildProductData(row, cell, data) {
     var inserted = false;
     for (i = 0; i < products.length; i++) {
       if (products[i].id == pId) {
-        var value;
         products[i][colName] = value;
         inserted = true;
       }
@@ -131,8 +130,9 @@ function getEditData() {
   edited.each(function() {
     buildProductData($(this).closest('tr'), $(this), data);
   });
-  console.log(data);
-  return data;
+  form = new FormData();
+  form.append('data', JSON.stringify(data));
+  return form;
 };
 
 $(document).ready(function() {
