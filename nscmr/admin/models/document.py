@@ -162,9 +162,10 @@ class Document(object, metaclass=DocumentProperties):
 
     @classmethod
     def _get_one(cls, to_obj, query):
-        if to_obj:
-            return cls(cls.collection.find_one(query))
-        return cls.collection.find_one(query)
+        result = cls.collection.find_one(query)
+        if result is None or not to_obj:
+            return result
+        return cls(result)
 
     @classmethod
     def get_by_id(cls, doc_id, to_obj=False):
