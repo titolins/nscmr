@@ -48,8 +48,8 @@ $(document).ready(function() {
           processData: false,
           contentType: false,
           success: function(response) {
-            alert(response);
-            console.log(response);
+            alert(response.text);
+            console.log(response.text);
             window.location = response.redirect;
           },
           error: function(response) {
