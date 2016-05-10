@@ -31,23 +31,30 @@ class User(Document):
 
     @staticmethod
     def from_form(form_data):
-        form_data['email'] = form_data['email'].lower()
+        data = { 'roles': ['user'] }
+        for k in form_data.keys():
+            if k in ('name', 'email'):
+                field_data = form_data[k].lower()
+            elif k == 'dob' and form_data[k] is not None:
+                # converts date object to datetime, as pymongo only support the latter
+                field_data = datetime.combine(form_data[k],datetime.min.time())
+            elif k == 'password':
+                # hash password
+                field_data = generate_password_hash(form_data[k])
+            elif k == 'confirm':
+                # delete confirm field
+                del(form_data[k])
+                continue
+            elif k == 'is_admin':
+                print(form_data[k])
+                if form_data[k]:
+                    data['roles'].append('admin')
+                continue
+            else:
+                field_data = form_data[k]
+            data[k] = field_data
 
-        # converts date object to datetime, as pymongo only support the latter
-        if form_data['dob'] is not None:
-            form_data['dob'] = form_data(
-                form_data['dob'], datetime.min.time())
-
-        # hash password
-        form_data['password'] = generate_password_hash(
-            form_data['password'])
-        # delete confirm field
-        del(form_data['confirm'])
-
-        # init object and set default values
-        user = User(form_data)
-        user.set_defaults()
-        return user
+        return User(data)
 
     def get_dob(self):
         if 'dob' in self._content and self._content['dob'] is not None:

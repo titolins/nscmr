@@ -4,15 +4,21 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 from wtforms.fields import (
     StringField,
+    PasswordField,
     SelectField,
     BooleanField,
     FieldList,
     FormField)
 
-from wtforms.fields.html5 import DecimalField, IntegerField
+from wtforms.fields.html5 import DecimalField, IntegerField, DateField
 
-from wtforms.widgets import TextInput, html5
-from wtforms.validators import input_required, ValidationError, Optional
+from wtforms.widgets import TextInput, PasswordInput, html5
+from wtforms.validators import (
+    input_required,
+    ValidationError,
+    Optional,
+    Email,
+    Regexp)
 
 from flask.ext.uploads import UploadSet, IMAGES
 
@@ -37,6 +43,17 @@ product_images = UploadSet(
 VALID_VARIATIONS = [ 'cor', 'tamanho' ]
 
 class NsTextInput(TextInput):
+    def __init__(self, ns_class='form-control'):
+        super().__init__()
+        self.form_class = ns_class
+
+    def __call__(self, field, **kwargs):
+        c = kwargs.pop('class', '') or kwargs.pop('class_', '')
+        kwargs['class'] = '{} {}'.format(self.form_class, c)
+        return super().__call__(field, **kwargs)
+
+
+class NsPasswordInput(PasswordInput):
     def __init__(self, ns_class='form-control'):
         super().__init__()
         self.form_class = ns_class
@@ -84,21 +101,6 @@ class NewCategoryForm(Form):
                 FileRequired("Campo necessário!"),
                 FileAllowed(category_images, message=EXT_ALLOWED_MSG)])
     meta_description = StringField('Meta-description', widget=NsTextInput())
-
-
-'''
-class VariantAttrForm(Form):
-    name = SelectField('Variação')
-    value = StringField('Valor', widget=NsTextInput())
-
-    def __init__(self, *args, **kwargs):
-        print(kwargs)
-        self.var_name.choices = [
-            ('color', 'Cor'),
-            ('size', 'Tamanho'),
-        ]
-        super().__init__(*args, **kwargs)
-'''
 
 
 class VariantForm(Form):
@@ -223,3 +225,44 @@ class NewProductForm(Form):
         return True
 
 
+class AddressForm(Form):
+    name = StringField('Nome',
+        widget=NsTextInput(),
+        validators=[input_required("Campo necessário!")])
+    street_address_1 = StringField('Nome',
+        widget=NsTextInput(),
+        validators=[input_required("Campo necessário!")])
+    street_address_2 = StringField('Complemento')
+    city = StringField('Cidade',
+        widget=NsTextInput(),
+        validators=[input_required("Campo necessário!")])
+    zip_code = StringField('Cep',
+        widget=NsTextInput(),
+        validators=[
+            input_required("Campo necessário!"),
+            Regexp(r'[0-9]{5}-[0-9]{3}', message="Formato inválido")
+        ])
+    state = StringField('Estado',
+        widget=NsTextInput(),
+        validators=[input_required("Campo necessário!")])
+    # not needed for now..
+    #country
+    #phone??
+
+
+class NewUserForm(Form):
+    name = StringField('Nome',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    dob = DateField("Data de nascimento", validators=[Optional()])
+    is_admin = BooleanField(
+        'Esse usuário é um administrador do sistema?')
+    email = StringField('Email',
+        validators=[
+            input_required("Campo necessário!"),
+            Email('Formato inválido')],
+        widget=NsTextInput())
+    password = PasswordField('Senha',
+        widget=NsPasswordInput(),
+        validators=[input_required("Campo necessário!")])
+    #addresses = FieldList(FormField(AddressForm), min_entries=1)

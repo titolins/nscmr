@@ -22,6 +22,7 @@ from .forms import (
     NewCategoryForm,
     category_images,
     NewProductForm,
+    NewUserForm,
     product_images)
 
 from .helper import make_thumb
@@ -64,10 +65,42 @@ def build_admin_bp():
     ######################################
 
 
-    ## Read/Update/Delete
-    @bp.route('/usuarios/gerenciar')
+    ## Read/Update
+    @bp.route('/usuarios/gerenciar', methods=['GET', 'POST'])
     def users():
-        return render_template('admin/users.html', users=User.get_all())
+        form = NewUserForm()
+        users = User.get_all()
+        if form.validate_on_submit():
+            user = User.from_form(form.data)
+            try:
+                user.insert()
+                #flash('Usuário criado com sucesso!')
+            except DuplicateKeyError:
+                form.name.errors.append(
+                    'Já existe uma categoria com esse nome')
+            users = User.get_all()
+        return render_template('admin/users.html',
+            users=users,
+            form=form)
+
+    # Delete
+    @bp.route('/usuarios/deletar', methods=['POST'])
+    def delete_users():
+        us_deleted = 0
+        for k in request.json['users']:
+            if k not in ('', None):
+                us_deleted += User.delete_by_id(k).deleted_count
+        if us_deleted == 0:
+            response = make_response(
+                json.dumps('Não foi possível localizar nenhum usuário'), 404)
+            response.headers['Content-Type'] = 'application/json'
+            return response
+
+        text = '{} usuário(s) deletado(s)'.format(us_deleted)
+        response_json = {'text': text, 'redirect':url_for('admin.users')}
+        response = make_response(json.dumps(response_json), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
 
     ## Create/Read/Update
     @bp.route('/categorias/gerenciar', methods=['GET', 'POST'])
@@ -112,7 +145,7 @@ def build_admin_bp():
             response.headers['Content-Type'] = 'application/json'
             return response
 
-        text = '{} categoria(s), {} produto(s) e {} variante(s) deletados'.\
+        text = '{} categoria(s), {} produto(s) e {} variante(s) deletado(s)'.\
             format(cs_deleted, ps_deleted, vs_deleted)
         response_json = {'text': text, 'redirect':url_for('admin.categories')}
         response = make_response(json.dumps(response_json), 200)
