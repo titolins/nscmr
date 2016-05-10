@@ -14,7 +14,6 @@ function getEditData() {
   edited.each(function() {
     buildCategoryData($(this).closest('tr'), $(this), categories);
   });
-  console.log(categories);
   var form = new FormData();
   for (var i = 0; i < categories.length; i++) {
     if (categories[i].hasOwnProperty('base_img')) {
