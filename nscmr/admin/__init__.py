@@ -152,6 +152,8 @@ def build_admin_bp():
                         img_filename = category_images.save(
                                 img, name="{}.".format(img_name.lower()))
                         data[k] = category_images.url(img_filename)
+                        continue
+                    data[k] = item[k]
             result = Category.update_by_id(item_id, data)
             cs_modified += result.modified_count
         text = '{} categoria(s) modificada(s)!'.format(cs_modified)
