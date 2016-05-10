@@ -16,6 +16,8 @@ from flask.ext.principal import RoleNeed, Permission
 
 from .models import User, Category, Product, Variant
 
+from .helper import slugify
+
 from .forms import (
     NewCategoryForm,
     category_images,
@@ -73,10 +75,10 @@ def build_admin_bp():
         categories = Category.get_all(to_obj=True)
         form = NewCategoryForm()
         # Filling the selectfield choices, first we add the none choice
-        form.parent.choices = [('None','Nenhuma')]
+        form.parent.choices = [('None_Nenhuma','Nenhuma')]
         # then we fill it with all available categories
         for c in categories:
-            form.parent.choices.append((str(c.id), c.name))
+            form.parent.choices.append(('_'.join([str(c.id), c.name]), c.name))
         if form.validate_on_submit():
             img_filename = category_images.save(form.base_img.data,
                     name="{}.".format(form.name.data))
@@ -93,33 +95,70 @@ def build_admin_bp():
                 form=form,
                 categories=categories)
 
-
     @bp.route('/categorias/deletar', methods=['POST'])
     def delete_categories():
         # implement img deletion!!!!!!
-        cs_deleted = 0
-        ps_deleted = 0
-        vs_deleted = 0
+        cs_deleted = ps_deleted = vs_deleted = 0
         for k in request.json['categories']:
             if k not in ('', None):
                 products = Product.get_by_category(k)
                 for p in products:
                     vs_deleted += Variant.delete_by_product(p['_id']).deleted_count
                 ps_deleted += Product.delete_by_category(k).deleted_count
-                cs_deleted = Category.delete_by_id(k).deleted_count
+                cs_deleted += Category.delete_by_id(k).deleted_count
         if cs_deleted == 0:
             response = make_response(
                 json.dumps('Não foi possível localizar nenhuma categoria'), 404)
             response.headers['Content-Type'] = 'application/json'
             return response
-        response = make_response(
-            json.dumps(
-                '{} categoria(s), {} produto(s) e {} variante(s) deletados'.\
-                    format(cs_deleted, ps_deleted, vs_deleted)),
-            200)
+
+        text = '{} categoria(s), {} produto(s) e {} variante(s) deletados'.\
+            format(cs_deleted, ps_deleted, vs_deleted)
+        response_json = {'text': text, 'redirect':url_for('admin.categories')}
+        response = make_response(json.dumps(response_json), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
+    # Update
+    @bp.route('/categorias/editar', methods=['POST'])
+    def edit_categories():
+        categories = json.loads(request.form.get('categories'))
+        cs_modified = 0
+        for item in categories:
+            item_id = item['id']
+            data = {}
+            for k in item.keys():
+                if item[k] not in ('', None):
+                    if k == 'id':
+                        continue
+                    elif k == 'parent':
+                        parent_info = item[k].split('_')
+                        if parent_info[0] == 'None':
+                            data[k] = None
+                        else:
+                            data['parent._id'] = parent_info[0]
+                            data['parent.name'] = parent_info[1]
+                        continue
+                    elif k == 'name':
+                        data[k] = item[k].lower()
+                        data['permalink'] = slugify(data[k])
+                        continue
+                    elif k == 'base_img':
+                        try:
+                            img_name = item['name']
+                        except:
+                            img_name = item[k]
+                        img = request.files.get(item_id)
+                        img_filename = category_images.save(
+                                img, name="{}.".format(img_name.lower()))
+                        data[k] = category_images.url(img_filename)
+            result = Category.update_by_id(item_id, data)
+            cs_modified += result.modified_count
+        text = '{} categoria(s) modificada(s)!'.format(cs_modified)
+        response_json = { 'text': text, 'redirect': url_for('admin.categories') }
+        response = make_response(json.dumps(response_json), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
 
     ## Create/Read
     @bp.route('/produtos/gerenciar', methods=['GET', 'POST'])
@@ -220,36 +259,40 @@ def build_admin_bp():
                 json.dumps('Não foi possível localizar nenhum produto'), 404)
             response.headers['Content-Type'] = 'application/json'
             return response
-        response = make_response(
-            json.dumps(
-                '{} produto(s) e {} variante(s) deletado(s)!'.format(
-                    ps_deleted, vs_deleted)),
-            200)
+
+        text = '{} produto(s) e {} variante(s) deletado(s)!'.format(
+            ps_deleted, vs_deleted)
+        response_json = { 'text': text, 'redirect': url_for('admin.products') }
+        response = make_response(json.dumps(response_json), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     #Edit
     @bp.route('/produtos/editar', methods=['POST'])
     def edit_products():
-        print(request.json)
         ps_modified = vs_modified = 0
+        json_data = json.loads(request.form.get('data'))
         for field in ('variants', 'products'):
-            for item in request.json[field]:
+            for item in json_data[field]:
                 item_id = item['id']
                 data = {}
                 for k in item.keys():
                     if item[k] not in ('', None):
                         if k == 'id':
                             continue
-                        if k == 'category':
+                        elif k == 'category':
                             category_fields = item[k].split('_')
                             data['category._id'] = category_fields[0]
                             data['category.name'] = category_fields[1]
                             continue
-                        if k == 'price':
+                        elif k == 'price':
                             price = float(item['price'])
                             data['price.major'] = int(price)
                             data['price.minor'] = int((price*100)%100)
+                            continue
+                        elif k == 'name':
+                            data['name'] = item[k].lower()
+                            data['permalink'] = slugify(data['name'])
                             continue
                         data[k] = item[k]
 
@@ -260,13 +303,11 @@ def build_admin_bp():
                     continue
                 result = Product.update_by_id(item_id, data)
                 ps_modified += result.modified_count
-                print(result)
 
-        response = make_response(
-            json.dumps(
-                '{} produto(s) e {} variante(s) modificado(s)!'.format(
-                    ps_modified, vs_modified)),
-            200)
+        text = '{} produto(s) e {} variante(s) modificado(s)!'.format(
+            ps_modified, vs_modified)
+        response_json = { 'text': text, 'redirect': url_for('admin.products') }
+        response = make_response(json.dumps(response_json), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
