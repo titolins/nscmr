@@ -49,6 +49,7 @@
             </div>
             <div class="card-body">
               <table id="datatable" class="display" width="100%">
+                <button id="edit-btn" class="btn btn-default">Confirmar edições</button>
                 <button id="delete-btn" class="btn btn-default">Deletar seleção</button>
                 <thead>
                     <tr role="row">
@@ -81,12 +82,24 @@
                           <label for="select-{{ category.id }}"></label>
                         </div>
                       </td>
-                      <td class="id">{{ category.id }}</td>
-                      <td class="name">{{ category.name }}</td>
-                      <td class="parent">{{ category.parent }}</td>
-                      <td class="base_img"><a href="{{ category.base_img }}">Ver imagem</a></td>
-                      <td class="meta_description">{{ category.meta_description }}</td>
-                      <td class="permalink">{{ category.permalink }}</td>
+                      <td id="id" class="id">{{ category.id }}</td>
+                      <td id="name" class="name">
+                        <div class="value">{{ category.name }}</div>
+                        <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                      </td>
+                      <td id="parent" class="parent">
+                        <div class="value">{% if not category.parent is none %}{{ category.parent['name'] }}{% else %}Nenhuma{% endif %}</div>
+                        <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                      </td>
+                      <td id="base_img" class="base_img">
+                        <div class="value"><a href="{{ category.base_img }}">Ver imagem</a></div>
+                        <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                      </td>
+                      <td id="meta_description" class="meta_description">
+                        <div class="value">{{ category.meta_description }}</div>
+                        <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                      </td>
+                      <td id="permalink" class="permalink">{{ category.permalink }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -102,6 +115,11 @@
 <script src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
 <script>
 var deleteUri = "{{ url_for('admin.delete_categories') }}";
+var editUri = "{{ url_for('admin.edit_categories') }}";
+var editNameField = $('{{ form.name()|safe }}');
+var editParentField = $('{{ form.parent(style="width:100%")|safe }}');
+var editBaseImgField = $('{{ form.base_img()|safe }}');
+var editMetaField = $('{{ form.meta_description()|safe }}');
 </script>
 <script src="{{ url_for('admin.static', filename='js/rest.js') }}"></script>
 <script src="{{ url_for('admin.static', filename='js/category.js') }}"></script>
