@@ -53,6 +53,7 @@
             </div>
             <div class="card-body">
               <table id="datatable" class="display" width="100%">
+                <button id="edit-btn" class="btn btn-default">Confirmar edições</button>
                 <button id="delete-btn" class="btn btn-default">Deletar seleção</button>
                 <thead>
                   <tr role="row">
@@ -87,10 +88,19 @@
                           <label for="select-{{ user['_id'] }}"></label>
                         </div>
                       </td>
-                      <td>{{ user['_id'] }}</td>
-                      <td>{{ user['name'] }}</td>
-                      <td>{{ user['email'] }}</td>
-                      <td>{{ user['dob'] }}</td>
+                      <td id="id" class="id">{{ user['_id'] }}</td>
+                      <td id="name" class="name">
+                        <div class="value">{{ user['name'] }}</div>
+                        <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                      </td>
+                      <td id="email" class="email">
+                        <div class="value">{{ user['email'] }}</div>
+                        <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                      </td>
+                      <td id="dob" class="dob">
+                        <div class="value">{{ user['dob'] }}</div>
+                        <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                      </td>
                       <td>{{ user['addresses'] }}</td>
                       <td>{{ user['orders'] }}</td>
                       <td>{{ user['wishlist'] }}</td>
@@ -109,7 +119,12 @@
 <script src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
 <script>
 var deleteUri = "{{ url_for('admin.delete_users') }}";
+var editUri = "{{ url_for('admin.edit_users') }}";
+var editNameField = $('{{ form.name()|safe }}');
+var editEmailField = $('{{ form.email()|safe }}');
+var editDobField = $('{{ form.dob(pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))")|safe }}');
 </script>
 <script src="{{ url_for('admin.static', filename='js/rest.js') }}"></script>
 <script src="{{ url_for('admin.static', filename='js/user.js') }}"></script>
+<script src="{{ url_for('admin.static', filename='js/nochildtable.js') }}"></script>
 {% endblock %}
