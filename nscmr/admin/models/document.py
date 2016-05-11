@@ -132,19 +132,21 @@ class Document(object, metaclass=DocumentProperties):
             cls.collection.create_indexes(indexes)
 
     @classmethod
-    def _update_one(cls, query, data):
-        return cls.collection.update_one(query,
-            {
-                '$currentDate': { 'updated_at': True },
-                '$set': data
-            }
-        )
+    def _update_one(cls, query, set_data, unset_data):
+        data = { '$currentDate': { 'updated_at': True } }
+        if any(set_data):
+            data['$set'] = set_data
+        if any(unset_data):
+            data['$unset'] = unset_data
+        return cls.collection.update_one(query, data)
 
     @classmethod
-    def update_by_id(cls, doc_id, data):
+    def update_by_id(cls, doc_id, set_data={}, unset_data={}):
         if isinstance(doc_id, ObjectId):
-            return cls._update_one({ '_id': doc_id }, data)
-        return cls._update_one({ '_id': ObjectId(doc_id) }, data)
+            query = { '_id': doc_id }
+        else:
+            query = { '_id': ObjectId(doc_id) }
+        return cls._update_one(query, set_data, unset_data)
 
     @classmethod
     def _delete_one(cls, query):
