@@ -117,10 +117,11 @@
 var deleteUri = "{{ url_for('admin.delete_categories') }}";
 var editUri = "{{ url_for('admin.edit_categories') }}";
 var editNameField = $('{{ form.name()|safe }}');
-var editParentField = $('{{ form.parent(style="width:100%")|safe }}');
+var editCategoryField = $('{{ form.parent(style="width:100%")|safe }}');
 var editBaseImgField = $('{{ form.base_img()|safe }}');
 var editMetaField = $('{{ form.meta_description()|safe }}');
 </script>
 <script src="{{ url_for('admin.static', filename='js/rest.js') }}"></script>
 <script src="{{ url_for('admin.static', filename='js/category.js') }}"></script>
+<script src="{{ url_for('admin.static', filename='js/nochildtable.js') }}"></script>
 {% endblock %}
