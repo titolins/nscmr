@@ -26,7 +26,7 @@ class User(Document):
     required_fields = ['name', 'email', 'password']
     indexes = {
         'email': { 'unique': True },
-        'email': ASCENDING,
+        #'email': ASCENDING,
     }
 
     @staticmethod
@@ -92,7 +92,7 @@ class Category(SlugDocument):
     # values to pass single field indexes (compound indexes do not work yet)
     indexes = {
         'name': { 'unique': True },
-        'permalink': { 'unique': True },
+        #'permalink': { 'unique': True },
         'permalink': ASCENDING,
         'parent._id': ASCENDING,
     }
@@ -133,7 +133,7 @@ class Product(SlugDocument):
 
     indexes = {
         'name': { 'unique': True },
-        'permalink': { 'unique': True },
+        #'permalink': { 'unique': True },
         'permalink': ASCENDING,
         'category._id': ASCENDING,
     }

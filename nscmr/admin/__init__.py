@@ -16,6 +16,8 @@ from pymongo.errors import DuplicateKeyError
 
 from flask.ext.principal import RoleNeed, Permission
 
+from werkzeug.security import generate_password_hash
+
 from .models import User, Category, Product, Variant
 
 from .helper import slugify
@@ -102,6 +104,8 @@ def build_admin_bp():
                         field_data = item[k].lower()
                     elif k == 'dob':
                         field_data = datetime.strptime(item[k], '%Y-%m-%d')
+                    elif k == 'password':
+                        field_data = generate_password_hash(item[k])
                     data[k] = field_data
             result = User.update_by_id(item_id, data)
             us_modified += result.modified_count
