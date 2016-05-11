@@ -23,7 +23,7 @@ class User(Document):
         'cart': []
     }
     # required fields
-    required_fields = ['name', 'password']
+    required_fields = ['name', 'email', 'password']
     indexes = {
         'email': { 'unique': True },
         'email': ASCENDING,
@@ -107,13 +107,13 @@ class Category(SlugDocument):
                 data['permalink'] = slugify(field_data)
             elif k == 'parent':
                 parent_info = form_data[k].split('_')
-                if parent_info[0] not in (None, "None"):
+                if parent_info[0] != "None":
                     field_data = {
                         '_id': parent_info[0],
                         'name': parent_info[1],
                     }
                 else:
-                    field_data = None
+                    continue
             data[k] = field_data
         return Category(data)
 
