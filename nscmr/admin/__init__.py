@@ -10,6 +10,8 @@ from flask import (
 
 from bson.objectid import ObjectId
 
+from datetime import datetime
+
 from pymongo.errors import DuplicateKeyError
 
 from flask.ext.principal import RoleNeed, Permission
@@ -65,7 +67,7 @@ def build_admin_bp():
     ######################################
 
 
-    ## Read/Update
+    ## Create/Read
     @bp.route('/usuarios/gerenciar', methods=['GET', 'POST'])
     def users():
         form = NewUserForm()
@@ -76,12 +78,38 @@ def build_admin_bp():
                 user.insert()
                 #flash('Usuário criado com sucesso!')
             except DuplicateKeyError:
-                form.name.errors.append(
-                    'Já existe uma categoria com esse nome')
+                form.email.errors.append(
+                    'Já existe um usuário cadastrado com esse email')
             users = User.get_all()
         return render_template('admin/users.html',
             users=users,
             form=form)
+
+    # Update
+    @bp.route('/usuarios/editar', methods=['POST'])
+    def edit_users():
+        users = json.loads(request.form.get('users'))
+        us_modified = 0
+        for item in users:
+            item_id = item['id']
+            data = {}
+            for k in item.keys():
+                if item[k] not in ('', None):
+                    field_data = item[k]
+                    if k == 'id':
+                        continue
+                    elif k in ('name', 'email'):
+                        field_data = item[k].lower()
+                    elif k == 'dob':
+                        field_data = datetime.strptime(item[k], '%Y-%m-%d')
+                    data[k] = field_data
+            result = User.update_by_id(item_id, data)
+            us_modified += result.modified_count
+        text = '{} usuário(s) modificado(s)!'.format(us_modified)
+        response_json = { 'text': text, 'redirect': url_for('admin.users') }
+        response = make_response(json.dumps(response_json), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
 
     # Delete
     @bp.route('/usuarios/deletar', methods=['POST'])
@@ -102,7 +130,7 @@ def build_admin_bp():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-    ## Create/Read/Update
+    ## Create/Read
     @bp.route('/categorias/gerenciar', methods=['GET', 'POST'])
     def categories():
         categories = Category.get_all(to_obj=True)
@@ -160,6 +188,7 @@ def build_admin_bp():
         for item in categories:
             item_id = item['id']
             data = {}
+            unset = {}
             for k in item.keys():
                 if item[k] not in ('', None):
                     if k == 'id':
@@ -167,7 +196,7 @@ def build_admin_bp():
                     elif k == 'parent':
                         parent_info = item[k].split('_')
                         if parent_info[0] == 'None':
-                            data[k] = None
+                            unset[k] = ""
                         else:
                             data['parent._id'] = parent_info[0]
                             data['parent.name'] = parent_info[1]
@@ -187,7 +216,7 @@ def build_admin_bp():
                         data[k] = category_images.url(img_filename)
                         continue
                     data[k] = item[k]
-            result = Category.update_by_id(item_id, data)
+            result = Category.update_by_id(item_id, data, unset)
             cs_modified += result.modified_count
         text = '{} categoria(s) modificada(s)!'.format(cs_modified)
         response_json = { 'text': text, 'redirect': url_for('admin.categories') }
@@ -334,7 +363,6 @@ def build_admin_bp():
                 if field == 'variants':
                     result = Variant.update_by_id(item_id, data)
                     vs_modified += result.modified_count
-                    print(result)
                     continue
                 result = Product.update_by_id(item_id, data)
                 ps_modified += result.modified_count
