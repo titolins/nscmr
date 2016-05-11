@@ -65,6 +65,7 @@
                     <th>Endereços</th>
                     <th>Ordens</th>
                     <th>Lista de desejos</th>
+                    <th>Mudar senha</th>
                   </tr>
                 </thead>
                 <tfoot>
@@ -77,6 +78,7 @@
                     <th>Endereços</th>
                     <th>Ordens</th>
                     <th>Lista de desejos</th>
+                    <th>Mudar senha</th>
                   </tr>
                 </tfoot>
                 <tbody>
@@ -104,6 +106,9 @@
                       <td>{{ user['addresses'] }}</td>
                       <td>{{ user['orders'] }}</td>
                       <td>{{ user['wishlist'] }}</td>
+                      <td id="password" class="password">
+                        <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                      </td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -122,9 +127,10 @@ var deleteUri = "{{ url_for('admin.delete_users') }}";
 var editUri = "{{ url_for('admin.edit_users') }}";
 var editNameField = $('{{ form.name()|safe }}');
 var editEmailField = $('{{ form.email()|safe }}');
-var editDobField = $('{{ form.dob(pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))")|safe }}');
+var editDobField = $('{{ form.dob()|safe }}');
+var editPassField = $('{{ form.password()|safe }}');
 </script>
 <script src="{{ url_for('admin.static', filename='js/rest.js') }}"></script>
 <script src="{{ url_for('admin.static', filename='js/user.js') }}"></script>
-<script src="{{ url_for('admin.static', filename='js/nochildtable.js') }}"></script>
+<script src="{{ url_for('admin.static', filename='js/edit.js') }}"></script>
 {% endblock %}

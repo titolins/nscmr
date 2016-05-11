@@ -33,6 +33,8 @@ $(document).ready(function() {
           editField = editEmailField.clone();
         } else if (cell.hasClass('dob')) {
           editField = editDobField.clone();
+        } else if (cell.hasClass('password')) {
+          editField = editPassField.clone();
         }
         cell.append(editField);
         cell.append($('<a href="#"><span class="undo-edit glyphicon glyphicon-remove"></span></a>'));
