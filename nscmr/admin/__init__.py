@@ -73,7 +73,7 @@ def build_admin_bp():
     @bp.route('/usuarios/gerenciar', methods=['GET', 'POST'])
     def users():
         form = NewUserForm()
-        users = User.get_all()
+        users = User.get_all(to_obj=True)
         if form.validate_on_submit():
             user = User.from_form(form.data)
             try:
@@ -82,7 +82,7 @@ def build_admin_bp():
             except DuplicateKeyError:
                 form.email.errors.append(
                     'Já existe um usuário cadastrado com esse email')
-            users = User.get_all()
+            users = User.get_all(to_obj=True)
         return render_template('admin/users.html',
             users=users,
             form=form)

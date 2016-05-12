@@ -86,26 +86,26 @@
                     <tr role="row">
                       <td class="dt-body-center">
                         <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
-                          <input type="checkbox" data-toggle="select-row" id="select-{{ user['_id'] }}"></input>
-                          <label for="select-{{ user['_id'] }}"></label>
+                          <input type="checkbox" data-toggle="select-row" id="select-{{ user.id }}"></input>
+                          <label for="select-{{ user.id }}"></label>
                         </div>
                       </td>
-                      <td id="id" class="id">{{ user['_id'] }}</td>
+                      <td id="id" class="id">{{ user.id }}</td>
                       <td id="name" class="name">
-                        <div class="value">{{ user['name'] }}</div>
+                        <div class="value">{{ user.name }}</div>
                         <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                       </td>
                       <td id="email" class="email">
-                        <div class="value">{{ user['email'] }}</div>
+                        <div class="value">{{ user.email }}</div>
                         <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                       </td>
                       <td id="dob" class="dob">
-                        <div class="value">{{ user['dob'] }}</div>
+                        <div class="value">{{ user.dob }}</div>
                         <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                       </td>
-                      <td>{{ user['addresses'] }}</td>
-                      <td>{{ user['orders'] }}</td>
-                      <td>{{ user['wishlist'] }}</td>
+                      <td>{{ user.addresses }}</td>
+                      <td>{{ user.orders }}</td>
+                      <td>{{ user.wishlist }}</td>
                       <td id="password" class="password">
                         <a href="#"><span class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                       </td>
