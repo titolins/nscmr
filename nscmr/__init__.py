@@ -85,46 +85,4 @@ db = build_db(app)
 
 from nscmr import views
 
-# dev code
-if __name__ == '__main__':
-
-    # create admin
-    from werkzeug.security import generate_password_hash
-    from nscmr.admin.helper import slugify
-    from nscmr.admin.models import User, Product, Category
-    user_content = {
-        'email': 'admin@studioduvet.com.br',
-        'name': 'administrador',
-        'password': generate_password_hash('admin'),
-        'roles': ['user','admin'],
-    }
-    u = User.get_by_email('admin@studioduvet.com.br',to_obj=True)
-    try:
-        u.id
-    except:
-        u = User(user_content)
-        u.set_defaults()
-        u.insert()
-
-    def insert_product(category_permalink):
-        category = Category.get_by_permalink(category_permalink)
-        description = "{} feito com percal 5000 fios".format(category['name'])
-        name = "{} estampado".format(category['name'])
-        permalink = slugify(name)
-        price = "450.00"
-        big_image = "http://placehold.it/1920x1080"
-        thumb_image = "http://placehold.it/128x128"
-        image = { 'big': big_image, 'thumb': thumb_image }
-        images = [image for i in range(20)]
-        cat = { 'name' : category['name'], '_id': category['_id'] }
-        product = {
-            'name': name,
-            'description': description,
-            'category': cat,
-            'images': images,
-            'permalink': permalink
-        }
-        p = Product(product)
-        p.insert()
-
 
