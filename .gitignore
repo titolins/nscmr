@@ -4,3 +4,13 @@ __pycache__/
 instance/
 start.sh
 get_interactive
+**/.*
+node_modules
+bower_components
+test
+tests
+base.js
+all.css
+css/style.css
+bower.json
+fonts/

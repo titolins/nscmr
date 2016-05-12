@@ -49,9 +49,13 @@ a:active:not(.link) {
 }
 
 .category-panel {
-  padding: 0 0 39px 0;
   text-align: center;
   background-color: lightblue;
+}
+
+#page-content > [class*="col-"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .img-holder > img {

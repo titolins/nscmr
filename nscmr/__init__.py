@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 
 from flask.ext.login import LoginManager, current_user
@@ -7,6 +9,7 @@ from flask.ext.principal import (
     RoleNeed,
     UserNeed,
     Permission)
+from flask.ext.assets import Environment, Bundle
 
 from nscmr.admin import build_admin_bp
 from nscmr.admin.database import build_db
@@ -74,6 +77,34 @@ def build_app():
     #################
 
     configure_uploads(app, (category_images, product_images))
+
+    ################
+    # Flask-Assets #
+    ################
+
+    assets = Environment(app)
+    assets.load_path = [
+        os.path.join(app.root_path, 'static/sass'),
+        os.path.join(app.root_path, 'bower_components'),
+    ]
+
+    assets.register(
+        'js_base',
+        Bundle(
+            'jquery/dist/jquery.min.js',
+            'bootstrap/dist/js/bootstrap.min.js'),
+        output='js/base.js')
+
+    assets.register(
+        'css_all',
+        Bundle(
+            'bootstrap/dist/css/bootstrap.min.css',
+            Bundle(
+                'style.scss',
+                filters='scss',
+                output='css/style.css')),
+        output='css/all.css')
+
 
     # end config extensions
 

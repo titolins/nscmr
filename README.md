@@ -11,7 +11,25 @@ As per the above, nscmr is still under development and not ready for use.
 ## Instructions
 * Install pip
 * Install requirements with `pip install -r requirements.txt`
-* Generate secret key
+* Create instance and uploads folder
+* Generate secret key 
+* Install gem and then sass:
+    ```
+    gem install sass
+    ```
+* Install npm:
+    * install bower and then install jquery and bootstrap:
+    ```
+    sudo npm install -g bower
+    bower init
+    bower install -S jquery
+    bower install -S bootstrap
+    ```
+    * copy glyphicon fonts to static dir:
+    ```
+    mkdir static/fonts
+    cp bower_components/bootstrap/fonts/* static/fonts/
+    ```
 
 ### App modes
 The app may be run in development, testing or production modes. To trigger the
@@ -65,13 +83,6 @@ for the desired app's mode.
 ##### cart
     * cart should be a subdocument of user? yes!!
 
-#### category
-    * category model should have a reference to parent and to ancestors (makes
-      it really easy to create subcategories).
-
-#### product
-    * product should have an array of images
-
 ### DB
     * read about storing payment options on db -> _postponed to another moment_
     * [configure indexes]
@@ -91,17 +102,20 @@ for the desired app's mode.
         * Think if user page should not use card as well (instead of sidebar)
         * Use the already existing js to make the transitions in user page
             (jquery or bootstrap??) - basically delete user.js
+    * incorporate different js and styles under main files and remove styles
+        and scripts blocks
+    * use flask-assets on the admin bp.
 
 ### forms
+    * better validation feedback on edition fields
     * manage to pass generic form errors (when of wrong email/login, e.g.) to
         be rendered above fields..
-    * implement file validators on admin panel
 
 ### tracking
     * after building the initial db, configure [Flask-Analytics].
 
 ## Development
-    * Current development server is being hosted at [python anywhere].
+    * Current dev server on digital ocean
 
 ## Known bugs
     * not working.. ;)
@@ -118,5 +132,4 @@ for the desired app's mode.
 [mongo ref docs]:https://docs.mongodb.org/manual/reference/database-references/#document-reference://docs.mongodb.org/manual/reference/database-references/#document-references
 
 [Flask-Analytics]:https://github.com/citruspi/Flask-Analytics
-[python anywhere]:http://tls.pythonanywhere.com
 [html validation]:https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation

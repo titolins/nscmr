@@ -7,16 +7,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- CSS -->
+    {% assets "css_all" %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-    crossorigin="anonymous">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}" >
     {% block styles %}{% endblock %}
 
     <!-- /CSS -->
@@ -81,10 +77,9 @@
     <!-- /.container -->
 
     <!-- JS Files -->
-    <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    {% assets "js_base" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 
     <!-- Jinja block for adding any other scripts needed by any page
