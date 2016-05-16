@@ -85,6 +85,7 @@ def build_app():
     assets = Environment(app)
     assets.load_path = [
         os.path.join(app.root_path, 'static/sass'),
+        os.path.join(app.root_path, 'static/js'),
         os.path.join(app.root_path, 'bower_components'),
     ]
 
@@ -92,13 +93,15 @@ def build_app():
         'js_base',
         Bundle(
             'jquery/dist/jquery.min.js',
-            'bootstrap/dist/js/bootstrap.min.js'),
+            'bootstrap/dist/js/bootstrap.min.js',
+            'duvet.js'),
         output='js/base.js')
 
     assets.register(
         'css_all',
         Bundle(
             'bootstrap/dist/css/bootstrap.min.css',
+            'font-awesome/css/font-awesome.min.css',
             Bundle(
                 'style.scss',
                 filters='scss',
