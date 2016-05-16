@@ -18,17 +18,19 @@ As per the above, nscmr is still under development and not ready for use.
     gem install sass
     ```
 * Install npm:
-    * install bower and then install jquery and bootstrap:
+    * install bower and then install jquery, bootstrap and font-awesome:
     ```
     sudo npm install -g bower
     bower init
     bower install -S jquery
     bower install -S bootstrap
+    bower install -S font-awesome
     ```
     * copy glyphicon fonts to static dir:
     ```
     mkdir static/fonts
     cp bower_components/bootstrap/fonts/* static/fonts/
+    cp bower_components/font-awesome/fonts/* static/fonts/
     ```
 
 ### App modes
