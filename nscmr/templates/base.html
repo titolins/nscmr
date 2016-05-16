@@ -7,17 +7,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- CSS -->
     {% assets "css_all" %}
       <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
-
     {% block styles %}{% endblock %}
-
     <!-- /CSS -->
-
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,19 +22,28 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
   </head>
   <body>
+    {% include 'partials/sidebar.html' %}
     <nav class="navbar navbar-inverse navbar-static-top" id="navbar-wrapper" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#catalog-nav" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{ url_for('index')}}">Studio Duvet</a>
+      <div class="row">
+        <div class="col-xs-4">
+          <div id="sidebar-btn" class="trigger-menu" data-target="#sidebar">
+            <a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+          </div>
         </div>
-        <!-- /.navbar-header -->
-        <div class="navbar-collapse collapse" id="catalog-nav" aria-expanded="false" style="height: 1px;">
+        <div class="col-xs-4">
+          <a class="navbar-brand logo" href="{{ url_for('index')}}">Studio Duvet</a>
+        </div>
+        <div class="col-xs-4 text-right">
+          <span id="bag-btn" class="nav navbar-nav navbar-right">
+            <a href="#">
+              <i class="fa fa-shopping-bag"></i>
+            </a>
+          </span>
+          <span id="like-btn" class="nav navbar-nav navbar-right">
+            <a href="#">
+              <i class="fa fa-heart-o"></i>
+            </a>
+          </span>
           <ul class="nav navbar-nav navbar-right">
             {% if not current_user.is_authenticated %}
               {% include 'partials/loginform.html' %}
@@ -58,32 +62,61 @@
             {% endif %}
           </ul>
         </div>
-        <!-- /.navbar-collapse -->
       </div>
-      <!-- /.container -->
+      <!-- /row -->
     </nav>
     <!-- Page content -->
     {% block page_content %} {% endblock %}
+    <!-- Institucional -->
+    <hr>
+    <ul id="info" class="list-inline">
+      <li><a href="#">Quem somos</a></li>
+      <li><a href="#">Trocas e devoluções</a></li>
+      <li><a href="#">Sob medida</a></li>
+      <li><a href="#">Lavanderia</a></li>
+      <li><a href="#">Contato</a></li>
+    </ul>
+    <hr>
+    <div id="connect">
+      <span id="newsletter">
+        <p>Receba nossa newsletter!</p>
+        <div>
+          <input type="email" placeholder="E-MAIL"></input><button>&rarr;</button>
+        </div>
+      </span>
+      <span id="social">
+        <p>Get connected</p>
+        <a href="#">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        <a href="#">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+      </span>
+    </div>
     <!-- Footer -->
     <div id="footer-wrapper">
       <footer class="container">
         <div class="row">
-          <div class="col-md-12 text-right" id="brand">
+          <div class="col-xs-12">
+            <div class="navbar-brand logo">
+              Studio Duvet
+            </div>
+          </div>
+          <div class="col-xs-12 text-right">
               <p>powered by nscmr&reg</p>
           </div>
         </div>
       </footer>
     </div>
     <!-- /.container -->
-
     <!-- JS Files -->
     {% assets "js_base" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-
-    <!-- Jinja block for adding any other scripts needed by any page
-        individually (such as OAuth scripts) -->
+    {# Jinja block for adding any other scripts needed by any page
+    individually (such as OAuth scripts) #}
     {% block scripts %}{% endblock %}
   </body>
 </html>
