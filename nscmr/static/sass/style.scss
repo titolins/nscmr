@@ -84,6 +84,12 @@ nav > .row,
   font-size: 1.5em;
   padding-right: 10px;
   &:hover { color: $light; }
+  @media screen and (min-width: 320px) {
+    display: none;
+  }
+  @media screen and (min-width: 768px) {
+    display: inline;
+  }
 }
 
 /*
@@ -443,10 +449,13 @@ nav > .row,
  */
 
 ul#info {
+  display: inline-block;
   text-align: center;
+  width: 100%;
   color: $grey;
   li {
-    margin: 0 20px 0 20px;
+    float: left;
+    width: 20%;
     &:hover {
       color: $dark-grey;
     }
