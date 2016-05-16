@@ -43,7 +43,6 @@ class User(Document):
                 field_data = generate_password_hash(form_data[k])
             elif k == 'confirm':
                 # delete confirm field
-                del(form_data[k])
                 continue
             elif k == 'is_admin':
                 print(form_data[k])
