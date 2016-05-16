@@ -6,19 +6,24 @@
 {% endblock %}
 
 {% block header %}
-  {% include 'partials/carousel.html' %}
+  <div id="carousel-wrapper">
+    {% include 'partials/carousel.html' %}
+    <div id="carousel-box">
+        <p>
+          Casa feliz, vida feliz!
+          Decore sem regras e com muito estilo.
+        </p>
+        <span><a href="#">Comece já ›</a></span>
+    </div>
+  </div>
 {% endblock %}
 
 {% block main_content %}
-  <div class="col-lg-12">
-    <div id="front-page-text-container"><span id="front-page-text"><b>Entregas para todo o Brasil parcelado em até 3x.</b></span></div>
-  </div>
   {% for category in categories %}
-    <div class="col-xs-12 col-sm-6 col-md-4 category-panel" id="category-panel-{{loop.index}}">
+    <div class="col-xs-12 col-sm-6 col-md-4">
       <a href="{{ url_for('category', permalink=category.permalink) }}">
-        <h4 class="category-name">{{ category.name }}</h4>
-        <div class="img-holder">
-          <img class="img img-responsive" src="{{ category.base_img }}" alt="Foto de {{ category.name }}">
+        <div class="category-panel" id="category-panel-{{loop.index}}" style="background-image:url({{category.base_img}})">
+          <span class="name-box">{{ category.name }} ›</span>
         </div>
       </a>
     </div>
