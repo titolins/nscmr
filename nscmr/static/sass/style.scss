@@ -1,12 +1,32 @@
 $dark: #222;
-$grey : #9d9d9d;
-$dark-grey : #2b2b2b;
+$grey: #9d9d9d;
+$dark-grey: #2b2b2b;
+$light-grey: #D5D8DC;
 $light: #fff;
+
+$font-sizes: (
+  null: 0.8em,
+  480px: 0.9em,
+  720px: 1em
+);
 
 @mixin align-vertical($height) {
   height: $height;
   line-height: $height;
   vertical-align: middle;
+}
+
+@mixin font-size($fs-map) {
+  @each $fs-breakpoint, $fs-font-size in $fs-map {
+    @if $fs-breakpoint == null {
+      font-size: $fs-font-size;
+    }
+    @else {
+      @media screen and (min-width: $fs-breakpoint) {
+        font-size: $fs-font-size;
+      }
+    }
+  }
 }
 
 .light {
@@ -38,6 +58,7 @@ body, html {
   width: 100%;
   font: 100%;
   display: block;
+  @include font-size($font-sizes);
 }
 
 a:not(.link),
@@ -63,32 +84,87 @@ a:focus:not(.link) {
  * navbar
  */
 
-#navbar-wrapper {
-  margin-bottom: 0;
-  color: $grey;
-}
-
-nav > .row,
-.navbar-right {
-  margin-right: 0px;
-}
-
-.logo {
-  width: 100%;
-  text-align: center;
-}
-
-#bag-btn,
-#like-btn {
+#navbar {
+  z-index: 1000;
+  position: relative;
+  top: 0;
+  left: 0;
   @include align-vertical(50px);
-  font-size: 1.5em;
-  padding-right: 10px;
-  &:hover { color: $light; }
-  @media screen and (min-width: 320px) {
-    display: none;
+  width: 100%;
+  background: $dark;
+  color: $grey;
+  .nav-item:hover { color: $light; }
+  .item-right {
+    float: right;
+    padding-right: 10px;
   }
-  @media screen and (min-width: 768px) {
-    display: inline;
+}
+
+.item-dropdown {
+  z-index: 800;
+  @extend .light;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 1px solid $grey;
+  border-radius: 0 0 10px 10px;
+  li {
+    list-style: none;
+    padding: 0 10px 0 10px;
+    @include align-vertical(30px);
+    &:hover { background: $light-grey; }
+  }
+  &#user-options-dropdown {
+    @media screen and (min-width: 320px) {
+      padding: 5px 0 5px 0;
+      min-height: 60px;
+      width: 250px;
+      transform: translateY(-150px);
+      transition: transform 500ms;
+    }
+    &.open {
+      transform: translateY(0px);
+    }
+  }
+  &#login-form-dropdown {
+    padding: 10px 20px 10px 20px;
+    height: 250px;
+    transform: translateY(-300px);
+    transition: transform 500ms;
+    @media screen and (min-width: 320px) {
+      width: 250px;
+      input.form-control {
+        width: 12em;
+      }
+    }
+    @media screen and (min-width: 480px) {
+      width: 300px;
+      input.form-control {
+        width: 15em;
+      }
+    }
+    &.open {
+      transform: translateY(0px);
+    }
+    div.input-group {
+      margin-bottom: 10px;
+      &:first-child {
+        margin-top: 1.5em;
+      }
+    }
+    input[type="submit"] {
+      text-align: left;
+      height: 30px;;
+      width: 80px;
+      margin-bottom: 10px;
+    }
+    #submit-icon {
+      position: relative;
+      z-index: 1;
+      left: -25px;
+      top: -1px;
+      width: 0;
+    }
   }
 }
 
@@ -98,11 +174,23 @@ nav > .row,
 
 #buy-menu,
 #sidebar {
+  @media screen and (min-width: 320px) {
+    font-size: 0.8em;
+    width: 160px;
+    left: -160px;
+  }
+  @media screen and (min-width: 480px) {
+    font-size: 1em;
+    width: 240px;
+    left: -240px;
+  }
+  @media screen and (min-width: 720px) {
+    width: 250px;
+    left: -250px;
+  }
   position: fixed;
-  padding-top: 51px;
-  width: 250px;
+  padding-top: 50px;
   height: 100%;
-  left: -250px;
   top: 0;
   bottom: 0;
   transform: translate(0,0);
@@ -123,7 +211,15 @@ nav > .row,
   @extend .dark;
   z-index: 1000;
   &.open {
-    transform: translate(250px, 0);
+    @media screen and (min-width: 320px) {
+      transform: translate(160px, 0);
+    }
+    @media screen and (min-width: 480px) {
+      transform: translate(240px, 0);
+    }
+    @media screen and (min-width: 720px) {
+      transform: translate(250px, 0);
+    }
   }
 }
 
@@ -131,7 +227,15 @@ nav > .row,
   @extend .light;
   z-index: 900;
   &.open {
-    transform: translate(500px, 0);
+    @media screen and (min-width: 320px) {
+      transform: translate(320px, 0);
+    }
+    @media screen and (min-width: 480px) {
+      transform: translate(480px, 0);
+    }
+    @media screen and (min-width: 720px) {
+      transform: translate(500px, 0);
+    }
   }
 }
 
@@ -319,40 +423,6 @@ nav > .row,
   [class*="col-"] {
     padding: 2.5px !important;
   }
-}
-
-
-/*
- * login form stuff (base.html)
- */
-
-#login-dropdown-form {
-  padding: 5px 30px 15px 30px;
-}
-
-#login-dropdown-form > h4 {
-  margin-bottom: 20px;
-}
-
-#login-dropdown-form > form > input {
-  margin-bottom: 10px;
-}
-
-#register {
-  margin-top: 15px;
-}
-
-.alert-login {
-  margin-top: 5px;
-  padding: 5px;
-}
-
-.alert-login > li {
-  margin-left: 15px;
-}
-
-#login-btn {
-  margin-top: 5px;
 }
 
 /*
