@@ -15,6 +15,8 @@ from wtforms.validators import (
     Regexp,
     length)
 
+from .admin.forms import NsTextInput, NsPasswordInput
+
 MIN_PASS_LEN = 6
 
 class LoginForm(Form):
@@ -22,9 +24,13 @@ class LoginForm(Form):
         'Email',
         validators=[
             input_required("Campo necessário!"),
-            email("Email inválido!")])
+            email("Email inválido!")],
+            widget=NsTextInput())
 
-    password = PasswordField('Senha', [input_required("Campo necessário!")])
+    password = PasswordField(
+            'Senha',
+            [input_required("Campo necessário!")],
+            widget=NsPasswordInput())
 
 
 class ProfileForm(Form):
