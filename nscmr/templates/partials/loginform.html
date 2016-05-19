@@ -11,18 +11,16 @@
         </ul>
       {% endif %}
       <dl>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-          {{ login_form.email()|safe }}
-        </div>
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-          {{ login_form.password()|safe }}
-        </div>
-        {#
-        {{ render_field(login_form.email) }}
-        {{ render_field(login_form.password) }}
-        #}
+        <dd>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+            {{ login_form.email()|safe }}
+          </div>
+        <dd>
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+            {{ login_form.password()|safe }}
+          </div>
       <dl>
           <input id="login-btn" class="btn btn-success" type="submit" value="Entrar"></input>
           <i id="submit-icon" class="fa fa-sign-in fa-fw"></i>
