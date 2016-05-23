@@ -2,13 +2,11 @@
   <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4">
     <a href="{{ url_for('product', c_permalink = product.category['permalink'], p_permalink = product.permalink) }}">
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="product-name">{{ product.name }}</h4>
+        <div class="panel-body" style="background-image: url({{ product.variants[0]['images'][0]['thumb'] }})">
         </div>
-        <div class="panel-body">
-          <div class="img-holder">
-            <img class="img img-responsive" src="{{ product.variants[0]['images'][0]['thumb'] }}" alt="Foto de {{ product.name }}"></img>
-          </div>
+        <div class="panel-footer">
+            {{ product.variants[0].price }}
+            {{ product.name }}
         </div>
       </div>
     </a>

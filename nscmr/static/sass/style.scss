@@ -173,7 +173,7 @@ a:focus:not(.link) {
  */
 
 #buy-menu,
-#sidebar {
+#sidebar-menu {
   @media screen and (min-width: 320px) {
     font-size: 0.8em;
     width: 160px;
@@ -207,7 +207,7 @@ a:focus:not(.link) {
   }
 }
 
-#sidebar {
+#sidebar-menu {
   @extend .dark;
   z-index: 1000;
   &.open {
@@ -368,11 +368,15 @@ a:focus:not(.link) {
   font-color: $dark;
 }
 
-.category-panel {
-  text-align: center;
+.img-panel {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 100%;
+}
+
+.category-panel {
+  @extend .img-panel;
+  text-align: center;
   width: 100%;
   @media screen and (min-width: 320px) {
     height: 250px;
@@ -429,6 +433,22 @@ a:focus:not(.link) {
  * sidebar pages settings (for now used only in the profile page)
  */
 
+#sidebar {
+  ul {
+    li {
+      list-style: none;
+      padding: .2em 0 .2em 0;
+      a { display: block; }
+      &:not(:first-child):hover { color: $light-grey; }
+      &:first-child {
+        font-weight: bold;
+        margin-bottom: 1em;
+        &::after { content: ' ›'; }
+      }
+    }
+  }
+}
+
 #sidebar-content-wrapper,
 #registration-content-wrapper {
   min-height: calc(100% - 192px);
@@ -477,23 +497,20 @@ a:focus:not(.link) {
  * tweaking with panel's border style
  */
 .panel {
-  border: 0px;
-  border-radius: 0px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  .panel-body {
+    @extend .img-panel;
+    border: 0;
+    height: 380px;
+  }
+  .panel-footer {
+    background: $light;
+    border: 0;
+  }
 }
 
-.panel > .panel-heading {
-  border-radius: 0px;
-  border: 1px solid #ddd;
-  border-bottom: 0;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-}
-
-.panel > .panel-body {
-  border: 1px solid #ddd;
-  border-top: 0px;
-}
 
 /*
  * edit / remove buttons added to panel's heading.
