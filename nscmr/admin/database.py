@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from .models import User, Category, Product, Variant
+from .models import User, Category, Product, Variant, Summary
 
 
 class NsClient(MongoClient):
@@ -39,7 +39,7 @@ def build_db(app):
     handler.. Another option is to dismiss this method and get the db when of
     the app's initialization.
     """
-    documents = [User, Category, Product, Variant]
+    documents = [User, Category, Product, Variant, Summary]
     client = NsClient(app)
     for d in documents:
         client.register_collection(d)

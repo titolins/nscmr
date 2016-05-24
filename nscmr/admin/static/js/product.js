@@ -284,6 +284,20 @@ $(document).ready(function() {
     }
   });
 
+  $('#select-all').on('click', function() {
+    if ($(this).is(':checked')) {
+      $('[data-toggle=select-row]').each(function() {
+        $(this).closest('tr').addClass('selected');
+        if (!$(this).is(':checked')) $(this).next().click();
+      });
+    } else {
+      $('[data-toggle=select-row]').each(function() {
+        $(this).closest('tr').removeClass('selected');
+        if ($(this).is(':checked')) $(this).next().click();
+      });
+    }
+  });
+
 
   // function used to format variants data to be used in datatable child rows
   var formatVariants = function( variants ) {

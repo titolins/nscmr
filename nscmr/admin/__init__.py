@@ -18,7 +18,7 @@ from flask.ext.principal import RoleNeed, Permission
 
 from werkzeug.security import generate_password_hash
 
-from .models import User, Category, Product, Variant
+from .models import User, Category, Product, Variant, Summary
 
 from .helper import slugify
 
@@ -26,12 +26,22 @@ from .forms import (
     NewCategoryForm,
     category_images,
     NewProductForm,
-    NewUserForm,
-    product_images)
+    NewUserForm)
 
 from .helper import make_thumb
 
 import json
+
+PRODUCT_IMG_SIZES = {
+    '320': (180,230),
+    '380': (220, 280),
+    '480': (290, 350),
+    '768': (354, 420),
+    '992': '380',
+    '1200': (270, 320),
+    '1440': (330, 400),
+    '1600': (370, 430)
+}
 
 def build_admin_bp():
     bp = Blueprint(
@@ -145,9 +155,6 @@ def build_admin_bp():
         for c in categories:
             form.parent.choices.append(('_'.join([str(c.id), c.name]), c.name))
         if form.validate_on_submit():
-            img_filename = category_images.save(form.base_img.data,
-                    name="{}.".format(form.name.data))
-            form.base_img.data = category_images.url(img_filename)
             category = Category.from_form(form.data)
             try:
                 category.insert()
@@ -236,24 +243,11 @@ def build_admin_bp():
         form.category.choices = [('_'.join([str(c.id), c.name]), c.name) \
             for c in categories]
         if form.validate_on_submit():
-            product_data = {}
-            form_data = form.data
-            for field in form_data.keys():
-                field_data = None
-                if field == 'category':
-                    category_info = form_data[field].split('_')
-                    field_data = { '_id': category_info[0],
-                            'name': category_info[1] }
-                elif field in ('name', 'description', 'meta_description'):
-                    field_data = form_data[field]
-                # skip variants related info
-                else:
-                    continue
-                product_data[field] = field_data
-            # create and insert product, catching duplicate name errors
-            product = Product.from_form(product_data)
+            product, summary = Product.from_form(form.data)
             try:
                 product.insert()
+                summary._content['_id'] = product._content['_id']
+                summary.insert()
             except DuplicateKeyError:
                 form.name.errors.append(
                     'Já existe um produto com esse nome')
@@ -261,17 +255,33 @@ def build_admin_bp():
             # create a single variant with all additional product info (sku,
             # price, images, etc..)
             if not form.has_variants.data:
-                var_data = create_variant_data(form.data, product)
-                variant = Variant.from_form(var_data)
+                variant,var_summary = Variant.from_form(form.data, product)
                 variant.insert()
+                Summary.collection.update_one(
+                        {'_id': product.id },
+                        {'$push':
+                            {'variants': var_summary}
+                        })
             # If, however, the product has several variants, we'll need to
             # iterate them and create all of them.
             else:
                 attributes = []
                 for var in form.variants:
-                    var_data = create_variant_data(var.data, product)
-                    variant = Variant.from_form(var_data)
+                    variant,var_summary = Variant.from_form(var.data, product)
+                    print("==================================================")
+                    print("\n\n\n\n\n\n")
+                    print("==================================================")
+                    print(variant)
+                    print(var_summary)
+                    print("==================================================")
+                    print("\n\n\n\n\n\n")
+                    print("==================================================")
                     variant.insert()
+                    Summary.collection.update_one(
+                            {'_id': product.id },
+                            {'$push':
+                                {'variants': var_summary}
+                            })
                     for k in variant.attributes.keys():
                         if k not in attributes:
                             attributes += [k]
@@ -317,9 +327,11 @@ def build_admin_bp():
                             if len(p.variants) == 0:
                                 ps_deleted += Product.delete_by_id(p.id).\
                                     deleted_count
+                                Summary.delete_by_id(p.id)
                     elif field == 'products':
                         vs_res = Variant.delete_by_product(k)
                         p_res = Product.delete_by_id(k)
+                        Summary.delete_by_id(k)
                         vs_deleted += vs_res.deleted_count
                         ps_deleted += p_res.deleted_count
         if ps_deleted + vs_deleted == 0:
@@ -383,70 +395,6 @@ def build_admin_bp():
     # end CRUD                           #
     ######################################
 
-    ######################################
-    # start helpers                      #
-    ######################################
-
-
-    def create_variant_data(form_data, product):#, is_var=False):
-        var_data = {}
-        for field in form_data.keys():
-            # skip product form related fields and variants values
-            if field in ('has_variants','variants','category','attr_1_value',
-                    'attr_2_value'):
-                continue
-            elif form_data[field] not in ('', None):
-                field_data = None
-                if field in ('attr_1_name', 'attr_2_name'):
-                    field_value = \
-                        form_data['attr_{}_value'.format(field.split('_')[1])]
-                    if field_value not in ('', None):
-                        if 'attributes' not in var_data.keys():
-                            var_data['attributes'] = {}
-                        var_data['attributes'][form_data[field]] = field_value
-                    continue
-                elif field == 'images':
-                    field_data = []
-                    # save the image, create the thumbnail and build the array
-                    # of the images
-                    for img in form_data[field]:
-                        if img.filename not in ('', None):
-                            # if it's a variant, we use the variant attributes
-                            # to generate
-                            # the filename
-                            img_filename = "{}.".format(product.permalink)
-                            # save the regular image
-                            img_filename = product_images.save(img,
-                                name=img_filename)
-                            # get it's url
-                            img = product_images.url(img_filename)
-                            # create the thumbnail and get it's url
-                            thumb = product_images.url(make_thumb(img_filename,
-                                product_images.default_dest(current_app)))
-                            # create this image dict and append to the whole
-                            img_dict = {'big': img, 'thumb': thumb}
-                            field_data.append(img_dict)
-                elif field == 'price':
-                    # construct the price (stopped using floats as per several
-                    # recommendations, besides pymongo encoding error to
-                    # decimal
-                    field_data = {
-                        'currency': 'BRL',
-                        'major': int(form_data['price']),
-                        'minor': int((form_data['price']*100)%100)
-                    }
-                else:
-                    field_data = form_data[field]
-
-                var_data[field] = field_data
-        # last but not least, add the product_id
-        var_data['product_id'] = product.id
-        return var_data
-
-
-    ######################################
-    # end helpers                        #
-    ######################################
 
     ######################################
     # template default pages             #
