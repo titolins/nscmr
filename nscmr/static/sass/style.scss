@@ -71,8 +71,12 @@ a:focus:not(.link) {
   color: inherit;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .text-right {
-  align-text: right;
+  text-align: right;
   padding-right: 0;
 }
 
@@ -371,11 +375,11 @@ a:focus:not(.link) {
 .img-panel {
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100% 100%;
 }
 
 .category-panel {
   @extend .img-panel;
+  background-size: 100% 100%;
   text-align: center;
   width: 100%;
   @media screen and (min-width: 320px) {
@@ -430,21 +434,43 @@ a:focus:not(.link) {
 }
 
 /*
- * sidebar pages settings (for now used only in the profile page)
+ * sidebar pages generic settings
  */
 
 #sidebar {
+  h4 {
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 1em;
+    @media screen and (min-width: 320px) {
+      padding-left: 0px;
+      text-align: center;
+    }
+    @media screen and (min-width: 768px) {
+      padding-left: 40px;
+      text-align: left;
+    }
+  }
   ul {
+    @media screen and (min-width: 320px) {
+      display: none;
+    }
+    @media screen and (min-width: 992px) {
+      display: block;
+    }
     li {
       list-style: none;
       padding: .2em 0 .2em 0;
       a { display: block; }
-      &:not(:first-child):hover { color: $light-grey; }
-      &:first-child {
-        font-weight: bold;
-        margin-bottom: 1em;
-        &::after { content: ' ›'; }
-      }
+      &:hover { color: $light-grey; }
+    }
+    @media screen and (min-width: 320px) {
+      padding-left: 0px;
+      text-align: center;
+    }
+    @media screen and (min-width: 768px) {
+      padding-left: 40px;
+      text-align: left;
     }
   }
 }
@@ -457,12 +483,22 @@ a:focus:not(.link) {
 
 #sidebar-content-wrapper > .row {
   height: 100%;
+  @media screen and (min-width: 762px) {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  @media screen and (min-width: 992px) {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
 }
 
+/*
 #main-content > h4:first-child {
   padding-top: 0;
   margin-top: 0;
 }
+*/
 
 .list-group-item.active,
 .list-group-item.active:link,
@@ -476,8 +512,32 @@ a:focus:not(.link) {
 }
 
 /*
+ * category pages
+ */
+
+#main-content-wrapper {
+  @media screen and (min-width: 320px) {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media screen and (min-width: 992px) {
+    margin-right: 80px;
+    margin-left: -30px;
+  }
+  @media screen and (min-width: 1200px) {
+    margin-right: 100px;
+    margin-left: -45px;
+  }
+  @media screen and (min-width: 1600px) {
+    margin-right: 200px;
+    margin-left: -90px;
+  }
+}
+
+/*
  * product
  */
+
 #product-page {
   min-height: calc(100% - 192px);
   padding: 40px 0px 40px 0px;
@@ -502,12 +562,82 @@ a:focus:not(.link) {
   box-shadow: none;
   .panel-body {
     @extend .img-panel;
+    background-size: cover;
     border: 0;
-    height: 380px;
+    @media screen and (min-width: 320px) {
+      height: 250px;
+    }
+    @media screen and (min-width: 380px) {
+      height: 280px;
+    }
+    @media screen and (min-width: 480px) {
+      height: 350px;
+    }
+    @media screen and (min-width: 768px) {
+      height: 420px;
+    }
+    @media screen and (min-width: 992px) {
+      height: 320px;
+    }
+    @media screen and (min-width: 1200px) {
+      height: 360px;
+    }
+    @media screen and (min-width: 1440px) {
+      height: 400px;
+    }
+    @media screen and (min-width: 1600px) {
+      height: 430px;
+    }
   }
   .panel-footer {
+    position: relative;
     background: $light;
+    margin-top: 5px;
     border: 0;
+    border-top: 1px solid $grey;
+    @extend .text-center;
+    p {
+      margin-bottom: 0;
+    }
+    #cart-btn {
+      i {
+        position: absolute;
+        background-color: $dark;
+        color: $light;
+        @media screen and (min-width: 320px) {
+          top: -25px;
+          font-size: 1.2em;
+          margin-left: -15px;
+          @include align-vertical(30px);
+          width: 30px;
+          border-radius: 15px;
+        }
+        @media screen and (min-width: 480px) {
+          margin-left: -17px;
+          width: 34px;
+          @include align-vertical(34px);
+          border-radius: 17px;
+        }
+        @media screen and (min-width: 762px) {
+          font-size: 1em;
+        }
+        @media screen and (min-width: 1200px) {
+          top: -30px;
+          margin-left: -19px;
+          @include align-vertical(38px);
+          width: 38px;
+          border-radius: 19px;
+        }
+        @media screen and (min-width: 1440px) {
+          font-size: 1.2em;
+          top: -34px;
+          margin-left: -22px;
+          @include align-vertical(44px);
+          width: 44px;
+          border-radius: 22px;
+        }
+      }
+    }
   }
 }
 

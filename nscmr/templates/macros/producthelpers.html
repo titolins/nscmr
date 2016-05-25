@@ -1,12 +1,13 @@
-{% macro product_panel(product) %}
+{% macro product_panel(variant, product) %}
   <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4">
-    <a href="{{ url_for('product', c_permalink = product.category['permalink'], p_permalink = product.permalink) }}">
+    <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink']) }}">
       <div class="panel panel-default">
-        <div class="panel-body" style="background-image: url({{ product.variants[0]['images'][0]['thumb'] }})">
+        <div class="panel-body" style="background-image: url({{ variant['image'] }})">
         </div>
         <div class="panel-footer">
-            {{ product.variants[0].price }}
-            {{ product.name }}
+          <a class="cart-btn" href="#"><i class="fa fa-shopping-bag"></i></a>
+          <p>R$ {{ variant['price'] }}</p>
+          <p>{{ product.name }}</p>
         </div>
       </div>
     </a>

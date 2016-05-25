@@ -11,8 +11,8 @@
 {% endblock %}
 
 {% block sidebar_content %}
+  <h4>{{ category.name }} ›</h4>
   <ul>
-    <li>{{ category.name }}</li>
     {% for c in categories %}
       <li><a href="{{ url_for('category', permalink=c.permalink) }}">{{ c.name }}</a></li>
     {% endfor %}
@@ -21,9 +21,15 @@
 
 {% block main_content %}
   <div class="row">
-    {% for product in products %}
-      {{ product_panel(product) }}
-    {% endfor %}
+    {% if products.count() == 0 %}
+      <p>Não há nenhum produto cadastrado para essa categoria.</p>
+    {% else %}
+      {% for product in products %}
+        {% for variant in product['variants'] %}
+          {{ product_panel(variant, product) }}
+        {% endfor %}
+      {% endfor %}
+    {% endif %}
   </div>
 {% endblock %}
 
