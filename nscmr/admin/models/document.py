@@ -132,21 +132,46 @@ class Document(object, metaclass=DocumentProperties):
             cls.collection.create_indexes(indexes)
 
     @classmethod
-    def _update_one(cls, query, set_data, unset_data):
+    def _update_one(cls, query={}, set_data={}, unset_data={}, push_data={},
+            pull_data={}, upsert=False):
         data = { '$currentDate': { 'updated_at': True } }
         if any(set_data):
             data['$set'] = set_data
         if any(unset_data):
             data['$unset'] = unset_data
+        if any(push_data):
+            data['$push'] = push_data
+        if any(pull_data):
+            data['$pull'] = pull_data
+        if upsert:
+            data['upsert'] = True
         return cls.collection.update_one(query, data)
 
     @classmethod
-    def update_by_id(cls, doc_id, set_data={}, unset_data={}):
+    def _update_many(cls, query={}, set_data={}, unset_data={}, push_data={},
+            pull_data={}, upsert=False):
+        data = { '$currentDate': { 'updated_at': True } }
+        if any(set_data):
+            data['$set'] = set_data
+        if any(unset_data):
+            data['$unset'] = unset_data
+        if any(push_data):
+            data['$push'] = push_data
+        if any(pull_data):
+            data['$pull'] = pull_data
+        if upsert:
+            data['upsert'] = True
+        return cls.collection.update_many(query, data)
+
+    @classmethod
+    def update_by_id(cls, doc_id, set_data={}, unset_data={}, push_data={},
+            pull_data={}):
         if isinstance(doc_id, ObjectId):
             query = { '_id': doc_id }
         else:
             query = { '_id': ObjectId(doc_id) }
-        return cls._update_one(query, set_data, unset_data)
+        return cls._update_one(query, set_data, unset_data, push_data,
+                pull_data)
 
     @classmethod
     def _delete_one(cls, query):

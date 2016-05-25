@@ -13,7 +13,7 @@ def slugify(text, delim=u'-'):
             result.append(str(word, 'utf-8'))
     return delim.join(result)
 
-def make_thumb(image, path, size=(128,128)):
+def make_thumb(image, path, size=(350,480)):
     full_img_path = os.path.join(path, image)
     ext = image.rsplit('.',1)[1]
     filename = image.split('.',1)[0]

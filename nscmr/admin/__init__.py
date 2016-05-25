@@ -32,16 +32,6 @@ from .helper import make_thumb
 
 import json
 
-PRODUCT_IMG_SIZES = {
-    '320': (180,230),
-    '380': (220, 280),
-    '480': (290, 350),
-    '768': (354, 420),
-    '992': '380',
-    '1200': (270, 320),
-    '1440': (330, 400),
-    '1600': (370, 430)
-}
 
 def build_admin_bp():
     bp = Blueprint(
@@ -228,6 +218,17 @@ def build_admin_bp():
                         continue
                     data[k] = item[k]
             result = Category.update_by_id(item_id, data, unset)
+            # if we have edited the category name (and thus permalink as well),
+            # we need to update such info in this categories' products and
+            # respective summary
+            if 'name' in data.keys():
+                p_data = {
+                    'category.name': data['name'],
+                    'category.permalink': data['permalink'],
+                }
+                Product.update_by_category(item_id, p_data)
+                Summary.update_by_category(item_id, p_data)
+
             cs_modified += result.modified_count
         text = '{} categoria(s) modificada(s)!'.format(cs_modified)
         response_json = { 'text': text, 'redirect': url_for('admin.categories') }
@@ -240,14 +241,15 @@ def build_admin_bp():
     def products():
         categories = Category.get_all(to_obj=True)
         form = NewProductForm()
-        form.category.choices = [('_'.join([str(c.id), c.name]), c.name) \
-            for c in categories]
+        form.category.choices = [
+            ('_'.join([str(c.id), c.permalink, c.name]),
+            c.name) for c in categories ]
         if form.validate_on_submit():
-            product, summary = Product.from_form(form.data)
+            product, product_summary = Product.from_form(form.data)
             try:
                 product.insert()
-                summary._content['_id'] = product._content['_id']
-                summary.insert()
+                product_summary._content['_id'] = product._content['_id']
+                product_summary.insert()
             except DuplicateKeyError:
                 form.name.errors.append(
                     'Já existe um produto com esse nome')
@@ -255,33 +257,21 @@ def build_admin_bp():
             # create a single variant with all additional product info (sku,
             # price, images, etc..)
             if not form.has_variants.data:
-                variant,var_summary = Variant.from_form(form.data, product)
+                variant, var_summary = Variant.from_form(form.data, product)
                 variant.insert()
-                Summary.collection.update_one(
-                        {'_id': product.id },
-                        {'$push':
-                            {'variants': var_summary}
-                        })
+                var_summary['_id'] = variant.id
+                Summary.update_by_id(product.id, push_data=\
+                    { 'variants': var_summary })
             # If, however, the product has several variants, we'll need to
             # iterate them and create all of them.
             else:
                 attributes = []
                 for var in form.variants:
-                    variant,var_summary = Variant.from_form(var.data, product)
-                    print("==================================================")
-                    print("\n\n\n\n\n\n")
-                    print("==================================================")
-                    print(variant)
-                    print(var_summary)
-                    print("==================================================")
-                    print("\n\n\n\n\n\n")
-                    print("==================================================")
+                    variant, var_summary = Variant.from_form(var.data, product)
                     variant.insert()
-                    Summary.collection.update_one(
-                            {'_id': product.id },
-                            {'$push':
-                                {'variants': var_summary}
-                            })
+                    var_summary['_id'] = variant.id
+                    Summary.update_by_id(product.id, push_data=\
+                        { 'variants': var_summary })
                     for k in variant.attributes.keys():
                         if k not in attributes:
                             attributes += [k]
@@ -324,6 +314,8 @@ def build_admin_bp():
                         p = Variant.get_by_id(k, to_obj=True).product
                         if str(p.id) not in request.json['products']:
                             vs_deleted += Variant.delete_by_id(k).deleted_count
+                            Summary.update_by_id(p.id, pull_data=\
+                                { 'variants': { '_id': ObjectId(k) }})
                             if len(p.variants) == 0:
                                 ps_deleted += Product.delete_by_id(p.id).\
                                     deleted_count
@@ -363,7 +355,8 @@ def build_admin_bp():
                         elif k == 'category':
                             category_fields = item[k].split('_')
                             data['category._id'] = category_fields[0]
-                            data['category.name'] = category_fields[1]
+                            data['category.name'] = category_fields[2]
+                            data['category.permalink'] = category_fields[1]
                             continue
                         elif k == 'price':
                             price = float(item['price'])
@@ -379,9 +372,23 @@ def build_admin_bp():
                 if field == 'variants':
                     result = Variant.update_by_id(item_id, data)
                     vs_modified += result.modified_count
+                    s_data = {}
+                    for attr in data.keys():
+                        if 'price' in attr and 'price' not in s_data.keys():
+                            s_data['variants.$.price'] = \
+                                "{0:.2f}".format(float(item['price'])).\
+                                    replace('.',',')
+                    print(s_data)
+                    print(Summary._update_one(
+                        {'variants._id': ObjectId(item_id)},
+                        set_data=s_data).modified_count)
                     continue
                 result = Product.update_by_id(item_id, data)
                 ps_modified += result.modified_count
+                # remove data unused in summary and update summary
+                s_data = { k: v for k,v in data.items() \
+                    if k in ('permalink', 'name') or 'category' in k }
+                Summary.update_by_id(item_id, s_data)
 
         text = '{} produto(s) e {} variante(s) modificado(s)!'.format(
             ps_modified, vs_modified)

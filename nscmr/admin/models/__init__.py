@@ -139,6 +139,18 @@ class Summary(Document):
     '''
     __collection__ = 'summary'
 
+    indexes = {
+        'variants._id': ASCENDING,
+    }
+
+    @staticmethod
+    def get_by_category(category_id, to_obj=False):
+        return Summary._get_many(to_obj, { "category._id": str(category_id) })
+
+    @staticmethod
+    def update_by_category(category_id, set_data):
+        return Summary._update_many({'category._id':str(category_id)},set_data)
+
 
 class Product(SlugDocument):
     __collection__ = 'products'
@@ -158,6 +170,10 @@ class Product(SlugDocument):
         return Product._get_many(to_obj, { "category._id": str(category_id) })
 
     @staticmethod
+    def update_by_category(category_id, set_data):
+        return Product._update_many({'category._id':str(category_id)},set_data)
+
+    @staticmethod
     def delete_by_category(category_id):
         return Product._delete_many({'category._id':category_id})
 
@@ -173,9 +189,13 @@ class Product(SlugDocument):
                 summary_data['permalink'] = product_data['permalink']
             elif field == 'category':
                 category_info = form_data[field].split('_')
-                product_data[field] = { '_id': category_info[0],
-                        'name': category_info[1] }
-                summary_data['category_id'] = category_info[0]
+                product_data[field] = { 
+                    '_id': category_info[0],
+                    'name': category_info[2],
+                    'permalink': category_info[1] }
+                summary_data['category'] = {
+                    '_id': category_info[0],
+                    'permalink': category_info[1] }
             elif field in ('description', 'meta_description'):
                 product_data[field] = form_data[field]
             # skip variants related info
@@ -268,12 +288,13 @@ class Variant(Document):
                         'major': int(form_data['price']),
                         'minor': int((form_data['price']*100)%100)
                     }
-                    summary_data[field] = var_data[field]
+                    summary_data[field] = \
+                        "{0:.2f}".format(form_data['price']).replace('.',',')
                 else:
                     var_data[field] = form_data[field]
 
                 var_data['product_id'] = product.id
-        return Variant(var_data),summary_data
+        return Variant(var_data), summary_data
 
 
     @staticmethod
