@@ -7,7 +7,7 @@
         {% block sidebar_content %} {% endblock %}
       </div>
       <div class="col-md-9">
-        <div id="main-content-wrapper" class="container-fluid">
+        <div id="main-content-wrapper" class="container-fluid {% block margin_fix %}margin-fix{% endblock %}">
           {% block main_content %} {% endblock %}
         </div>
       </div>

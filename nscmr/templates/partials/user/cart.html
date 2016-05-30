@@ -1,3 +1,8 @@
-<div id="cart" style="display:none;">
-  <h1>cart</h1>
+<div id="cart" class="hidden user-info">
+  <h4>Carrinho</h4>
+  {% if current_user.cart|length == 0 %}
+    <p>Você não possui nenhum item no seu carrinho</p>
+  {% else %}
+    <p>abcd</p>
+  {% endif %}
 </div>

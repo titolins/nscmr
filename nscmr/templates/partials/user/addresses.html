@@ -1,4 +1,7 @@
-<div id="addresses" style="display:none;">
+<h4>Endereços</h4>
+{% if current_user.addresses|length == 0 %}
+  <p>Você não possui nenhum endereço registrado</p>
+{% else %}
   {% for address in current_user.addresses %}
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -26,5 +29,5 @@
       </div>
     </div>
   {% endfor %}
-</div>
+{% endif %}
 
