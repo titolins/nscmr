@@ -36,28 +36,36 @@ class User(Document):
 
     @staticmethod
     def from_form(form_data):
-        data = { 'roles': ['user'] }
+        data = {
+            'roles': ['user'],
+            'addresses': [],
+            'wishlist': [],
+            'orders': [] }
+        print(form_data)
         for k in form_data.keys():
-            if k in ('name', 'email'):
-                field_data = form_data[k].lower()
-            elif k == 'dob' and form_data[k] is not None:
-                # converts date object to datetime, as pymongo only support the latter
-                field_data = datetime.combine(form_data[k],datetime.min.time())
-            elif k == 'password':
-                # hash password
-                field_data = generate_password_hash(form_data[k])
-            elif k == 'confirm':
-                # delete confirm field
-                continue
-            elif k == 'is_admin':
-                print(form_data[k])
-                if form_data[k]:
-                    data['roles'].append('admin')
-                continue
-            else:
-                field_data = form_data[k]
-            data[k] = field_data
-
+            if form_data[k] not in (None, ''):
+                if k in ('confirm', 'has_address'):
+                    continue
+                elif k in ('name', 'email'):
+                    field_data = form_data[k].lower()
+                elif k == 'dob':
+                    # converts date object to datetime,
+                    # as pymongo only support the latter
+                    field_data = datetime.combine(form_data[k],datetime.min.time())
+                elif k == 'password':
+                    # hash password
+                    field_data = generate_password_hash(form_data[k])
+                elif k == 'is_admin':
+                    if form_data[k]:
+                        data['roles'].append('admin')
+                    continue
+                elif k == 'address':
+                    address = { k: v.lower() for k,v in form_data[k].items() }
+                    data['addresses'] = [ address, ]
+                    continue
+                else:
+                    field_data = form_data[k]
+                data[k] = field_data
         return User(data)
 
     def get_dob(self):
@@ -279,9 +287,10 @@ class Variant(Document):
                             # create this image dict and append to the whole
                             img_dict = {'full': img, 'thumb': thumb}
                             field_data.append(img_dict)
-                            if 'image' not in summary_data.keys():
-                                summary_data['image'] = img_dict['thumb']
+                            if 'display_image' not in summary_data.keys():
+                                summary_data['display_image'] = img_dict['thumb']
                     var_data[field] = field_data
+                    summary_data[field] = field_data
                 elif field == 'price':
                     var_data[field] = {
                         'currency': 'BRL',
