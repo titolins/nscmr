@@ -76,6 +76,19 @@ class NsNumberInput(html5.NumberInput):
         return super().__call__(field, **kwargs)
 
 
+class NsDateInput(html5.DateInput):
+    def __init__(self, ns_class='form-control', step=None):
+        super().__init__()
+        self.form_class = ns_class
+        self.step = step
+
+    def __call__(self, field, **kwargs):
+        c = kwargs.pop('class', '') or kwargs.pop('class_', '')
+        kwargs['class'] = '{} {}'.format(self.form_class, c)
+        return super().__call__(field, **kwargs)
+
+
+
 class VarAttrSelectFieldWidget():
     '''
     should set default settings for the select widget, such as 100% width and
@@ -147,7 +160,6 @@ class NewProductForm(Form):
             FileAllowed(product_images, message=EXT_ALLOWED_MSG)]),
         min_entries=1)
     meta_description = StringField('Meta-description', widget=NsTextInput())
-
 
     def validate(self):
         rv = super().validate()
@@ -254,7 +266,8 @@ class NewUserForm(Form):
     name = StringField('Nome',
         validators=[input_required("Campo necessário!")],
         widget=NsTextInput())
-    dob = DateField("Data de nascimento", validators=[Optional()])
+    dob = DateField("Data de nascimento", validators=[Optional()],
+        widget=NsDateInput())
     is_admin = BooleanField(
         'Esse usuário é um administrador do sistema?')
     email = StringField('Email',
