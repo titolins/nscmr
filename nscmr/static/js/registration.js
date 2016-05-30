@@ -11,7 +11,7 @@ function checkPassword() {
 function toggleAddress(checkbox) {
   if ($(checkbox).is(':checked')) {
     $(checkbox).val("true");
-    $($(checkbox).data('toggle')).removeClass('hidden');
+    $($(checkbox).data('toggle')).addClass('shown');
   }
 };
 
@@ -22,7 +22,7 @@ $(document).ready(function() {
   $("#has_address").change(function() {
     if ($(this).is(':checked')) $(this).val("true");
     else $(this).val("false");
-    $($(this).data('toggle')).toggleClass('hidden');
+    $($(this).data('toggle')).toggleClass('shown');
   });
 
   toggleAddress(document.getElementById('has_address'));

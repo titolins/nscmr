@@ -481,7 +481,12 @@ hr { width: 100%; }
  * registration page
  */
 
-#register-btn {
+#input-address {
+  opacity: 0;
+  &.shown {
+    opacity: 1;
+    transition: all 0.4s ease-in-out;
+  }
 }
 
 
