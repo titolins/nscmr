@@ -26,10 +26,10 @@ from functools import wraps
 import requests
 
 # models
-from nscmr.admin.models import User, Category, Product
+from nscmr.admin.models import User, Category, Product, Summary
 
 # started forms
-from nscmr.forms import LoginForm, ProfileForm, AddressForm, RegistrationForm
+from nscmr.forms import LoginForm, RegistrationForm
 
 # helpers
 from nscmr.helper.back import Back
@@ -64,6 +64,7 @@ def index():
 # Create
 @app.route('/usuario/novo', methods=['GET', 'POST'])
 def registration():
+    categories = Category.get_all(to_obj=True)
     registration_form = RegistrationForm()
     if registration_form.validate_on_submit():
         try:
@@ -78,7 +79,8 @@ def registration():
             return render_template(
                     'registration.html',
                     login_form=LoginForm(),
-                    registration_form=registration_form)
+                    registration_form=registration_form,
+                    categories=categories)
         except Exception as e:
             flash(
                 ('Ocorreu um erro. Por favor, tente novamente. Se o erro, '
@@ -89,7 +91,8 @@ def registration():
     return render_template(
             'registration.html',
             login_form=LoginForm(),
-            registration_form=registration_form)
+            registration_form=registration_form,
+            categories=categories)
 
 # Read
 @app.route('/usuario')
@@ -128,7 +131,7 @@ def category(permalink):
     categories = Category.get_all(to_obj=True)
     category = [c for c in categories if c.permalink == permalink][0]
     categories.remove(category)
-    products = Product.get_by_category(category.id, to_obj=True)
+    products = Summary.get_by_category(category.id)
     return render_template(
             'category.html',
             # we don't need to access both category and products collection,
