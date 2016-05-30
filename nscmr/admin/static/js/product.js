@@ -135,6 +135,14 @@ function getEditData() {
   return form;
 };
 
+function toggleVariants(variants) {
+  if ($(variants).is(':checked')) {
+    $(variants).val("true");
+    $($(variants).data("enable")).show();
+    $($(variants).data("disable")).hide();
+  }
+}
+
 $(document).ready(function() {
   // this code hides or shows the variants attributes (on the creation form)
   // and correctly sets it's value, as used by our backend
@@ -149,10 +157,7 @@ $(document).ready(function() {
       $($(this).data("disable")).show();
     }
   });
-  // just triggering the event twice to make sure the visitors are in the same
-  // place than they were before in case of page reload
-  $("#has_variants").trigger('click');
-  $("#has_variants").trigger('click');
+  toggleVariants(document.getElementById('has_variants'));
 
   // add remove fields functionality (for product images and variants)
   $("div[data-toggle=fieldset]").each(function() {
