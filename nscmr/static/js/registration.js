@@ -8,6 +8,22 @@ function checkPassword() {
   }
 };
 
+function toggleAddress(checkbox) {
+  if ($(checkbox).is(':checked')) {
+    $(checkbox).val("true");
+    $($(checkbox).data('toggle')).removeClass('hidden');
+  }
+};
+
+
 $(document).ready(function() {
   $("#confirm-password").change(checkPassword);
+
+  $("#has_address").change(function() {
+    if ($(this).is(':checked')) $(this).val("true");
+    else $(this).val("false");
+    $($(this).data('toggle')).toggleClass('hidden');
+  });
+
+  toggleAddress(document.getElementById('has_address'));
 });
