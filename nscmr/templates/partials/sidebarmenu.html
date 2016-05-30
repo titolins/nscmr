@@ -12,8 +12,11 @@
 </div>
 <div id="buy-menu">
   <ul>
+    {% if category is defined %}
+      <li><a href="{{ url_for('category', permalink=category.permalink) }}">{{ category.name }}</a></li>
+    {% endif %}
     {% for category in categories %}
-    <li><a href="{{ url_for('category', permalink=category.permalink) }}">{{ category.name }}</a></li>
+      <li><a href="{{ url_for('category', permalink=category.permalink) }}">{{ category.name }}</a></li>
     {% endfor %}
   </ul>
 </div>

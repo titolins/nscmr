@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+  <div id="single-content-wrapper" class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-sm-offset-2 col-sm-8">
+        {% block single_content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

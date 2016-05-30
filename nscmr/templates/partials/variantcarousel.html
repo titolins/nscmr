@@ -1,0 +1,44 @@
+<div id="carousel-full-{{ variant['_id'] }}" class="carousel slide variant-carousel-full" data-interval="false">
+  <div class="carousel-inner">
+    {% for image in variant['images'] %}
+      <div class="item{% if loop.index0 == 0 %} active{% endif %}">
+        <img src="{{ image["full"] }}">
+      </div>
+    {% endfor %}
+  </div>
+  <a class="left carousel-control" href="#carousel-full-{{ variant['_id'] }}" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Anterior</span>
+  </a>
+  <a class="right carousel-control" href="#carousel-full-{{ variant['_id'] }}" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Próxima</span>
+  </a>
+</div>
+<div id="carousel-thumb-{{ variant['_id'] }}" class="carousel slide variant-carousel-thumb" data-interval="false">
+  <div class="carousel-inner">
+    {% for image in variant['images'] %}
+      {% if loop.index0 % 4 == 0 %}
+      <div class="item{% if loop.index0 == 0 %} active{% endif %}">
+        <div class="row">
+      {% endif %}
+      <div class="col-md-3">
+        <div data-target="#carousel-full-{{ variant['_id'] }}" data-slide-to="{{ loop.index0 }}" class="variant-thumb">
+          <img class="img-responsive" src="{{ image['thumb'] }}">
+        </div>
+      </div>
+      {% if loop.index0 % 4 == 3  or loop.last %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <a class="left carousel-control thumb-control" href="#carousel-thumb-{{ variant['_id'] }}" role="button" data-slide="prev">
+    <span class="small-arrow">‹</span>
+    <span class="sr-only">Anterior</span>
+  </a>
+  <a class="right carousel-control thumb-control" href="#carousel-thumb-{{ variant['_id'] }}" role="button" data-slide="next">
+    <span class="small-arrow">›</span>
+    <span class="sr-only">Próxima</span>
+  </a>
+</div>

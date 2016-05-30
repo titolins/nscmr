@@ -1,4 +1,9 @@
+/*
+ * general settings
+ */
+
 $dark: #222;
+$fade-dark: rgba(34, 34, 34, .3);
 $grey: #9d9d9d;
 $dark-grey: #2b2b2b;
 $light-grey: #D5D8DC;
@@ -49,9 +54,27 @@ $font-sizes: (
   }
 }
 
-/*
- * general settings
- */
+.full-height {
+  min-height: calc(100% - 370px);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+  padding-right: 0;
+}
+
+.btn-ns {
+  @extend .dark;
+}
+
 
 body, html {
   height: 100%;
@@ -71,18 +94,7 @@ a:focus:not(.link) {
   color: inherit;
 }
 
-.text-center {
-  text-align: center;
-}
-
-.text-right {
-  text-align: right;
-  padding-right: 0;
-}
-
-.hidden {
-  display: none;
-}
+hr { width: 100%; }
 
 /*
  * navbar
@@ -90,6 +102,7 @@ a:focus:not(.link) {
 
 #navbar {
   z-index: 1000;
+  text-align: center;
   position: relative;
   top: 0;
   left: 0;
@@ -97,10 +110,16 @@ a:focus:not(.link) {
   width: 100%;
   background: $dark;
   color: $grey;
-  .nav-item:hover { color: $light; }
+  .nav-item a:hover { color: $light; }
+  .item-left {
+    float: left;
+  }
   .item-right {
     float: right;
     padding-right: 10px;
+  }
+  .item-center {
+    float: none;
   }
 }
 
@@ -117,6 +136,7 @@ a:focus:not(.link) {
     padding: 0 10px 0 10px;
     @include align-vertical(30px);
     &:hover { background: $light-grey; }
+    a { display: block; }
   }
   &#user-options-dropdown {
     @media screen and (min-width: 320px) {
@@ -434,6 +454,38 @@ a:focus:not(.link) {
 }
 
 /*
+ * single content settings
+ */
+
+#single-content-wrapper {
+  @extend .full-height;
+  padding-top: 20px;
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+    background: url('http://placehold.it/1920x1080');
+    background-repeat: no-repeat;
+    background-size: cover;
+    & > [class*="col-"] {
+      padding: 50px;
+      margin-bottom: 0;
+      background-color: $light;
+    }
+  }
+}
+
+.table-container {}
+
+
+/*
+ * registration page
+ */
+
+#register-btn {
+}
+
+
+/*
  * sidebar pages generic settings
  */
 
@@ -475,50 +527,36 @@ a:focus:not(.link) {
   }
 }
 
-#sidebar-content-wrapper,
-#registration-content-wrapper {
-  min-height: calc(100% - 192px);
-  padding-top: 50px;
-}
-
-#sidebar-content-wrapper > .row {
-  height: 100%;
-  @media screen and (min-width: 762px) {
-    margin-left: 50px;
-    margin-right: 50px;
-  }
-  @media screen and (min-width: 992px) {
-    margin-left: -15px;
-    margin-right: -15px;
+#sidebar-content-wrapper {
+  @extend .full-height;
+  padding-top: 40px;
+  & > .row {
+    @media screen and (min-width: 768px) {
+      margin-left: 50px;
+      margin-right: 50px;
+    }
+    @media screen and (min-width: 992px) {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
   }
 }
 
-/*
-#main-content > h4:first-child {
-  padding-top: 0;
-  margin-top: 0;
-}
-*/
 
-.list-group-item.active,
-.list-group-item.active:link,
-.list-group-item.active:visited,
-.list-group-item.active:active,
-.list-group-item.active:hover {
-  background-color: $dark;
-  border-color: $dark;
-  border-top-color: #ddd;
-  border-bottom-color: #ddd;
-}
 
 /*
  * category pages
  */
 
-#main-content-wrapper {
+#main-content-wrapper.margin-fix {
   @media screen and (min-width: 320px) {
     margin-right: auto;
     margin-left: auto;
+    p {
+      text-align: center;
+    }
+  }
+  @media screen and (min-width: 768px) {
   }
   @media screen and (min-width: 992px) {
     margin-right: 80px;
@@ -531,6 +569,92 @@ a:focus:not(.link) {
   @media screen and (min-width: 1600px) {
     margin-right: 200px;
     margin-left: -90px;
+  }
+  .panel .panel-body {
+    position: relative;
+    & > a {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+    &:hover {
+      .img-view {
+        opacity: .30;
+        transition: all 0.6s ease-in-out;
+      }
+    }
+  }
+}
+
+.img-view {
+  height: 30%;
+  width: 100%;
+  background-color: $dark;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  color: $light;
+  text-align: center;
+  opacity: 0;
+  a {
+    position: relative;
+    top: 35%;
+    &:hover {
+      color: $light-grey;
+    }
+  }
+}
+
+.variant-modal {
+  .modal-dialog {
+    width: 50%;
+    .modal-content {
+      border-radius: 0;
+      padding-bottom: 30px;
+      .modal-header {
+        border: 0;
+        padding-bottom: 0;
+      }
+      .variant-details {
+        padding-top: 150px;
+        hr { border-top: 1px solid $fade-dark; }
+        .details-text {
+          margin-right: 15px;
+          a:hover { color: $light-grey; }
+        }
+        .variant-btns {
+          a i {
+            @include align-vertical(40px);
+            width: 40px;
+            text-align: center;
+            background-color: $dark;
+            color: $light;
+            border-radius: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.variant-carousel-thumb {
+  .carousel-inner .row {
+    margin-top: 10px;
+    margin-left: -5px;
+    margin-right: -5px;
+    [class*=col-] {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+  .thumb-control {
+    margin-top: 10px;
+    .small-arrow {
+      position: static;
+      display: block;
+      width: auto;
+      margin-top: -15px;
+    }
   }
 }
 
@@ -554,7 +678,7 @@ a:focus:not(.link) {
 
 
 /*
- * tweaking with panel's border style
+ * product panel
  */
 .panel {
   border: 0;
@@ -580,13 +704,13 @@ a:focus:not(.link) {
       height: 320px;
     }
     @media screen and (min-width: 1200px) {
-      height: 360px;
+      height: 300px;
     }
     @media screen and (min-width: 1440px) {
-      height: 400px;
+      height: 350px;
     }
     @media screen and (min-width: 1600px) {
-      height: 430px;
+      height: 380px;
     }
   }
   .panel-footer {
@@ -599,11 +723,12 @@ a:focus:not(.link) {
     p {
       margin-bottom: 0;
     }
-    #cart-btn {
+    .cart-btn {
       i {
         position: absolute;
         background-color: $dark;
         color: $light;
+        &:hover { background-color: $grey; }
         @media screen and (min-width: 320px) {
           top: -25px;
           font-size: 1.2em;
@@ -618,7 +743,7 @@ a:focus:not(.link) {
           @include align-vertical(34px);
           border-radius: 17px;
         }
-        @media screen and (min-width: 762px) {
+        @media screen and (min-width: 768px) {
           font-size: 1em;
         }
         @media screen and (min-width: 1200px) {
@@ -656,10 +781,119 @@ a:focus:not(.link) {
  * user page stuff
  */
 
-#profile-panel {
-  border: 1px solid #ddd;
+.list-group-item {
+  border-color: $light-grey;
+  &,
+  &:active,
+  &:visited {
+    @extend .light;
+  }
+  &.active:hover,
+  &.active:active,
+  &.active:visited,
+  &.active {
+    @extend .dark;
+    border-left-color: $dark;
+    border-right-color: $dark;
+    border-top-color: $light-grey;
+    border-bottom-color: $light-grey;
+  }
 }
 
+.user-info {
+  padding-top: 2em;
+  border: 1px solid $light-grey;
+  border-radius: 4px;
+  #edit-profile {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    @media screen and (min-width: 320px) {
+      margin-left: 0;
+    }
+    @media screen and (min-width: 768px) {
+      margin-left: 60px;
+    }
+    @media screen and (min-width: 992px) {
+      margin-left: 15px;
+    }
+  }
+}
+
+#logout-confirm-btn {
+  margin-bottom: 1em;
+}
+
+#logout,
+#orders,
+#wishlist,
+#cart,
+#profile-data,
+#addresses-data {
+  @media screen and (min-width: 320px) {
+    padding-left: 15px;
+  }
+  @media screen and (min-width: 992px) {
+    padding-left: 30px;
+  }
+}
+
+#addresses-data {
+  @media screen and (min-width: 320px) {
+    padding-top: 15px;
+  }
+  @media screen and (min-width: 992px) {
+    padding-top: 0;
+  }
+}
+
+.user-field {
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+  div,
+  .field-title {
+    display: inline;
+    margin-right: 10px;
+  }
+  .input {
+    input {
+      display: inline;
+    }
+    &#name-input,
+    &#email-input {
+      input {
+        @media screen and (min-width: 320px) {
+          width: 65%;
+        }
+      }
+    }
+    &#dob-input {
+      input {
+        @media screen and (min-width: 320px) {
+          width: 25%;
+        }
+        @media screen and (min-width: 480px) {
+          width: 50%;
+        }
+        @media screen and (min-width: 992px) {
+          width: 40%;
+        }
+      }
+    }
+  }
+}
+
+#profile-data {
+  @media screen and (min-width: 320px) {
+    border-bottom: 1px solid $light-grey;
+    padding-bottom: 2em;
+  }
+  @media screen and (min-width: 992px) {
+    border-bottom: 0;
+    border-right: 1px solid $light-grey;
+    padding-bottom: 0;
+  }
+}
 
 /*
  * institucional / newsletter & social media stuff
@@ -682,9 +916,8 @@ ul#info {
 
 div#connect {
   text-align: center;
-  margin: 40px 0 0 0;
   width: 100%;
-  height: 120px;
+  height: 100px;
   span {
     height: 60px;
     @media screen and (min-width: 320px) {
@@ -742,12 +975,18 @@ div#connect {
 #footer-wrapper {
   background-color: $dark;
   color: $grey;
-  border-top: 1px solid #080808;
   width: 100%;
+  height: 120px;
+  position: relative;
+  .engine {
+    font-size: 0.7em;
+    position: absolute;
+    right: 15px;
+    bottom: 0;
+  }
 }
 
 footer {
-  margin-top: 20px;
-  height: 120px;
+  height: 100%;
 }
 

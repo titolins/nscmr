@@ -22,7 +22,9 @@
 {% block main_content %}
   <div class="row">
     {% if products.count() == 0 %}
-      <p>Não há nenhum produto cadastrado para essa categoria.</p>
+      <div class="col-xs-12">
+        <p>Não há nenhum produto cadastrado para essa categoria.</p>
+      </div>
     {% else %}
       {% for product in products %}
         {% for variant in product['variants'] %}
