@@ -26,7 +26,7 @@ from functools import wraps
 import requests
 
 # models
-from nscmr.admin.models import User, Category, Product, Summary
+from nscmr.admin.models import User, Category, Product, Variant, Summary
 
 # started forms
 from nscmr.forms import LoginForm, RegistrationForm
@@ -159,16 +159,18 @@ def category(permalink):
 # only admin will be able to create products
 
 # Read
-@app.route('/catalogo/<string:c_permalink>/<string:p_permalink>')
+@app.route('/catalogo/<string:c_permalink>/<string:p_permalink>/<string:v_id>')
 @back.anchor
-def product(c_permalink, p_permalink):
-    category = Category.get_by_permalink(c_permalink)
+def product(c_permalink, p_permalink, v_id):
+    #category = Category.get_by_permalink(c_permalink)
+    categories = Category.get_all()
     product = Product.get_by_permalink(p_permalink, to_obj=True)
+    var = Variant.get_by_id(v_id, to_obj=True)
     return render_template(
         'product.html',
-        category = category,
+        categories = categories,
         product = product,
-        variants = product.variants,
+        variant = var,
         attributes = product.attributes,
         login_form=LoginForm())
 
