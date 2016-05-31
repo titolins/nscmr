@@ -2,8 +2,8 @@
   <div class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4 col-lg-3">
     <div class="panel panel-default">
       <div class="panel-body" style="background-image: url({{ variant['display_image'] }})">
-        <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink']) }}"></a>
-        <div class="img-view"><a data-toggle="modal" data-target="#modal-{{ variant['_id'] }}" href="#">+ Visualização rápida</a></div>
+        <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink'], v_id = variant['_id']) }}"></a>
+        <div class="img-view"><a data-toggle="modal" data-target="#{{ variant['_id'] }}-images" href="#">+ Visualização rápida</a></div>
       </div>
       <div class="panel-footer">
         <a class="cart-btn" href="#"><i class="fa fa-shopping-bag"></i></a>
@@ -12,7 +12,7 @@
       </div>
     </div>
   </div>
-  <div id="modal-{{variant['_id']}}" class="modal fade variant-modal" role="dialog">
+  <div id="{{variant['_id']}}-images" class="modal fade variant-modal" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -30,7 +30,7 @@
                   <h4>R$ {{ variant['price'] }}</h4>
                   <hr>
                   <div class="details-text text-right">
-                    <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink']) }}">+ Detalhes</a>
+                    <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink'], v_id = variant['_id']) }}">+ Detalhes</a>
                   </div>
                   <hr>
                   <div class="variant-btns text-right">
