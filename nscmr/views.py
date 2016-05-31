@@ -248,12 +248,19 @@ def contact():
     if form.validate_on_submit():
         # send email...
         pass
-    return render_template('contact.html', form=form, categories=categories)
+    return render_template(
+        'contact.html',
+        form=form,
+        login_form=LoginForm(),
+        categories=categories)
 
 @app.route('/sobre')
 def about():
     categories = Category.get_all(to_obj=True)
-    return render_template('aboutus.html', categories=categories)
+    return render_template(
+        'aboutus.html',
+        login_form=LoginForm(),
+        categories=categories)
 
 @app.route('/sobmedida', methods=['GET', 'POST'])
 def custom_made():
@@ -262,7 +269,11 @@ def custom_made():
     if form.validate_on_submit():
         # notify custom made request -- how, email?
         pass
-    return render_template('custommade.html', form=form, categories=categories)
+    return render_template(
+        'custommade.html',
+        form=form,
+        login_form=LoginForm(),
+        categories=categories)
 
 @app.route('/trocas', methods=['GET', 'POST'])
 def returns():
@@ -271,12 +282,16 @@ def returns():
     if form.validate_on_submit():
         # send email...
         pass
-    return render_template('returns.html', form=form, categories=categories)
+    return render_template('returns.html',
+        form=form,
+        login_form=LoginForm(),
+        categories=categories)
 
 @app.route('/lavanderia')
 def wash():
     return render_template(
         'wash.html',
+        login_form=LoginForm(),
         categories=Category.get_all(to_obj=True))
 
 #########################################################
