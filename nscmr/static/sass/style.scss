@@ -484,6 +484,7 @@ hr { width: 100%; }
     margin-left: 0;
     margin-right: 0;
     background: url('http://placehold.it/1920x1080');
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     & > [class*="col-"] {
@@ -1018,6 +1019,55 @@ select {
     padding-bottom: 0;
   }
 }
+
+/*
+ * contact/custommade page
+ */
+
+.field-row {
+  .contact-field {
+    @media screen and (min-width: 480px) {
+      float: left;
+      width: 50%;
+      &:first-child {
+        padding-right: 15px;
+      }
+      &:last-child {
+        padding-left: 15px;
+      }
+    }
+  }
+}
+
+#returns,
+#custom-made,
+#contact {
+  #message {
+    height: 280px;
+  }
+  textarea,
+  input {
+    border-radius: 0;
+    border: 2px solid $dark;
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+/*
+ * about/wash
+ */
+
+#wash,
+#about {
+  h3 {
+    padding-top: 20px;
+  }
+  margin-bottom: 80px;
+  text-align: justify;
+}
+
 
 /*
  * institucional / newsletter & social media stuff

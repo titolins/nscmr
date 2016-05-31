@@ -29,7 +29,11 @@ import requests
 from nscmr.admin.models import User, Category, Product, Variant, Summary
 
 # started forms
-from nscmr.forms import LoginForm, RegistrationForm
+from nscmr.forms import (
+    LoginForm,
+    RegistrationForm,
+    ContactForm,
+    CustomMadeForm)
 
 # helpers
 from nscmr.helper.back import Back
@@ -98,7 +102,8 @@ def registration():
 @app.route('/usuario')
 @login_required
 def user():
-    return render_template('user.html')
+    return render_template('user.html',
+        categories=Category.get_all(to_obj=True))
 
 # Update
 @app.route('/usuario/editar')
@@ -230,6 +235,52 @@ def logout():
 
 #########################################################
 ####################### end login #######################
+#########################################################
+
+#########################################################
+######################### misc #########################
+#########################################################
+
+@app.route('/contato', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    categories = Category.get_all(to_obj=True)
+    if form.validate_on_submit():
+        # send email...
+        pass
+    return render_template('contact.html', form=form, categories=categories)
+
+@app.route('/sobre')
+def about():
+    categories = Category.get_all(to_obj=True)
+    return render_template('aboutus.html', categories=categories)
+
+@app.route('/sobmedida', methods=['GET', 'POST'])
+def custom_made():
+    form = CustomMadeForm()
+    categories = Category.get_all(to_obj=True)
+    if form.validate_on_submit():
+        # notify custom made request -- how, email?
+        pass
+    return render_template('custommade.html', form=form, categories=categories)
+
+@app.route('/trocas', methods=['GET', 'POST'])
+def returns():
+    form = ContactForm()
+    categories = Category.get_all(to_obj=True)
+    if form.validate_on_submit():
+        # send email...
+        pass
+    return render_template('returns.html', form=form, categories=categories)
+
+@app.route('/lavanderia')
+def wash():
+    return render_template(
+        'wash.html',
+        categories=Category.get_all(to_obj=True))
+
+#########################################################
+####################### end misc ########################
 #########################################################
 
 #########################################################

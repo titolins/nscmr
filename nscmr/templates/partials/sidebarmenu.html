@@ -3,11 +3,11 @@
     <li id="buy-btn" class="trigger-menu" data-target="#buy-menu">
       <a href="#">Comprar ›</a>
     </li>
-    <li><a href="#">Quem somos</a></li>
-    <li><a href="#">Sob medida</a></li>
-    <li><a href="#">Trocas e devoluções</a></li>
-    <li><a href="#">Lavanderia</a></li>
-    <li><a href="#">Contato</a></li>
+    <li><a href="{{ url_for('about') }}">Quem somos</a></li>
+    <li><a href="{{ url_for('custom_made') }}">Sob medida</a></li>
+    <li><a href="{{ url_for('returns') }}">Trocas e devoluções</a></li>
+    <li><a href="{{ url_for('wash') }}">Lavanderia</a></li>
+    <li><a href="{{ url_for('contact') }}">Contato</a></li>
   </ul>
 </div>
 <div id="buy-menu">

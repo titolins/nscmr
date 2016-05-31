@@ -17,7 +17,11 @@ from wtforms.validators import (
     Regexp,
     length)
 
-from .admin.forms import NsTextInput, NsPasswordInput, NsDateInput
+from .admin.forms import (
+    NsTextInput,
+    NsPasswordInput,
+    NsDateInput,
+    NsTextAreaInput)
 
 MIN_PASS_LEN = 6
 
@@ -121,4 +125,50 @@ class RegistrationForm(Form):
             if default_fields_errors or address_fields_errors:
                 return False
         return True
+
+
+class ContactForm(Form):
+    name = StringField(
+        'Nome',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    email = StringField(
+        'Email',
+        validators=[
+            input_required("Campo necessário!"),
+            email("Email inválido!")],
+            widget=NsTextInput())
+    subject = StringField(
+        'Assunto',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    message = StringField(
+        'Mensagem',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextAreaInput())
+
+
+class CustomMadeForm(Form):
+    name = StringField(
+        'Nome',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    email = StringField(
+        'Email',
+        validators=[
+            input_required("Campo necessário!"),
+            email("Email inválido!")],
+            widget=NsTextInput())
+    product_type = StringField(
+        'Tipo de produto',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    sizes = StringField(
+        'Medidas',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    message = StringField(
+        'Conte um pouco mais sobre suas ideias!',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextAreaInput())
 
