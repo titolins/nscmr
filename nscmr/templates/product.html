@@ -19,29 +19,41 @@
         <div class="row">
           <div class="col-md-12">
             <p class="text-right" id="product-nav">
-              <span>
-                <a href="{{ url_for('index') }}">home</a> ›
-                <a href="{{ url_for('category', permalink = category['permalink'] ) }}">{{ category['name'] }}</a>
+              <span class="breadcrumbs">
+                <a href="{{ url_for('index') }}">Home</a> ›
+                <a href="{{ url_for('category', permalink = product.category['permalink'] ) }}">{{ product.category['name'] }}</a>
                 › {{ product['name'] }}
               </span>
             </p>
-            <p>{{ product['name'] }}</p>
-            <p>{{ variants[0].price }}</p>
+            <h4>{{ product['name'] }}</h4>
+            <h3>{{ variant.price }}</h3>
             <hr>
           </div>
           <div class="col-md-12">
-            <p>Descrição</p>
-            <p>{{ product.description }}</p>
-            {% for a in attributes %}
-              <div>
-                <span>{{ a.capitalize() }}: </span>
-              </div>
-            {% endfor %}
+            <p><b>Detalhes</b></br>
+            {{ product.description }}
+            </p>
+            {% if product.attributes is not none %}
+              {% for attr in product.attributes.keys() %}
+                <p><b>{{attr.capitalize()}}: </b>
+                <select id="select-attr-{{loop.index0}}">
+                  {% for opt in product.attributes[attr] %}
+                    {% set attr_list = opt.split('_') %}
+                    <option value="{{attr_list[0]}}">{{ attr_list[1].capitalize() }}</option>
+                  {% endfor %}
+                </select>
+                </p>
+              {% endfor %}
+            {% endif %}
             <hr>
           </div>
           <div class="col-md-12">
-            <span class="btn btn-default btn-lg">Wishlist</span>
-            <span class="btn btn-default btn-lg">Adicionar ao carrinho</span>
+            <a href="#" class="product-btn">
+              <i class="fa fa-heart-o"></i> Wishlist
+            </a>
+            <a href="#" class="product-btn">
+              <i class="fa fa-shopping-bag"></i> Adicionar ao carrinho
+            </a>
           </div>
         </div>
       </div>
@@ -49,3 +61,6 @@
   </div>
 {% endblock %}
 
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/product.js') }}"></script>
+{% endblock %}

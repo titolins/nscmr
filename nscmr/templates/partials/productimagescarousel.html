@@ -1,28 +1,30 @@
 <div id="product-carousel" class="carousel slide" data-interval="false">
   <div class="carousel-inner">
-    {% for image in variants[0]['images'] %}
+    {% for image in variant['images'] %}
       <div class="item {% if loop.index0 == 0 %}active{% endif %}">
-        <img src="{{ image['big'] }}">
+        <img src="{{ image['full'] }}">
       </div>
     {% endfor %}
   </div>
-  <a class="left carousel-control" href="#product-carousel" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Anterior</span>
-  </a>
-  <a class="right carousel-control" href="#product-carousel" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Próxima</span>
-  </a>
+  {% if variant['images']|length > 1 %}
+    <a class="left carousel-control" href="#product-carousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="right carousel-control" href="#product-carousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Próxima</span>
+    </a>
+  {% endif %}
 </div>
 <div id="product-thumbs-carousel" class="carousel slide" data-interval="false">
   <div class="carousel-inner">
-    {% for image in variants[0]['images'] %}
+    {% for image in variant['images'] %}
       {% if loop.index0 % 4 == 0 %}
-        <div class="item {% if loop.index0 == 0 %}active{% endif %}">
+        <div class="item{% if loop.index0 == 0 %} active{% endif %}">
           <div class="row">
       {% endif %}
-      <div class="col-md-3">
+      <div class="col-xs-3">
         <div data-target="#product-carousel" data-slide-to="{{loop.index0}}" class="product-thumb">
           <img class="img-responsive" src="{{ image['thumb'] }}">
         </div>
@@ -33,13 +35,15 @@
       {% endif %}
     {% endfor %}
   </div>
-  <a class="left carousel-control thumb-control" href="#product-thumbs-carousel" role="button" data-slide="prev">
-    ‹
-    <span class="sr-only">Anterior</span>
-  </a>
-  <a class="right carousel-control thumb-control" href="#product-thumbs-carousel" role="button" data-slide="next">
-    ›
-    <span class="sr-only">Próxima</span>
-  </a>
+  {% if variant['images']|length > 4 %}
+    <a class="left carousel-control thumb-control" href="#product-thumbs-carousel" role="button" data-slide="prev">
+      <span class="small-arrow">‹</span>
+      <span class="sr-only">Anterior</span>
+    </a>
+    <a class="right carousel-control thumb-control" href="#product-thumbs-carousel" role="button" data-slide="next">
+      <span class="small-arrow">›</span>
+      <span class="sr-only">Próxima</span>
+    </a>
+  {% endif %}
 </div>
 
