@@ -139,6 +139,10 @@ hr { width: 100%; }
   }
   .item-center {
     float: none;
+    position: absolute;
+    left: 50%;
+    width: 100px;
+    margin-left: -50px;
   }
 }
 
