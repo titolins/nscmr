@@ -265,7 +265,7 @@ def build_admin_bp():
             # If, however, the product has several variants, we'll need to
             # iterate them and create all of them.
             else:
-                attributes = []
+                attributes = {}
                 for var in form.variants:
                     variant, var_summary = Variant.from_form(var.data, product)
                     variant.insert()
@@ -273,8 +273,14 @@ def build_admin_bp():
                     Summary.update_by_id(product.id, push_data=\
                         { 'variants': var_summary })
                     for k in variant.attributes.keys():
-                        if k not in attributes:
-                            attributes += [k]
+                        if k not in attributes.keys():
+                            attributes[k] = []
+                        if variant.attributes[k] not in attributes[k]:
+                            attr = '_'.join([
+                                str(variant.id),
+                                variant.attributes[k]
+                            ])
+                            attributes[k].append(attr)
                 # update product with all of it's available variations
                 Product.collection.update_one(
                     {'_id': product.id },
@@ -314,6 +320,15 @@ def build_admin_bp():
                         p = Variant.get_by_id(k, to_obj=True).product
                         if str(p.id) not in request.json['products']:
                             vs_deleted += Variant.delete_by_id(k).deleted_count
+                            p_attrs = Product.get_by_id(p.id,
+                                    to_obj=True).attributes
+                            for attr in p_attrs:
+                                for value in p_attrs[attr]:
+                                    if k in value:
+                                        p_attrs[attr].remove(value)
+                            Product.update_by_id(p.id, set_data = {
+                                'attributes': p_attrs
+                            })
                             Summary.update_by_id(p.id, pull_data=\
                                 { 'variants': { '_id': ObjectId(k) }})
                             if len(p.variants) == 0:
