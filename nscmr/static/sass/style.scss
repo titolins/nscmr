@@ -1082,7 +1082,7 @@ ul#info {
   li {
     float: left;
     width: 20%;
-    &:hover {
+    & a:hover {
       color: $dark-grey;
     }
   }
