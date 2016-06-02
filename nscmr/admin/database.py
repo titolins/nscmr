@@ -45,3 +45,4 @@ def build_db(app):
         client.register_collection(d)
     return client.db
 
+
