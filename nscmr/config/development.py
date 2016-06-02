@@ -8,3 +8,5 @@ UPLOADS_DEFAULT_DEST = os.path.join(basedir, 'instance/uploads')
 DEBUG = True
 MONGODB_DB = 'nscmr_dev'
 
+SESSION_TYPE = 'mongodb'
+SESSION_MONGODB_DB = MONGODB_DB

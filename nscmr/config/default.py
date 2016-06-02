@@ -10,3 +10,6 @@ TESTING = False
 
 SUPPORT_CONTACT = 'contato@studioduvet.com.br'
 MONGODB_DB = 'nscmr'
+
+SESSION_TYPE = 'mongodb'
+SESSION_MONGODB_DB = MONGODB_DB
