@@ -1,33 +1,79 @@
-<h4>Endereços</h4>
+{% from "macros/formhelpers.html" import render_field %}
+<div class='user-title'>
+  <h3 class='inline'>Endereços</h3>
+  <a class="btn btn-default inline float-right" type="button" data-toggle="modal" data-target="#add-address-modal">
+    <i class="fa fa-plus"></i> Adicionar endereço
+  </a>
+  <hr>
+</div>
+{% if form.errors %}
+  <div class="address-form-errors">
+    <ul class="alert alert-danger alert-login">
+      <p>Oops! O endereço indicado possui alguns erros:</p>
+    {% for field in form.errors.keys() %}
+      {% for error in form.errors[field] %}
+          <li>{{ error }}</li>
+      {% endfor %}
+    {% endfor %}
+    </ul>
+  </div>
+{% endif %}
 {% if current_user.addresses|length == 0 %}
   <p>Você não possui nenhum endereço registrado</p>
 {% else %}
   {% for address in current_user.addresses %}
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <span class="h4">{{ address.title }}</span>
+    <div class="panel panel-default address-panel">
+      <div class="panel-heading text-right">
         <span class="options-btn">
           <a href="#">
             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-            alterar
+            Alterar
           </a>
           <a href="#">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            remover
+            Remover
           </a>
         </span>
       </div>
       <div class="panel-body">
-        <span>{{ address.street_address_1 }}</span>
-        <span>{{ address.street_address_2 }}</span></br>
-        <span>{{ address.city }} - {{ address.postal_code }}</span></br>
-        <span>{{ address.state }}</span>
-        <span>{{ address.country }}</span></br>
-        {% if address.phone %}
-          <span>{{ address.phone }}</span>
-        {% endif %}
+        <div class='field hidden' id='address-id'>{{ address['_id'] }}</div>
+        <div class='field'>
+          <div class="field-title">Endereço</div>
+          <div class='field-value'>{{ address.street_address_1 }}</div>
+        </div>
+        <div class='field'>
+          <div class="field-title">Complemento</div>
+          <div class="field-value">{{ address.street_address_2 }}</div>
+        </div>
+        <div class='field'>
+          <div class="field-title">Cep</div>
+          <div class="field-value">{{ address.city }} - {{ address.zip_code }}</div>
+        </div>
+        <div class='field'>
+          <div class="field-title">Estado</div>
+          <div class="field-value">{{ address.state }}</div>
+        </div>
       </div>
     </div>
   {% endfor %}
 {% endif %}
+<div id="add-address-modal" class="modal fade address-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h4 class="inline">Cadastrar endereço</h4>
+      <button type="button" class="close inline" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form action="{{ url_for('add_address') }}" method="post">
+        {{ form.hidden_tag() }}
+        {{ render_field(form.street_address_1) }}
+        {{ render_field(form.street_address_2) }}
+        {{ render_field(form.city) }}
+        {{ render_field(form.zip_code) }}
+        {{ render_field(form.state) }}
+        <p><input class="btn btn-default btn-ns" id="add-address-btn" type="submit" value="Enviar"></input></p>
+      </form>
+    </div>
+  </div>
+</div>
 
