@@ -221,6 +221,14 @@ def product(c_permalink, p_permalink, v_id):
 # Cart/Orders    #
 ##################
 
+@app.route('/usuario/carrinho')
+def cart():
+    cart = [CartLine(item)() for item in current_user.cart]
+    response = make_response(json.dumps(cart), 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
+
 @app.route('/usuario/carrinho/adicionar', methods=['POST'])
 def add_to_cart():
     variant_id = request.json['variant_id']
