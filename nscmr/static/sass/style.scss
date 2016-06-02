@@ -816,6 +816,9 @@ select {
   hr {
     border-top: 1px solid $fade-dark;
   }
+  @media screen and (min-width: 320px) {
+    padding-top: 15px;
+  }
   @media screen and (min-width: 992px) {
     padding: 60px 0px 40px 0px;
   }
