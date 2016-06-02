@@ -10,6 +10,7 @@ from flask.ext.principal import (
     UserNeed,
     Permission)
 from flask.ext.assets import Environment, Bundle
+from flask.ext.session import Session
 
 from nscmr.admin import build_admin_bp
 from nscmr.admin.database import build_db
@@ -98,6 +99,13 @@ def build_app():
         output='js/base.js')
 
     assets.register(
+        'angular',
+        Bundle(
+            'angular/angular.min.js',
+            'angular_config.js'),
+        output='js/angular.js')
+
+    assets.register(
         'css_all',
         Bundle(
             'bootstrap/dist/css/bootstrap.min.css',
@@ -108,6 +116,11 @@ def build_app():
                 output='css/style.css')),
         output='css/all.css')
 
+    #################
+    # Flask session #
+    #################
+
+    Session(app)
 
     # end config extensions
 
