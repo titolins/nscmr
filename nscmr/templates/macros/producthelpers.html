@@ -5,8 +5,10 @@
         <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink'], v_id = variant['_id']) }}"></a>
         <div class="img-view"><a data-toggle="modal" data-target="#{{ variant['_id'] }}-images" href="#">+ Visualização rápida</a></div>
       </div>
-      <div class="panel-footer">
-        <a class="cart-btn" href="#"><i class="fa fa-shopping-bag"></i></a>
+      <div id="variant-info" class="panel-footer">
+        <a class="cart-btn" href="#" ng-click='addToCart("{{ variant['_id'] }}"); $event.preventDefault();'>
+          <i class="fa fa-shopping-bag"></i>
+        </a>
         <p>R$ {{ variant['price'] }}</p>
         <p>{{ product.name }}</p>
       </div>
@@ -35,7 +37,7 @@
                   <hr>
                   <div class="variant-btns text-right">
                     <a class="like-btn" href="#"><i class="fa fa-heart-o"></i></a>
-                    <a class="cart-btn" href="#"><i class="fa fa-shopping-bag"></i></a>
+                    <a class="cart-btn" ng-click='addToCart()' href="#"><i class="fa fa-shopping-bag"></i></a>
                   </div>
                 </div>
               </div>
