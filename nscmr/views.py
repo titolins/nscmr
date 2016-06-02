@@ -1,4 +1,5 @@
 from flask import (
+    session,
     render_template,
     url_for,
     request,
@@ -20,13 +21,21 @@ from flask.ext.principal import (
     Identity,
     AnonymousIdentity)
 
+from bson.objectid import ObjectId
 from pymongo.errors import DuplicateKeyError
 
 from functools import wraps
 import requests
+import json
 
 # models
-from nscmr.admin.models import User, Category, Product, Variant, Summary
+from nscmr.admin.models import (
+    User,
+    Category,
+    Product,
+    Variant,
+    Summary,
+    CartLine)
 
 # started forms
 from nscmr.forms import (
@@ -34,6 +43,8 @@ from nscmr.forms import (
     RegistrationForm,
     ContactForm,
     CustomMadeForm)
+
+from nscmr.admin.forms import AddressForm
 
 # helpers
 from nscmr.helper.back import Back
@@ -102,8 +113,11 @@ def registration():
 @app.route('/usuario')
 @login_required
 def user():
+    cart = [CartLine(item)() for item in current_user.cart]
     return render_template('user.html',
-        categories=Category.get_all(to_obj=True))
+        categories=Category.get_all(to_obj=True),
+        cart=cart,
+        form=AddressForm())
 
 # Update
 @app.route('/usuario/editar')
@@ -116,6 +130,26 @@ def edit_user():
 @login_required
 def delete_user():
     return "<p>To be user {} delete page</p>".format(current_user.get_id())
+
+# Add address
+@app.route('/usuario/enderecos/adicionar', methods=['POST'])
+def add_address():
+    form = AddressForm()
+    if form.validate_on_submit():
+        data = {}
+        for field in form.data.keys():
+            if field in ['street_address_1', 'street_address_2', 'city',
+                    'state']:
+                data[field] = form.data[field].lower()
+            else:
+                data[field] = form.data[field]
+        data['_id'] = ObjectId()
+        User.update_by_id(current_user.id, push_data={'addresses':data})
+    cart = [CartLine(item)() for item in current_user.cart]
+    return render_template('user.html',
+        categories=Category.get_all(to_obj=True),
+        cart=cart,
+        form=form)
 
 
 ##################
@@ -184,8 +218,68 @@ def product(c_permalink, p_permalink, v_id):
 # only admin can update or delete products
 
 ##################
-# end Product    #
+# Cart/Orders    #
 ##################
+
+@app.route('/usuario/carrinho/adicionar', methods=['POST'])
+def add_to_cart():
+    variant_id = request.json['variant_id']
+    cart_line = { '_id': variant_id, 'quantity': 1 }
+    if current_user.is_anonymous:
+        if session.get('cart', None) is None:
+            session['cart'] = []
+        inc = False
+        for item in session['cart']:
+            if item['_id'] == variant_id:
+                item['quantity'] += 1
+                inc = True
+        if not inc:
+            session['cart'].append(cart_line)
+    else:
+        result = User._update_one(
+                {'_id': current_user.id, 'cart._id': variant_id},
+                inc_data = {'cart.$.quantity': 1 })
+        if result.modified_count == 0:
+            print('none modified')
+            result = User.update_by_id(current_user.id, push_data={'cart': cart_line})
+            print('push result = {}'.format(result))
+        else:
+            print('modified')
+    response = make_response(
+        json.dumps('Produto adicionado ao seu carrinho!'), 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
+@app.route('/usuario/carrinho/editar', methods=['POST'])
+def edit_cart():
+    qty = int(request.json['quantity'])
+    if qty < 0:
+        response = make_response(
+            json.dumps(
+                'Não é possível alterar a quantidade para um número negativo'),
+            200)
+        response.headers['Content-Type'] = 'application/json'
+    elif qty == 0:
+        # remove item from cart
+        User.update_by_id(current_user.id,
+                pull_data={'cart': {'_id': request.json['id'] }})
+        response = make_response(
+            json.dumps('Produto removido do seu carrinho!'), 200)
+        response.headers['Content-Type'] = 'application/json'
+    else:
+        # decrement/increment
+        User._update_one(
+            {'_id': current_user.id, 'cart._id': request.json['id'] },
+            set_data={'cart.$.quantity': request.json['quantity'] })
+        response = make_response(
+            json.dumps('Quantidade do produto alterada!'), 200)
+        response.headers['Content-Type'] = 'application/json'
+    return response
+
+
+######################
+# end Cart/Orders    #
+######################
 
 #########################################################
 ####################### end CRUD ########################
@@ -208,6 +302,13 @@ def login():
             identity_changed.send(
                     current_app._get_current_object(),
                     identity=Identity(str(user.id)))
+            if session.get('cart', None) is not None:
+                for item in session['cart']:
+                    if User._update_one({'cart._id': item['_id']}, inc_data=\
+                                        {'cart.$.quantity': item['quantity'] }).\
+                            modified_count == 0:
+                        User.update_by_id(current_user.id, push_data={'cart': item})
+                del(session['cart'])
             flash('Log-in bem sucedido! Você já pode fazer suas compras')
             return back.redirect()
         # in case of wrong login/password, return to last page with custom
