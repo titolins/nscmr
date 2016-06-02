@@ -4,8 +4,6 @@ $(document).ready(function() {
     // get all items of the list, except the first one (which is always
     // kept active)
     var activeItem = $('a.list-group-item.active');
-    console.log(activeItem);
-    console.log(activeItem.data('toggle'));
     $(activeItem.data('toggle')).addClass('hidden');
     $($(this).data('toggle')).removeClass('hidden');
 
@@ -16,7 +14,6 @@ $(document).ready(function() {
   });
 
   $('.edit-attribute').on('click', function() {
-    console.log(this);
     $($(this).data('toggle')).toggleClass('hidden');
     $(this).closest('.field').toggleClass('hidden');
   });
@@ -24,6 +21,27 @@ $(document).ready(function() {
   $('.cancel-edit-attribute').on('click', function() {
     $($(this).data('toggle')).toggleClass('hidden');
     $(this).closest('.input').toggleClass('hidden');
+  });
+
+  $('.confirm-edit-attribute').on('click', function() {
+    var data = {
+      'quantity': $(this).closest('.input').find('input').val(),
+      'id': $(this).closest('.panel-body').find('.item-id').text()
+    };
+    console.log(data);
+    $.ajax({
+      url: editCartUri,
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      data: JSON.stringify(data),
+      success: function(response) {
+        console.log(response);
+      },
+      error: function(response) {
+        console.log(response);
+      }
+    });
   });
 });
 
