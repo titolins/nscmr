@@ -393,10 +393,9 @@ def build_admin_bp():
                             s_data['variants.$.price'] = \
                                 "{0:.2f}".format(float(item['price'])).\
                                     replace('.',',')
-                    print(s_data)
-                    print(Summary._update_one(
+                    Summary._update_one(
                         {'variants._id': ObjectId(item_id)},
-                        set_data=s_data).modified_count)
+                        set_data=s_data)
                     continue
                 result = Product.update_by_id(item_id, data)
                 ps_modified += result.modified_count
