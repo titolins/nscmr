@@ -249,21 +249,19 @@ class NewProductForm(Form):
 
 
 class AddressForm(Form):
-    name = StringField('Nome',
+    street_address_1 = StringField('Endereço',
         widget=NsTextInput(),
-        validators=[input_required("Campo necessário!")])
-    street_address_1 = StringField('Nome',
-        widget=NsTextInput(),
-        validators=[input_required("Campo necessário!")])
-    street_address_2 = StringField('Complemento')
+        validators=[input_required("Campo 'endereço' necessário!")])
+    street_address_2 = StringField('Complemento', widget=NsTextInput())
     city = StringField('Cidade',
         widget=NsTextInput(),
-        validators=[input_required("Campo necessário!")])
+        validators=[input_required("Campo 'cidade' necessário!")])
     zip_code = StringField('Cep',
         widget=NsTextInput(),
         validators=[
-            input_required("Campo necessário!"),
-            Regexp(r'[0-9]{5}-[0-9]{3}', message="Formato inválido")
+            input_required("Campo 'cep' necessário!"),
+            Regexp(r'[0-9]{5}-[0-9]{3}',
+                message="O cep deve ter o seguinte formato: 12345-678")
         ])
     state = StringField('Estado',
         widget=NsTextInput(),
