@@ -2,7 +2,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from pymongo import ASCENDING
 
-from flask import current_app
+from flask import current_app, session
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -41,7 +41,9 @@ class User(Document):
             'addresses': [],
             'wishlist': [],
             'orders': [] }
-        print(form_data)
+        if session.get('cart', None) is not None:
+            data['cart'] = session['cart']
+            del(session['cart'])
         for k in form_data.keys():
             if form_data[k] not in (None, ''):
                 if k in ('confirm', 'has_address'):
@@ -68,10 +70,9 @@ class User(Document):
                 data[k] = field_data
         return User(data)
 
-    def get_dob(self):
-        if 'dob' in self._content and self._content['dob'] is not None:
-            return "{:%d/%m/%Y}".format(self._content['dob'])
-        return None
+    @classmethod
+    def get_by_email(cls, email, to_obj=False):
+        return cls._get_one(to_obj, { "email": email })
 
     @property
     def is_active(self):
@@ -85,12 +86,13 @@ class User(Document):
     def is_anonymous(self):
         return False
 
+    def get_dob(self):
+        if 'dob' in self._content and self._content['dob'] is not None:
+            return "{:%d/%m/%Y}".format(self._content['dob'])
+        return None
+
     def check_password(self, password):
         return check_password_hash(self._content['password'], password)
-
-    @classmethod
-    def get_by_email(cls, email, to_obj=False):
-        return cls._get_one(to_obj, { "email": email })
 
 
 class Category(SlugDocument):
@@ -333,3 +335,25 @@ class Variant(Document):
         return v_dict
 
 
+class CartLine(object):
+
+    def __init__(self, cart_item):
+        variant = Variant.get_by_id(cart_item['_id'], to_obj=True)
+        product = variant.product
+        category = product._content['category']
+        self._item_info = {
+            '_id': cart_item['_id'],
+            'name': product.name,
+            'permalink': product.permalink,
+            'category': {
+                '_id': category['_id'],
+                'name': category['name'],
+                'permalink': category['permalink'],
+            },
+            'price': '{}{}'.format(variant.price, '0').replace('.',','),
+            'attributes': variant.attributes,
+            'quantity': cart_item['quantity']
+        }
+
+    def __call__(self):
+        return self._item_info
