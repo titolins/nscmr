@@ -1,0 +1,12 @@
+<ul id="cart-dropdown" class="item-dropdown">
+  <li ng-hide="cart.length">Carrinho vazio</li>
+  <li ng-show="cart.length"><b>Suas compras</b></li>
+  <li ng-repeat="item in cart">
+    <div class="cart-item">
+      {a item.name a}
+      {a item.price a}
+      {a item.quantity a}
+    </div>
+  </li>
+</ul>
+
