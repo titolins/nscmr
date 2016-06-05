@@ -20,6 +20,16 @@ $font-sizes: (
     src: url('../fonts/arial-rounded-mt-bold.ttf');
 }
 
+@mixin transformY($yAxis) {
+    -webkit-transform: translateY($yAxis);
+    transform: translateY($yAxis);
+}
+
+@mixin transform($xAxis, $yAxis) {
+    -webkit-transform: translate($xAxis, $yAxis);
+    transform: translate($xAxis, $yAxis);
+}
+
 @mixin align-vertical($height) {
   height: $height;
   line-height: $height;
@@ -215,10 +225,10 @@ hr { width: 100%; }
   }
   @media screen and (min-width: 320px) {
     position: absolute;
-    transform: translateY(-120px);
+    @include transformY(-120px);
     transition: transform 500ms;
     &.open {
-      transform: translateY(0px);
+      @include transformY(0px);
     }
     li {
       display: block;
@@ -227,7 +237,7 @@ hr { width: 100%; }
   }
   @media screen and (min-width: 768px) {
     position: relative;
-    transform: translateY(0);
+    @include transformY(0px);
     height: 30px;
     li {
       display: inline-block;
@@ -255,15 +265,15 @@ hr { width: 100%; }
       padding: 5px 0 5px 0;
       min-height: 60px;
       width: 250px;
-      transform: translateY(-180px);
+      @include transformY(-180px);
       transition: transform 500ms;
       &.open {
-        transform: translateY(120px);
+        @include transformY(120px);
       }
     }
     @media screen and (min-width: 768px) {
       &.open {
-        transform: translateY(0px);
+        @include transformY(0);
       }
     }
   }
@@ -272,17 +282,17 @@ hr { width: 100%; }
       padding: 5px 0 5px 0;
       min-height: 60px;
       width: 250px;
-      transform: translateY(-180px);
+      @include transformY(-180px);
       transition: transform 500ms;
     }
     &.open {
-      transform: translateY(0px);
+      @include transformY(0);
     }
   }
   &#login-form-dropdown {
     padding: 10px 20px 10px 20px;
     height: 250px;
-    transform: translateY(-330px);
+    @include transformY(-330px);
     transition: transform 500ms;
     @media screen and (min-width: 320px) {
       width: 250px;
@@ -297,7 +307,7 @@ hr { width: 100%; }
       }
     }
     &.open {
-      transform: translateY(0px);
+      @include transformY(0px);
     }
     div.input-group {
       margin-bottom: 10px;
@@ -346,7 +356,7 @@ hr { width: 100%; }
   height: 100%;
   top: 0;
   bottom: 0;
-  transform: translate(0,0);
+  @include transform(0,0);
   transition: transform 500ms;
   ul {
     padding: 0;
@@ -356,38 +366,6 @@ hr { width: 100%; }
       list-style: none;
       @include align-vertical(40px);
       & > a { display: block; width: 100%; }
-    }
-  }
-}
-
-#sidebar-menu {
-  @extend .dark;
-  z-index: 1000;
-  &.open {
-    @media screen and (min-width: 320px) {
-      transform: translate(160px, 0);
-    }
-    @media screen and (min-width: 480px) {
-      transform: translate(240px, 0);
-    }
-    @media screen and (min-width: 720px) {
-      transform: translate(250px, 0);
-    }
-  }
-}
-
-#buy-menu {
-  @extend .light;
-  z-index: 900;
-  &.open {
-    @media screen and (min-width: 320px) {
-      transform: translate(320px, 0);
-    }
-    @media screen and (min-width: 480px) {
-      transform: translate(480px, 0);
-    }
-    @media screen and (min-width: 720px) {
-      transform: translate(500px, 0);
     }
   }
 }
