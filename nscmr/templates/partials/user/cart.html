@@ -1,64 +1,57 @@
 <div id="cart" class="hidden user-info">
   <div class="user-title">
-    <h3>Seu Carrinho</h3>
+    <h3>Suas compras</h3>
     <hr>
   </div>
-  {% if current_user.cart|length == 0 %}
-    <p>Você não possui nenhum item no seu carrinho</p>
-  {% else %}
-    {% for item in cart %}
-      <div class="panel cart-line-panel">
-        <div class="panel-header">
-          <div class="field-title inline">
-              <a href="{{ url_for('product', c_permalink=item['category']['permalink'],
-                          p_permalink=item['permalink'], v_id=item['_id']) }}">
-                {{ item['name']}}
-              </a>
-          </div>
-          <span class="item-price">{{ item['price']}}</span>
-        </div>
-        <div class="panel-body">
-          <span class="item-id hidden">{{ item['_id'] }}</span>
-          <div class="field-row">
-            <div class="field">
-              <p class="field-title">Categoria</p>
-              <p class="field-value">
-                <a href="{{ url_for('category', permalink=item['category']['permalink']) }}">
-                  {{ item['category']['name'] }}
-                </a>
-              <p>
-            </div>
-            <div id="quantity-field-{{ item['_id'] }}" class="field">
-              <p class="field-title">Quantidade</p>
-              <p class="field-value">
-                {{ item['quantity'] }}
-                <a title="Editar" class="item-qty" href="#">
-                  <i data-toggle="#quantity-input-{{ item['_id'] }}" class="edit-attribute fa fa-edit"></i>
-                </a>
-              </p>
-            </div>
-            <div class='input hidden' id="quantity-input-{{ item['_id'] }}">
-              <p class="field-title">Quantidade</p>
-              <input name="quantity" min="0" type="number" step="1" class="form-control" value="{{ item['quantity'] }}">
-              <a title="Confirmar" href="#">
-                <i class="confirm-edit-attribute fa fa-check" aria-hidden="true"></i>
-              </a>
-              <a title="Cancelar" href="#">
-                <i data-toggle="#quantity-field-{{ item['_id'] }}" class="cancel-edit-attribute fa fa-close" aria-hidden="true"></i>
-              </a>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-          {% if item['attributes'] is not none %}
-            <div class="field-row">
-              <p class="field-title">Detalhes</p>
-              {% for attr,val in item['attributes'].items() %}
-                <p>{{ attr }}: {{ val }}</p>
-              {% endfor %}
-            </div>
-          {% endif %}
-        </div>
+  <p ng-hide="cart.length">Você não possui nenhum item no seu carrinho</p>
+  <div class="panel cart-line-panel" ng-repeat="item in cart">
+    <div class="panel-header">
+      <div class="field-title inline">
+          <a href="#">
+            {a item['name'] a}
+          </a>
       </div>
-    {% endfor %}
-  {% endif %}
+      <div class='inline float-right'>
+        <a href="#"><i class="remove-item fa fa-close"></i> Remover</a>
+      </div>
+      <span class="item-price">{a item['price'] a}</span>
+    </div>
+    <div class="panel-body">
+      <span class="item-id hidden">{a item['_id'] a}</span>
+      <div class="field-row">
+        <div class="field">
+          <p class="field-title">Categoria</p>
+          <p class="field-value">
+            <a href="#">
+              {a item['category']['name'] a}
+            </a>
+          <p>
+        </div>
+        <div id="quantity-field-{a item['_id'] a}" class="field">
+          <p class="field-title">Quantidade</p>
+          <p class="field-value">
+            {a item['quantity'] a}
+            <a title="Editar" class="item-qty" href="#">
+              <i data-toggle="#quantity-input-{a item['_id'] a}" class="edit-attribute fa fa-edit"></i>
+            </a>
+          </p>
+        </div>
+        <div class='input hidden' id="quantity-input-{a item['_id'] a}">
+          <p class="field-title">Quantidade</p>
+          <input name="quantity" min="0" type="number" step="1" class="form-control" {#value="{a parse(item['quantity']) a}"#}>
+          <a title="Confirmar" href="#">
+            <i class="confirm-edit-attribute fa fa-check" aria-hidden="true"></i>
+          </a>
+          <a title="Cancelar" href="#">
+            <i data-toggle="#quantity-field-{a item['_id'] a}" class="cancel-edit-attribute fa fa-close" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+        <div class="field-row" ng-if="item.hasOwnProperty('attributes')">
+          <p class="field-title">Detalhes</p>
+          <p ng-repeat="attr in item['attributes']">{a attr a}: {a item['attributes'][attr] a}</p>
+        </div>
+    </div>
+  </div>
 </div>

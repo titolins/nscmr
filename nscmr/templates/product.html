@@ -51,7 +51,7 @@
             <a href="#" class="product-btn">
               <i class="fa fa-heart-o"></i> Wishlist
             </a>
-            <a href="#" class="product-btn">
+            <a href="#" ng-click="addToCart('{{ variant.id|string }}'); $event.preventDefault();" class="product-btn">
               <i class="fa fa-shopping-bag"></i> Adicionar ao carrinho
             </a>
           </div>

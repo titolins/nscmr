@@ -36,11 +36,9 @@
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    var addToCartUri = "{{ url_for('add_to_cart') }}";
-  </script>
+  {# added to base
   {% assets "angular" %}
     <script src="{{ ASSET_URL }}"></script>
   {% endassets %}
-  <script src="{{ url_for('static', filename='js/category.js') }}"></script>
+  #}
 {% endblock %}

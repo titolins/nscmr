@@ -13,13 +13,13 @@
         <div class="field" id="name-field">
           <span class='field-value'>{{ current_user.name }}</span>
           <a title="Editar" href="#">
-            <span data-toggle="#name-input" class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span>
+            <i data-toggle="#name-input" class="edit-attribute fa fa-edit"></i>
           </a>
         </div>
         <div class="input hidden" id="name-input">
           <input type="text" class="form-control" placeholder="{{ current_user.name }}">
           <a title="Cancelar" href="#">
-            <span data-toggle="#name-field" class="cancel-edit-attribute glyphicon glyphicon-remove" aria-hidden="true"></span>
+            <span data-toggle="#name-field" class="cancel-edit-attribute fa fa-close"></span>
           </a>
         </div>
       </div>
@@ -28,13 +28,13 @@
         <div class='field' id="email-field">
           <span class='field-value'>{{ current_user.email }}</span>
           <a title="Editar" href="#">
-            <span data-toggle="#email-input" class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span>
+            <span data-toggle="#email-input" class="edit-attribute fa fa-edit"></span>
           </a>
         </div>
         <div class='input hidden' id="email-input">
           <input type="text" class="form-control" placeholder="{{ current_user.email }}">
           <a title="Cancelar" href="#">
-            <span data-toggle="#email-field" class="cancel-edit-attribute glyphicon glyphicon-remove" aria-hidden="true"></span>
+            <span data-toggle="#email-field" class="cancel-edit-attribute fa fa-close"></span>
           </a>
         </div>
       </div>
@@ -47,13 +47,13 @@
             <span class='field-value'>Não informada</span>
           {% endif %}
           <a title="Editar" href="#">
-            <span data-toggle="#dob-input" class="edit-attribute glyphicon glyphicon-edit" aria-hidden="true"></span>
+            <span data-toggle="#dob-input" class="edit-attribute fa fa-edit"></span>
           </a>
         </div>
         <div class="input hidden" id="dob-input">
           <input type="date" class="form-control">
           <a title="Cancelar" href="#">
-            <span data-toggle="#dob-field" class="cancel-edit-attribute glyphicon glyphicon-remove" aria-hidden="true"></span>
+            <span data-toggle="#dob-field" class="cancel-edit-attribute fa fa-close"></span>
           </a>
         </div>
       </div>

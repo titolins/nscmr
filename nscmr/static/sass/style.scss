@@ -15,6 +15,11 @@ $font-sizes: (
   720px: 1em
 );
 
+@font-face {
+    font-family: 'Arial Rounded MT Bold';
+    src: url('../fonts/arial-rounded-mt-bold.ttf');
+}
+
 @mixin align-vertical($height) {
   height: $height;
   line-height: $height;
@@ -112,7 +117,14 @@ body, html {
   width: 100%;
   font: 100%;
   display: block;
+  font-family: arial;
   @include font-size($font-sizes);
+  .capitalize {
+    font-family: 'Arial Rounded MT Bold';
+    text-transform: uppercase;
+    font-size: .6em;
+    letter-spacing: 2px;
+  }
 }
 
 a:not(.link),
@@ -137,11 +149,28 @@ hr { width: 100%; }
   position: relative;
   top: 0;
   left: 0;
-  @include align-vertical(50px);
+  padding-top: 20px;
   width: 100%;
-  background: $dark;
-  color: $grey;
-  .nav-item a:hover { color: $light; }
+  background: $light;
+  color: $dark;
+  @media screen and (min-width: 320px) {
+    height: 130px;
+  }
+  @media screen and (min-width: 480px) {
+    height: 150px;
+  }
+  @media screen and (min-width: 768px) {
+    height: 200px;
+  }
+  div {
+    @include align-vertical(30px);
+  }
+  .logo {
+    img {
+      width: 100%;
+    }
+  }
+  .nav-item a:hover { color: $fade-dark; }
   .item-left {
     float: left;
   }
@@ -150,11 +179,59 @@ hr { width: 100%; }
     padding-right: 10px;
   }
   .item-center {
+    padding-top: 30px;
     float: none;
     position: absolute;
     left: 50%;
-    width: 100px;
-    margin-left: -50px;
+    @media screen and (min-width: 320px) {
+      width: 150px;
+      margin-left: -75px;
+    }
+    @media screen and (min-width: 480px) {
+      width: 200px;
+      margin-left: -100px;
+    }
+    @media screen and (min-width: 768px) {
+      width: 300px;
+      margin-left: -150px;
+    }
+    @media screen and (min-width: 992px) {
+    }
+    @media screen and (min-width: 1200px) {
+    }
+  }
+}
+
+#navbar-menu {
+  z-index: 900;
+  background-color: $light;
+  width: 100%;
+  text-align: center;
+  li {
+    &:not(:last-child) {
+      margin-right: 15px;
+    }
+    &:hover { color: $grey; }
+  }
+  @media screen and (min-width: 320px) {
+    position: absolute;
+    transform: translateY(-120px);
+    transition: transform 500ms;
+    &.open {
+      transform: translateY(0px);
+    }
+    li {
+      display: block;
+      @include align-vertical(20px);
+    }
+  }
+  @media screen and (min-width: 768px) {
+    position: relative;
+    transform: translateY(0);
+    height: 30px;
+    li {
+      display: inline-block;
+    }
   }
 }
 
@@ -178,7 +255,24 @@ hr { width: 100%; }
       padding: 5px 0 5px 0;
       min-height: 60px;
       width: 250px;
-      transform: translateY(-150px);
+      transform: translateY(-180px);
+      transition: transform 500ms;
+      &.open {
+        transform: translateY(120px);
+      }
+    }
+    @media screen and (min-width: 768px) {
+      &.open {
+        transform: translateY(0px);
+      }
+    }
+  }
+  &#cart-dropdown {
+    @media screen and (min-width: 320px) {
+      padding: 5px 0 5px 0;
+      min-height: 60px;
+      width: 250px;
+      transform: translateY(-180px);
       transition: transform 500ms;
     }
     &.open {
@@ -188,7 +282,7 @@ hr { width: 100%; }
   &#login-form-dropdown {
     padding: 10px 20px 10px 20px;
     height: 250px;
-    transform: translateY(-300px);
+    transform: translateY(-330px);
     transition: transform 500ms;
     @media screen and (min-width: 320px) {
       width: 250px;
@@ -299,16 +393,15 @@ hr { width: 100%; }
 }
 
 #sidebar-btn {
-  margin: 10px 0 10px 5px;
   width: 30px;
-  @include align-vertical(30px);
-  background: $dark;
-  text-align: center;
+  background: $light;
   i {
     padding: 5px;
     font-size: 1.5em;
   }
-  &:hover { color: $light; }
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
 }
 
 .fixed { position: fixed; }
@@ -423,15 +516,16 @@ hr { width: 100%; }
     top: 15%;
     left: 65%;
   }
-  @media screen and (min-width: 720px) {
+  @media screen and (min-width: 768px) {
     font-size: 1em;
     width: 165px;
     height: 185px;
     padding: 30px 10px 10px 10px;
+    top: 21%;
+    left: 70%;
   }
   @media screen and (min-width: 992px) {
-    left: 68%;
-    top: 30%;
+    left: 66%;
   }
   @media screen and (min-width: 1200px) {
     top: 54%;
@@ -993,6 +1087,7 @@ select {
 
 .user-info {
   padding-top: 2em;
+  padding-bottom: 2em;
   border: 1px solid $light-grey;
   border-radius: 4px;
   .user-title {
@@ -1254,8 +1349,8 @@ div#connect {
  */
 
 #footer-wrapper {
-  background-color: $dark;
-  color: $grey;
+  background-color: $light;
+  color: $dark;
   width: 100%;
   height: 120px;
   position: relative;

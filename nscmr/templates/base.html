@@ -22,7 +22,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
   </head>
   <body ng-controller="CartController">
-    {% include 'partials/sidebarmenu.html' %}
     {% include 'partials/nav.html' %}
     <!-- Page content -->
     {% block page_content %} {% endblock %}
@@ -36,28 +35,25 @@
       <li><a href="{{ url_for('contact') }}">Contato</a></li>
     </ul>
     <hr>
-    <div id="connect">
-      <span id="newsletter">
-        <p>Receba nossa newsletter!</p>
-        <div>
-          <input type="email" placeholder="E-MAIL"></input><button>&rarr;</button>
-        </div>
-      </span>
-      <span id="social">
-        <p>Get connected</p>
-        <a href="#">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-        <a href="#">
-          <i class="fa fa-instagram" aria-hidden="true"></i>
-        </a>
-      </span>
-    </div>
     <!-- Footer -->
     <div id="footer-wrapper">
       <footer class="container-fluid">
-        <div class="navbar-brand logo text-center full-width">
-          Studio Duvet
+        <div id="connect">
+          <span id="newsletter">
+            <p>Receba nossa newsletter!</p>
+            <div>
+              <input type="email" placeholder="E-MAIL"></input><button>&rarr;</button>
+            </div>
+          </span>
+          <span id="social">
+            <p>Get connected</p>
+            <a href="#">
+              <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+            <a href="#">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+          </span>
         </div>
         <div class="engine text-right full-width">
           <p>powered by nscmr&reg</p>
@@ -69,11 +65,14 @@
     {% assets "js_base" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
     {# Jinja block for adding any other scripts needed by any page
     individually (such as OAuth scripts) #}
     <script>
       var csrfToken = $('meta[name=csrf-token]').attr('content');
+    </script>
+    <script>
+      var addToCartUri = "{{ url_for('add_to_cart') }}";
+      var getCartUri = "{{ url_for('cart') }}";
     </script>
     {% block scripts %}{% endblock %}
   </body>

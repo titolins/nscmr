@@ -37,7 +37,7 @@
                   <hr>
                   <div class="variant-btns text-right">
                     <a class="like-btn" href="#"><i class="fa fa-heart-o"></i></a>
-                    <a class="cart-btn" ng-click='addToCart()' href="#"><i class="fa fa-shopping-bag"></i></a>
+                    <a class="cart-btn" ng-click="addToCart('{{ variant['_id'] }}'); $event.preventDefault();" href="#"><i class="fa fa-shopping-bag"></i></a>
                   </div>
                 </div>
               </div>
