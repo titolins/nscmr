@@ -113,10 +113,9 @@ def registration():
 @app.route('/usuario')
 @login_required
 def user():
-    cart = [CartLine(item)() for item in current_user.cart]
     return render_template('user.html',
         categories=Category.get_all(to_obj=True),
-        cart=cart,
+        cart=get_cart(),
         form=AddressForm())
 
 # Update
@@ -145,10 +144,9 @@ def add_address():
                 data[field] = form.data[field]
         data['_id'] = ObjectId()
         User.update_by_id(current_user.id, push_data={'addresses':data})
-    cart = [CartLine(item)() for item in current_user.cart]
     return render_template('user.html',
         categories=Category.get_all(to_obj=True),
-        cart=cart,
+        cart=get_cart(),
         form=form)
 
 
@@ -221,13 +219,19 @@ def product(c_permalink, p_permalink, v_id):
 # Cart/Orders    #
 ##################
 
-@app.route('/usuario/carrinho')
-def cart():
-    cart = [CartLine(item)() for item in current_user.cart]
-    response = make_response(json.dumps(cart), 200)
-    response.headers['Content-Type'] = 'application/json'
-    return response
+def get_cart():
+    if current_user.is_anonymous:
+        cart = session.get('cart', [])
+    else:
+        cart = current_user.cart
+    return [CartLine(item)() for item in cart]
 
+@app.route('/usuario/compras')
+def cart():
+    response = make_response(json.dumps(get_cart()), 200)
+    response.headers['Content-Type'] = 'application/json'
+    print(response)
+    return response
 
 @app.route('/usuario/carrinho/adicionar', methods=['POST'])
 def add_to_cart():
@@ -310,6 +314,7 @@ def login():
             identity_changed.send(
                     current_app._get_current_object(),
                     identity=Identity(str(user.id)))
+            # update user cart with cart from session, if existing
             if session.get('cart', None) is not None:
                 for item in session['cart']:
                     if User._update_one({'cart._id': item['_id']}, inc_data=\
