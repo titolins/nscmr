@@ -70,9 +70,21 @@ class User(Document):
                 data[k] = field_data
         return User(data)
 
-    @classmethod
-    def get_by_email(cls, email, to_obj=False):
-        return cls._get_one(to_obj, { "email": email })
+    @staticmethod
+    def get_by_email(email, to_obj=False):
+        return User._get_one(to_obj, { "email": email })
+
+    @staticmethod
+    def get_cart_item(id_, var_id, to_obj=False):
+        return User._get_one(to_obj,
+            {
+                '_id': id_ if isinstance(id_, ObjectId) else ObjectId(id_),
+                'cart._id': var_id
+            },
+            {
+                '_id': 0,
+                'cart': { '$elemMatch': {'_id': var_id } }
+            })
 
     @property
     def is_active(self):
@@ -313,6 +325,16 @@ class Variant(Document):
         if isinstance(product_id, ObjectId):
             return Variant._delete_many({'product_id':product_id})
         return Variant._delete_many({'product_id':ObjectId(product_id)})
+
+    @staticmethod
+    def update_by_id_and_qty(id_, qty, set_data={}, unset_data={},
+            push_data={}, pull_data={}, inc_data={}, upsert=False):
+        query = {
+            '_id': id_ if isinstance(id_, ObjectId) else ObjectId(id_),
+            'quantity': { '$gte': qty }
+        }
+        return Variant._update_one(query, set_data, unset_data, push_data,
+            pull_data, inc_data, upsert)
 
     def get_product(self):
         return Product.get_by_id(self._content['product_id'], to_obj=True)
