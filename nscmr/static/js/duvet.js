@@ -18,13 +18,14 @@ $(document).ready(function() {
       }
     }
     else {
+      if (target.id.startsWith('cart')) { $('#navbar-menu').removeClass('open'); }
       if (window.innerWidth < 768) target.style.right = 0;
       else {
         var rect = this.getBoundingClientRect();
         var left = rect.left - (target.offsetWidth - (rect.right - rect.left));
         target.style.right = "" + rect.right + "px";
         target.style.left = "" + left + "px";
-        //$('.open').removeClass('open');
+        console.log(target.id);
       }
     }
     $(target).toggleClass('open');
