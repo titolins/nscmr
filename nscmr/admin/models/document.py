@@ -145,9 +145,7 @@ class Document(object, metaclass=DocumentProperties):
             data['$pull'] = pull_data
         if any(inc_data):
             data['$inc'] = inc_data
-        if upsert:
-            data['upsert'] = True
-        return cls.collection.update_one(query, data)
+        return cls.collection.update_one(query, data, upsert)
 
     @classmethod
     def _update_many(cls, query={}, set_data={}, unset_data={}, push_data={},
@@ -163,19 +161,17 @@ class Document(object, metaclass=DocumentProperties):
             data['$pull'] = pull_data
         if any(inc_data):
             data['$inc'] = inc_data
-        if upsert:
-            data['upsert'] = True
-        return cls.collection.update_many(query, data)
+        return cls.collection.update_many(query, data, upsert)
 
     @classmethod
     def update_by_id(cls, doc_id, set_data={}, unset_data={}, push_data={},
-            pull_data={}, inc_data={}):
+            pull_data={}, inc_data={}, upsert=False):
         if isinstance(doc_id, ObjectId):
             query = { '_id': doc_id }
         else:
             query = { '_id': ObjectId(doc_id) }
         return cls._update_one(query, set_data, unset_data, push_data,
-                pull_data, inc_data)
+                pull_data, inc_data, upsert)
 
     @classmethod
     def _delete_one(cls, query):
@@ -192,8 +188,10 @@ class Document(object, metaclass=DocumentProperties):
         return cls.collection.delete_many(query)
 
     @classmethod
-    def _get_one(cls, to_obj, query):
-        result = cls.collection.find_one(query)
+    def _get_one(cls, to_obj, query, projection={}):
+        result = \
+            (cls.collection.find_one(query, projection) if any(projection) \
+                else cls.collection.find_one(query))
         if result is None or not to_obj:
             return result
         return cls(result)
