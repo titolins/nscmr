@@ -241,10 +241,8 @@ def add_to_cart():
             'quantity': -qty,
             'reserved': qty })
     if res.modified_count == 0:
-        response_json = {
-            'msg': 'Produto indisponível no estoque',
-        }
-        response = make_response(json.dumps(response_json), 500)
+        response = make_response(
+            json.dumps('Produto indisponível no estoque'), 500)
         response.headers['Content-Type'] = 'application/json'
         return response
     cart_line = { '_id': variant_id, 'quantity': qty }
