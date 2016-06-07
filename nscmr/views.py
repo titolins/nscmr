@@ -230,13 +230,24 @@ def get_cart():
 def cart():
     response = make_response(json.dumps(get_cart()), 200)
     response.headers['Content-Type'] = 'application/json'
-    print(response)
     return response
 
 @app.route('/usuario/carrinho/adicionar', methods=['POST'])
 def add_to_cart():
     variant_id = request.json['variant_id']
-    cart_line = { '_id': variant_id, 'quantity': 1 }
+    qty = 1
+    res = Variant.update_by_id_and_qty(variant_id, qty,
+        inc_data = {
+            'quantity': -qty,
+            'reserved': qty })
+    if res.modified_count == 0:
+        response_json = {
+            'msg': 'Produto indisponível no estoque',
+        }
+        response = make_response(json.dumps(response_json), 500)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    cart_line = { '_id': variant_id, 'quantity': qty }
     if current_user.is_anonymous:
         if session.get('cart', None) is None:
             session['cart'] = []
@@ -252,13 +263,9 @@ def add_to_cart():
                 {'_id': current_user.id, 'cart._id': variant_id},
                 inc_data = {'cart.$.quantity': 1 })
         if result.modified_count == 0:
-            print('none modified')
             result = User.update_by_id(current_user.id, push_data={'cart': cart_line})
-            print('push result = {}'.format(result))
-        else:
-            print('modified')
     response = make_response(
-        json.dumps('Produto adicionado ao seu carrinho!'), 200)
+        json.dumps('Produto adicionado às suas compras'), 200)
     response.headers['Content-Type'] = 'application/json'
     return response
 
@@ -269,23 +276,49 @@ def edit_cart():
         response = make_response(
             json.dumps(
                 'Não é possível alterar a quantidade para um número negativo'),
-            200)
-        response.headers['Content-Type'] = 'application/json'
-    elif qty == 0:
-        # remove item from cart
-        User.update_by_id(current_user.id,
-                pull_data={'cart': {'_id': request.json['id'] }})
-        response = make_response(
-            json.dumps('Produto removido do seu carrinho!'), 200)
+            500)
         response.headers['Content-Type'] = 'application/json'
     else:
-        # decrement/increment
-        User._update_one(
-            {'_id': current_user.id, 'cart._id': request.json['id'] },
-            set_data={'cart.$.quantity': request.json['quantity'] })
-        response = make_response(
-            json.dumps('Quantidade do produto alterada!'), 200)
-        response.headers['Content-Type'] = 'application/json'
+    #elif qty == 0:
+        variant_id = request.json['id']
+        cart_item = User.get_cart_item(current_user.id, request.json['id'])
+        qty_in_cart = cart_item['cart'][0]['quantity']
+        if qty == 0:
+            # remove item from cart
+            res = User.update_by_id(current_user.id,
+                    pull_data={'cart': {'_id': request.json['id'] }})
+            # check if the cart has in fact been updated
+            if res.modified_count > 0:
+                Variant.update_by_id(variant_id, inc_data = {
+                    'quantity': qty_in_cart,
+                    'reserved': -qty_in_cart
+                })
+                response = make_response(
+                    json.dumps('Produto removido do seu carrinho'), 200)
+            else:
+                response = make_response(
+                    json.dumps('Erro ao remover produto do carrinho'), 500)
+        else:
+            inc_qty = qty - qty_in_cart
+            res = Variant.update_by_id_and_qty(variant_id, inc_qty,
+                inc_data = {
+                    'quantity': -inc_qty,
+                    'reserved': inc_qty })
+            if res.modified_count == 0:
+                response = make_response(
+                    json.dumps('Quantidade indisponível no estoque'), 500)
+            else:
+                # decrement/increment
+                res = User._update_one(
+                    {'_id': current_user.id, 'cart._id': request.json['id'] },
+                    inc_data={'cart.$.quantity': inc_qty })
+                if res.modified_count > 0:
+                    response = make_response(
+                        json.dumps('Quantidade do produto alterada'), 200)
+                else:
+                    response = make_response(
+                        json.dumps('Erro ao remover produto do carrinho'), 500)
+    response.headers['Content-Type'] = 'application/json'
     return response
 
 
