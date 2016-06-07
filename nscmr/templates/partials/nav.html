@@ -1,6 +1,6 @@
 <nav id="navbar">
   <div id="navbar-btns">
-    <span id="sidebar-btn" class="nav-item item-left trigger-menu" data-target="#navbar-menu">
+    <span id="navbar-menu-btn" class="collapse-item nav-item item-left trigger-menu" data-target="#navbar-menu">
       <a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
     </span>
     <span class="nav-item item-center">
@@ -14,15 +14,14 @@
     <span id="like-btn" class="nav-item item-right">
       <a href="#"><i class="fa fa-heart-o"></i></a>
     </span>
-    <span class="nav-item item-right">
-    </span>
     <div class="clearfix"></div>
   </div>
 </nav>
 <div id="navbar-menu">
   <ul class="list-inline capitalize">
     <li><a href="{{ url_for('index') }}">Home</a></li>
-    <li><a class="trigger-menu" data-target="#sidebar-menu" href="#">
+    <li>
+      <a class="item-dropdown-toggle" data-toggle="categories-dropdown" href="#">
         Comprar
       </a>
     </li>
@@ -48,3 +47,4 @@
   {% include 'partials/useroptions.html' %}
 {% endif %}
 {% include 'partials/cartdropdown.html' %}
+{% include 'partials/categoriesdropdown.html' %}

@@ -1,0 +1,9 @@
+<ul id="categories-dropdown" class="item-dropdown">
+  <li><a href="#">Produtos</li>
+  {% if category is defined %}
+    <li><a href="{{ url_for('category', permalink=category.permalink) }}">{{ category.name }}</a></li>
+  {% endif %}
+  {% for category in categories %}
+    <li><a href="{{ url_for('category', permalink=category.permalink) }}">{{ category.name }}</a></li>
+  {% endfor %}
+</ul>
