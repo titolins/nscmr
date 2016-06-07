@@ -12,7 +12,7 @@
           </a>
       </div>
       <div class='inline float-right'>
-        <a href="#"><i class="remove-item fa fa-close"></i> Remover</a>
+        <a ng-click="removeItem(item['_id']); $event.preventDefault();" href="#"><i class="fa fa-close"></i> Remover</a>
       </div>
       <span class="item-price">{a item['price'] a}</span>
     </div>
@@ -32,18 +32,18 @@
           <p class="field-value">
             {a item['quantity'] a}
             <a title="Editar" class="item-qty" href="#">
-              <i data-toggle="#quantity-input-{a item['_id'] a}" class="edit-attribute fa fa-edit"></i>
+              <i data-toggle="quantity-input-{a item['_id'] a}" ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
             </a>
           </p>
         </div>
         <div class='input hidden' id="quantity-input-{a item['_id'] a}">
           <p class="field-title">Quantidade</p>
-          <input name="quantity" min="0" type="number" step="1" class="form-control" {#value="{a parse(item['quantity']) a}"#}>
+          <input name="quantity" min="0" type="number" step="1" class="form-control" ng-model="item['quantity']"}>
           <a title="Confirmar" href="#">
-            <i class="confirm-edit-attribute fa fa-check" aria-hidden="true"></i>
+            <i class="fa fa-check" ng-click="confirmEdit($event, item['_id']); $event.preventDefault();" aria-hidden="true"></i>
           </a>
           <a title="Cancelar" href="#">
-            <i data-toggle="#quantity-field-{a item['_id'] a}" class="cancel-edit-attribute fa fa-close" aria-hidden="true"></i>
+            <i data-toggle="quantity-field-{a item['_id'] a}" ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close" aria-hidden="true"></i>
           </a>
         </div>
         <div class="clearfix"></div>
