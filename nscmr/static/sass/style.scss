@@ -16,18 +16,28 @@ $font-sizes: (
 );
 
 @font-face {
-    font-family: 'Arial Rounded MT Bold';
-    src: url('../fonts/arial-rounded-mt-bold.ttf');
+  font-family: 'Arial Rounded MT Bold';
+  src: url('../fonts/arial-rounded-mt-bold.ttf');
 }
 
 @mixin transformY($yAxis) {
-    -webkit-transform: translateY($yAxis);
-    transform: translateY($yAxis);
+  -webkit-transform: translateY($yAxis);
+  transform: translateY($yAxis);
 }
 
 @mixin transform($xAxis, $yAxis) {
-    -webkit-transform: translate($xAxis, $yAxis);
-    transform: translate($xAxis, $yAxis);
+  -webkit-transform: translate($xAxis, $yAxis);
+  transform: translate($xAxis, $yAxis);
+}
+
+@mixin transition($time) {
+  -webkit-transition: -webkit-transform $time;
+  transition: transform $time;
+}
+
+@mixin easeInTransition($time) {
+  -webkit-transition: all $time ease-in-out;
+  transition: all $time ease-in-out;
 }
 
 @mixin align-vertical($height) {
@@ -180,7 +190,14 @@ hr { width: 100%; }
       width: 100%;
     }
   }
-  .nav-item a:hover { color: $fade-dark; }
+  .nav-item {
+    &.collapse-item {
+      @media screen and (min-width: 768px) {
+        display: none;
+      }
+    }
+    a:hover { color: $fade-dark; }
+  }
   .item-left {
     float: left;
   }
@@ -217,6 +234,7 @@ hr { width: 100%; }
   background-color: $light;
   width: 100%;
   text-align: center;
+  margin-top: -1px;
   li {
     &:not(:last-child) {
       margin-right: 15px;
@@ -226,7 +244,7 @@ hr { width: 100%; }
   @media screen and (min-width: 320px) {
     position: absolute;
     @include transformY(-120px);
-    transition: transform 500ms;
+    @include transition(500ms);
     &.open {
       @include transformY(0px);
     }
@@ -247,28 +265,48 @@ hr { width: 100%; }
 
 .item-dropdown {
   z-index: 800;
-  @extend .light;
+  @extend .dark;
   position: absolute;
   margin: 0;
   padding: 0;
   border: 1px solid $grey;
-  border-radius: 0 0 10px 10px;
+  @extend .dark;
+  border: 0;
   li {
     list-style: none;
     padding: 0 10px 0 10px;
-    @include align-vertical(30px);
-    &:hover { background: $light-grey; }
+    @include align-vertical(40px);
+    text-align: center;
+    &:not(:last-child) {
+      border: 0;
+      border-bottom: 1px solid $grey;
+    }
     a { display: block; }
+  }
+  &#categories-dropdown {
+    @media screen and (min-width: 320px) {
+      min-height: 60px;
+      width: 250px;
+      @include transformY(-281px);
+      @include transition(500ms);
+      &.open {
+        @include transformY(128px);
+      }
+    }
+    @media screen and (min-width: 768px) {
+      &.open {
+        @include transformY(0);
+      }
+    }
   }
   &#user-options-dropdown {
     @media screen and (min-width: 320px) {
-      padding: 5px 0 5px 0;
       min-height: 60px;
       width: 250px;
       @include transformY(-180px);
-      transition: transform 500ms;
+      @include transition(500ms);
       &.open {
-        @include transformY(120px);
+        @include transformY(128px);
       }
     }
     @media screen and (min-width: 768px) {
@@ -283,7 +321,7 @@ hr { width: 100%; }
       min-height: 60px;
       width: 250px;
       @include transformY(-180px);
-      transition: transform 500ms;
+      @include transition(500ms);
     }
     &.open {
       @include transformY(0);
@@ -291,35 +329,50 @@ hr { width: 100%; }
   }
   &#login-form-dropdown {
     padding: 10px 20px 10px 20px;
-    height: 250px;
-    @include transformY(-330px);
-    transition: transform 500ms;
+    height: 150px;
+    @include transformY(-230px);
+    @include transition(500ms);
+    #register {
+      margin-top: 5px;
+      a {
+        text-decoration: underline;
+      }
+    }
     @media screen and (min-width: 320px) {
       width: 250px;
-      input.form-control {
-        width: 12em;
+      &.open {
+        @include transformY(120px);
+      }
+      span {
+        &.login-input {
+          width: 40%;
+          margin-right: 2.5%;
+          float: left;
+          input {
+            width: 100%;
+            border-radius: 0;
+          }
+        }
+        &.login-submit {
+          width: 15%;
+          @include align-vertical(34px);
+          float: right;
+          input {
+            width: 100%;
+            border: 0;
+            background-color: $dark;
+            color: $light;
+          }
+        }
       }
     }
     @media screen and (min-width: 480px) {
       width: 300px;
-      input.form-control {
-        width: 15em;
+    }
+    @media screen and (min-width: 768px) {
+      &.open {
+        @include transformY(0px);
       }
-    }
-    &.open {
-      @include transformY(0px);
-    }
-    div.input-group {
-      margin-bottom: 10px;
-      &:first-child {
-        margin-top: 1.5em;
-      }
-    }
-    input[type="submit"] {
-      text-align: left;
-      height: 30px;;
-      width: 80px;
-      margin-bottom: 10px;
     }
     #submit-icon {
       position: relative;
@@ -330,59 +383,6 @@ hr { width: 100%; }
     }
   }
 }
-
-/*
- * sidebar
- */
-
-#buy-menu,
-#sidebar-menu {
-  @media screen and (min-width: 320px) {
-    font-size: 0.8em;
-    width: 160px;
-    left: -160px;
-  }
-  @media screen and (min-width: 480px) {
-    font-size: 1em;
-    width: 240px;
-    left: -240px;
-  }
-  @media screen and (min-width: 720px) {
-    width: 250px;
-    left: -250px;
-  }
-  position: fixed;
-  padding-top: 50px;
-  height: 100%;
-  top: 0;
-  bottom: 0;
-  @include transform(0,0);
-  transition: transform 500ms;
-  ul {
-    padding: 0;
-    width: 100%;
-    text-align: center;
-    li {
-      list-style: none;
-      @include align-vertical(40px);
-      & > a { display: block; width: 100%; }
-    }
-  }
-}
-
-#sidebar-btn {
-  width: 30px;
-  background: $light;
-  i {
-    padding: 5px;
-    font-size: 1.5em;
-  }
-  @media screen and (min-width: 768px) {
-    display: none;
-  }
-}
-
-.fixed { position: fixed; }
 
 /*
  * headers
@@ -548,7 +548,8 @@ hr { width: 100%; }
   }
   &:hover:after {
     opacity: .3;
-    transition: all 0.6s ease-in-out;
+    @include easeInTransition(0.6s);
+    //transition: all 0.6s ease-in-out;
   }
 }
 
@@ -641,7 +642,8 @@ hr { width: 100%; }
   opacity: 0;
   &.shown {
     opacity: 1;
-    transition: all 0.4s ease-in-out;
+    @include easeInTransition(0.4s);
+    //transition: all 0.4s ease-in-out;
   }
 }
 
@@ -739,7 +741,8 @@ hr { width: 100%; }
     &:hover {
       .img-view {
         opacity: .3;
-        transition: all 0.6s ease-in-out;
+        @include easeInTransition(0.6s);
+        //transition: all 0.6s ease-in-out;
       }
     }
   }
