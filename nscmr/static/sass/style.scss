@@ -243,14 +243,15 @@ hr { width: 100%; }
   }
   @media screen and (min-width: 320px) {
     position: absolute;
-    @include transformY(-120px);
+    @include transformY(-180px);
     @include transition(500ms);
     &.open {
       @include transformY(0px);
     }
     li {
+      font-size: 2em;
       display: block;
-      @include align-vertical(20px);
+      @include align-vertical(30px);
     }
   }
   @media screen and (min-width: 768px) {
@@ -258,6 +259,7 @@ hr { width: 100%; }
     @include transformY(0px);
     height: 30px;
     li {
+      font-size: 1em;
       display: inline-block;
     }
   }
@@ -290,7 +292,7 @@ hr { width: 100%; }
       @include transformY(-281px);
       @include transition(500ms);
       &.open {
-        @include transformY(128px);
+        @include transformY(188px);
       }
     }
     @media screen and (min-width: 768px) {
@@ -306,7 +308,7 @@ hr { width: 100%; }
       @include transformY(-180px);
       @include transition(500ms);
       &.open {
-        @include transformY(128px);
+        @include transformY(188px);
       }
     }
     @media screen and (min-width: 768px) {
@@ -345,7 +347,7 @@ hr { width: 100%; }
     @media screen and (min-width: 320px) {
       width: 250px;
       &.open {
-        @include transformY(120px);
+        @include transformY(180px);
       }
       span {
         &.login-input {
