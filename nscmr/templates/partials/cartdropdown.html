@@ -1,6 +1,6 @@
 <ul id="cart-dropdown" class="item-dropdown">
   <li ng-hide="cart.length">Carrinho vazio</li>
-  <li ng-show="cart.length"><b>Suas compras</b></li>
+  <li ng-show="cart.length"><b><a href="#">Suas compras</a></b></li>
   <li ng-repeat="item in cart | limitTo: 3">
     <div class="cart-item">
       {a item.name a}
@@ -8,6 +8,6 @@
       {a item.quantity a}
     </div>
   </li>
-  <li><a href="#">Ver suas compras</a></li>
+  <li><a href="#">Finalizar compra</a></li>
 </ul>
 
