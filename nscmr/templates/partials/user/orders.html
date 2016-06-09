@@ -1,5 +1,8 @@
 <div id="orders" class="hidden user-info">
-  <h4>Ordens de compra</h4>
+  <div class="user-title">
+    <h3>Ordens de compra</h3>
+    <hr>
+  </div>
   {% if current_user.orders|length == 0 %}
     <p>Você não fez nenhuma compra ainda</p>
   {% else %}
