@@ -23,7 +23,7 @@
     <div class="col-xs-12 col-sm-6 col-md-4">
       <a href="{{ url_for('category', permalink=category.permalink) }}">
         <div class="category-panel overlay" id="category-panel-{{loop.index}}" style="background-image:url({{category.base_img}})">
-          <span class="name-box">{{ category.name }} ›</span>
+          <span class="name-box capitalize">{{ category.name }} ›</span>
         </div>
       </a>
     </div>
