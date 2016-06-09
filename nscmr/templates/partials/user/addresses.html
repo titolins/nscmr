@@ -54,6 +54,15 @@
           <li>{a form_success a}</li>
         </ul>
         {{ form.hidden_tag() }}
+        <p>Para pesquisar seu endereço pelo cep, preencha-o abaixo e clique em 'Buscar'</p>
+        <dt>{{ form.zip_code.label }}
+        <dd>{{ form.zip_code(**{'ng-model':'form.zip_code', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
+        <a href="#" class="btn btn-default btn-success" ng-click="getAddressByCep()">
+          Buscar
+        </a>
+        <ul class="alert alert-danger" ng-show="form_errors.zip_code">
+          <li ng-repeat="error in form_errors.zip_code">{a error a}</li>
+        </ul>
         <dt>{{ form.street_address_1.label }}
         <dd>{{ form.street_address_1(**{'ng-model':'form.street_address_1'})|safe }}
         <ul class="alert alert-danger" ng-show="form_errors.street_address_1">
@@ -68,11 +77,6 @@
         <dd>{{ form.city(**{'ng-model':'form.city'})|safe }}
         <ul class="alert alert-danger" ng-show="form_errors.city">
           <li ng-repeat="error in form_errors.city">{a error a}</li>
-        </ul>
-        <dt>{{ form.zip_code.label }}
-        <dd>{{ form.zip_code(**{'ng-model':'form.zip_code'})|safe }}
-        <ul class="alert alert-danger" ng-show="form_errors.zip_code">
-          <li ng-repeat="error in form_errors.zip_code">{a error a}</li>
         </ul>
         <dt>{{ form.state.label }}
         <dd>{{ form.state(**{'ng-model':'form.state'})|safe }}
