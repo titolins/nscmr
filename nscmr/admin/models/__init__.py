@@ -173,6 +173,20 @@ class Summary(Document):
     def update_by_category(category_id, set_data):
         return Summary._update_many({'category._id':str(category_id)},set_data)
 
+    @staticmethod
+    def get_summary_by_variant(var_id, to_obj=False):
+        id_ = var_id if isinstance(var_id, ObjectId) else ObjectId(var_id)
+        return Summary._get_one(to_obj,
+            {
+                'variants._id': id_,
+            },
+            {
+                'name': 1,
+                'permalink': 1,
+                'category': 1,
+                'variants': { '$elemMatch': {'_id': id_ } }
+            })
+
 
 class Product(SlugDocument):
     __collection__ = 'products'
