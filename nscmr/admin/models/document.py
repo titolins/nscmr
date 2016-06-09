@@ -197,10 +197,10 @@ class Document(object, metaclass=DocumentProperties):
         return cls(result)
 
     @classmethod
-    def get_by_id(cls, doc_id, to_obj=False):
+    def get_by_id(cls, doc_id, projection={}, to_obj=False):
         if isinstance(doc_id, ObjectId):
-            return cls._get_one(to_obj, {'_id': doc_id})
-        return cls._get_one(to_obj, {'_id': ObjectId(doc_id)})
+            return cls._get_one(to_obj, {'_id': doc_id}, projection)
+        return cls._get_one(to_obj, {'_id': ObjectId(doc_id)}, projection)
 
     @classmethod
     def _get_many(cls, to_obj, query=None):
