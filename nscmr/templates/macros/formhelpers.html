@@ -7,12 +7,6 @@
       <li>{{ error }}</li>
     {% endfor %}
     </ul>
-  {% else %}
-    {# if there aren't any errors, we still render the error field with
-    style='display:none;' for use with javascript validators #}
-    <ul class="alert alert-danger alert-login hidden" id="{{ field.id }}-error">
-      <li></li>
-    </ul>
   {% endif %}
   </dd>
 {% endmacro %}
