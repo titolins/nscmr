@@ -1,4 +1,4 @@
-angular.module('angularApp', [])
+angular.module('angularApp', ['ui.mask'])
 .config(['$interpolateProvider', function($interpolateProvider) {
   $interpolateProvider.startSymbol('{a');
   $interpolateProvider.endSymbol('a}');
@@ -157,7 +157,6 @@ angular.module('angularApp', [])
   $scope.form_success = '';
 
   $scope.addAddress = function() {
-    console.log($scope.form);
     $http({
       method: 'POST',
       url: addAddressUri,
@@ -177,6 +176,17 @@ angular.module('angularApp', [])
       $scope.form_errors = response.data;
       console.log($scope.form_errors);
     });
+  }
+
+  $scope.getAddressByCep = function() {
+    var apiUri = 'http://api.postmon.com.br/v1/cep/' + $scope.form.zip_code;
+    $http({url:apiUri}).then(function success(response) {
+      $scope.form.street_address_1 = response.data['logradouro'];
+      $scope.form.street_address_2 = response.data['bairro'];
+      $scope.form.city = response.data['cidade'];
+      $scope.form.state = response.data['estado'];
+    }, function error(response) {});
+
   }
 
 }]);
