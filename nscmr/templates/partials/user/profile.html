@@ -3,57 +3,54 @@
     <div class="col-md-6" id="profile-data">
       <div class="user-title">
         <h3 class="inline">Usuário</h3>
-        <a class="btn btn-default inline float-right" href="#" id="edit-profile">
+        <a class="btn btn-default inline float-right" href="#" ng-click="editUser(); $event.preventDefault();">
           <i class="fa fa-check"></i> Confirmar edições
         </a>
         <hr>
       </div>
-      <div class="user-field">
-        <h5 class='field-title'>Nome:</h5>
-        <div class="field" id="name-field">
-          <span class='field-value'>{{ current_user.name }}</span>
+      <div class="field">
+        <div class='field-title'>Nome</div>
+        <div class="field-value" id="name-field">
+          {a user['name'] a}
           <a title="Editar" href="#">
-            <i data-toggle="#name-input" class="edit-attribute fa fa-edit"></i>
+            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
           </a>
         </div>
-        <div class="input hidden" id="name-input">
-          <input type="text" class="form-control" placeholder="{{ current_user.name }}">
+        <div class="field-input hidden" id="name-input">
+          <input name="name" type="text" class="form-control" ng-model="user['name']">
           <a title="Cancelar" href="#">
-            <span data-toggle="#name-field" class="cancel-edit-attribute fa fa-close"></span>
+            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close cancel-name"></i>
           </a>
         </div>
       </div>
-      <div class="user-field">
-        <h5 class='field-title'>Email:</h5>
-        <div class='field' id="email-field">
-          <span class='field-value'>{{ current_user.email }}</span>
+      <div class="field">
+        <div class='field-title'>Email</div>
+        <div class='field-value' id="email-field">
+          {a user['email'] a}
           <a title="Editar" href="#">
-            <span data-toggle="#email-input" class="edit-attribute fa fa-edit"></span>
+            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
           </a>
         </div>
-        <div class='input hidden' id="email-input">
-          <input type="text" class="form-control" placeholder="{{ current_user.email }}">
+        <div class='field-input hidden' id="email-input">
+          <input name="email" type="text" class="form-control" ng-model="user['email']">
           <a title="Cancelar" href="#">
-            <span data-toggle="#email-field" class="cancel-edit-attribute fa fa-close"></span>
+            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close cancel-email"></i>
           </a>
         </div>
       </div>
-      <div class="user-field">
-        <h5 class='field-title'>Data de nascimento:</h5>
-        <div class="field" id="dob-field">
-          {% if current_user.dob is not none %}
-            <span class='field-value'>{{ current_user.dob }}</span>
-          {% else %}
-            <span class='field-value'>Não informada</span>
-          {% endif %}
+      <div class="field">
+        <div class='field-title'>Data de nascimento:</div>
+        <div class="field-value" id="dob-field">
+          <span ng-hide="user['dob'] == null">{a user['dob'] a}</span>
+          <span ng-show="user['dob'] == null">Não informada</span>
           <a title="Editar" href="#">
-            <span data-toggle="#dob-input" class="edit-attribute fa fa-edit"></span>
+            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
           </a>
         </div>
-        <div class="input hidden" id="dob-input">
-          <input type="date" class="form-control">
+        <div class="field-input hidden" id="dob-input">
+          <input name="dob" type="date" class="form-control">
           <a title="Cancelar" href="#">
-            <span data-toggle="#dob-field" class="cancel-edit-attribute fa fa-close"></span>
+            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close cancel-dob"></i>
           </a>
         </div>
       </div>
