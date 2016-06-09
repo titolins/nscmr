@@ -1,12 +1,16 @@
 {% from "macros/producthelpers.html" import product_panel with context %}
 
 <div id="wishlist" class="user-info hidden">
-  <h4>Lista de desejos</h4>
-  {% if current_user.wishlist|count == 0 %}
+  <div class="user-title">
+    <h3>Lista de desejos</h3>
+    <hr>
+  </div>
+  {% if wishlist|count == 0 %}
     <p>Você não possui nenhum produto na sua lista de desejos</p>
   {% else %}
-    {% for product in current_user.wishlist %}
-      {{ product_panel(product) }}
+    {% for product in wishlist %}
+      {{ product_panel(product['variants'][0], product) }}
     {% endfor %}
   {% endif %}
+  <div class="clearfix"></div>
 </div>
