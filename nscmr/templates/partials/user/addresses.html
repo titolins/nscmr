@@ -1,4 +1,3 @@
-{% from "macros/formhelpers.html" import render_field %}
 <div class='user-title'>
   <h3 class='inline'>Endereços</h3>
   <a class="btn btn-default inline float-right" type="button" data-toggle="modal" data-target="#add-address-modal">
@@ -6,18 +5,6 @@
   </a>
   <hr>
 </div>
-{% if form.errors %}
-  <div class="address-form-errors">
-    <ul class="alert alert-danger alert-login">
-      <p>Oops! O endereço indicado possui alguns erros:</p>
-    {% for field in form.errors.keys() %}
-      {% for error in form.errors[field] %}
-          <li>{{ error }}</li>
-      {% endfor %}
-    {% endfor %}
-    </ul>
-  </div>
-{% endif %}
 <p ng-hide="addresses.length">Você não possui nenhum endereço registrado</p>
 <div class="panel panel-default address-panel" ng-repeat="address in addresses">
   <div class="panel-heading text-right">
@@ -63,12 +50,35 @@
     </div>
     <div class="modal-body">
       <form id="create-address-form" ng-submit="addAddress()" method="post">
+        <ul class="alert alert-success" ng-show="form_success">
+          <li>{a form_success a}</li>
+        </ul>
         {{ form.hidden_tag() }}
-        {{ render_field(form.street_address_1,**{'ng-model':'form.street_address_1'}) }}
-        {{ render_field(form.street_address_2,**{'ng-model':'form.street_address_2'}) }}
-        {{ render_field(form.city,**{'ng-model':'form.city'}) }}
-        {{ render_field(form.zip_code,**{'ng-model':'form.zip_code'}) }}
-        {{ render_field(form.state,**{'ng-model':'form.state'}) }}
+        <dt>{{ form.street_address_1.label }}
+        <dd>{{ form.street_address_1(**{'ng-model':'form.street_address_1'})|safe }}
+        <ul class="alert alert-danger" ng-show="form_errors.street_address_1">
+          <li ng-repeat="error in form_errors.street_address_1">{a error a}</li>
+        </ul>
+        <dt>{{ form.street_address_2.label }}
+        <dd>{{ form.street_address_2(**{'ng-model':'form.street_address_2'})|safe }}
+        <ul class="alert alert-danger" ng-show="form_errors.street_address_2">
+          <li ng-repeat="error in form_errors.street_address_2">{a error a}</li>
+        </ul>
+        <dt>{{ form.city.label }}
+        <dd>{{ form.city(**{'ng-model':'form.city'})|safe }}
+        <ul class="alert alert-danger" ng-show="form_errors.city">
+          <li ng-repeat="error in form_errors.city">{a error a}</li>
+        </ul>
+        <dt>{{ form.zip_code.label }}
+        <dd>{{ form.zip_code(**{'ng-model':'form.zip_code'})|safe }}
+        <ul class="alert alert-danger" ng-show="form_errors.zip_code">
+          <li ng-repeat="error in form_errors.zip_code">{a error a}</li>
+        </ul>
+        <dt>{{ form.state.label }}
+        <dd>{{ form.state(**{'ng-model':'form.state'})|safe }}
+        <ul class="alert alert-danger" ng-show="form_errors.state">
+          <li ng-repeat="error in form_errors.state">{a error a}</li>
+        </ul>
         <p><input class="btn btn-default btn-ns" id="add-address-btn" type="submit" value="Enviar"></input></p>
       </form>
     </div>
