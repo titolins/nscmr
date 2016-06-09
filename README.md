@@ -26,6 +26,7 @@ As per the above, nscmr is still under development and not ready for use.
     bower install -S bootstrap
     bower install -S font-awesome
     bower install -S angular
+    bower install -S angular-ui-mask
     ```
     * copy glyphicon fonts to static dir:
     ```
