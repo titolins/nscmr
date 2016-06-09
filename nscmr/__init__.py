@@ -96,6 +96,7 @@ def build_app():
             'jquery/dist/jquery.min.js',
             'bootstrap/dist/js/bootstrap.min.js',
             'angular/angular.min.js',
+            'angular-ui-mask/dist/mask.min.js',
             'duvet.js'),
         output='js/base.js')
 
