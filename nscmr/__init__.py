@@ -96,18 +96,8 @@ def build_app():
             'jquery/dist/jquery.min.js',
             'bootstrap/dist/js/bootstrap.min.js',
             'angular/angular.min.js',
-            'cart.js',
             'duvet.js'),
         output='js/base.js')
-
-    '''
-    assets.register(
-        'angular',
-        Bundle(
-            'angular/angular.min.js',
-            'angular_config.js'),
-        output='js/angular.js')
-    '''
 
     assets.register(
         'css_all',
