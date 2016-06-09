@@ -27,30 +27,31 @@
             </a>
           <p>
         </div>
-        <div id="quantity-field-{a item['_id'] a}" class="field">
+        <div class="field">
           <p class="field-title">Quantidade</p>
           <p class="field-value">
             {a item['quantity'] a}
             <a title="Editar" class="item-qty" href="#">
-              <i data-toggle="quantity-input-{a item['_id'] a}" ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
+              <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
             </a>
           </p>
-        </div>
-        <div class='input hidden' id="quantity-input-{a item['_id'] a}">
-          <p class="field-title">Quantidade</p>
-          <input name="quantity" min="0" type="number" step="1" class="form-control" ng-model="item['quantity']"}>
-          <a title="Confirmar" href="#">
-            <i class="fa fa-check" ng-click="confirmEdit($event, item['_id']); $event.preventDefault();" aria-hidden="true"></i>
-          </a>
-          <a title="Cancelar" href="#">
-            <i data-toggle="quantity-field-{a item['_id'] a}" ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close" aria-hidden="true"></i>
-          </a>
+          <div class='field-input hidden'>
+            <input name="quantity" min="0" type="number" step="1" class="form-control" ng-model="item['quantity']"}>
+            <a title="Confirmar" href="#">
+              <i class="fa fa-check" ng-click="confirmEdit(item); $event.preventDefault();" aria-hidden="true"></i>
+            </a>
+            <a title="Cancelar" href="#">
+              <i ng-click="toggleEdit($event); $event.preventDefault();" class="cancel-cart fa fa-close" aria-hidden="true"></i>
+            </a>
+          </div>
         </div>
         <div class="clearfix"></div>
       </div>
-        <div class="field-row" ng-if="item.hasOwnProperty('attributes')">
+        <div class="field" ng-if="item.hasOwnProperty('attributes')">
           <p class="field-title">Detalhes</p>
-          <p ng-repeat="attr in item['attributes']">{a attr a}: {a item['attributes'][attr] a}</p>
+          <p class="field-value" ng-repeat="(attr,value) in item['attributes']">
+            {a attr a}: {a value a}
+          </p>
         </div>
     </div>
   </div>
