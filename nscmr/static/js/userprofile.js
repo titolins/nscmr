@@ -153,6 +153,8 @@ angular.module('angularApp', [])
   };
 
   $scope.form = {};
+  $scope.form_errors = {};
+  $scope.form_success = '';
 
   $scope.addAddress = function() {
     console.log($scope.form);
@@ -166,9 +168,14 @@ angular.module('angularApp', [])
       }
     }).then(function successCallback(response) {
       console.log(response);
+      $scope.form_errors = {};
+      $scope.form_success = response.data;
       getAddresses();
     }, function errorCallback(response) {
       console.log(response);
+      $scope.form_success = '';
+      $scope.form_errors = response.data;
+      console.log($scope.form_errors);
     });
   }
 
