@@ -21,6 +21,7 @@ from flask.ext.principal import (
     Identity,
     AnonymousIdentity)
 
+from datetime import datetime
 from bson.objectid import ObjectId
 from pymongo.errors import DuplicateKeyError
 
@@ -109,20 +110,65 @@ def registration():
             registration_form=registration_form,
             categories=categories)
 
-# Read
+@app.route('/usuario/enderecos')
+@login_required
+def get_addresses():
+    user = User.get_by_id(current_user.id, projection={
+        '_id': 0,
+        'addresses': 1})
+    for addr in user['addresses']:
+        addr['_id'] = str(addr['_id'])
+    response = make_response(json.dumps(user['addresses']),200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
 @app.route('/usuario')
+@login_required
+def get_user():
+    user = User.get_by_id(current_user.id, projection={
+        '_id': 0,
+        'email': 1,
+        'name':1,
+        'addresses': 1,
+        'dob': 1,
+        'orders': 1})
+    user['dob'] = str(user['dob']).split(' ')[0]
+    for addr in user['addresses']:
+        addr['_id'] = str(addr['_id'])
+    response = make_response(json.dumps(user),200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
+# Read
+@app.route('/usuario/perfil')
 @login_required
 def user():
     return render_template('user.html',
         categories=Category.get_all(to_obj=True),
-        cart=get_cart(),
+        wishlist=get_wishlist(),
         form=AddressForm())
 
-# Update
-@app.route('/usuario/editar')
+# Delete
+@app.route('/usuario/editar', methods=['POST'])
 @login_required
 def edit_user():
-    return "<p>To be user {} edit page</p>".format(current_user.get_id())
+    print(request.json)
+    data = {}
+    for field in request.json:
+        if field in ('name', 'email'):
+            data[field] = request.json[field].lower()
+        elif field == 'dob':
+            data[field] = datetime.strptime(request.json[field], "%Y-%m-%d")
+        else:
+            #ignore unwanted fields
+            continue
+    res = User.update_by_id(current_user.id, set_data=data)
+    if res.modified_count > 0:
+        response = make_response(json.dumps('Alterações realizadas!'), 200)
+    else:
+        response = make_response(json.dumps('Erro alterando usuário'), 500)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 # Delete
 @app.route('/usuario/deletar')
@@ -132,9 +178,14 @@ def delete_user():
 
 # Add address
 @app.route('/usuario/enderecos/adicionar', methods=['POST'])
+@login_required
 def add_address():
     form = AddressForm()
+    print(request.form)
+    print(form)
+    print(form.city)
     if form.validate_on_submit():
+        print('validated')
         data = {}
         for field in form.data.keys():
             if field in ['street_address_1', 'street_address_2', 'city',
@@ -144,11 +195,27 @@ def add_address():
                 data[field] = form.data[field]
         data['_id'] = ObjectId()
         User.update_by_id(current_user.id, push_data={'addresses':data})
-    return render_template('user.html',
-        categories=Category.get_all(to_obj=True),
-        cart=get_cart(),
-        form=form)
+        response = make_response(json.dumps('Endereço adicionado'),200)
+    else:
+        print(form.errors)
+        response = make_response(json.dumps(form.errors), 500)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
+# Delete address
+@app.route('/usuario/enderecos/deletar', methods=['POST'])
+@login_required
+def delete_address():
+    address_id = request.json['address_id']
+    res = User.update_by_id(current_user.id, pull_data=
+        {'addresses': {'_id': ObjectId(address_id)}})
+    if res.modified_count > 0:
+        response = make_response(json.dumps('Endereço removido'), 200)
+    else:
+        response = make_response(
+            json.dumps('Erro ao tentar remover endereço'), 500)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 ##################
 # end User       #
@@ -214,6 +281,44 @@ def product(c_permalink, p_permalink, v_id):
 # Update
 # Delete
 # only admin can update or delete products
+
+##################
+# Wishlist       #
+##################
+
+def get_wishlist():
+    if current_user.is_anonymous:
+        return []
+    else:
+        return \
+            [Summary.get_summary_by_variant(item['_id']) for item in current_user.wishlist]
+
+@app.route('/usuario/wishlist/adicionar', methods=['POST'])
+def add_to_wishlist():
+    if current_user.is_anonymous:
+        response = make_response(
+            json.dumps('{}{}'.format(
+                'Você precisa estar logado para',
+                'adicionar produtos na sua lista de desejos')),
+            401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    variant_id = request.json['variant_id']
+    result = User._get_one(False,query={'_id': current_user.id, 'wishlist._id': variant_id})
+    if result is None:
+        result = User.update_by_id(current_user.id,
+            push_data={'wishlist': {'_id':variant_id}})
+        response = make_response(
+            json.dumps('Produto adicionado à lista de desejos'), 200)
+    else:
+        response = make_response(
+            json.dumps('Produto já está na sua lista de desejos'), 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
+##################
+# end Wishlist   #
+##################
 
 ##################
 # Cart/Orders    #
