@@ -39,16 +39,16 @@
         </div>
       </div>
       <div class="field">
-        <div class='field-title'>Data de nascimento:</div>
+        <div class='field-title'>Data de nascimento</div>
         <div class="field-value" id="dob-field">
-          <span ng-hide="user['dob'] == null">{a user['dob'] a}</span>
+          <span ng-hide="user['dob'] == null">{a parseDate(user['dob']) a}</span>
           <span ng-show="user['dob'] == null">Não informada</span>
           <a title="Editar" href="#">
             <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
           </a>
         </div>
         <div class="field-input hidden" id="dob-input">
-          <input name="dob" type="date" class="form-control">
+          <input name="dob" type="date" class="form-control" ng-model="user['dob']">
           <a title="Cancelar" href="#">
             <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close cancel-dob"></i>
           </a>
