@@ -145,20 +145,18 @@ def get_user():
 def user():
     return render_template('user.html',
         categories=Category.get_all(to_obj=True),
-        wishlist=get_wishlist(),
         form=AddressForm())
 
 # Delete
 @app.route('/usuario/editar', methods=['POST'])
 @login_required
 def edit_user():
-    print(request.json)
     data = {}
     for field in request.json:
         if field in ('name', 'email'):
             data[field] = request.json[field].lower()
         elif field == 'dob':
-            data[field] = datetime.strptime(request.json[field], "%Y-%m-%d")
+            data[field] = datetime.strptime(request.json[field], "%d/%m/%Y")
         else:
             #ignore unwanted fields
             continue
@@ -181,15 +179,12 @@ def delete_user():
 @login_required
 def add_address():
     form = AddressForm()
-    print(request.form)
-    print(form)
-    print(form.city)
     if form.validate_on_submit():
         print('validated')
         data = {}
         for field in form.data.keys():
             if field in ['street_address_1', 'street_address_2', 'city',
-                    'state']:
+                    'state', 'neighbourhood']:
                 data[field] = form.data[field].lower()
             else:
                 data[field] = form.data[field]
@@ -290,10 +285,24 @@ def get_wishlist():
     if current_user.is_anonymous:
         return []
     else:
-        return \
-            [Summary.get_summary_by_variant(item['_id']) for item in current_user.wishlist]
+        wishlist = []
+        for item in current_user.wishlist:
+            product = Summary.get_summary_by_variant(item['_id'])
+            product['_id'] = str(product['_id'])
+            for var in product['variants']:
+                var['_id'] = str(var['_id'])
+            wishlist.append(product)
+        return wishlist
+
+@app.route('/usuario/wishlist')
+@login_required
+def wishlist():
+    response = make_response(json.dumps(get_wishlist()), 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 @app.route('/usuario/wishlist/adicionar', methods=['POST'])
+@login_required
 def add_to_wishlist():
     if current_user.is_anonymous:
         response = make_response(
@@ -313,6 +322,19 @@ def add_to_wishlist():
     else:
         response = make_response(
             json.dumps('Produto já está na sua lista de desejos'), 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
+@app.route('/usuario/wishlist/remover', methods=['POST'])
+@login_required
+def remove_from_wishlist():
+    res = User.update_by_id(current_user.id,
+            pull_data={'wishlist': {'_id': request.json['id'] }})
+    if res.modified_count > 0:
+        response = make_response(
+            json.dumps('Produto removido da sua lista'), 200)
+    else:
+        response = make_response(json.dumps('Erro ao remover produto'), 500)
     response.headers['Content-Type'] = 'application/json'
     return response
 
