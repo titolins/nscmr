@@ -61,6 +61,7 @@ class ProfileForm(Form):
 class AddressForm(Form):
     street_address_1 = StringField('Endereço', widget=NsTextInput())
     street_address_2 = StringField('Complemento', widget=NsTextInput())
+    neighbourhood = StringField('Bairro', widget=NsTextInput())
     city = StringField('Cidade', widget=NsTextInput())
     zip_code = StringField('Cep', widget=NsTextInput())
     state = StringField('Estado', widget=NsTextInput())
