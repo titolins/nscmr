@@ -12,7 +12,7 @@ from wtforms.fields import (
 
 from wtforms.fields.html5 import DecimalField, IntegerField, DateField
 
-from wtforms.widgets import TextInput, PasswordInput, html5, TextArea
+from wtforms.widgets import TextInput, PasswordInput, html5, TextArea, Select
 from wtforms.validators import (
     input_required,
     ValidationError,
@@ -43,6 +43,17 @@ product_images = UploadSet(
 VALID_VARIATIONS = [ 'cor', 'tamanho' ]
 
 class NsTextInput(TextInput):
+    def __init__(self, ns_class='form-control'):
+        super().__init__()
+        self.form_class = ns_class
+
+    def __call__(self, field, **kwargs):
+        c = kwargs.pop('class', '') or kwargs.pop('class_', '')
+        kwargs['class'] = '{} {}'.format(self.form_class, c)
+        return super().__call__(field, **kwargs)
+
+
+class NsSelectInput(Select):
     def __init__(self, ns_class='form-control'):
         super().__init__()
         self.form_class = ns_class
