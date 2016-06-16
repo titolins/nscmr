@@ -363,46 +363,34 @@ def build_admin_bp():
             for item in json_data[field]:
                 item_id = item['id']
                 data = {}
+                s_data = {}
                 for k in item.keys():
                     if item[k] not in ('', None):
                         if k == 'id':
                             continue
                         elif k == 'category':
                             category_fields = item[k].split('_')
-                            data['category._id'] = category_fields[0]
-                            data['category.name'] = category_fields[2]
-                            data['category.permalink'] = category_fields[1]
-                            continue
+                            s_data['category._id'] = data['category._id'] = category_fields[0]
+                            s_data['category.name'] = data['category.name'] = category_fields[2]
+                            s_data['category.permalink'] = data['category.permalink'] = category_fields[1]
                         elif k == 'price':
-                            price = float(item['price'])
-                            data['price.major'] = int(price)
-                            data['price.minor'] = int((price*100)%100)
-                            continue
+                            s_data['variants.$.price'] = data[k] = int(float(item[k])*100)
                         elif k == 'name':
-                            data['name'] = item[k].lower()
-                            data['permalink'] = slugify(data['name'])
-                            continue
-                        data[k] = item[k]
-
+                            s_data[k] = data[k] = item[k].lower()
+                            s_data['permalink'] = data['permalink'] = slugify(data['name'])
+                        else:
+                            data[k] = item[k]
                 if field == 'variants':
                     result = Variant.update_by_id(item_id, data)
-                    vs_modified += result.modified_count
-                    s_data = {}
-                    for attr in data.keys():
-                        if 'price' in attr and 'price' not in s_data.keys():
-                            s_data['variants.$.price'] = \
-                                "{0:.2f}".format(float(item['price'])).\
-                                    replace('.',',')
                     Summary._update_one(
                         {'variants._id': ObjectId(item_id)},
                         set_data=s_data)
+                    vs_modified += result.modified_count
                     continue
                 result = Product.update_by_id(item_id, data)
+                Summary.update_by_id(item_id, s_data)
                 ps_modified += result.modified_count
                 # remove data unused in summary and update summary
-                s_data = { k: v for k,v in data.items() \
-                    if k in ('permalink', 'name') or 'category' in k }
-                Summary.update_by_id(item_id, s_data)
 
         text = '{} produto(s) e {} variante(s) modificado(s)!'.format(
             ps_modified, vs_modified)
