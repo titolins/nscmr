@@ -5,8 +5,8 @@
   </a>
   <hr>
 </div>
-<p ng-hide="addresses.length">Você não possui nenhum endereço registrado</p>
-<div class="panel panel-default address-panel" ng-repeat="address in addresses">
+<p ng-hide="addressesService.addresses.length">Você não possui nenhum endereço registrado</p>
+<div class="panel panel-default address-panel" ng-repeat="address in addressesService.addresses">
   <div class="panel-heading text-right">
     <span class="options-btn">
       {#<a href="#">
@@ -52,7 +52,7 @@
       <h4 class="inline">Cadastrar endereço</h4>
       <button type="button" class="close inline" data-dismiss="modal">&times;</button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" ng-controller="AddressController">
       <form id="create-address-form" ng-submit="addAddress()" method="post">
         <ul class="alert alert-success" ng-show="form_success">
           <li>{a form_success a}</li>
@@ -61,7 +61,7 @@
         <p>Para pesquisar seu endereço pelo cep, preencha-o abaixo e clique em 'Buscar'</p>
         <dt>{{ form.zip_code.label }}
         <dd>{{ form.zip_code(**{'ng-model':'form.zip_code', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
-        <a href="#" class="btn btn-default btn-success" ng-click="getAddressByCep()">
+        <a href="#" class="btn btn-default btn-success" ng-click="getAddressByCep(); $event.preventDefault();">
           Buscar
         </a>
         <ul class="alert alert-danger" ng-show="form_errors.zip_code">
