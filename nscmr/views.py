@@ -43,7 +43,8 @@ from nscmr.forms import (
     LoginForm,
     RegistrationForm,
     ContactForm,
-    CustomMadeForm)
+    CustomMadeForm,
+    CreditCardForm)
 
 from nscmr.admin.forms import AddressForm
 
@@ -132,7 +133,8 @@ def get_user():
         'addresses': 1,
         'dob': 1,
         'orders': 1})
-    user['dob'] = str(user['dob']).split(' ')[0]
+    user['dob'] = \
+        str(user['dob']).split(' ')[0] if 'dob' in user.keys() else None
     for addr in user['addresses']:
         addr['_id'] = str(addr['_id'])
     response = make_response(json.dumps(user),200)
@@ -180,7 +182,6 @@ def delete_user():
 def add_address():
     form = AddressForm()
     if form.validate_on_submit():
-        print('validated')
         data = {}
         for field in form.data.keys():
             if field in ['street_address_1', 'street_address_2', 'city',
@@ -192,7 +193,6 @@ def add_address():
         User.update_by_id(current_user.id, push_data={'addresses':data})
         response = make_response(json.dumps('Endereço adicionado'),200)
     else:
-        print(form.errors)
         response = make_response(json.dumps(form.errors), 500)
     response.headers['Content-Type'] = 'application/json'
     return response
@@ -224,19 +224,20 @@ def delete_address():
 # only the admin can create new categories
 
 # Read
+@app.route('/catalogo')
 @app.route('/catalogo/<string:permalink>')
 @back.anchor
-def category(permalink):
+def category(permalink=None):
     categories = Category.get_all(to_obj=True)
-    category = [c for c in categories if c.permalink == permalink][0]
-    categories.remove(category)
-    products = Summary.get_by_category(category.id)
+    if permalink is not None:
+        category = [c for c in categories if c.permalink == permalink][0]
+        categories.remove(category)
+        products = Summary.get_by_category(category.id)
+    else:
+        category = None
+        products = Summary.get_all()
     return render_template(
             'category.html',
-            # we don't need to access both category and products collection,
-            # considering that each product has a manual reference to the
-            # category it belongs.. good opportunity to see which category
-            # fields we need in the products ref
             category=category,
             categories=categories,
             products=products,
@@ -351,6 +352,7 @@ def get_cart():
         cart = session.get('cart', [])
     else:
         cart = current_user.cart
+        print(cart)
     return [CartLine(item)() for item in cart]
 
 @app.route('/usuario/compras')
@@ -450,6 +452,32 @@ def edit_cart():
 ######################
 # end Cart/Orders    #
 ######################
+
+###############
+# Checkout    #
+###############
+
+@app.route('/checkout')
+@back.anchor
+def checkout():
+    if current_user.is_anonymous:
+        form = LoginForm()
+        return render_template(
+                'checkoutlogin.html',
+                categories=Category.get_all(),
+                login_form=form)
+    else:
+        form = AddressForm()
+        #return choose address page
+        return render_template('checkout.html',
+                form=form,
+                card_form=CreditCardForm(),
+                categories=Category.get_all())
+
+
+###################
+# end checkout    #
+###################
 
 #########################################################
 ####################### end CRUD ########################
