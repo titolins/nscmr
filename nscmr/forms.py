@@ -4,7 +4,9 @@ from wtforms.fields import (
     StringField,
     PasswordField,
     BooleanField,
-    FormField
+    FormField,
+    SelectField,
+    HiddenField
 )
 
 from wtforms.fields.html5 import DateField
@@ -21,9 +23,14 @@ from .admin.forms import (
     NsTextInput,
     NsPasswordInput,
     NsDateInput,
-    NsTextAreaInput)
+    NsTextAreaInput,
+    NsSelectInput)
 
 MIN_PASS_LEN = 6
+CREDIT_CARD_BRAND_CHOICES = [
+    ('visa', 'Visa'),
+    ('master', 'MasterCard'),
+]
 
 class LoginForm(Form):
     email = StringField(
@@ -173,3 +180,21 @@ class CustomMadeForm(Form):
         validators=[input_required("Campo necessário!")],
         widget=NsTextAreaInput())
 
+class CreditCardForm(Form):
+    holder_name = StringField('Nome do titular',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    number = StringField('Número',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    '''
+    brand = SelectField('Bandeira',
+        validators=[input_required("Campo necessário!")],
+        choices=CREDIT_CARD_BRAND_CHOICES,
+        widget=NsSelectInput())
+    '''
+    brand = HiddenField('Bandeira',
+        validators=[input_required("Campo necessário")])
+    security_code = StringField('Número de segurança',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
