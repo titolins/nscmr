@@ -96,6 +96,7 @@ def build_app():
             'jquery/dist/jquery.min.js',
             'bootstrap/dist/js/bootstrap.min.js',
             'angular/angular.min.js',
+            'angular-i18n/angular-locale_pt-br.js',
             'angular-ui-mask/dist/mask.min.js',
             'duvet.js'),
         output='js/base.js')
@@ -126,5 +127,27 @@ app = build_app()
 db = build_db(app)
 
 from nscmr import views
+
+
+if __name__ == '__main__':
+    from nscmr.admin.models import User
+    from werkzeug.security import generate_password_hash
+    def create_user(name, email, password, admin=False):
+        roles = ['user'] if not admin else ['user', 'admin']
+        data = {
+            'name': name.lower(),
+            'email': email.lower(),
+            'password': generate_password_hash(password),
+            'roles': roles,
+            'cart': [],
+            'addresses': [],
+            'orders': [],
+            'wishlist': [],
+        }
+        user = User(data)
+        user.insert()
+
+    def create_admin_user(name, email, password):
+        create_user(name, email, password, True)
 
 
