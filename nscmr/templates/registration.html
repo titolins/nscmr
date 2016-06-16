@@ -49,12 +49,18 @@
           {{ registration_form.has_address.label }}
         </div>
         <div class="col-xs-12 col-sm-6 table-cell">
-          <div id="input-address">
-            {{ render_field(registration_form.address.street_address_1) }}
-            {{ render_field(registration_form.address.street_address_2) }}
-            {{ render_field(registration_form.address.city) }}
-            {{ render_field(registration_form.address.zip_code) }}
-            {{ render_field(registration_form.address.state) }}
+          <div id="input-address" ng-controller="AddressController">
+            <p>Para pesquisar seu endereço pelo cep, preencha-o abaixo e clique em 'Buscar'</p>
+            {{render_field(registration_form.address.zip_code, **{'ng-model': 'form.zip_code','ui-mask':'99999-999'}) }}
+            <a class="btn btn-default btn-success" href="#" ng-click="getAddressByCep(); $event.preventDefault();">
+              Buscar
+            </a>
+            {{ render_field(registration_form.address.street_address_1,**{'ng-model': 'form.street_address_1'}) }}
+            {{
+            render_field(registration_form.address.street_address_2,**{'ng-model': 'form.street_address_2'}) }}
+            {{ render_field(registration_form.address.neighbourhood,**{'ng-model': 'form.neighbourhood'}) }}
+            {{ render_field(registration_form.address.city,**{'ng-model':'form.city'}) }}
+            {{ render_field(registration_form.address.state, **{'ng-model':'form.state'}) }}
           </div>
         </div>
       </div>
@@ -68,4 +74,6 @@
 
 {% block scripts %}
   <script src="{{ url_for('static', filename='js/registration.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/addressesService.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/address.js') }}"></script>
 {% endblock %}
