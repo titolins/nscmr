@@ -8,19 +8,21 @@
   <p ng-hide="wishlist.length">Você não possui nenhum produto na sua lista de desejos</p>
   <div ng-repeat="product in wishlist" class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-6 col-md-4 col-lg-3">
     <div class="panel panel-default">
+      <div class="panel-header text-right">
+        <a href="#" ng-click="removeFromWishlist(product['variants'][0]['_id']); $event.preventDefault();">
+          <i class="fa fa-close"></i>
+        </a>
+      </div>
       <div class="panel-body" style="background-image: url({a product['variants'][0]['display_image'] a})">
         <a href="{a buildLink(product['category']['permalink'], product['permalink'], product['variants'][0]['_id']) a}"></a>
         <div class="img-view"><a data-toggle="modal" data-target="#{a product['variants'][0]['_id'] a}-images" href="#">+ Visualização rápida</a></div>
       </div>
       <div id="variant-info" class="panel-footer">
-        <a class="cart-btn" href="#" ng-click="addToCart(product['variants'][0]['_id']); $event.preventDefault();">
+        <a class="cart-btn" href="#" ng-click="cartService.addToCart(product['variants'][0]['_id']); $event.preventDefault();">
           <i class="fa fa-shopping-bag"></i>
         </a>
         <p>R$ {a product['variants'][0]['price'] a}</p>
         <p>{a product['name'] a}</p>
-        <a href="#" ng-click="removeFromWishlist(product['variants'][0]['_id']); $event.preventDefault();">
-          <i class="fa fa-close"></i> remover
-        </a>
       </div>
     </div>
     <div id="{a product['variants'][0]['_id'] a}-images" class="modal fade variant-modal" role="dialog">
@@ -101,7 +103,7 @@
                     <hr>
                     <div class="variant-btns text-right">
                       <a class="like-btn" ng-click="addToWishlist(product['variants'][0]['_id']); $event.preventDefault();" href="#"><i class="fa fa-heart-o"></i></a>
-                      <a class="cart-btn" ng-click="addToCart(product['variants'][0]['_id']); $event.preventDefault();" href="#"><i class="fa fa-shopping-bag"></i></a>
+                      <a class="cart-btn" ng-click="cartService.addToCart(product['variants'][0]['_id']); $event.preventDefault();" href="#"><i class="fa fa-shopping-bag"></i></a>
                     </div>
                   </div>
                 </div>
