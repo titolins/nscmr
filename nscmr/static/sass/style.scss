@@ -1140,6 +1140,10 @@ select {
   .panel-body {
     height: 80%;
   }
+  &.selected {
+    background-color: $light-grey;
+    border: 1px solid $dark;
+  }
 }
 
 .field {
@@ -1192,6 +1196,40 @@ select {
       border-bottom: 0;
     }
   }
+}
+
+/*
+ * checkout
+ */
+
+#checkout-options {
+  @extend .text-center;
+  a {
+    @extend .capitalize;
+    &:not(:last-child) { margin-right: 30px; }
+    &:not(.selected) { 
+      color: $fade-dark;
+      &:hover { color: $dark; }
+    }
+  }
+}
+
+#brand-selectors {
+  margin-bottom: 20px;
+  .card-brand {
+    @extend .capitalize;
+    border: 2px solid $dark;
+    padding: 5px 10px 5px 10px;
+    font-size: 1.5em !important;
+    &:not(:last-child) { margin-right: 20px; }
+    &:hover { background-color: $light-grey; }
+    &:active { background-color: $fade-dark; }
+    &.selected { background-color: $light-grey; }
+  }
+}
+
+.buy-info {
+  margin-top: 20px;
 }
 
 /*
