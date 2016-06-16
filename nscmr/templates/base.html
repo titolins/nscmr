@@ -78,9 +78,10 @@
       var getCartUri = "{{ url_for('cart') }}";
       var addToWishlistUri = "{{ url_for('add_to_wishlist') }}";
     </script>
-    {% block scripts %}{% endblock %}
     {% block angular_script %}
       <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/cartservice.js') }}"></script>
     {% endblock %}
+    {% block scripts %}{% endblock %}
   </body>
 </html>
