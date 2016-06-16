@@ -317,14 +317,9 @@ class Variant(Document):
                             field_data.append(img_dict)
                             if 'display_image' not in summary_data.keys():
                                 summary_data['display_image'] = img_dict['thumb']
-                    var_data[field] = field_data
-                    summary_data[field] = field_data
+                    summary_data[field] = var_data[field] = field_data
                 elif field == 'price':
-                    var_data[field] = {
-                        'currency': 'BRL',
-                        'major': int(form_data['price']),
-                        'minor': int((form_data['price']*100)%100)
-                    }
+                    var_data[field] = int(form_data['price']*100)
                     summary_data[field] = \
                         "{0:.2f}".format(form_data['price']).replace('.',',')
                 else:
@@ -354,12 +349,7 @@ class Variant(Document):
         return Product.get_by_id(self._content['product_id'], to_obj=True)
 
     def get_price(self):
-        major = self._content['price']['major']
-        minor = self._content['price']['minor']
-        price = major + (float(minor)/100)
-        if self._content['price']['currency'] == 'BRL':
-            return "{} {}".format('R$', price)
-        return "{} {}".format(self._content['price']['currency'], price)
+        return float(self._content['price']/100)
 
     def as_dict(self):
         v_dict = {}
@@ -386,10 +376,13 @@ class CartLine(object):
                 'name': category['name'],
                 'permalink': category['permalink'],
             },
-            'price': '{}{}'.format(variant.price, '0').replace('.',','),
+            'price': variant.price,
             'attributes': variant.attributes,
             'quantity': cart_item['quantity']
         }
 
     def __call__(self):
         return self._item_info
+
+class Orders(Document):
+    __collection__ = 'orders'
