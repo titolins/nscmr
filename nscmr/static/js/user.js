@@ -11,6 +11,7 @@ $(document).ready(function() {
     // the clicked one
     activeItem.removeClass('active');
     $(this).addClass('active');
+    return false;
   });
 });
 
