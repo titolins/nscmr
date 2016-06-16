@@ -27,5 +27,6 @@ $(document).ready(function() {
     }
     $('.open:not(#'+target.id+')').removeClass('open');
     $(target).toggleClass('open');
+    return false;
   });
 });
