@@ -11,7 +11,11 @@
 {% endblock %}
 
 {% block sidebar_content %}
-  <h4>{{ category.name }} ›</h4>
+  {% if category is none %}
+    <h4>Catálogo</h4>
+  {% else %}
+    <h4>{{ category.name }} ›</h4>
+  {% endif %}
   <ul>
     {% for c in categories %}
       <li><a href="{{ url_for('category', permalink=c.permalink) }}">{{ c.name }}</a></li>
