@@ -3,8 +3,8 @@
     <h3>Suas compras</h3>
     <hr>
   </div>
-  <p ng-hide="cart.length">Você não possui nenhum item no seu carrinho</p>
-  <div class="panel cart-line-panel" ng-repeat="item in cart">
+  <p ng-if="cartService.cart.length == 0">Você não possui nenhum item no seu carrinho</p>
+  <div class="panel cart-line-panel" ng-repeat="item in cartService.cart">
     <div class="panel-header">
       <div class="field-title inline">
           <a href="#">
@@ -12,7 +12,7 @@
           </a>
       </div>
       <div class='inline float-right'>
-        <a ng-click="removeItem(item['_id']); $event.preventDefault();" href="#"><i class="fa fa-close"></i> Remover</a>
+        <a ng-click="cartService.removeItem(item['_id']); $event.preventDefault();" href="#"><i class="fa fa-close"></i> Remover</a>
       </div>
       <span class="item-price">{a item['price'] a}</span>
     </div>
@@ -38,7 +38,7 @@
           <div class='field-input hidden'>
             <input name="quantity" min="0" type="number" step="1" class="form-control" ng-model="item['quantity']"}>
             <a title="Confirmar" href="#">
-              <i class="fa fa-check" ng-click="confirmEdit(item); $event.preventDefault();" aria-hidden="true"></i>
+              <i class="fa fa-check" ng-click="cartService.confirmEdit(item); $event.preventDefault();" aria-hidden="true"></i>
             </a>
             <a title="Cancelar" href="#">
               <i ng-click="toggleEdit($event); $event.preventDefault();" class="cancel-cart fa fa-close" aria-hidden="true"></i>
@@ -55,6 +55,6 @@
         </div>
     </div>
   </div>
-  <a href="#" id="checkout-btn" class="product-btn">Finalizar compra</a>
+  <a ng-if="cartService.cart.length > 0" href="{{ url_for('checkout') }}" id="checkout-btn" class="product-btn">Finalizar compra</a>
   <div class="clearfix"></div>
 </div>
