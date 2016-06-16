@@ -6,7 +6,7 @@
         <div class="img-view"><a data-toggle="modal" data-target="#{{ variant['_id'] }}-images" href="#">+ Visualização rápida</a></div>
       </div>
       <div id="variant-info" class="panel-footer">
-        <a class="cart-btn" href="#" ng-click='addToCart("{{ variant['_id'] }}"); $event.preventDefault();'>
+        <a class="cart-btn" href="#" ng-click='cartService.addToCart("{{ variant['_id'] }}"); $event.preventDefault();'>
           <i class="fa fa-shopping-bag"></i>
         </a>
         <p>R$ {{ variant['price'] }}</p>
@@ -37,7 +37,7 @@
                   <hr>
                   <div class="variant-btns text-right">
                     <a class="like-btn" ng-click="addToWishlist('{{ variant['_id'] }}'); $event.preventDefault();" href="#"><i class="fa fa-heart-o"></i></a>
-                    <a class="cart-btn" ng-click="addToCart('{{ variant['_id'] }}'); $event.preventDefault();" href="#"><i class="fa fa-shopping-bag"></i></a>
+                    <a class="cart-btn" ng-click="cartService.addToCart('{{ variant['_id'] }}'); $event.preventDefault();" href="#"><i class="fa fa-shopping-bag"></i></a>
                   </div>
                 </div>
               </div>
