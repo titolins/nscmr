@@ -26,7 +26,7 @@
               </span>
             </p>
             <h4>{{ product['name'] }}</h4>
-            <h3>{{ variant.price }}</h3>
+            <h3>R$ {{ '{:.2f}'.format(variant.price)|replace('.',',') }}</h3>
             <hr>
           </div>
           <div class="col-md-12">
