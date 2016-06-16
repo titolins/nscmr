@@ -1,4 +1,5 @@
 import os
+from uuid import UUID
 
 basedir = '/home/snil/dev/nscmr'
 
@@ -10,3 +11,9 @@ MONGODB_DB = 'nscmr_dev'
 
 SESSION_TYPE = 'mongodb'
 SESSION_MONGODB_DB = MONGODB_DB
+
+# sandbox
+MUNDIPAGG_KEY = UUID('87328324-8DA6-459E-9948-5431F5A183FA')
+MUNDIPAGG_ENDPOINT = 'https://sandbox.mundipaggone.com/'
+
+
