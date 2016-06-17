@@ -6,7 +6,8 @@ from wtforms.fields import (
     BooleanField,
     FormField,
     SelectField,
-    HiddenField
+    HiddenField,
+    IntegerField
 )
 
 from wtforms.fields.html5 import DateField
@@ -23,10 +24,12 @@ from .admin.forms import (
     NsTextInput,
     NsPasswordInput,
     NsDateInput,
+    NsNumberInput,
     NsTextAreaInput,
     NsSelectInput)
 
 MIN_PASS_LEN = 6
+MONTHS = [ (i, i) for i in range(13) ]
 CREDIT_CARD_BRAND_CHOICES = [
     ('visa', 'Visa'),
     ('master', 'MasterCard'),
@@ -187,14 +190,16 @@ class CreditCardForm(Form):
     number = StringField('Número',
         validators=[input_required("Campo necessário!")],
         widget=NsTextInput())
-    '''
-    brand = SelectField('Bandeira',
-        validators=[input_required("Campo necessário!")],
-        choices=CREDIT_CARD_BRAND_CHOICES,
-        widget=NsSelectInput())
-    '''
     brand = HiddenField('Bandeira',
         validators=[input_required("Campo necessário")])
     security_code = StringField('Número de segurança',
         validators=[input_required("Campo necessário!")],
         widget=NsTextInput())
+    exp_month = SelectField('Mês',
+        choices=MONTHS,
+        validators=[input_required("Campo necessário!")],
+        widget=NsSelectInput())
+    exp_year = IntegerField('Ano',
+        validators=[input_required("Campo necessário!")],
+        widget=NsNumberInput(step='1'))
+
