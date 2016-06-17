@@ -517,10 +517,18 @@ def confirm():
     http_response = service_client.sale.create_with_request(sale_request)
     json_response = http_response.json()
     print(json_response)
-    ns_order = Order.from_form(json_response)
-    ns_order.insert()
+    if json_response['CreditCardTransactionResultCollection'][0]['Success']:
+        ns_order = Order.from_form(json_response, cart)
+        ns_order.insert()
+        User.clean_cart(current_user.id)
+        response = make_response(json.dumps('Compra realizada com sucesso!'), 200)
+    else:
+        response = make_response(json.dumps(''.join([
+            'Tivemos um problema com a sua compra. ',
+            'Se tiver sido a primeira vez que isso aconteceu, por favor ',
+            'tente novamente. Caso contrário, entre em contato conosco'])),
+            500)
 
-    response = make_response(json.dumps('Compra realizada com sucesso!'), 200)
     response.headers['Content-Type'] = 'application/json'
     return response
 
