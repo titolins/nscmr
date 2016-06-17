@@ -156,7 +156,7 @@
     <div id="checkout-payment" class="col-md-12 hidden">
       <div id="brand-selectors">
         <p>Selecione a bandeira do seu cartão</p>
-        <a id='master-selector' ng-click="toggleCardBrand($event);" href="#" class="card-brand">
+        <a id='mastercard-selector' ng-click="toggleCardBrand($event);" href="#" class="card-brand">
           <i class='fa fa-cc-mastercard'></i> MasterCard
         </a>
         <a id='visa-selector' ng-click="toggleCardBrand($event);" href="#" class="card-brand">
@@ -175,6 +175,8 @@
         {{ render_field(card_form.holder_name, **{'ng-model':'card.holderName'}) }}
         {{ render_field(card_form.number, **{'ng-model':'card.number'}) }}
         {{ render_field(card_form.security_code, **{'ng-model':'card.securityCode'}) }}
+        {{ render_field(card_form.exp_month, **{'ng-model':'card.expMonth'}) }}
+        {{ render_field(card_form.exp_year, **{'ng-model':'card.expYear'}) }}
       </form>
     </div>
     <div id="checkout-confirm" class="col-md-12 hidden">
@@ -252,7 +254,14 @@
       <p ng-show="card.number">Número: {a card.number a}</p>
       <p ng-hide="card.securityCode">O código de segurança do seu cartão não foi preenchido</p>
       <p ng-show="card.securityCode">Código de segurança: {a card.securityCode a}</p>
-      <a ng-if="selectedAddress != null && (card.brand != '' && card.holderName != '' && card.number != '' && card.securityCode != '')" href="#" class="product-btn full-width" style="width:100%;">
+      <p ng-hide="card.expMonth">O mês do seu cartão não foi preenchido</p>
+      <p ng-show="card.expMonth">Mês: {a card.expMonth a}</p>
+      <p ng-hide="card.expYear">O ano do seu cartão não foi preenchido</p>
+      <p ng-show="card.expYear">Ano: {a card.expYear a}</p>
+      <a ng-click="confirmBuy(); $event.preventDefault();"
+        ng-if="selectedAddress != null && (card.brand != '' && card.holderName
+        != '' && card.number != '' && card.securitycode != '' && card.expMonth
+        != '' && card.expYear != '')" href="#" class="product-btn full-width" style="width:100%;">
         Confirmar compra
       </a>
     </div>
@@ -269,6 +278,7 @@
     var getAddressesUri = "{{ url_for('get_addresses') }}";
     var addAddressUri = "{{ url_for('add_address') }}";
     var editCartUri = "{{ url_for('edit_cart') }}";
+    var confirmUri = "{{ url_for('confirm') }}";
   </script>
   <script src="{{ url_for('static', filename='js/addressesService.js') }}"></script>
   <script src="{{ url_for('static', filename='js/cartservice.js') }}"></script>
