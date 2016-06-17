@@ -378,6 +378,8 @@ def build_admin_bp():
                         elif k == 'name':
                             s_data[k] = data[k] = item[k].lower()
                             s_data['permalink'] = data['permalink'] = slugify(data['name'])
+                        elif k == 'quantity':
+                            data[k] = int(item[k])
                         else:
                             data[k] = item[k]
                 if field == 'variants':
