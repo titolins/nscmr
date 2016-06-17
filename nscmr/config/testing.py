@@ -13,5 +13,5 @@ DEBUG = True
 MONGODB_DB = 'nscmr_test'
 
 # sandbox
-MUNDIPAGG_KEY = UUID('87328324-8DA6-459E-9948-5431F5A183FA')
+MUNDIPAGG_KEY = UUID('7075fc55-70ed-41f2-9def-95e5053f11dd')
 MUNDIPAGG_ENDPOINT = 'https://sandbox.mundipaggone.com/'

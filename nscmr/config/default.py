@@ -15,6 +15,7 @@ MONGODB_DB = 'nscmr'
 SESSION_TYPE = 'mongodb'
 SESSION_MONGODB_DB = MONGODB_DB
 
-MUNDIPAGG_KEY = UUID('7075fc55-70ed-41f2-9def-95e5053f11dd')
-#MUNDIPAGG_ENDPOINT = 'https://sandbox.mundipaggone.com/'
+# dev key. production must be requested
+#MUNDIPAGG_KEY = UUID('7075fc55-70ed-41f2-9def-95e5053f11dd')
+MUNDIPAGG_ENDPOINT = 'https://transactionv2.mundipaggone.com'
 
