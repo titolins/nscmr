@@ -25,6 +25,13 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from pymongo.errors import DuplicateKeyError
 
+#mundipagg
+from data_contracts import creditcard, creditcard_transaction, \
+    creditcard_transaction_options, create_sale_request, order
+from mundipaggOnePython import GatewayServiceClient
+from enum_types import PlatformEnvironment, HttpContentTypeEnum
+import uuid
+
 from functools import wraps
 import requests
 import json
@@ -36,7 +43,8 @@ from nscmr.admin.models import (
     Product,
     Variant,
     Summary,
-    CartLine)
+    CartLine,
+    Order)
 
 # started forms
 from nscmr.forms import (
@@ -474,6 +482,47 @@ def checkout():
                 card_form=CreditCardForm(),
                 categories=Category.get_all())
 
+@app.route('/confirmarcompra', methods=['POST'])
+def confirm():
+    print(request.json)
+    card = request.json['card']
+    cart = request.json['cart']
+    # https://github.com/mundipagg/mundipagg-one-python/wiki/Create-a-Transaction
+    creditcard_data = creditcard(
+        creditcard_number = card['number'],
+        creditcard_brand = card['brand'],
+        security_code = card['securityCode'],
+        holder_name = card['holderName'],
+        exp_month = int(card['expMonth']),
+        exp_year = card['expYear'])
+    total_cart = 0
+    for item in cart:
+        total_cart += (item['price']*item['quantity'])
+    total_cart *= 100
+
+    transaction_collection = [creditcard_transaction(total_cart,creditcard_data)]
+    order_id = uuid.uuid4()
+    options_request = order(order_reference=order_id)
+    sale_request = create_sale_request(
+        creditcard_transaction_collection=transaction_collection,
+        order=options_request)
+
+    service_client = GatewayServiceClient(
+        app.config.get('MUNDIPAGG_KEY'),
+        PlatformEnvironment.sandbox,
+        HttpContentTypeEnum.json,
+        app.config['MUNDIPAGG_ENDPOINT'])
+
+    print(app.config['MUNDIPAGG_ENDPOINT'])
+    http_response = service_client.sale.create_with_request(sale_request)
+    json_response = http_response.json()
+    print(json_response)
+    ns_order = Order.from_form(json_response)
+    ns_order.insert()
+
+    response = make_response(json.dumps('Compra realizada com sucesso!'), 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 ###################
 # end checkout    #
