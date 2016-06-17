@@ -81,4 +81,26 @@ angular.module('angularApp')
     for (var i = 0; i < $scope.cartService.cart; i++) total += $scope.cartService.cart[i].price;
     return total;
   };
+
+  $scope.confirmBuy = function() {
+    var data = {
+      'cart': $scope.cartService.cart,
+      'address': $scope.selectedAddress,
+      'card': $scope.card,
+    };
+    console.log(data);
+    $http({
+      method: 'POST',
+      url: confirmUri,
+      data: data,
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/json;utf-8"
+      }
+    }).then(function success(response) {
+      console.log(response);
+    }, function error(response) {
+      console.log(response);
+    });
+  };
 }]);
