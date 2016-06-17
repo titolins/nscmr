@@ -11,7 +11,15 @@ angular.module('angularApp')
   $scope.addressesService.update(getAddressesUri);
   $scope.cartService = cartService;
   $scope.selectedAddress = null;
-  $scope.card = {};
+  $scope.initialCard = {
+    'brand': '',
+    'number': '',
+    'holderName': '',
+    'securityCode': '',
+    'expMonth': '',
+    'expYear': ''
+  };
+  $scope.card = angular.copy($scope.initialCard);
 
   $scope.selectAddress = function($event, address) {
     var target = $event.target;
@@ -88,6 +96,9 @@ angular.module('angularApp')
       'address': $scope.selectedAddress,
       'card': $scope.card,
     };
+    // hide checkout and toggle spinner
+    document.getElementById('checkout').classList.add('hidden');
+    document.getElementById('checkout-conclusion').classList.remove('hidden');
     console.log(data);
     $http({
       method: 'POST',
@@ -99,8 +110,12 @@ angular.module('angularApp')
       }
     }).then(function success(response) {
       console.log(response);
+      document.getElementById('checkout-spinner').classList.add('hidden');
+      document.getElementById('checkout-result').innerHTML = response.data;
     }, function error(response) {
       console.log(response);
+      document.getElementById('checkout-spinner').classList.add('hidden');
+      document.getElementById('checkout-result').innerHTML = response.data;
     });
   };
 }]);
