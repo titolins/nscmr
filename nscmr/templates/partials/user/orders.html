@@ -3,7 +3,7 @@
     <h3>Ordens de compra</h3>
     <hr>
   </div>
-  {% if current_user.orders.count == 0 %}
+  {% if current_user.orders.count() == 0 %}
     <p>Você não fez nenhuma compra ainda</p>
   {% else %}
     {% for order in current_user.orders %}
