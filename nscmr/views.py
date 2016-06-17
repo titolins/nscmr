@@ -484,7 +484,6 @@ def checkout():
 
 @app.route('/confirmarcompra', methods=['POST'])
 def confirm():
-    print(request.json)
     card = request.json['card']
     cart = request.json['cart']
     # https://github.com/mundipagg/mundipagg-one-python/wiki/Create-a-Transaction
@@ -513,10 +512,8 @@ def confirm():
         HttpContentTypeEnum.json,
         app.config['MUNDIPAGG_ENDPOINT'])
 
-    print(app.config['MUNDIPAGG_ENDPOINT'])
     http_response = service_client.sale.create_with_request(sale_request)
     json_response = http_response.json()
-    print(json_response)
     if json_response['CreditCardTransactionResultCollection'][0]['Success']:
         ns_order = Order.from_form(json_response, cart)
         ns_order.insert()
