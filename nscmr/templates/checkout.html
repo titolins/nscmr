@@ -271,6 +271,13 @@
       <a ng-click="moveOptions('next'); $event.preventDefault();" href="#" class="product-btn">Próximo</a>
     </div>
   </div>
+  <div id="checkout-conclusion" class="hidden">
+    <div id="checkout-spinner">
+      <i class="fa fa-cog fa-spin fa-5x fa-fw"></i>
+      Por favor aguarde enquanto a transação é realizada..
+    </div>
+    <div id="checkout-result"></div>
+  </div>
 {% endblock %}
 
 {% block scripts %}
