@@ -3,9 +3,28 @@
     <h3>Ordens de compra</h3>
     <hr>
   </div>
-  {% if current_user.orders|length == 0 %}
+  {% if current_user.orders.count == 0 %}
     <p>Você não fez nenhuma compra ainda</p>
   {% else %}
-    <h4>abcd</h4>
+    {% for order in current_user.orders %}
+      <div class="panel">
+        <div class="panel-header">
+          Ordem n. {{ order['order_info']['OrderReference'] }}
+        </div>
+        <div class="panel-body">
+          <p>Valor total: R$ 
+            {{ ('%.2f' % (order['transaction_info'][0]['AmountInCents']/100))|string|replace('.',',') }}
+          </p>
+          <p>Suas compras:</p>
+          {% for item in order['cart_info'] %}
+            <div class="cart-item">
+              <p>Produto: {{ item['name']}}</p>
+              <p>Quantidade: {{ item['quantity']}}</p>
+              <p>Preço unitário: {{ item['price']}}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
   {% endif %}
 </div>
