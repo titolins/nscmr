@@ -23,13 +23,13 @@ class User(Document):
     '''User class
     '''
     __collection__ = 'users'
-    fields = ['email', 'name', 'dob', 'roles', 'addresses', 'wishlist',
-            'orders', 'cart']
+    fields = ['email', 'name', 'dob', 'roles', 'addresses', 'wishlist', 'cart']
+            #'orders']
     defaults = {
         'roles': ['user'],
         'addresses': [],
         'wishlist': [],
-        'orders': [],
+        #'orders': [],
         'cart': []
     }
     # required fields
@@ -44,8 +44,8 @@ class User(Document):
         data = {
             'roles': ['user'],
             'addresses': [],
-            'wishlist': [],
-            'orders': [] }
+            'wishlist': []}
+            #'orders': [] }
         if session.get('cart', None) is not None:
             data['cart'] = session['cart']
             del(session['cart'])
@@ -91,6 +91,17 @@ class User(Document):
                 'cart': { '$elemMatch': {'_id': var_id } }
             })
 
+    @staticmethod
+    def clean_cart(id_):
+        user = User.get_by_id(id_)
+        for item in user['cart']:
+            Variant.update_by_id(
+                item['_id'],
+                inc_data={
+                    'reserved': -(item['quantity'])
+                })
+        return User.update_by_id(id_, set_data={'cart':[]})
+
     @property
     def is_active(self):
         return True
@@ -110,6 +121,9 @@ class User(Document):
 
     def check_password(self, password):
         return check_password_hash(self._content['password'], password)
+
+    def get_orders(self):
+        return Order.get_by_user_id(self.id, to_obj=True)
 
 
 class Category(SlugDocument):
@@ -392,15 +406,20 @@ class CartLine(object):
 class Order(Document):
     __collection__ = 'orders'
 
-    def from_form(form_data, transaction_type=PAYMENT_OPTIONS['CREDIT_CARD']):
+    def from_form(form_data, cart, transaction_type=PAYMENT_OPTIONS['CREDIT_CARD']):
         # parse response_json from mundipagg, add user info and return
         data = {
             'user_id': current_user.id,
             'order_info': form_data['OrderResult'],
+            'cart_info': cart,
         }
         if transaction_type == PAYMENT_OPTIONS['CREDIT_CARD']:
             data['transaction_info'] = \
                 form_data['CreditCardTransactionResultCollection']
 
         return Order(data)
+
+    @staticmethod
+    def get_by_user_id(user_id, to_obj=False):
+        return Order._get_many(to_obj, { "user_id": user_id })
 
