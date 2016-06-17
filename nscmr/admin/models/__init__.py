@@ -3,6 +3,7 @@ from bson.objectid import ObjectId
 from pymongo import ASCENDING
 
 from flask import current_app, session
+from flask.ext.login import current_user
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -13,6 +14,10 @@ from nscmr.admin.helper import slugify
 from ..forms import product_images, category_images
 
 from ..helper import make_thumb
+
+PAYMENT_OPTIONS = {
+    'CREDIT_CARD': 1,
+}
 
 class User(Document):
     '''User class
@@ -384,5 +389,18 @@ class CartLine(object):
     def __call__(self):
         return self._item_info
 
-class Orders(Document):
+class Order(Document):
     __collection__ = 'orders'
+
+    def from_form(form_data, transaction_type=PAYMENT_OPTIONS['CREDIT_CARD']):
+        # parse response_json from mundipagg, add user info and return
+        data = {
+            'user_id': current_user.id,
+            'order_info': form_data['OrderResult'],
+        }
+        if transaction_type == PAYMENT_OPTIONS['CREDIT_CARD']:
+            data['transaction_info'] = \
+                form_data['CreditCardTransactionResultCollection']
+
+        return Order(data)
+
