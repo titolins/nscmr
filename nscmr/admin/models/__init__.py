@@ -123,7 +123,7 @@ class User(Document):
         return check_password_hash(self._content['password'], password)
 
     def get_orders(self):
-        return Order.get_by_user_id(self.id, to_obj=True)
+        return Order.get_by_user_id(self.id)
 
 
 class Category(SlugDocument):
