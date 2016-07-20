@@ -109,7 +109,7 @@ $font-sizes: (
 }
 
 .btn-ns {
-  @extend .dark;
+  @extend .light;
 }
 
 .capitalize {
@@ -1293,11 +1293,12 @@ select {
   }
   textarea,
   input {
+    margin-bottom: 20px;
     border-radius: 0;
-    border: 2px solid $dark;
-    &:not(:last-child) {
-      margin-bottom: 20px;
-    }
+    border: 1px solid $dark;
+  }
+  hr {
+    border-top: 1px solid $dark;
   }
 }
 
