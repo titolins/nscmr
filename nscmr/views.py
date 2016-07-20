@@ -471,7 +471,7 @@ def checkout():
     if current_user.is_anonymous:
         form = LoginForm()
         return render_template(
-                'checkoutlogin.html',
+                'login.html',
                 categories=Category.get_all(),
                 login_form=form)
     else:
@@ -542,7 +542,7 @@ def confirm():
 #########################################################
 
 
-@app.route('/entrar', methods=['POST'])
+@app.route('/entrar', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -572,10 +572,10 @@ def login():
         return back.redirect()
     else:
         return render_template(
-                'index.html',
+                'login.html',
                 categories=Category.get_all(),
-                login_form=form,
-                login_fail=True)
+                login_form=form)
+                #login_fail=True)
 
 
 @app.route('/sair')
