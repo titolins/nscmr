@@ -11,9 +11,9 @@ $light-grey: #D5D8DC;
 $light: #fff;
 
 $font-sizes: (
-  null: 0.8em,
-  480px: 0.9em,
-  720px: 1em
+  null: 0.8em !important,
+  480px: 0.9em !important,
+  720px: 1em !important
 );
 
 @font-face {
