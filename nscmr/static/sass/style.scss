@@ -112,6 +112,28 @@ $font-sizes: (
   @extend .dark;
 }
 
+.capitalize {
+  font-family: 'Arial Rounded MT Bold';
+  text-transform: uppercase;
+  font-size: .6em;
+  letter-spacing: 2px;
+}
+
+/*
+ * apparently, bootstrap uses exactly the same fonts. So redefining is not
+ * required..
+html {
+  font-family: 'Helvetica', 'Arial', 'Sans Serif';
+}
+*/
+
+body, html {
+  height: 100%;
+  width: 100%;
+  font: 100%;
+  display: block;
+  @include font-size($font-sizes);
+}
 .variant-carousel-thumb,
 #product-thumbs-carousel {
   margin-top: 10px;
@@ -132,20 +154,6 @@ $font-sizes: (
   }
 }
 
-body, html {
-  height: 100%;
-  width: 100%;
-  font: 100%;
-  display: block;
-  font-family: arial;
-  @include font-size($font-sizes);
-  .capitalize {
-    font-family: 'Arial Rounded MT Bold';
-    text-transform: uppercase;
-    font-size: .6em;
-    letter-spacing: 2px;
-  }
-}
 
 a:not(.link),
 a:link:not(.link),
@@ -270,12 +278,11 @@ hr { width: 100%; }
 
 .item-dropdown {
   z-index: 800;
-  @extend .dark;
+  @extend .light;
   position: absolute;
   margin: 0;
   padding: 0;
   border: 1px solid $grey;
-  @extend .dark;
   border: 0;
   li {
     list-style: none;
@@ -284,7 +291,7 @@ hr { width: 100%; }
     text-align: center;
     &:not(:last-child) {
       border: 0;
-      border-bottom: 1px solid $grey;
+      border-bottom: 1px solid rgba(255,255,255,1);
     }
     a { display: block; }
   }
@@ -1058,14 +1065,28 @@ select {
 /*
  * user page stuff
  */
-
-.list-group-item {
-  border-color: $light-grey;
-  &,
-  &:active,
-  &:visited {
-    @extend .light;
+.list-group {
+  border: 0px;
+  .list-group-item-heading {
+    color: $dark !important;
   }
+
+  .list-group-item {
+    //border-color: $light-grey;
+    border: 0;
+    background-color: #FFF;
+    &.active {
+      //@extend .light;
+      background-color: #FFF;
+      color: $dark !important;
+      font-size: 1.5em;
+      &:not(:first-child):after { content: '>'; }
+    }
+  }
+}
+/* /\  (removed from
+  /  \  above)
+   ||
   &.active:hover,
   &.active:active,
   &.active:visited,
@@ -1076,7 +1097,7 @@ select {
     border-top-color: $light-grey;
     border-bottom-color: $light-grey;
   }
-}
+  */
 
 .user-info {
   padding-top: 2em;
