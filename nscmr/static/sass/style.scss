@@ -1088,20 +1088,6 @@ select {
     }
   }
 }
-/* /\  (removed from
-  /  \  above)
-   ||
-  &.active:hover,
-  &.active:active,
-  &.active:visited,
-  &.active {
-    @extend .dark;
-    border-left-color: $dark;
-    border-right-color: $dark;
-    border-top-color: $light-grey;
-    border-bottom-color: $light-grey;
-  }
-  */
 
 .user-info {
   padding: 0;
