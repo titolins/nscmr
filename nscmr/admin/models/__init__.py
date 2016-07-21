@@ -397,7 +397,8 @@ class CartLine(object):
             },
             'price': variant.price,
             'attributes': variant.attributes,
-            'quantity': cart_item['quantity']
+            'quantity': cart_item['quantity'],
+            'thumb': variant.images[0]['thumb']
         }
 
     def __call__(self):
