@@ -1,0 +1,86 @@
+<div id="checkout-confirm" class="col-md-12 hidden">
+  <h4>Confirme as informações da sua compra antes de confirmar o pagamento</h4>
+  <div id="cart-summary" class="buy-info">
+    <p>Suas compras</p>
+    <div ng-repeat="item in cartService.cart">
+      <table width="100%">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Preço unitário</th>
+            <th>Quantidade</th>
+            <th>Total do produto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{a item.name a}</td>
+            <td>{a item.price | currency a}</td>
+            <td>{a item.quantity a}</td>
+            <td>{a item.quantity*item.price | currency a}</td>
+          </tr>
+          <tr ng-if="$index == (cartService.cart.length - 1)">
+          </tr>
+          <tr ng-if="$index == (cartService.cart.length - 1)">
+            <td>Total das compras</td>
+            <td>{a cartService.cart | totalPrice | currency a}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="address-summary" class="buy-info">
+    <p>Seu endereço</p>
+    <p ng-if="selectedAddress == null">Você não selecionou nenhum endereço</p>
+    <div class="panel" ng-if="selectedAddress != null">
+      <div class="panel-body">
+        <div class='field'>
+          <div class="field-title">Endereço</div>
+          <div class='field-value'>{a selectedAddress['street_address_1'] a}</div>
+        </div>
+        <div class='field' ng-show="selectedAddress['street_address_2']">
+          <div class="field-title">Complemento</div>
+          <div class="field-value">{a selectedAddress['street_address_2'] a}</div>
+        </div>
+        <div class='field' ng-show="address['neighbourhood']">
+          <div class="field-title">Bairro</div>
+          <div class="field-value">{a selectedAddress['neighbourhood'] a}</div>
+        </div>
+        <div class='field'>
+          <div class="field-title">Cidade</div>
+          <div class="field-value">{a selectedAddress['city'] a}</div>
+        </div>
+        <div class='field'>
+          <div class="field-title">Estado</div>
+          <div class="field-value">{a selectedAddress['state'] a}</div>
+        </div>
+        <div class='field'>
+          <div class="field-title">Cep</div>
+          <div class="field-value">{a selectedAddress['zip_code'] a}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div id="payment-summary" class="buy-info">
+    <p>Seu método de pagamento</p>
+  </div>
+  <p ng-hide="card.brand">Você não selecionou a bandeira do seu cartão</p>
+  <p ng-show="card.brand">Bandeira: {a card.brand a}</p>
+  <p ng-hide="card.holderName">Nome do titular do cartão não foi preenchido</p>
+  <p ng-show="card.holderName">Titular: {a card.holderName a}</p>
+  <p ng-hide="card.number">O número do seu cartão não foi preenchido</p>
+  <p ng-show="card.number">Número: {a card.number a}</p>
+  <p ng-hide="card.securityCode">O código de segurança do seu cartão não foi preenchido</p>
+  <p ng-show="card.securityCode">Código de segurança: {a card.securityCode a}</p>
+  <p ng-hide="card.expMonth">O mês do seu cartão não foi preenchido</p>
+  <p ng-show="card.expMonth">Mês: {a card.expMonth a}</p>
+  <p ng-hide="card.expYear">O ano do seu cartão não foi preenchido</p>
+  <p ng-show="card.expYear">Ano: {a card.expYear a}</p>
+  <a ng-click="confirmBuy(); $event.preventDefault();"
+    ng-if="selectedAddress != null && (card.brand != '' && card.holderName
+    != '' && card.number != '' && card.securitycode != '' && card.expMonth
+    != '' && card.expYear != '')" href="#" class="product-btn full-width" style="width:100%;">
+    Confirmar compra
+  </a>
+</div>
