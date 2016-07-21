@@ -360,7 +360,7 @@ def get_cart():
         cart = session.get('cart', [])
     else:
         cart = current_user.cart
-        print(cart)
+        #print(cart)
     return [CartLine(item)() for item in cart]
 
 @app.route('/usuario/compras')
