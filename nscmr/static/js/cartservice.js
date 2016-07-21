@@ -1,15 +1,19 @@
 angular.module('angularApp')
 .service('cartService', ["$http", function($http) {
   var self = this;
-  this.initialCart = [];
-  this.cart = [];
+  this.initialCart = {
+    totalItems: 0,
+    items: [],
+  };
+  this.cart = angular.copy(self.initialCart);
 
   this.update = function() {
     $http({
       url: getCartUri,
     }).then(function successCallback(response) {
       console.log(response.data);
-      self.initialCart = response.data;
+      self.initialCart.items = response.data;
+      self.initialCart.totalItems = self.getTotalItems(response.data);
       self.cart = angular.copy(self.initialCart);
     }, function errorCallback(response) {
       console.log(response);
@@ -72,7 +76,16 @@ angular.module('angularApp')
     editCart(data);
   };
 
-
   this.update();
+
+  this.getTotalItems = function(cart) {
+    var sum = 0;
+    cart.forEach(function(item) {
+      console.log(item.quantity);
+      sum += item.quantity;
+    });
+    console.log("sum = " + sum);
+    return sum;
+  };
 
 }]);

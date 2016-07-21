@@ -4,7 +4,7 @@
     <hr>
   </div>
   <p ng-if="cartService.cart.length == 0">Você não possui nenhum item no seu carrinho</p>
-  <div class="panel cart-line-panel" ng-repeat="item in cartService.cart">
+  <div class="panel cart-line-panel" ng-repeat="item in cartService.cart.items">
     <div class="panel-header">
       <div class="field-title inline">
           <a href="#">
