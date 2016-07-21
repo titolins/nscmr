@@ -301,7 +301,7 @@ hr { width: 100%; }
       @include transformY(-282px);
       @include transition(500ms);
       &.open {
-        @include transformY(188px);
+        @include transformY(159px);
       }
     }
     @media screen and (min-width: 768px) {
@@ -311,19 +311,12 @@ hr { width: 100%; }
     }
   }
   &#user-options-dropdown {
-    @media screen and (min-width: 320px) {
-      min-height: 60px;
-      width: 250px;
-      @include transformY(-180px);
-      @include transition(500ms);
-      &.open {
-        @include transformY(188px);
-      }
-    }
-    @media screen and (min-width: 768px) {
-      &.open {
-        @include transformY(0);
-      }
+    min-height: 60px;
+    width: 250px;
+    @include transformY(-180px);
+    @include transition(500ms);
+    &.open {
+      @include transformY(0px);
     }
   }
   &#cart-dropdown {
@@ -334,12 +327,7 @@ hr { width: 100%; }
       @include transition(500ms);
     }
     &.open {
-      @media screen and (min-width: 320px) {
-        @include transformY(10px);
-      }
-      @media screen and (min-width: 768px) {
-        @include transformY(0);
-      }
+      @include transformY(0px);
     }
   }
   &#login-form-dropdown {
