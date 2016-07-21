@@ -1361,15 +1361,26 @@ div#connect {
 }
 
 #newsletter {
+  input {
+    border: 0;
+    border-bottom: 1px solid $dark;
+  }
   div {
     @include align-vertical(20px);
     box-sizing: border-box;
     button {
+      margin-left: 2px;
       height: 26px;
       width: 30px;
-      background: $dark;
-      border: 1px solid $dark;
-      color: white;
+      background: $light;
+      border: 0;
+      &:hover {
+        background-color: $light-grey;
+      }
+      &:active {
+        border: 1px solid $light-grey;
+        background-color: $fade-dark;
+      }
     }
   }
 }
