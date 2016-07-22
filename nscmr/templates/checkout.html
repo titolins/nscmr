@@ -7,7 +7,6 @@
 
 {% block single_content %}
   <div id='checkout' ng-controller="CheckoutController">
-    <h3>Finalizar compra ›</h3>
     <hr>
     <div id="checkout-options">
       <a href='#' id='cart-btn' data-target='checkout-cart' class='selected' ng-click="toggleCheckoutOption($event)">Compras</a>
@@ -20,10 +19,6 @@
     {% include 'partials/checkout/address.html' %}
     {% include 'partials/checkout/payment.html' %}
     {% include 'partials/checkout/confirm.html' %}
-    <div class="col-md-12">
-      <a ng-click="moveOptions('prev'); $event.preventDefault();" href="#" class="product-btn">Voltar</a>
-      <a ng-click="moveOptions('next'); $event.preventDefault();" href="#" class="product-btn">Próximo</a>
-    </div>
   </div>
   <div id="checkout-conclusion" class="hidden">
     <div id="checkout-spinner">
