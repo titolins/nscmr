@@ -55,6 +55,6 @@
         </div>
     </div>
   </div>
-  <a ng-if="cartService.cart.length > 0" href="{{ url_for('checkout') }}" id="checkout-btn" class="product-btn">Finalizar compra</a>
+  <a ng-if="cartService.cart.totalItems > 0" href="{{ url_for('checkout') }}" id="checkout-btn" class="product-btn">Finalizar compra</a>
   <div class="clearfix"></div>
 </div>

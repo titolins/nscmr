@@ -8,6 +8,6 @@
       {a item.quantity a}
     </div>
   </li>
-  <li ng-if="cartService.cart.length > 0"><a href="{{ url_for('checkout') }}">Finalizar compra</a></li>
+  <li ng-if="cartService.cart.totalItems > 0"><a href="{{ url_for('checkout') }}">Finalizar compra</a></li>
 </ul>
 
