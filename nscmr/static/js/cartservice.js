@@ -3,6 +3,8 @@ angular.module('angularApp')
   var self = this;
   this.initialCart = {
     totalItems: 0,
+    subTotal: 0,
+    total: 0,
     items: [],
   };
   this.cart = angular.copy(self.initialCart);
@@ -14,6 +16,8 @@ angular.module('angularApp')
       console.log(response.data);
       self.initialCart.items = response.data;
       self.initialCart.totalItems = self.getTotalItems(response.data);
+      self.initialCart.subTotal = self.getSubtotal(response.data);
+      self.initialCart.total = self.getTotal(self.initialCart);
       self.cart = angular.copy(self.initialCart);
     }, function errorCallback(response) {
       console.log(response);
@@ -81,11 +85,28 @@ angular.module('angularApp')
   this.getTotalItems = function(cart) {
     var sum = 0;
     cart.forEach(function(item) {
-      console.log(item.quantity);
       sum += item.quantity;
     });
-    console.log("sum = " + sum);
     return sum;
+  };
+
+  this.getSubtotal = function(cart) {
+    var sum = 0.0;
+    cart.forEach(function(item) {
+      sum += (item.quantity*item.price);
+    });
+    return sum;
+  };
+
+  this.getTotal = function(cart) {
+    console.log('getTotal');
+    if(cart.freight === undefined) {
+      console.log('frete n calculado');
+      return cart.subTotal;
+    } else {
+      console.log('frete calculado');
+      return (cart.freight + cart.subTotal);
+    }
   };
 
 }]);
