@@ -1,11 +1,4 @@
 angular.module('angularApp')
-.filter('totalPrice', function() {
-  return function(items) {
-    var total = 0, i = 0;
-    for (; i < items.length; i++) total += (items[i].price * items[i].quantity);
-    return total;
-  }
-})
 .controller("CheckoutController", ["$scope","$http","addressesService", "cartService", function($scope, $http, addressesService, cartService) {
   $scope.addressesService = addressesService;
   $scope.addressesService.update(getAddressesUri);
@@ -84,12 +77,6 @@ angular.module('angularApp')
     $scope.card['brand'] = brandName;
   };
 
-  $scope.getCartTotal = function() {
-    var total = 0;
-    for (var i = 0; i < $scope.cartService.cart; i++) total += $scope.cartService.cart[i].price;
-    return total;
-  };
-
   $scope.confirmBuy = function() {
     var data = {
       'cart': $scope.cartService.cart,
@@ -116,6 +103,28 @@ angular.module('angularApp')
       console.log(response);
       document.getElementById('checkout-spinner').classList.add('hidden');
       document.getElementById('checkout-result').innerHTML = response.data;
+    });
+  };
+
+  $scope.getShipping = function() {
+    document.getElementById('frete-btn').classList.add('hidden');
+    document.getElementById('load-frete').classList.remove('hidden');
+    $http({
+      method: 'POST',
+      url: shippingUri,
+      data: {'zipCode': cartService.cart.zipCode },
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/json;utf-8"
+      }
+    }).then(function success(response) {
+      console.log(response);
+      document.getElementById('frete-btn').classList.remove('hidden');
+      document.getElementById('load-frete').classList.add('hidden');
+    }, function error(response) {
+      console.log(response);
+      document.getElementById('frete-btn').classList.remove('hidden');
+      document.getElementById('load-frete').classList.add('hidden');
     });
   };
 }]);
