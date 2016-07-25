@@ -35,6 +35,7 @@ import uuid
 from functools import wraps
 import requests
 import json
+from xml.etree import ElementTree
 
 # models
 from nscmr.admin.models import (
@@ -58,6 +59,7 @@ from nscmr.admin.forms import AddressForm
 
 # helpers
 from nscmr.helper.back import Back
+from nscmr.admin.helper import calc_shipping
 
 # app
 from nscmr import app
@@ -67,6 +69,9 @@ from nscmr import app
 #########################################################
 
 back = Back()
+
+ENDPOINT_FRETE_CORREIOS = \
+    'http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo'
 
 @app.route('/')
 @back.anchor
@@ -455,6 +460,40 @@ def edit_cart():
                         json.dumps('Erro ao remover produto do carrinho'), 500)
     response.headers['Content-Type'] = 'application/json'
     return response
+
+@app.route('/usuario/compras/frete', methods=['POST'])
+def shipping():
+    zip_code = request.json['zipCode']
+    if zip_code in ('', None):
+        response = make_response(json.dumps('Preencha o cep!'), 500)
+    else:
+        box_size, weight = calc_shipping(current_user.cart)
+        data = {
+                'nCdEmpresa': '',
+                'sDsSenha': '',
+                'nCdServico': '40010,40215,41106',
+                'sCepOrigem': '22450130',
+                'sCepDestino': zip_code,
+                'nVlPeso': weight,
+                'nCdFormato': 1,
+                'nVlLargura': box_size[0],
+                'nVlComprimento': box_size[1],
+                'nVlAltura': box_size[2],
+                'nVlDiametro': box_size[3],
+                'sCdMaoPropria': 'N', #confirm
+                'nVlValorDeclarado': 0, #confirm
+                'sCdAvisoRecebimento': 'N' #confirm
+                }
+        r = requests.post(ENDPOINT_FRETE_CORREIOS, data = data)
+        root = ElementTree.fromstring(str(r.content, 'utf-8'))
+        for child in root:
+            print(child.tag, child.attrib)
+        response = make_response(json.dumps('ok'), 200)
+        #response = make_response(json.dumps(r), 200)
+
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
 
 
 ######################
