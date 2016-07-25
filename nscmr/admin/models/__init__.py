@@ -102,6 +102,10 @@ class User(Document):
                 })
         return User.update_by_id(id_, set_data={'cart':[]})
 
+    @staticmethod
+    def remove_from_carts(var_id):
+        return User._update_many({}, pull_data={'cart':{'_id': var_id}})
+
     @property
     def is_active(self):
         return True
@@ -253,6 +257,8 @@ class Product(SlugDocument):
                     'permalink': category_info[1] }
             elif field in ('description', 'meta_description'):
                 product_data[field] = form_data[field]
+            elif field == 'shipping':
+                product_data[field] = form_data[field]
             # skip variants related info
             else:
                 continue
@@ -366,6 +372,12 @@ class Variant(Document):
 
     def get_product(self):
         return Product.get_by_id(self._content['product_id'], to_obj=True)
+
+    @staticmethod
+    def get_by_product(p_id, to_obj=True):
+        return Variant._get_many(to_obj,
+            { "product_id":
+                p_id if isinstance(p_id, ObjectId) else ObjectId(p_id) })
 
     def get_price(self):
         return float(self._content['price']/100)
