@@ -2,6 +2,15 @@ import re, os
 from unicodedata import normalize
 from PIL import Image
 
+from functools import reduce
+from operator import mul
+from math import ceil, sqrt, pow
+
+# not the ideal solution, setting a fixed maximum size for the box
+# considering that we do not want to set standard boxes as of now
+MAX_BOX_SIZE = (20, 20, 10) # sizes in centimeters
+MAX_BOX_CAP = 0.8
+
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 
 def slugify(text, delim=u'-'):
@@ -27,3 +36,27 @@ def make_thumb(image, path, size=(350,480)):
     except IOError as e:
         print('Erro criando thumbnail de {}'.format(image))
         print(e)
+
+def calc_shipping(cart):
+    from ..models import Variant, Product
+
+    max_box_vol = reduce(mul, MAX_BOX_SIZE)*MAX_BOX_CAP
+    cart_vol = 0
+    cart_weight = 0
+    for item in cart:
+        var = Variant.get_by_id(item['_id'], to_obj=True)
+        p = var.product
+        p_vol = reduce(mul,
+            (d_val for d,d_val in p.shipping.items() if d is not 'weight'))
+        cart_vol += p_vol
+        cart_weight += p.shipping['weight']
+    n_boxes = ceil(cart_vol/max_box_vol)
+    shipping_sizes = list(i for i in map(lambda x:x*n_boxes, MAX_BOX_SIZE))
+    shipping_sizes.append(sqrt(
+        pow(shipping_sizes[0],2) +
+        pow(shipping_sizes[1],2) +
+        pow(shipping_sizes[2],2)))
+
+    return shipping_sizes,cart_weight
+
+
