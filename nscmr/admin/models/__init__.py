@@ -215,7 +215,7 @@ class Product(SlugDocument):
     __collection__ = 'products'
     # category should contain name and _id
     fields = ['name', 'description', 'category', 'meta_description',
-            'permalink', 'attributes', 'variants']
+            'permalink', 'attributes', 'variants', 'shipping']
 
     indexes = {
         'name': { 'unique': True },
@@ -410,7 +410,8 @@ class CartLine(object):
             'price': variant.price,
             'attributes': variant.attributes,
             'quantity': cart_item['quantity'],
-            'thumb': variant.images[0]['thumb']
+            'thumb': variant.images[0]['thumb'],
+            'shipping': product.shipping
         }
 
     def __call__(self):
