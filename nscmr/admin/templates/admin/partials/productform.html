@@ -9,118 +9,127 @@
       {% endfor %}
     </ul>
   {% endif %}
-  <dl>
-    {{ render_field(form.name) }}
-    {{ render_field(form.description) }}
-    {{ render_field(form.meta_description) }}
-    {{ render_field(form.category) }}
-    <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
-      {{ form.has_variants(**{'data-enable':'#variants-attr', 'data-disable':'#product-attr'})|safe }}
-      {{ form.has_variants.label }}
-    </div>
-    <div id="variants-attr" style="display:none;">
-      <div data-toggle="fieldset" id="variant-fieldset">
-        <button class="btn btn-default" type="button" data-toggle="fieldset-add-row" data-target="#variant-fieldset">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar variação do produto
-        </button>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Variação 1</th>
-              <th>Valor</th>
-              <th>Variação 2</th>
-              <th>Valor</th>
-              <th>Preço</th>
-              <th>Quantidade</th>
-              <th>SKU</th>
-              <th>Imagens</th>
-              <th>Remover</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for variant in form.variants %}
-              <tr data-toggle="fieldset-entry" data-id="{{ loop.index0 }}">
-                <td>{{ variant.attr_1_name(style='width:100%')|safe }}</td>
-                <td>{{ variant.attr_1_value()|safe }}</td>
-                <td>{{ variant.attr_2_name(style='width:100%')|safe }}</td>
-                <td>{{ variant.attr_2_value()|safe }}</td>
-                <td>{{ variant.price()|safe }}</td>
-                <td>{{ variant.quantity()|safe }}</td>
-                <td>{{ variant.sku()|safe }}</td>
-                <td>
-                  {% for image_field in variant.images %}
-                    {{ image_field()|safe }}
-                  {% endfor %}
-                </td>
-                <td>
-                  <button class="btn btn-default" type="button" data-toggle="fieldset-remove-row" id="variants-{{loop.index0}}-remove">
-                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                  </button>
-                </td>
-              </tr>
+  <div class="col-md-6">
+    <h4>Informações do Produto</h4>
+    <dl>
+      {{ render_field(form.name) }}
+      {{ render_field(form.description) }}
+      {{ render_field(form.meta_description) }}
+      {{ render_field(form.category) }}
+      <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
+        {{ form.has_variants(**{'data-enable':'#variants-attr', 'data-disable':'#product-attr'})|safe }}
+        {{ form.has_variants.label }}
+      </div>
+      <div id="variants-attr" style="display:none;">
+        <div data-toggle="fieldset" id="variant-fieldset">
+          <button class="btn btn-default" type="button" data-toggle="fieldset-add-row" data-target="#variant-fieldset">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar variação do produto
+          </button>
+          <table class="table">
+            <thead>
               <tr>
-                  {% if variant.attr_1_name.errors or variant.attr_1_value.errors or
-                        variant.attr_2_name.errors or variant.attr_2_value.errors or
-                        variant.price.errors or variant.quantity.errors or
-                        variant.sku.errors or variant.images.errors %}
-                    <ul class="alert alert-danger alert-login">
-                      {% for error in variant.attr_1_name.errors %}
-                        <li>{{ error }}</li>
-                      {% endfor %}
-                      {% for error in variant.attr_1_value.errors %}
-                        <li>{{ error }}</li>
-                      {% endfor %}
-                      {% for error in variant.attr_2_name.errors %}
-                        <li>{{ error }}</li>
-                      {% endfor %}
-                      {% for error in variant.attr_2_value.errors %}
-                        <li>{{ error }}</li>
-                      {% endfor %}
-                      {% for error in variant.price.errors %}
-                        <li>{{ error }}</li>
-                      {% endfor %}
-                      {% for error in variant.quantity.errors %}
-                        <li>{{ error }}</li>
-                      {% endfor %}
-                      {% for error in variant.sku.errors %}
-                        <li>{{ error }}</li>
-                      {% endfor %}
-                      {% for error in variant.images.errors %}
-                        <li>{{ error }}</li>
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
+                <th>Variação 1</th>
+                <th>Valor</th>
+                <th>Variação 2</th>
+                <th>Valor</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>SKU</th>
+                <th>Imagens</th>
+                <th>Remover</th>
               </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {% for variant in form.variants %}
+                <tr data-toggle="fieldset-entry" data-id="{{ loop.index0 }}">
+                  <td>{{ variant.attr_1_name(style='width:100%')|safe }}</td>
+                  <td>{{ variant.attr_1_value()|safe }}</td>
+                  <td>{{ variant.attr_2_name(style='width:100%')|safe }}</td>
+                  <td>{{ variant.attr_2_value()|safe }}</td>
+                  <td>{{ variant.price()|safe }}</td>
+                  <td>{{ variant.quantity()|safe }}</td>
+                  <td>{{ variant.sku()|safe }}</td>
+                  <td>
+                    {% for image_field in variant.images %}
+                      {{ image_field()|safe }}
+                    {% endfor %}
+                  </td>
+                  <td>
+                    <button class="btn btn-default" type="button" data-toggle="fieldset-remove-row" id="variants-{{loop.index0}}-remove">
+                      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                    {% if variant.attr_1_name.errors or variant.attr_1_value.errors or
+                          variant.attr_2_name.errors or variant.attr_2_value.errors or
+                          variant.price.errors or variant.quantity.errors or
+                          variant.sku.errors or variant.images.errors %}
+                      <ul class="alert alert-danger alert-login">
+                        {% for error in variant.attr_1_name.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                        {% for error in variant.attr_1_value.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                        {% for error in variant.attr_2_name.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                        {% for error in variant.attr_2_value.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                        {% for error in variant.price.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                        {% for error in variant.quantity.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                        {% for error in variant.sku.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                        {% for error in variant.images.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <div id="product-attr">
-      {{ render_field(form.price) }}
-      {{ render_field(form.quantity) }}
-      {{ render_field(form.sku) }}
-      <div data-toggle="fieldset" id="image-fieldset">
-        <button class="btn btn-default" type="button" data-toggle="fieldset-add-row" data-target="#image-fieldset">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar imagem
-        </button>
-        {% for image_field in form.images %}
-          <div data-toggle="fieldset-entry" data-id="{{ loop.index0 }}">
-            {{ image_field()|safe }}
-            <button class="btn btn-default" type="button" data-toggle="fieldset-remove-row" id="images-{{loop.index0}}-remove">
-              <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-            </button>
-          </div>
-        {% endfor %}
-        {% if form.images.errors %}
-          <ul class="alert alert-danger alert-login">
-            {% for error in form.images.errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+      <div id="product-attr">
+        {{ render_field(form.price) }}
+        {{ render_field(form.quantity) }}
+        {{ render_field(form.sku) }}
+        <div data-toggle="fieldset" id="image-fieldset">
+          <button class="btn btn-default" type="button" data-toggle="fieldset-add-row" data-target="#image-fieldset">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar imagem
+          </button>
+          {% for image_field in form.images %}
+            <div data-toggle="fieldset-entry" data-id="{{ loop.index0 }}">
+              {{ image_field()|safe }}
+              <button class="btn btn-default" type="button" data-toggle="fieldset-remove-row" id="images-{{loop.index0}}-remove">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+              </button>
+            </div>
+          {% endfor %}
+          {% if form.images.errors %}
+            <ul class="alert alert-danger alert-login">
+              {% for error in form.images.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
       </div>
-    </div>
-  </dl>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    <h4>Informações de Entrega</h4>
+    {% for field in form.shipping %}
+      {{ render_field(field) }}
+    {% endfor %}
+  </div>
     <p><input class="btn btn-default" id="create-category-btn" type="submit" value="Criar"></input></p>
 </form>
