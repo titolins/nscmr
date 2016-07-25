@@ -1,55 +1,100 @@
 <div id="checkout-cart" class="col-md-12">
-  <h4>Suas compras</h4>
-  <p ng-if="cartService.cart.length == 0">Você não possui nenhum item no seu carrinho</p>
-  <div class="panel cart-line-panel" ng-repeat="item in cartService.cart">
-    <div class="panel-header">
-      <div class="field-title inline">
-          <a href="#">
-            {a item['name'] a}
-          </a>
-      </div>
-      <div class='inline float-right'>
-        <a ng-click="cartService.removeItem(item['_id']); $event.preventDefault();" href="#"><i class="fa fa-close"></i> Remover</a>
-      </div>
-      <span class="item-price">{a item['price'] | currency a}</span>
+  <div class="col-xs-12 col-md-8" id="cart-table-wrapper">
+    <h3 class="inline"><b>CARRINHO</b></h3><h5 class="inline"> ({a cartService.cart.totalItems a})</h5>
+    <hr>
+    <p ng-if="cartService.cart.length == 0">Você não possui nenhum item no seu carrinho</p>
+    <table ng-if="cartService.cart.length != 0" class="cart-table">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+          <th>Preço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in cartService.cart.items">
+          <td>
+            <div class="product-image">
+              <img class="img-responsive" src="{a item.thumb a}"></img>
+            </div>
+            <div class="product-info">
+              <p><b>{a item['name'] a}</b></p>
+              <div class="product-attributes" ng-if="item['attributes'] != null">
+                <div ng-repeat="(attr, value) in item['attributes']">
+                  <b>{a attr a}:</b> {a value a}
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </td>
+          <!-- Quantity -->
+          <td>
+            <div class="field">
+              <div class="field-value">
+                <span>{a item['quantity'] a}</span>
+                <a title="Editar" class="item-qty" href="#">
+                  <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
+                </a>
+              </div>
+              <div class="field-input hidden">
+                <input name="quantity" min="0" type="number" step="1" class="form-control" ng-model="item['quantity']"}>
+                <a title="Confirmar" href="#">
+                  <i class="fa fa-check" ng-click="cartService.confirmEdit(item); $event.preventDefault();" aria-hidden="true"></i>
+                </a>
+                <a title="Cancelar" href="#">
+                  <i ng-click="toggleEdit($event); $event.preventDefault();" class="cancel-cart fa fa-close" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+          </td>
+          <!-- Price -->
+          <td>
+            <span>{a item['price'] | currency a}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="frete-calc" class="duvet-input">
+      <span>Calcule seu frete:</span>
+      {{ form.zip_code(**{'ng-model':'cartService.cart.zipCode', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
+      <button id="frete-btn" ng-click="getShipping();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
+      <div id="load-frete" class="hidden inline"><i class="fa fa-cog fa-spin fa-1x fa-fw"></i></div>
+      <p>não sabe seu cep? <a target="busca_cep" href="http://www.buscacep.correios.com.br/sistemas/buscacep/">clique aqui!</a></p>
     </div>
-    <div class="panel-body">
-      <span class="item-id hidden">{a item['_id'] a}</span>
-      <div class="field-row">
-        <div class="field">
-          <p class="field-title">Categoria</p>
-          <p class="field-value">
-            <a href="#">
-              {a item['category']['name'] a}
-            </a>
-          <p>
-        </div>
-        <div class="field">
-          <p class="field-title">Quantidade</p>
-          <p class="field-value">
-            {a item['quantity'] a}
-            <a title="Editar" class="item-qty" href="#">
-              <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
-            </a>
-          </p>
-          <div class='field-input hidden'>
-            <input name="quantity" min="0" type="number" step="1" class="form-control" ng-model="item['quantity']"}>
-            <a title="Confirmar" href="#">
-              <i class="fa fa-check" ng-click="cartService.confirmEdit(item); $event.preventDefault();" aria-hidden="true"></i>
-            </a>
-            <a title="Cancelar" href="#">
-              <i ng-click="toggleEdit($event); $event.preventDefault();" class="cancel-cart fa fa-close" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-        <div class="field" ng-if="item.hasOwnProperty('attributes')">
-          <p class="field-title">Detalhes</p>
-          <p class="field-value" ng-repeat="(attr,value) in item['attributes']">
-            {a attr a}: {a value a}
-          </p>
-        </div>
+  </div>
+  <div class="col-xs-12 col-md-4" id="cart-total-wrapper">
+    <h3 class="inline"><b>TOTAL</b></h3>
+    <hr>
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Subtotal</td>
+          <td>{a cartService.cart.subTotal | currency a}</td>
+        </tr>
+        <tr>
+          <td>Frete</td>
+          <td ng-if="cartService.cart.shipping == undefined">R$0,00</td>
+          <td ng-if="cartService.cart.shipping != undefined">{a cartService.cart.shipping | currency a}</td>
+        </tr>
+        <tr>
+          <td><b>Total</b></td>
+          <td><b>{a cartService.cart.total | currency a}</b></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="checkout-btn-wrapper">
+      <a ng-if="cartService.cart.shipping == undefined" ng-click="$event.preventDefault();" href="#" class="checkout-btn">
+        Calcule o frete para poder continuar
+      </a>
+      <a ng-if="cartService.cart.shipping > 0" ng-click="moveOptions('next'); $event.preventDefault();" href="#" class="checkout-btn">
+        Escolher endereço de entrega
+      </a>
     </div>
   </div>
 </div>
