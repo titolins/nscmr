@@ -14,6 +14,7 @@ from wtforms.fields.html5 import DecimalField, IntegerField, DateField
 
 from wtforms.widgets import TextInput, PasswordInput, html5, TextArea, Select
 from wtforms.validators import (
+    NumberRange,
     input_required,
     ValidationError,
     Optional,
@@ -110,7 +111,6 @@ class NsDateInput(html5.DateInput):
         return super().__call__(field, **kwargs)
 
 
-
 class VarAttrSelectFieldWidget():
     '''
     should set default settings for the select widget, such as 100% width and
@@ -156,6 +156,28 @@ class VariantForm(Form):
             FileAllowed(product_images, message=EXT_ALLOWED_MSG)]),
         min_entries=4)
 
+class ShippingForm(Form):
+    weight = StringField("Peso (kg's)",
+        validators=[
+            input_required('Campo necessário!'),
+            NumberRange(min=0, max=None, message="Valor inválido")],
+        widget=NsNumberInput(step='0.01'))
+    length = IntegerField("Comprimento (cm's)",
+        validators=[
+            input_required('Campo necessário!'),
+            NumberRange(min=0, max=None, message="Valor inválido")],
+        widget=NsNumberInput(step='1'))
+    height = IntegerField("Altura (cm's)",
+        validators=[
+            input_required('Campo necessário!'),
+            NumberRange(min=0, max=None, message="Valor inválido")],
+        widget=NsNumberInput(step='1'))
+    width = IntegerField("Largura (cm's)",
+        validators=[
+            input_required('Campo necessário!'),
+            NumberRange(min=0, max=None, message="Valor inválido")],
+        widget=NsNumberInput(step='1'))
+
 
 class NewProductForm(Form):
     name = StringField('Nome',
@@ -182,6 +204,8 @@ class NewProductForm(Form):
             FileAllowed(product_images, message=EXT_ALLOWED_MSG)]),
         min_entries=1)
     meta_description = StringField('Meta-description', widget=NsTextInput())
+    shipping = FormField(ShippingForm)
+
 
     def validate(self):
         rv = super().validate()
@@ -254,7 +278,8 @@ class NewProductForm(Form):
             self.images.errors = [
                 'O produto precisa ter pelo menos uma imagem']
         if self.sku.errors or self.price.errors or self.quantity.errors or \
-                img_error or default_fields_errors:
+                img_error or default_fields_errors or \
+                (not self.shipping.validate(self.shipping)):
             return False
         return True
 
