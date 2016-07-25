@@ -244,6 +244,10 @@ def build_admin_bp():
         form.category.choices = [
             ('_'.join([str(c.id), c.permalink, c.name]),
             c.name) for c in categories ]
+        # need to do this so we don't get a can't encode exception on
+        # validation (and to avoid yet another custom validation..)
+        if form.shipping.weight.data not in (None, ''):
+            form.shipping.weight.data = float(form.shipping.weight.data)
         if form.validate_on_submit():
             product, product_summary = Product.from_form(form.data)
             try:
@@ -331,11 +335,15 @@ def build_admin_bp():
                             })
                             Summary.update_by_id(p.id, pull_data=\
                                 { 'variants': { '_id': ObjectId(k) }})
+                            User.remove_from_carts(k)
                             if len(p.variants) == 0:
                                 ps_deleted += Product.delete_by_id(p.id).\
                                     deleted_count
                                 Summary.delete_by_id(p.id)
                     elif field == 'products':
+                        variants = Variant.get_by_product(k)
+                        for variant in variants:
+                            User.remove_from_carts(str(variant.id))
                         vs_res = Variant.delete_by_product(k)
                         p_res = Product.delete_by_id(k)
                         Summary.delete_by_id(k)
