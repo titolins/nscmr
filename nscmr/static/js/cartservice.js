@@ -82,17 +82,17 @@ angular.module('angularApp')
 
   this.update();
 
-  this.getTotalItems = function(cart) {
+  this.getTotalItems = function(cartItems) {
     var sum = 0;
-    cart.forEach(function(item) {
+    cartItems.forEach(function(item) {
       sum += item.quantity;
     });
     return sum;
   };
 
-  this.getSubtotal = function(cart) {
+  this.getSubtotal = function(cartItems) {
     var sum = 0.0;
-    cart.forEach(function(item) {
+    cartItems.forEach(function(item) {
       sum += (item.quantity*item.price);
     });
     return sum;
@@ -100,12 +100,12 @@ angular.module('angularApp')
 
   this.getTotal = function(cart) {
     console.log('getTotal');
-    if(cart.freight === undefined) {
+    if(cart.shipping === undefined) {
       console.log('frete n calculado');
       return cart.subTotal;
     } else {
       console.log('frete calculado');
-      return (cart.freight + cart.subTotal);
+      return (cart.shipping + cart.subTotal);
     }
   };
 
