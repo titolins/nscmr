@@ -353,7 +353,6 @@ class Variant(Document):
                 var_data['product_id'] = product.id
         return Variant(var_data), summary_data
 
-
     @staticmethod
     def delete_by_product(product_id):
         if isinstance(product_id, ObjectId):
@@ -370,14 +369,14 @@ class Variant(Document):
         return Variant._update_one(query, set_data, unset_data, push_data,
             pull_data, inc_data, upsert)
 
-    def get_product(self):
-        return Product.get_by_id(self._content['product_id'], to_obj=True)
-
     @staticmethod
     def get_by_product(p_id, to_obj=True):
         return Variant._get_many(to_obj,
             { "product_id":
                 p_id if isinstance(p_id, ObjectId) else ObjectId(p_id) })
+
+    def get_product(self):
+        return Product.get_by_id(self._content['product_id'], to_obj=True)
 
     def get_price(self):
         return float(self._content['price']/100)
@@ -411,7 +410,7 @@ class CartLine(object):
             'attributes': variant.attributes,
             'quantity': cart_item['quantity'],
             'thumb': variant.images[0]['thumb'],
-            'shipping': product.shipping
+            #'shipping': product.shipping
         }
 
     def __call__(self):
