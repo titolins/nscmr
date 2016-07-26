@@ -37,12 +37,13 @@ def make_thumb(image, path, size=(350,480)):
         print('Erro criando thumbnail de {}'.format(image))
         print(e)
 
-def calc_shipping(cart):
+def get_cart_info(cart):
     from ..models import Variant, Product
 
     max_box_vol = reduce(mul, MAX_BOX_SIZE)*MAX_BOX_CAP
     cart_vol = 0
     cart_weight = 0
+    cart_val = 0
     for item in cart:
         var = Variant.get_by_id(item['_id'], to_obj=True)
         p = var.product
@@ -50,6 +51,7 @@ def calc_shipping(cart):
             (d_val for d,d_val in p.shipping.items() if d is not 'weight'))
         cart_vol += p_vol
         cart_weight += p.shipping['weight']
+        cart_val += var.price
     n_boxes = ceil(cart_vol/max_box_vol)
     shipping_sizes = list(i for i in map(lambda x:x*n_boxes, MAX_BOX_SIZE))
     shipping_sizes.append(sqrt(
@@ -57,6 +59,6 @@ def calc_shipping(cart):
         pow(shipping_sizes[1],2) +
         pow(shipping_sizes[2],2)))
 
-    return shipping_sizes,cart_weight
+    return shipping_sizes,cart_weight,cart_val
 
 
