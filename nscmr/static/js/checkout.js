@@ -109,6 +109,8 @@ angular.module('angularApp')
   $scope.getShipping = function() {
     document.getElementById('frete-btn').classList.add('hidden');
     document.getElementById('load-frete').classList.remove('hidden');
+    $scope.cartService.shippingOpts = [];
+    $scope.cartService.cart.shipping = undefined;
     $http({
       method: 'POST',
       url: shippingUri,
@@ -119,6 +121,7 @@ angular.module('angularApp')
       }
     }).then(function success(response) {
       console.log(response);
+      $scope.cartService.shippingOpts = response.data;
       document.getElementById('frete-btn').classList.remove('hidden');
       document.getElementById('load-frete').classList.add('hidden');
     }, function error(response) {
@@ -127,4 +130,18 @@ angular.module('angularApp')
       document.getElementById('load-frete').classList.add('hidden');
     });
   };
+
+  $scope.selectShipping = function(event) {
+    window.target = event.target;
+    target.checked = true;
+    var shippingMethods = document.querySelectorAll('input[type=checkbox]');
+    shippingMethods.forEach(function(item) {
+      if(item.id === target.id) return;
+      item.checked = false;
+    });
+    $scope.cartService.shippingOpts.forEach(function(shipping) {
+      if(shipping.Codigo == target.id) $scope.cartService.cart.shipping = shipping.Valor;
+    });
+  };
+
 }]);
