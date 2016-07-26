@@ -8,6 +8,7 @@ angular.module('angularApp')
     items: [],
   };
   this.cart = angular.copy(self.initialCart);
+  this.shippingOpts = [];
 
   this.update = function() {
     $http({
@@ -19,6 +20,7 @@ angular.module('angularApp')
       self.initialCart.subTotal = self.getSubtotal(response.data);
       self.initialCart.total = self.getTotal(self.initialCart);
       self.cart = angular.copy(self.initialCart);
+      self.shippingOpts = [];
     }, function errorCallback(response) {
       console.log(response);
     });
