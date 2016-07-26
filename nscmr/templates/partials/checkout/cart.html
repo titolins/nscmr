@@ -88,11 +88,35 @@
         </tr>
       </tbody>
     </table>
+    <div id="shipping-opts">
+      <table class="shipping-table" ng-if="cartService.shippingOpts.length > 0">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Prazo</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="shipping in cartService.shippingOpts" ng-if="shipping.Erro == 0">
+            <td>
+              <input id="{a shipping.Codigo a}" type="checkbox" ng-click="selectShipping($event)"></input>
+              <label for="{a shipping.Codigo a}">{a shipping.Tipo a}</label>
+            </td>
+            <td>{a shipping.PrazoEntrega a} dias(s)</td>
+            <td>{a shipping.Valor | currency a}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="checkout-btn-wrapper">
-      <a ng-if="cartService.cart.shipping == undefined" ng-click="$event.preventDefault();" href="#" class="checkout-btn">
-        Calcule o frete para poder continuar
+      <a ng-if="cartService.shippingOpts.length <= 0" ng-click="$event.preventDefault();" href="#" class="checkout-btn">
+        Calcule o frete para continuar
       </a>
-      <a ng-if="cartService.cart.shipping > 0" ng-click="moveOptions('next'); $event.preventDefault();" href="#" class="checkout-btn">
+      <a ng-if="cartService.shippingOpts.length > 0 && cartService.cart.shipping == undefined" ng-click="$event.preventDefault();" href="#" class="checkout-btn">
+        Escolha o método de entrega
+      </a>
+      <a ng-if="cartService.cart.shipping != undefined" ng-click="moveOptions('next'); $event.preventDefault();" href="#" class="checkout-btn">
         Escolher endereço de entrega
       </a>
     </div>
