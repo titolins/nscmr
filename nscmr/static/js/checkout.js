@@ -111,6 +111,7 @@ angular.module('angularApp')
     document.getElementById('load-frete').classList.remove('hidden');
     $scope.cartService.shippingOpts = [];
     $scope.cartService.cart.shipping = undefined;
+    $scope.cartService.correiosErrorMsg = undefined;
     $http({
       method: 'POST',
       url: shippingUri,
@@ -121,7 +122,10 @@ angular.module('angularApp')
       }
     }).then(function success(response) {
       console.log(response);
-      $scope.cartService.shippingOpts = response.data;
+      response.data.forEach(function(service) {
+        if(service.Erro == "-3") $scope.cartService.correiosErrorMsg = service.MsgErro;
+      });
+      if(!$scope.cartService.correiosErrorMsg) $scope.cartService.shippingOpts = response.data;
       document.getElementById('frete-btn').classList.remove('hidden');
       document.getElementById('load-frete').classList.add('hidden');
     }, function error(response) {

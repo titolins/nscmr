@@ -89,6 +89,9 @@
       </tbody>
     </table>
     <div id="shipping-opts">
+      <p class="alert alert-danger" ng-if="cartService.correiosErrorMsg != undefined">
+        {a cartService.correiosErrorMsg a}
+      </p>
       <table class="shipping-table" ng-if="cartService.shippingOpts.length > 0">
         <thead>
           <tr>
