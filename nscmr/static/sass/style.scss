@@ -128,6 +128,23 @@ $font-sizes: (
   letter-spacing: 2px;
 }
 
+/**
+ * styling checkboxes to use font awesome icons
+ * taken from: https://codepen.io/jamesbarnett/pen/yILjk/
+ */
+input[type=checkbox] { display:none; }
+
+input[type=checkbox] + label:before {
+  font-family: FontAwesome;
+  display: inline-block;
+}
+
+input[type=checkbox] + label:before { content: "\f096"; } /* unchecked */
+input[type=checkbox] + label:before { letter-spacing: 10px; } /* space between label and checkbox */
+
+input[type=checkbox]:checked + label:before { content: "\f046"; } /* checked */
+input[type=checkbox]:checked + label:before { letter-spacing: 5px; }
+
 .duvet-input {
   @include align-vertical(30px);
   display: inline-block;
@@ -138,6 +155,9 @@ $font-sizes: (
     border-bottom: 1px solid $dark;
     border-radius: 0;
     height: 30px;
+  }
+  div {
+    margin-left: 5px;
   }
   button {
     box-sizing: content-box;
@@ -1251,6 +1271,7 @@ select {
   }
 }
 
+.shipping-table,
 .cart-table,
 .summary-table {
   width: 100%;
@@ -1309,9 +1330,21 @@ select {
   }
 }
 
+.shipping-table,
 .summary-table {
+  thead > tr {
+    & > th:first-child {
+      text-align: left;
+    }
+    & > th:last-child {
+      text-align: right;
+    }
+  }
   tbody > tr {
-    & > td:nth-child(2) {
+    & > td:first-child {
+      text-align: left;
+    }
+    & > td:last-child {
       text-align: right;
     }
     &:last-child > td {
@@ -1319,6 +1352,11 @@ select {
     }
   }
   margin-bottom: 50px;
+}
+
+.shipping-table > thead > tr > th:nth-child(2),
+.shipping-table > tbody > tr > td:nth-child(2) {
+  text-align: center;
 }
 
 .product-attributes {
