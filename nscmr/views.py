@@ -35,7 +35,6 @@ import uuid
 from functools import wraps
 import requests
 import json
-from xml.etree import ElementTree
 
 # models
 from nscmr.admin.models import (
@@ -59,7 +58,7 @@ from nscmr.admin.forms import AddressForm
 
 # helpers
 from nscmr.helper.back import Back
-from nscmr.admin.helper import calc_shipping
+from nscmr.admin.helper import get_cart_info
 
 # app
 from nscmr import app
@@ -72,6 +71,12 @@ back = Back()
 
 ENDPOINT_FRETE_CORREIOS = \
     'http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo'
+
+TIPOS_FRETE_CORREIOS = {
+    '40010': 'Sedex',
+    '40215': 'Sedex10',
+    '41106': 'PAC',
+}
 
 @app.route('/')
 @back.anchor
@@ -463,15 +468,17 @@ def edit_cart():
 
 @app.route('/usuario/compras/frete', methods=['POST'])
 def shipping():
+    import xmltodict
     zip_code = request.json['zipCode']
     if zip_code in ('', None):
         response = make_response(json.dumps('Preencha o cep!'), 500)
     else:
-        box_size, weight = calc_shipping(current_user.cart)
+        cart = current_user.cart
+        box_size, weight, val = get_cart_info(cart)
         data = {
                 'nCdEmpresa': '',
                 'sDsSenha': '',
-                'nCdServico': '40010,40215,41106',
+                'nCdServico': ','.join([k for k in TIPOS_FRETE_CORREIOS.keys()]),
                 'sCepOrigem': '22450130',
                 'sCepDestino': zip_code,
                 'nVlPeso': weight,
@@ -480,16 +487,19 @@ def shipping():
                 'nVlComprimento': box_size[1],
                 'nVlAltura': box_size[2],
                 'nVlDiametro': box_size[3],
-                'sCdMaoPropria': 'N', #confirm
-                'nVlValorDeclarado': 0, #confirm
-                'sCdAvisoRecebimento': 'N' #confirm
+                'sCdMaoPropria': 'N',#'S', #confirm
+                'nVlValorDeclarado': 0,#val, #confirm
+                'sCdAvisoRecebimento': 'N'#'S' #confirm
                 }
         r = requests.post(ENDPOINT_FRETE_CORREIOS, data = data)
-        root = ElementTree.fromstring(str(r.content, 'utf-8'))
-        for child in root:
-            print(child.tag, child.attrib)
-        response = make_response(json.dumps('ok'), 200)
-        #response = make_response(json.dumps(r), 200)
+        r_dict = xmltodict.parse(str(r.content, 'utf-8'))
+        services = r_dict['cResultado']['Servicos']['cServico']
+        print(r_dict)
+        for s in services:
+            s['Tipo'] = TIPOS_FRETE_CORREIOS[s['Codigo']]
+            s['Valor'] = float('.'.join(s['Valor'].split(',')))
+
+        response = make_response(json.dumps(services), 200)
 
     response.headers['Content-Type'] = 'application/json'
     return response
