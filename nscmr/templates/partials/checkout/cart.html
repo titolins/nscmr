@@ -112,14 +112,14 @@
         </tbody>
       </table>
     </div>
-    <div class="checkout-btn-wrapper">
-      <a ng-if="cartService.shippingOpts.length <= 0" ng-click="$event.preventDefault();" href="#" class="checkout-btn disabled">
+    <div class="duvet-btn-wrapper text-center">
+      <a ng-if="cartService.shippingOpts.length <= 0" ng-click="$event.preventDefault();" href="#" class="duvet-btn disabled">
         Calcule o frete para continuar
       </a>
-      <a ng-if="cartService.shippingOpts.length > 0 && cartService.cart.shipping == undefined" ng-click="$event.preventDefault();" href="#" class="checkout-btn disabled">
+      <a ng-if="cartService.shippingOpts.length > 0 && cartService.cart.shipping == undefined" ng-click="$event.preventDefault();" href="#" class="duvet-btn disabled">
         Escolha o método de entrega
       </a>
-      <a ng-if="cartService.cart.shipping != undefined" ng-click="moveOptions('next'); $event.preventDefault();" href="#" class="checkout-btn">
+      <a ng-if="cartService.cart.shipping != undefined" ng-click="moveOptions('next'); $event.preventDefault();" href="#" class="duvet-btn">
         Escolher endereço de entrega
       </a>
     </div>
