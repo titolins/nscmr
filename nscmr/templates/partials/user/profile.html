@@ -2,57 +2,47 @@
   <div class="row">
     <div class="col-md-6" id="profile-data">
       <div class="user-title">
-        <h3 class="inline">Usuário</h3>
-        <a class="btn btn-default inline float-right" href="#" ng-click="editUser(); $event.preventDefault();">
-          <i class="fa fa-check"></i> Confirmar edições
-        </a>
+        <h3>Informações</h3>
         <hr>
       </div>
       <div class="field">
-        <div class='field-title'>Nome</div>
-        <div class="field-value" id="name-field">
+        <div class='field-title inline'>Nome: </div>
+        <div class="field-value inline" id="name-field">
           {a user['name'] a}
-          <a title="Editar" href="#">
-            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
-          </a>
         </div>
-        <div class="field-input hidden" id="name-input">
+        <div class="field-input inline hidden" id="name-input">
           <input name="name" type="text" class="form-control" ng-model="user['name']">
-          <a title="Cancelar" href="#">
-            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close cancel-name"></i>
-          </a>
         </div>
       </div>
       <div class="field">
-        <div class='field-title'>Email</div>
-        <div class='field-value' id="email-field">
+        <div class='field-title inline'>Email: </div>
+        <div class='field-value inline' id="email-field">
           {a user['email'] a}
-          <a title="Editar" href="#">
-            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
-          </a>
         </div>
-        <div class='field-input hidden' id="email-input">
+        <div class='field-input inline hidden' id="email-input">
           <input name="email" type="text" class="form-control" ng-model="user['email']">
-          <a title="Cancelar" href="#">
-            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close cancel-email"></i>
-          </a>
         </div>
       </div>
       <div class="field">
-        <div class='field-title'>Data de nascimento</div>
-        <div class="field-value" id="dob-field">
+        <div class='field-title inline'>Data de nascimento: </div>
+        <div class="field-value inline" id="dob-field">
           <span ng-if="user['dob'] != null">{a parseDate(user['dob']) a}</span>
           <span ng-if="user['dob'] == null">Não informada</span>
-          <a title="Editar" href="#">
-            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
-          </a>
         </div>
-        <div class="field-input hidden" id="dob-input">
+        <div class="field-input inline hidden" id="dob-input">
           <input name="dob" type="date" class="form-control" ng-model="user['dob']">
-          <a title="Cancelar" href="#">
-            <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-close cancel-dob"></i>
-          </a>
         </div>
+      </div>
+      <div class="duvet-btn-wrapper text-right">
+        <a class="duvet-btn edit-user-btn" href="#" ng-click="toggleEditUser(); $event.preventDefault();">
+          <i class="fa fa-edit"></i> Editar
+        </a>
+        <a class="duvet-btn edit-user-btn hidden" href="#" ng-click="toggleEditUser(); $event.preventDefault();">
+          <i class="fa fa-edit"></i> Cancelar
+        </a>
+        <a class="duvet-btn edit-user-btn hidden" href="#" ng-click="editUser(); $event.preventDefault();">
+          <i class="fa fa-check"></i> Salvar
+        </a>
       </div>
     </div>
     <div class="col-md-6" id="addresses-data">

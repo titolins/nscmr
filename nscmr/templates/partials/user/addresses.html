@@ -1,49 +1,24 @@
 <div class='user-title'>
-  <h3 class='inline'>Endereços</h3>
-  <a class="btn btn-default inline float-right" type="button" data-toggle="modal" data-target="#add-address-modal">
-    <i class="fa fa-plus"></i> Adicionar endereço
-  </a>
+  <h3>Endereços</h3>
   <hr>
 </div>
 <p ng-hide="addressesService.addresses.length">Você não possui nenhum endereço registrado</p>
-<div class="panel panel-default address-panel" ng-repeat="address in addressesService.addresses">
-  <div class="panel-heading text-right">
-    <span class="options-btn">
-      {#<a href="#">
-        <i class="fa fa-edit"></i>
-        Alterar
-      </a>#}
-      <a ng-click="deleteAddress(address['_id']); $event.preventDefault();" href="#">
-        <i class="fa fa-close"></i>
-        Remover
-      </a>
-    </span>
-  </div>
-  <div class="panel-body">
-    <div class='field'>
-      <div class="field-title">Endereço</div>
-      <div class='field-value'>{a address['street_address_1'] a}</div>
-    </div>
-    <div class='field' ng-show="address['street_address_2']">
-      <div class="field-title">Complemento</div>
-      <div class="field-value">{a address['street_address_2'] a}</div>
-    </div>
-    <div class='field' ng-show="address['neighbourhood']">
-      <div class="field-title">Bairro</div>
-      <div class="field-value">{a address['neighbourhood'] a}</div>
-    </div>
-    <div class='field'>
-      <div class="field-title">Cidade</div>
-      <div class="field-value">{a address['city'] a}</div>
-    </div>
-    <div class='field'>
-      <div class="field-title">Estado</div>
-      <div class="field-value">{a address['state'] a}</div>
-    </div>
-    <div class='field'>
-      <div class="field-title">Cep</div>
-      <div class="field-value">{a address['zip_code'] a}</div>
-    </div>
+<div class="address-panel" ng-repeat="address in addressesService.addresses">
+  <span class='field-value'>{a address['street_address_1'] a}, </span>
+  <span class="field-value">{a address['street_address_2'] a}, </span>
+  <span class="field-value">{a address['neighbourhood'] a}, </span>
+  <span class="field-value">{a address['city'] a}, </span>
+  <span class="field-value">{a address['state'] a} - </span>
+  <span class="field-value">{a address['zip_code'] a}</span>
+  <div class="options-btn text-right">
+    {#<a href="#">
+      <i class="fa fa-edit"></i>
+      Alterar
+    </a>#}
+    <a ng-click="deleteAddress(address['_id']); $event.preventDefault();" href="#">
+      <i class="fa fa-close"></i>
+      Remover
+    </a>
   </div>
 </div>
 <div id="add-address-modal" class="modal fade address-modal" role="dialog">
@@ -97,4 +72,8 @@
     </div>
   </div>
 </div>
-
+<div class="duvet-btn-wrapper add-address-btn text-right">
+  <a class="duvet-btn" type="button" data-toggle="modal" data-target="#add-address-modal">
+    <i class="fa fa-plus"></i> Adicionar endereço
+  </a>
+</div>
