@@ -305,12 +305,14 @@ def get_wishlist():
         return []
     else:
         wishlist = []
-        for item in current_user.wishlist:
-            product = Summary.get_summary_by_variant(item['_id'])
-            product['_id'] = str(product['_id'])
-            for var in product['variants']:
-                var['_id'] = str(var['_id'])
-            wishlist.append(product)
+        user_wishlist = current_user.wishlist
+        if user_wishlist not in (None, []):
+            for item in current_user.wishlist:
+                product = Summary.get_summary_by_variant(item['_id'])
+                product['_id'] = str(product['_id'])
+                for var in product['variants']:
+                    var['_id'] = str(var['_id'])
+                wishlist.append(product)
         return wishlist
 
 @app.route('/usuario/wishlist')
@@ -370,7 +372,6 @@ def get_cart():
         cart = session.get('cart', [])
     else:
         cart = current_user.cart
-        #print(cart)
     return [CartLine(item)() for item in cart]
 
 @app.route('/usuario/compras')
@@ -494,7 +495,6 @@ def shipping():
         r = requests.post(ENDPOINT_FRETE_CORREIOS, data = data)
         r_dict = xmltodict.parse(str(r.content, 'utf-8'))
         services = r_dict['cResultado']['Servicos']['cServico']
-        print(r_dict)
         for s in services:
             s['Tipo'] = TIPOS_FRETE_CORREIOS[s['Codigo']]
             s['Valor'] = float('.'.join(s['Valor'].split(',')))
