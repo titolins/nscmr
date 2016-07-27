@@ -20,10 +20,12 @@ angular.module('angularApp', ['ui.mask'])
     $http({
       url: getUserUri,
     }).then(function successCallback(response) {
-      if (response.data['dob'] !== null) response.data['dob'] = new Date(response.data['dob']);
+      if (response.data['dob'] !== null) {
+        var splitDob = response.data['dob'].split('-');
+        response.data['dob'] = new Date(splitDob[0], splitDob[1]-1, splitDob[2]);
+      }
       $scope.initialUser = response.data;
       $scope.user = angular.copy($scope.initialUser);
-      console.log(response.data['addresses']);
     }, function errorCallback(response) {
       console.log(response);
     });
@@ -32,31 +34,30 @@ angular.module('angularApp', ['ui.mask'])
   function getWishlist() {
     $http({ url: getWishlistUri }).then(function success(response) {
       $scope.wishlist = response.data;
-      console.log($scope.wishlist);
     }, function error(response) {
       console.log(response);
     });
   };
 
-  $scope.toggleEdit = function($event) {
-    var target = $event.currentTarget;
-    // if we are cancelling the edit, we simply reset the cart (redrawing the
-    // template)
-    if (target.classList.contains('cancel-cart')) $scope.cartService.reset();
-    else if (target.classList.contains('cancel-name')) $scope.user['name'] = $scope.initialUser['name'];
-    else if (target.classList.contains('cancel-email')) $scope.user['email'] = $scope.initialUser['email'];
-    else if (target.classList.contains('cancel-dob')) $scope.user['dob'] = $scope.initialUser['dob'];
-    else if (target.classList.contains('cancel-addresses')) { $scope.addressesService.reset(); }
-    var field = target.parentNode;
-    while (!field.classList.contains('field')) field = field.parentNode;
-    field.getElementsByClassName('field-value')[0].classList.toggle('hidden');
-    field.getElementsByClassName('field-input')[0].classList.toggle('hidden');
-  }
-
+  $scope.toggleEditUser = function() {
+    var userFields = ['name', 'email', 'dob'];
+    var relevantEls;
+    var i;
+    $scope.user = angular.copy($scope.initialUser);
+    userFields.forEach(function(fieldName) {
+      relevantEls = document.querySelectorAll('div[id*='+fieldName+'-]');
+      relevantEls.forEach(function(el) {
+        el.classList.toggle('hidden');
+      });
+    });
+    var editBtns = document.getElementsByClassName('edit-user-btn');
+    for(i = 0; i < editBtns.length; i++) {
+      editBtns[i].classList.toggle('hidden');
+    }
+  };
 
   $scope.removeFromWishlist = function(var_id) {
     data = { 'id': var_id };
-    console.log(data);
     $http({
       method: 'POST',
       url: removeFromWishlistUri,
@@ -66,12 +67,10 @@ angular.module('angularApp', ['ui.mask'])
         "Content-Type": "application/json;utf-8"
       }
     }).then(function success(response) {
-      console.log(response);
       alert(response.data);
       getWishlist();
     }, function error(response) {
       console.log(response);
-      alert(response.data);
     });
   };
 
@@ -93,11 +92,9 @@ angular.module('angularApp', ['ui.mask'])
         "Content-Type": "application/json;utf-8"
       }
     }).then(successCallback || function successCallback(response) {
-      console.log(response);
       alert(response.data);
     }, errorCallback || function errorCallback(response) {
       alert(response.data);
-      console.log(response);
     });
   };
 
@@ -105,16 +102,13 @@ angular.module('angularApp', ['ui.mask'])
     var userFields = [ 'name', 'email', 'dob' ];
     var user = {};
     userFields.forEach(function(field) {
-      console.log($scope.initialUser[field]);
-      console.log($scope.user[field]);
       if ($scope.user[field] != $scope.initialUser[field]) user[field] = $scope.user[field];
       if (field === 'dob') user[field] = $scope.parseDate(user[field]);
     });
-    console.log(user);
     sendPost(editUserUri, user, function(response) {
-      console.log(response);
       alert(response.data);
       getUser();
+      $scope.toggleEditUser();
     });
   };
 
