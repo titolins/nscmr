@@ -336,6 +336,7 @@ def build_admin_bp():
                             Summary.update_by_id(p.id, pull_data=\
                                 { 'variants': { '_id': ObjectId(k) }})
                             User.remove_from_carts(k)
+                            User.remove_from_wishlists(k)
                             if len(p.variants) == 0:
                                 ps_deleted += Product.delete_by_id(p.id).\
                                     deleted_count
@@ -344,6 +345,7 @@ def build_admin_bp():
                         variants = Variant.get_by_product(k)
                         for variant in variants:
                             User.remove_from_carts(str(variant.id))
+                            User.remove_from_wishlists(str(variant.id))
                         vs_res = Variant.delete_by_product(k)
                         p_res = Product.delete_by_id(k)
                         Summary.delete_by_id(k)

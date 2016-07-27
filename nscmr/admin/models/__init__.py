@@ -103,6 +103,10 @@ class User(Document):
         return User.update_by_id(id_, set_data={'cart':[]})
 
     @staticmethod
+    def remove_from_wishlists(var_id):
+        return User._update_many({}, pull_data={'wishlist':{'_id': var_id}})
+
+    @staticmethod
     def remove_from_carts(var_id):
         return User._update_many({}, pull_data={'cart':{'_id': var_id}})
 
