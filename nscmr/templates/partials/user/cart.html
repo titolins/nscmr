@@ -3,7 +3,7 @@
     <h3>Suas compras</h3>
     <hr>
   </div>
-  <p ng-if="cartService.cart.length == 0">Você não possui nenhum item no seu carrinho</p>
+  <p ng-if="cartService.cart.totalItems == 0">Nenhum item no carrinho!</p>
   <div class="panel cart-line-panel" ng-repeat="item in cartService.cart.items">
     <div class="panel-header">
       <div class="field-title inline">
