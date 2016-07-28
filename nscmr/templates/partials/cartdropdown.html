@@ -1,6 +1,6 @@
 <ul id="cart-dropdown" class="item-dropdown">
-  <li ng-hide="cart.length">Carrinho vazio</li>
-  <li ng-show="cart.length"><b><a href="#">Suas compras</a></b></li>
+  <li ng-if="cartService.cart.totalItems <= 0">Carrinho vazio</li>
+  <li ng-if="cartService.cart.totalItems > 0"><b><a href="#">Suas compras</a></b></li>
   <li ng-repeat="item in cartService.cart.items | limitTo: 3">
     <div class="cart-item">
       {a item.name a}
