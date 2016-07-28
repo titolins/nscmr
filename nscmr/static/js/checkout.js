@@ -133,7 +133,10 @@ angular.module('angularApp')
       item.checked = false;
     });
     $scope.cartService.shippingOpts.forEach(function(shipping) {
-      if(shipping.Codigo == target.id) $scope.cartService.cart.shipping = shipping.Valor;
+      if(shipping.Codigo == target.id) {
+        $scope.cartService.cart.shipping = shipping.Valor;
+        $scope.cartService.cart.total = $scope.cartService.getTotal($scope.cartService.cart);
+      }
     });
   };
 

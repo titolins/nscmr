@@ -25,6 +25,7 @@ angular.module('angularApp')
       console.log(response);
     });
   };
+
   this.addToCart = function(variantId) {
     var data = { 'variant_id': variantId };
     $http({
