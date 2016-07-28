@@ -41,10 +41,5 @@
     <li><a href="{{ url_for('contact') }}">Contato</a></li>
   </ul>
 </div>
-{% if not current_user.is_authenticated %}
-  {% include 'partials/loginform.html' %}
-{% else %}
-  {% include 'partials/useroptions.html' %}
-{% endif %}
 {% include 'partials/cartdropdown.html' %}
 {% include 'partials/categoriesdropdown.html' %}
