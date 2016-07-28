@@ -54,7 +54,7 @@
         </tr>
       </tbody>
     </table>
-    <div id="frete-calc" class="duvet-input">
+    <div id="frete-calc" class="cep-input duvet-input">
       <span>Calcule seu frete:</span>
       {{ form.zip_code(**{'ng-model':'cartService.cart.zipCode', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
       <button id="frete-btn" ng-click="getShipping();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
