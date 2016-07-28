@@ -567,12 +567,10 @@ def confirm():
         holder_name = card['holderName'],
         exp_month = int(card['expMonth']),
         exp_year = card['expYear'])
-    total_cart = 0
-    for item in cart:
-        total_cart += (item['price']*item['quantity'])
-    total_cart *= 100
 
-    transaction_collection = [creditcard_transaction(total_cart,creditcard_data)]
+    transaction_collection = [creditcard_transaction(
+        cart['total'],
+        creditcard_data)]
     order_id = uuid.uuid4()
     options_request = order(order_reference=order_id)
     sale_request = create_sale_request(
