@@ -117,10 +117,6 @@ $font-sizes: (
   clear: both;
 }
 
-.btn-ns {
-  @extend .light;
-}
-
 .capitalize {
   font-family: 'Arial Rounded MT Bold';
   text-transform: uppercase;
@@ -147,8 +143,13 @@ input[type=checkbox]:checked + label:before { letter-spacing: 5px; }
 
 .duvet-input {
   @include align-vertical(30px);
-  display: inline-block;
+  //display: inline-block;
+  span {
+    font-size: .8em;
+  }
   input {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     border: 0;
     padding: 0;
@@ -1168,6 +1169,7 @@ select {
 }
 
 #addresses-data {
+  min-height: 300px;
   @media screen and (min-width: 320px) {
     padding-top: 15px;
   }
@@ -1204,12 +1206,17 @@ select {
   }
 }
 
+#no-address-text {
+  margin-bottom: 110px;
+}
+
 .add-address-btn {
-  margin-top: 15px;
+  margin-top: 17px;
   cursor: pointer;
 }
 
 .field {
+  @include align-vertical(34px);
   margin-bottom: 10px;
   .field-title {
     font-weight: bold;
@@ -1381,8 +1388,7 @@ select {
       width: 50%;
     }
   }
-  @media screen and (min-width: 992px) {
-    margin-bottom: 2em;
+  @media screen and (min-width: 480px) {
     span {
       display: inline;
     }
@@ -1390,6 +1396,29 @@ select {
       width: 20%;
     }
   }
+  @media screen and (min-width: 992px) {
+    margin-bottom: 2em;
+    input {
+      width: 10%;
+    }
+  }
+}
+
+.address-input {
+  width: 100%;
+  margin-bottom: 15px;
+  span {
+    display: inline-block;
+    min-width: 30%;
+  }
+  input {
+    margin: 0;
+    width: 65%;
+    display: inline;
+  }
+}
+
+.cep-input {
   p {
     margin-top: -5px;
     line-height: 1.6em;
@@ -1425,8 +1454,26 @@ select {
   }
 }
 
+#user-cep-address {
+  margin-bottom: 28px;
+  input {
+    @media screen and (min-width: 320px) {
+      width: 30%;
+    }
+    @media screen and (min-width: 480px) {
+      width: 20%;
+    }
+    @media screen and (min-width: 992px) {
+      width: 15%;
+    }
+  }
+}
+
 .duvet-btn-wrapper {
   width: 100%;
+  .align-fix {
+    line-height: normal !important;
+  }
   .duvet-btn {
     &:last-child {
       margin-left: 15px;
@@ -1516,8 +1563,6 @@ select {
   textarea,
   input {
     margin-bottom: 20px;
-    //@extend .duvet-input;
-    //border: 1px solid $dark;
   }
   hr {
     border-top: 1px solid $dark;
