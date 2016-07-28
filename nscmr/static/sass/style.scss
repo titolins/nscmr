@@ -124,6 +124,10 @@ $font-sizes: (
   letter-spacing: 2px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 /**
  * styling checkboxes to use font awesome icons
  * taken from: https://codepen.io/jamesbarnett/pen/yILjk/
@@ -1179,7 +1183,7 @@ select {
   }
 }
 
-#add-address-modal {
+.address-modal {
   .modal-dialog {
     background-color: $light;
   }

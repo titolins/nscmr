@@ -110,6 +110,13 @@ class User(Document):
     def remove_from_carts(var_id):
         return User._update_many({}, pull_data={'cart':{'_id': var_id}})
 
+    @staticmethod
+    def update_address_by_id(addr_id, set_data):
+        return User._update_one(
+            {"addresses._id": addr_id if isinstance(addr_id, ObjectId) \
+                    else ObjectId(addr_id) },
+            set_data=set_data)
+
     @property
     def is_active(self):
         return True
@@ -202,10 +209,10 @@ class Summary(Document):
 
     @staticmethod
     def get_summary_by_variant(var_id, to_obj=False):
-        id_ = var_id if isinstance(var_id, ObjectId) else ObjectId(var_id)
         return Summary._get_one(to_obj,
             {
-                'variants._id': id_,
+                'variants._id': var_id if isinstance(var_id, ObjectId) else \
+                    ObjectId(var_id)
             },
             {
                 'name': 1,

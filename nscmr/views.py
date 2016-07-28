@@ -215,6 +215,30 @@ def add_address():
     response.headers['Content-Type'] = 'application/json'
     return response
 
+@app.route('/usuario/enderecos/editar', methods=['POST'])
+@login_required
+def edit_address():
+    print(request.json)
+    data = request.json
+    set_data = {}
+    field_format = "addresses.$.{}"
+    for field in data.keys():
+        if field != '_id':
+            if field in ['street_address_1', 'street_address_2', 'city',
+                    'state', 'neighbourhood']:
+                set_data[field_format.format(field)] = data[field].lower()
+            else:
+                set_data[field_format.format(field)] = data[field]
+    res = User.update_address_by_id(data['_id'], set_data)
+    if res.modified_count > 0:
+        response = make_response(json.dumps('Endereço editado'), 200)
+    else:
+        response = make_response(
+            json.dumps('Erro ao tentar editar endereço'), 500)
+
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
 # Delete address
 @app.route('/usuario/enderecos/deletar', methods=['POST'])
 @login_required

@@ -74,6 +74,23 @@ angular.module('angularApp', ['ui.mask'])
     });
   };
 
+  $scope.editAddress = function(addr, index) {
+    var originalAddr = $scope.addressesService.initialAddresses[index];
+    var addrData = {};
+    for(p in addr) {
+      if(addr[p] !== originalAddr[p] || p == '_id') addrData[p] = addr[p];
+    }
+    console.log(addrData);
+    if(Object.keys(addrData).length > 1) {
+      sendPost(editAddressUri, addrData, function(response) {
+        $scope.addressesService.update(getAddressesUri);
+        alert(response.data);
+      });
+    } else {
+      alert('Você não fez nenhuma alteração no endereço');
+    }
+  };
+
   $scope.deleteAddress = function(addressId) {
     var data = { 'address_id': addressId };
     sendPost(removeAddressUri, data, function(response) {
