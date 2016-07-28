@@ -103,10 +103,8 @@ angular.module('angularApp')
   this.getTotal = function(cart) {
     console.log('getTotal');
     if(cart.shipping === undefined) {
-      console.log('frete n calculado');
       return cart.subTotal;
     } else {
-      console.log('frete calculado');
       return (cart.shipping + cart.subTotal);
     }
   };
