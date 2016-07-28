@@ -393,61 +393,6 @@ hr { width: 100%; }
       @include transformY(0px);
     }
   }
-  &#login-form-dropdown {
-    padding: 10px 20px 10px 20px;
-    height: 150px;
-    @include transformY(-230px);
-    @include transition(500ms);
-    #register {
-      margin-top: 5px;
-      a {
-        text-decoration: underline;
-      }
-    }
-    @media screen and (min-width: 320px) {
-      width: 250px;
-      &.open {
-        @include transformY(180px);
-      }
-      span {
-        &.login-input {
-          width: 40%;
-          margin-right: 2.5%;
-          float: left;
-          input {
-            width: 100%;
-            border-radius: 0;
-          }
-        }
-        &.login-submit {
-          width: 15%;
-          @include align-vertical(34px);
-          float: right;
-          input {
-            width: 100%;
-            border: 0;
-            background-color: $dark;
-            color: $light;
-          }
-        }
-      }
-    }
-    @media screen and (min-width: 480px) {
-      width: 300px;
-    }
-    @media screen and (min-width: 768px) {
-      &.open {
-        @include transformY(0px);
-      }
-    }
-    #submit-icon {
-      position: relative;
-      z-index: 1;
-      left: -25px;
-      top: -1px;
-      width: 0;
-    }
-  }
 }
 
 /*
@@ -699,8 +644,20 @@ hr { width: 100%; }
 
 
 /*
- * registration page
+ * login / registration pages
  */
+
+#login {
+  div.col-md-6:first-child {
+    @media screen and (min-width: 320px) {
+      border-bottom: 1px solid $dark;
+    }
+    @media screen and (min-width: 992px) {
+      border-bottom: 0px;
+      border-right: 1px solid $dark;
+    }
+  }
+}
 
 #input-address {
   opacity: 0;
@@ -1141,8 +1098,6 @@ select {
   padding: 0;
   padding-top: 2em;
   padding-bottom: 2em;
-  //border: 1px solid $light-grey;
-  //border-radius: 4px;
   .user-title {
     width: 98%;
     h3 {
