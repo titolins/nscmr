@@ -54,17 +54,6 @@ angular.module('angularApp')
     document.getElementById(target.dataset.target).classList.remove('hidden');
   };
 
-  $scope.toggleEdit = function($event) {
-    var target = $event.currentTarget;
-    // if we are cancelling the edit, we simply reset the cart (redrawing the
-    // template)
-    if (target.classList.contains('cancel-cart')) $scope.cartService.reset();
-    var field = target.parentNode;
-    while (!field.classList.contains('field')) field = field.parentNode;
-    field.getElementsByClassName('field-value')[0].classList.toggle('hidden');
-    field.getElementsByClassName('field-input')[0].classList.toggle('hidden');
-  }
-
   $scope.toggleCardBrand = function($event) {
     $event.preventDefault();
     var target = $event.target;

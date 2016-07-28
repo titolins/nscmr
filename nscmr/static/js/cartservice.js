@@ -109,4 +109,15 @@ angular.module('angularApp')
     }
   };
 
+  this.toggleEditCart = function($event) {
+    var target = $event.currentTarget;
+    // if we are cancelling the edit, we simply reset the cart (redrawing the
+    // template)
+    if (target.classList.contains('cancel-cart')) self.reset();
+    var field = target.parentNode;
+    while (!field.classList.contains('field')) field = field.parentNode;
+    field.getElementsByClassName('field-value')[0].classList.toggle('hidden');
+    field.getElementsByClassName('field-input')[0].classList.toggle('hidden');
+  }
+
 }]);

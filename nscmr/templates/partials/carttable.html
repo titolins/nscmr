@@ -1,0 +1,52 @@
+<p ng-if="cartService.cart.totalItems == 0">Nenhum item no carrinho!</p>
+<table ng-if="cartService.cart.totalItems != 0" class="cart-table">
+  <thead>
+    <tr>
+      <th>Produto</th>
+      <th>Quantidade</th>
+      <th>Preço</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in cartService.cart.items">
+      <td>
+        <div class="product-image">
+          <img class="img-responsive" src="{a item.thumb a}"></img>
+        </div>
+        <div class="product-info">
+          <p><b>{a item['name'] a}</b></p>
+          <div class="product-attributes" ng-if="item['attributes'] != null">
+            <div ng-repeat="(attr, value) in item['attributes']">
+              <b>{a attr a}:</b> {a value a}
+            </div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </td>
+      <!-- Quantity -->
+      <td>
+        <div class="field">
+          <div class="field-value">
+            <span>{a item['quantity'] a}</span>
+            <a title="Editar" class="item-qty" href="#">
+              <i ng-click="cartService.toggleEditCart($event); $event.preventDefault();" class="fa fa-edit"></i>
+            </a>
+          </div>
+          <div class="field-input hidden">
+            <input name="quantity" min="0" type="number" step="1" class="form-control" ng-model="item['quantity']"}>
+            <a title="Confirmar" href="#">
+              <i class="fa fa-check" ng-click="cartService.confirmEdit(item); $event.preventDefault();" aria-hidden="true"></i>
+            </a>
+            <a title="Cancelar" href="#">
+              <i ng-click="cartService.toggleEditCart($event); $event.preventDefault();" class="cancel-cart fa fa-close" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </td>
+      <!-- Price -->
+      <td>
+        <span>{a item['price'] | currency a}</span>
+      </td>
+    </tr>
+  </tbody>
+</table>

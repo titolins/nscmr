@@ -1,8 +1,10 @@
 <div id="cart" class="hidden user-info">
   <div class="user-title">
-    <h3>Suas compras</h3>
+    <h3 class="inline"><b>CARRINHO</b></h3><h5 class="inline"> ({a cartService.cart.totalItems a})</h5>
     <hr>
   </div>
+  {% include 'partials/carttable.html' %}
+  {#
   <p ng-if="cartService.cart.totalItems == 0">Nenhum item no carrinho!</p>
   <div class="panel cart-line-panel" ng-repeat="item in cartService.cart.items">
     <div class="panel-header">
@@ -55,6 +57,10 @@
         </div>
     </div>
   </div>
-  <a ng-if="cartService.cart.totalItems > 0" href="{{ url_for('checkout') }}" id="checkout-btn" class="product-btn">Finalizar compra</a>
-  <div class="clearfix"></div>
+  #}
+  <div class="duvet-btn-wrapper text-right">
+    <a ng-if="cartService.cart.totalItems > 0" href="{{ url_for('checkout') }}"
+      id="checkout-btn" class="duvet-btn">Finalizar compra</a>
+  </div>
+  {#<div class="clearfix"></div>#}
 </div>

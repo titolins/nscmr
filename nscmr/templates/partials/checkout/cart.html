@@ -2,58 +2,7 @@
   <div class="col-xs-12 col-md-8" id="cart-table-wrapper">
     <h3 class="inline"><b>CARRINHO</b></h3><h5 class="inline"> ({a cartService.cart.totalItems a})</h5>
     <hr>
-    <p ng-if="cartService.cart.length == 0">Você não possui nenhum item no seu carrinho</p>
-    <table ng-if="cartService.cart.length != 0" class="cart-table">
-      <thead>
-        <tr>
-          <th>Produto</th>
-          <th>Quantidade</th>
-          <th>Preço</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="item in cartService.cart.items">
-          <td>
-            <div class="product-image">
-              <img class="img-responsive" src="{a item.thumb a}"></img>
-            </div>
-            <div class="product-info">
-              <p><b>{a item['name'] a}</b></p>
-              <div class="product-attributes" ng-if="item['attributes'] != null">
-                <div ng-repeat="(attr, value) in item['attributes']">
-                  <b>{a attr a}:</b> {a value a}
-                </div>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-          </td>
-          <!-- Quantity -->
-          <td>
-            <div class="field">
-              <div class="field-value">
-                <span>{a item['quantity'] a}</span>
-                <a title="Editar" class="item-qty" href="#">
-                  <i ng-click="toggleEdit($event); $event.preventDefault();" class="fa fa-edit"></i>
-                </a>
-              </div>
-              <div class="field-input hidden">
-                <input name="quantity" min="0" type="number" step="1" class="form-control" ng-model="item['quantity']"}>
-                <a title="Confirmar" href="#">
-                  <i class="fa fa-check" ng-click="cartService.confirmEdit(item); $event.preventDefault();" aria-hidden="true"></i>
-                </a>
-                <a title="Cancelar" href="#">
-                  <i ng-click="toggleEdit($event); $event.preventDefault();" class="cancel-cart fa fa-close" aria-hidden="true"></i>
-                </a>
-              </div>
-            </div>
-          </td>
-          <!-- Price -->
-          <td>
-            <span>{a item['price'] | currency a}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    {% include 'partials/carttable.html' %}
     <div id="frete-calc" class="cep-input duvet-input">
       <span>Calcule seu frete:</span>
       {{ form.zip_code(**{'ng-model':'cartService.cart.zipCode', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
