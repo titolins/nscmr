@@ -23,7 +23,8 @@ class User(Document):
     '''User class
     '''
     __collection__ = 'users'
-    fields = ['email', 'name', 'dob', 'roles', 'addresses', 'wishlist', 'cart']
+    fields = ['email', 'name', 'dob', 'roles', 'addresses', 'wishlist',
+        'cart', 'oauth']
             #'orders']
     defaults = {
         'roles': ['user'],
@@ -43,36 +44,49 @@ class User(Document):
     def from_form(form_data):
         data = {
             'roles': ['user'],
+            'oauth': {},
             'addresses': [],
-            'wishlist': []}
+            'wishlist': [],
+            'cart': [],
+            'name': form_data['name'].lower(),
+            'email': form_data['email'].lower() }#,
             #'orders': [] }
-        if session.get('cart', None) is not None:
-            data['cart'] = session['cart']
-            del(session['cart'])
-        for k in form_data.keys():
-            if form_data[k] not in (None, ''):
-                if k in ('confirm', 'has_address'):
-                    continue
-                elif k in ('name', 'email'):
-                    field_data = form_data[k].lower()
-                elif k == 'dob':
-                    # converts date object to datetime,
-                    # as pymongo only support the latter
-                    field_data = datetime.combine(form_data[k],datetime.min.time())
-                elif k == 'password':
-                    # hash password
-                    field_data = generate_password_hash(form_data[k])
-                elif k == 'is_admin':
-                    if form_data[k]:
-                        data['roles'].append('admin')
-                    continue
-                elif k == 'address':
-                    address = { k: v.lower() for k,v in form_data[k].items() }
-                    data['addresses'] = [ address, ]
-                    continue
-                else:
-                    field_data = form_data[k]
-                data[k] = field_data
+        form_keys = form_data.keys()
+        keys = []
+        for k in form_keys:
+            if k not in ('confirm', 'has_address', 'name', 'email'):
+                keys.append(k)
+        if 'oauth' in keys:
+            data['oauth'] = {
+                form_data['oauth']['provider'].lower(): {
+                    'user_id': form_data['oauth']['userId'],
+                }
+            }
+        else:
+            for k in keys:
+                if form_data[k] not in (None, ''):
+                    if k == 'dob':
+                        # converts date object to datetime,
+                        # as pymongo only support the latter
+                        field_data = datetime.combine(
+                            form_data[k],
+                            datetime.min.time())
+                    elif k == 'password':
+                        # hash password
+                        field_data = generate_password_hash(form_data[k])
+                    elif k == 'is_admin':
+                        if form_data[k]:
+                            data['roles'].append('admin')
+                        continue
+                    elif k == 'address':
+                        if form_data['has_address']:
+                            address = {
+                                k: v.lower() for k,v in form_data[k].items() }
+                            data['addresses'] = [ address, ]
+                        continue
+                    else:
+                        field_data = form_data[k]
+                    data[k] = field_data
         return User(data)
 
     @staticmethod

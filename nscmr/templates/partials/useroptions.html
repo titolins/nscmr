@@ -2,12 +2,13 @@
   {% if 'admin' in current_user.roles %}
   <li>
     <a href="{{ url_for('admin.index') }}">Painel do administrador</a>
+    <a href="{{ url_for('admin.index') }}">Painel do administrador</a>
   </li>
   {% endif %}
   <li>
     <a href="{{ url_for('user') }}">Perfil</a>
   </li>
   <li>
-    <a href="{{ url_for('logout') }}">Sair</a>
+    <a class="logout-btn" href="{{ url_for('logout') }}">Sair</a>
   </li>
 </ul>

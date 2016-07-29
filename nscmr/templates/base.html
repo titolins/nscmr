@@ -25,6 +25,85 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
   </head>
   <body ng-controller={% block ng_controller %}"CartController"{% endblock %}>
+    {% block fb_oauth_sdk %}{% endblock %}
+    <script>
+      function statusChangeCallback(response) {
+        console.log('fb statusChangeCallback');
+        if (response.status === 'connected') {
+          console.log("Logged in to fb and authorized");
+          fbLogin();
+        } else if (response.status === 'not_authorized') {
+          console.log("Logged in to fb but not authorized");
+        } else {
+          console.log("Not logged in to fb");
+        }
+      };
+
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      };
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1050879885027789',
+          xfbml      : true,
+          version    : 'v2.7'
+        });
+        FB.getLoginStatus(function(response) {
+          //statusChangeCallback(response);
+        });
+      };
+
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+      function fbLogin() {
+        FB.api('/me', {fields:['name','email','picture']},function(response) {
+          /*
+          var welcomeEl = document.getElementById('fb-welcome');
+          var loginEl = document.getElementById('login');
+          var welcome = "<img src='" + response['picture'] + "'/>" +
+            "<h5>Bem vindo, " + response['name'] + "!</h5>";
+          welcomeEl.innerHtml = welcome;
+          loginEl.classList.add('hidden');
+          welcomeEl.classList.remove('hidden');
+          */
+          user = {
+            name: response['name'],
+            email: response['email'],
+            oauth: {
+              userId: response['id'],
+              provider: 'fb',
+            }
+          };
+          console.log(user);
+          $.ajax({
+            type: "POST",
+            url: "{{ url_for('login') }}",
+            data: JSON.stringify(user, null, '\t'),
+            headers: {
+              "Content-Type": 'application/json;charset=UTF-8',
+              "X-CSRFToken": csrfToken
+            },
+            success: function(data) {
+              console.log(data);
+              window.location.href = data['redirect'];
+            },
+            error: function(data) {
+              console.log(data);
+              FB.logout();
+            },
+          });
+        });
+      };
+    </script>
     {% include 'partials/nav.html' %}
     <!-- Page content -->
     {% block page_content %} {% endblock %}

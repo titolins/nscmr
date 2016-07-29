@@ -103,7 +103,14 @@ def registration():
     registration_form = RegistrationForm()
     if registration_form.validate_on_submit():
         try:
-            user = User.from_form(registration_form.data)
+            user_data = registration_form.data
+            # admins will never be created through this endpoint (only by the
+            # admin interface)
+            user_data['is_admin'] = False
+            if session.get('cart', None) is not None:
+                user_data['cart'] = session['cart']
+                del(session['cart'])
+            user = User.from_form(user_data)
             user.insert()
             flash('Cadastro bem sucedido! Você já pode fazer suas compras')
             login_user(user)
@@ -135,8 +142,9 @@ def get_addresses():
     user = User.get_by_id(current_user.id, projection={
         '_id': 0,
         'addresses': 1})
-    for addr in user['addresses']:
-        addr['_id'] = str(addr['_id'])
+    if user['addresses'] not in ([], None):
+        for addr in user['addresses']:
+            addr['_id'] = str(addr['_id'])
     response = make_response(json.dumps(user['addresses']),200)
     response.headers['Content-Type'] = 'application/json'
     return response
@@ -615,6 +623,7 @@ def confirm():
 
 @app.route('/entrar', methods=['GET', 'POST'])
 def login():
+    # regular site login
     form = LoginForm()
     if form.validate_on_submit():
         user = User.get_by_email(form.email.data.lower(), to_obj=True)
@@ -629,9 +638,10 @@ def login():
             if session.get('cart', None) is not None:
                 for item in session['cart']:
                     if User._update_one({'cart._id': item['_id']}, inc_data=\
-                                        {'cart.$.quantity': item['quantity'] }).\
+                        {'cart.$.quantity': item['quantity'] }).\
                             modified_count == 0:
-                        User.update_by_id(current_user.id, push_data={'cart': item})
+                        User.update_by_id(current_user.id,
+                            push_data={'cart': item})
                 del(session['cart'])
             flash('Log-in bem sucedido! Você já pode fazer suas compras')
             return back.redirect()
@@ -642,11 +652,52 @@ def login():
         #form.errors['form'].append("E-mail ou senha incorreto(s)")
         return back.redirect()
     else:
-        return render_template(
-                'login.html',
-                categories=Category.get_all(),
-                login_form=form)
-                #login_fail=True)
+        if request.method == 'POST':
+            # if we have a json, the request wasn't made through a form but
+            # via ajax, which means we should have a login authorized by an
+            # third party provider
+            res = { 'redirect': back.url() }
+            user_data = request.json
+            user = User.get_by_email(user_data['email'].lower(), to_obj=True)
+            if user is not None:
+                # user already registered. check if he's logging from a
+                # already merged provider.
+                for k in user.oauth.keys():
+                    # if so, log him in
+                    if k == user_data['oauth']['provider'].lower():
+                        flash('Login bem sucedido!')
+                        login_user(user)
+                # else, merge accounts
+                if not current_user.is_authenticated:
+                    set_data = {
+                        'oauth.{}'.format(user_data['oauth']['provider']): {
+                            'user_id': user_data['oauth']['userId'] }}
+                    result = User.update_by_id(user.id, set_data=set_data)
+                    if result.modified_count == 0:
+                        res['error'] = "Couldn't merge accounts"
+                    else:
+                        flash('Login bem sucedido!')
+                        login_user(user)
+            else:
+                # create new user with oauth provider info
+                user = User.from_form(user_data)
+                user.insert()
+                flash('Cadastro bem sucedido! Você já pode fazer suas compras')
+                login_user(user)
+            if 'error' in res.keys():
+                response = make_response(json.dumps(res), 500)
+            else:
+                response = make_response(json.dumps(res), 200)
+            response.headers['Content-Type'] = 'application/json'
+            return response
+        else:
+            # if we don't have any post data on the request, it is a simple get
+            # request for the login page
+            return render_template(
+                    'login.html',
+                    categories=Category.get_all(),
+                    login_form=form)
+                    #login_fail=True)
 
 
 @app.route('/sair')

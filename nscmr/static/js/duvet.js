@@ -1,4 +1,20 @@
-$(document).ready(function() {
+$(document).ready(function(e) {
+  $(".logout-btn").on('click', function(e) {
+    e.preventDefault();
+    var logoutBtn = $(this);
+    FB.getLoginStatus(function(response) {
+      if(response['status'] === "connected") {
+        console.log('connected. disconnecting');
+        FB.logout(function(response) {
+          console.log('inside fb logout callback');
+          console.log(response);
+          window.location.href = logoutBtn.prop('href');
+        });
+      } else {
+        console.log('not connected.');
+      }
+    });
+  });
   $(".trigger-menu").on('click', function() {
     var target = $($(this).data('target'));
     if (target.hasClass('open')) $('.open').removeClass('open');
