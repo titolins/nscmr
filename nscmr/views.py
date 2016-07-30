@@ -25,6 +25,9 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from pymongo.errors import DuplicateKeyError
 
+# google oauth stuff
+from oauth2client import client, crypt
+
 #mundipagg
 from data_contracts import creditcard, creditcard_transaction, \
     creditcard_transaction_options, create_sale_request, order
@@ -658,8 +661,23 @@ def login():
             # third party provider
             res = { 'redirect': back.url() }
             user_data = request.json
+            # check the token
+            if user_data['oauth']['provider'] == 'google':
+                try:
+                    idinfo = client.verify_id_token(
+                        user_data['oauth']['userToken'],
+                        app.config.get('GOOGLE_CLIENT_ID'))
+                    if idinfo['aud'] != app.config.get('GOOGLE_CLIENT_ID'):
+                       raise crypt.AppIdentityError("Unrecognized client.")
+                    if idinfo['iss'] not in [
+                            'accounts.google.com',
+                            'https://accounts.google.com']:
+                        raise crypt.AppIdentityError("Wrong issuer.")
+                except crypt.AppIdentityError:
+                    res['error'] = "Provided token is invalid"
+
             user = User.get_by_email(user_data['email'].lower(), to_obj=True)
-            if user is not None:
+            if user is not None or 'error' in res.keys():
                 # user already registered. check if he's logging from a
                 # already merged provider.
                 for k in user.oauth.keys():
@@ -671,14 +689,14 @@ def login():
                 if not current_user.is_authenticated:
                     set_data = {
                         'oauth.{}'.format(user_data['oauth']['provider']): {
-                            'user_id': user_data['oauth']['userId'] }}
+                            'user_id': user_data['oauth']['userToken'] }}
                     result = User.update_by_id(user.id, set_data=set_data)
                     if result.modified_count == 0:
                         res['error'] = "Couldn't merge accounts"
                     else:
                         flash('Login bem sucedido!')
                         login_user(user)
-            else:
+            elif user is None:
                 # create new user with oauth provider info
                 user = User.from_form(user_data)
                 user.insert()

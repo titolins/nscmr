@@ -59,7 +59,7 @@ class User(Document):
         if 'oauth' in keys:
             data['oauth'] = {
                 form_data['oauth']['provider'].lower(): {
-                    'user_id': form_data['oauth']['userId'],
+                    'user_token': form_data['oauth']['userToken'],
                 }
             }
         else:

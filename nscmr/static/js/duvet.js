@@ -11,7 +11,15 @@ $(document).ready(function(e) {
           window.location.href = logoutBtn.prop('href');
         });
       } else {
-        console.log('not connected.');
+        console.log('not connected to fb. going for google.');
+        try {
+          var auth2 = gapi.auth2.getAuthInstance();
+          auth2.signOut().then(function() {
+            window.location.href = logoutBtn.prop('href');
+          });
+        } catch(e) {
+          window.location.href = logoutBtn.prop('href');
+        }
       }
     });
   });
