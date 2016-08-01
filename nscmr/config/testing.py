@@ -1,16 +1,19 @@
 import os
 from uuid import UUID
 
-TESTING = True
-MONGODB_DB = 'nscmr_test'
-
-basedir = '/home/snil/dev/nscmr'
+basedir = '/var/www/nscmr'
 
 UPLOADS_DEFAULT_DEST = os.path.join(basedir, 'instance/uploads')
 #UPLOADS_IMAGES_DEST = os.path.join(UPLOADS_DEFAULT_DEST, 'img/')
 
-DEBUG = True
+DEBUG = False
+TESTING = True
+
+SUPPORT_CONTACT = 'contato@studioduvet.com.br'
 MONGODB_DB = 'nscmr_test'
+
+SESSION_TYPE = 'mongodb'
+SESSION_MONGODB_DB = MONGODB_DB
 
 # sandbox
 MUNDIPAGG_KEY = UUID('7075fc55-70ed-41f2-9def-95e5053f11dd')

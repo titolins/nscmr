@@ -7,6 +7,9 @@ UPLOADS_DEFAULT_DEST = os.path.join(basedir, 'instance/uploads')
 #UPLOADS_IMAGES_DEST = os.path.join(UPLOADS_DEFAULT_DEST, 'img/')
 
 DEBUG = True
+TESTING = False
+
+SUPPORT_CONTACT = 'contato@studioduvet.com.br'
 MONGODB_DB = 'nscmr_dev'
 
 SESSION_TYPE = 'mongodb'

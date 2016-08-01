@@ -16,7 +16,7 @@ SESSION_TYPE = 'mongodb'
 SESSION_MONGODB_DB = MONGODB_DB
 
 # dev key. production must be requested
-#MUNDIPAGG_KEY = UUID('7075fc55-70ed-41f2-9def-95e5053f11dd')
+MUNDIPAGG_KEY = UUID('7075fc55-70ed-41f2-9def-95e5053f11dd')
 MUNDIPAGG_ENDPOINT = 'https://transactionv2.mundipaggone.com'
 
 GOOGLE_CLIENT_ID = "883320219445-ejvh51karin9m6dg9mbql56vjn0vp2ls.apps.googleusercontent.com"
