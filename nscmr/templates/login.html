@@ -49,7 +49,7 @@
           <input class="duvet-btn align-fix" type="submit" value="Entrar">&nbsp;</input>
         </div>
       </form>
-      <fb:login-button data-size="large" scope="public_profile,email" onlogin="checkLoginState(null,fbLogin);">
+      <fb:login-button data-size="large" scope="public_profile,email" onlogin="checkLoginState();">
       </fb:login-button>
       <div class="g-signin2" data-onsuccess="gSignIn" data-theme="dark"></div>
     </div>
@@ -129,7 +129,7 @@
           name: response['name'],
           email: response['email'],
           oauth: {
-            userToken: response['id'],
+            userToken: FB.getAuthResponse()['accessToken'],
             provider: 'fb',
           }
         };

@@ -512,21 +512,21 @@ def shipping():
         cart = current_user.cart
         box_size, weight, val = get_cart_info(cart)
         data = {
-                'nCdEmpresa': '',
-                'sDsSenha': '',
-                'nCdServico': ','.join([k for k in TIPOS_FRETE_CORREIOS.keys()]),
-                'sCepOrigem': '22450130',
-                'sCepDestino': zip_code,
-                'nVlPeso': weight,
-                'nCdFormato': 1,
-                'nVlLargura': box_size[0],
-                'nVlComprimento': box_size[1],
-                'nVlAltura': box_size[2],
-                'nVlDiametro': box_size[3],
-                'sCdMaoPropria': 'N',#'S', #confirm
-                'nVlValorDeclarado': 0,#val, #confirm
-                'sCdAvisoRecebimento': 'N'#'S' #confirm
-                }
+            'nCdEmpresa': '',
+            'sDsSenha': '',
+            'nCdServico': ','.join([k for k in TIPOS_FRETE_CORREIOS.keys()]),
+            'sCepOrigem': '22450130',
+            'sCepDestino': zip_code,
+            'nVlPeso': weight,
+            'nCdFormato': 1,
+            'nVlLargura': box_size[0],
+            'nVlComprimento': box_size[1],
+            'nVlAltura': box_size[2],
+            'nVlDiametro': box_size[3],
+            'sCdMaoPropria': 'N',#'S', #confirm
+            'nVlValorDeclarado': 0,#val, #confirm
+            'sCdAvisoRecebimento': 'N'#'S' #confirm 
+        }
         r = requests.post(ENDPOINT_FRETE_CORREIOS, data = data)
         r_dict = xmltodict.parse(str(r.content, 'utf-8'))
         services = r_dict['cResultado']['Servicos']['cServico']
@@ -664,6 +664,8 @@ def login():
             # check the token
             if user_data['oauth']['provider'] == 'google':
                 try:
+                    # google has it's own library for checking the user's
+                    # access token validity
                     idinfo = client.verify_id_token(
                         user_data['oauth']['userToken'],
                         app.config.get('GOOGLE_CLIENT_ID'))
@@ -674,7 +676,28 @@ def login():
                             'https://accounts.google.com']:
                         raise crypt.AppIdentityError("Wrong issuer.")
                 except crypt.AppIdentityError:
+                    # if any errors are raised, we poppulate the error in res
+                    # for checking later
                     res['error'] = "Provided token is invalid"
+            elif user_data['oauth']['provider'] == 'fb':
+                # facebook requires you to make a request to it's graph api,
+                # indicating the user token and your app's id and secret
+                validate_at_ep = 'https://graph.facebook.com/debug_token'
+                validate_at_params = {
+                    'input_token': user_data['oauth']['userToken'],
+                    'access_token': '{}|{}'.format(
+                        app.config.get('FB_APP_ID'),
+                        app.config.get('FB_APP_SECRET'))
+                }
+                r = requests.get(validate_at_ep, params=validate_at_params)
+                r_data = r.json()['data']
+            try:
+                if r_data['app_id'] != app.config.get('FB_APP_ID'):
+                    raise crypt.AppIdentityError("Unrecognized client.")
+                if r_data['is_valid'] not in ('true', True):
+                    raise crypt.AppIdentityError("Invalid token.")
+            except crypt.AppIdentityError:
+                res['error'] = "Provided token is invalid"
 
             user = User.get_by_email(user_data['email'].lower(), to_obj=True)
             if user is not None or 'error' in res.keys():
