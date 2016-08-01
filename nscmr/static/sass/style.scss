@@ -668,6 +668,48 @@ hr { width: 100%; }
   }
 }
 
+/*
+#oauth-btns-wrapper {
+  width: 100%;
+  @media screen and (min-width: 320px) {
+    text-align: left;
+  }
+  @media screen and (min-width: 480px) {
+    text-align: center;
+  }
+  & > .oauth-btn {
+    @media screen and (min-width: 320px) {
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+    @media screen and (min-width: 480px) {
+      margin-top: 0;
+      float: left;
+      width: 50%;
+    }
+  }
+}
+*/
+#oauth-btns-wrapper {
+  width: 100%;
+  text-align: center;
+  & > .oauth-btn {
+    & > .g-signin2 {
+      width: 120px;
+      margin: auto;
+    }
+    @media screen and (min-width: 320px) {
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+    @media screen and (min-width: 480px) {
+      margin-top: 0;
+      float: left;
+      width: 50%;
+    }
+  }
+}
+
 
 /*
  * sidebar pages generic settings
@@ -1434,6 +1476,9 @@ select {
     line-height: normal !important;
   }
   .duvet-btn {
+    &.no-margin {
+      margin-left: 0 !important;
+    }
     &:last-child {
       margin-left: 15px;
     }
