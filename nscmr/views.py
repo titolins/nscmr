@@ -1,5 +1,5 @@
 from flask import (
-    session,
+session,
     render_template,
     url_for,
     request,
@@ -682,22 +682,22 @@ def login():
             elif user_data['oauth']['provider'] == 'fb':
                 # facebook requires you to make a request to it's graph api,
                 # indicating the user token and your app's id and secret
-                validate_at_ep = 'https://graph.facebook.com/debug_token'
-                validate_at_params = {
-                    'input_token': user_data['oauth']['userToken'],
-                    'access_token': '{}|{}'.format(
-                        app.config.get('FB_APP_ID'),
-                        app.config.get('FB_APP_SECRET'))
-                }
-                r = requests.get(validate_at_ep, params=validate_at_params)
-                r_data = r.json()['data']
-            try:
-                if r_data['app_id'] != app.config.get('FB_APP_ID'):
-                    raise crypt.AppIdentityError("Unrecognized client.")
-                if r_data['is_valid'] not in ('true', True):
-                    raise crypt.AppIdentityError("Invalid token.")
-            except crypt.AppIdentityError:
-                res['error'] = "Provided token is invalid"
+                try:
+                    validate_at_ep = 'https://graph.facebook.com/debug_token'
+                    validate_at_params = {
+                        'input_token': user_data['oauth']['userToken'],
+                        'access_token': '{}|{}'.format(
+                            app.config.get('FB_APP_ID'),
+                            app.config.get('FB_APP_SECRET'))
+                    }
+                    r = requests.get(validate_at_ep, params=validate_at_params)
+                    r_data = r.json()['data']
+                    if r_data['app_id'] != app.config.get('FB_APP_ID'):
+                        raise crypt.AppIdentityError("Unrecognized client.")
+                    if r_data['is_valid'] not in ('true', True):
+                        raise crypt.AppIdentityError("Invalid token.")
+                except crypt.AppIdentityError:
+                    res['error'] = "Provided token is invalid"
 
             user = User.get_by_email(user_data['email'].lower(), to_obj=True)
             if user is not None or 'error' in res.keys():
