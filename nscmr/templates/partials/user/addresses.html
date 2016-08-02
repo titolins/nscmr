@@ -1,5 +1,5 @@
 <div class='user-title'>
-  <h3>Endereços</h3>
+  <h3><b>Endereços</b></h3>
   <hr>
 </div>
 <p ng-hide="addressesService.addresses.length" id="no-address-text">Nenhum endereço registrado.</p>
@@ -15,7 +15,7 @@
       <i class="fa fa-edit"></i>
       Editar
     </a>
-    <a class="pointer" ng-click="deleteAddress(address['_id']); $event.preventDefault();" href="#">
+    <a class="pointer" ng-click="addressesService.deleteAddress(address['_id']); $event.preventDefault();" href="#">
       <i class="fa fa-close"></i>
       Remover
     </a>

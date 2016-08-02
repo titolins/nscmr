@@ -32,6 +32,7 @@
 {% block scripts %}
   <script>
     var getAddressesUri = "{{ url_for('get_addresses') }}";
+    var removeAddressUri = "{{ url_for('delete_address') }}";
     var addAddressUri = "{{ url_for('add_address') }}";
     var editCartUri = "{{ url_for('edit_cart') }}";
     var confirmUri = "{{ url_for('confirm') }}";

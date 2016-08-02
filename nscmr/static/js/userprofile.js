@@ -91,14 +91,6 @@ angular.module('angularApp', ['ui.mask'])
     }
   };
 
-  $scope.deleteAddress = function(addressId) {
-    var data = { 'address_id': addressId };
-    sendPost(removeAddressUri, data, function(response) {
-      $scope.addressesService.update(getAddressesUri);
-      alert(response.data);
-    });
-  };
-
   function sendPost(uri, data, successCallback, errorCallback) {
     $http({
       method: 'POST',

@@ -19,4 +19,22 @@ angular.module('angularApp')
     self.addresses = angular.copy(self.initialAddresses);
   };
 
+  this.deleteAddress = function(addressId) {
+    var data = { 'address_id': addressId };
+    $http({
+      method: 'POST',
+      url: removeAddressUri,
+      data: data,
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/json;utf-8"
+      }
+    }).then(function successCallback(response) {
+      self.update(getAddressesUri);
+      alert(response.data);
+    }, function errorCallback(response) {
+      alert(response.data);
+    });
+  };
+
 }]);
