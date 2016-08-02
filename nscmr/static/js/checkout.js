@@ -14,19 +14,6 @@ angular.module('angularApp')
   };
   $scope.card = angular.copy($scope.initialCard);
 
-  $scope.selectAddress = function($event, address) {
-    var target = $event.target;
-    var parentNode = target.parentNode;
-    while (!parentNode.classList.contains('address-panel')) parentNode = parentNode.parentNode;
-    if (parentNode.classList.contains('selected')) { parentNode.classList.toggle('selected'); $scope.selectedAddress = null; }
-    else {
-      var selectedPanel = document.getElementsByClassName('address-panel selected')[0];
-      if (selectedPanel !== undefined) selectedPanel.classList.remove('selected');
-      parentNode.classList.toggle('selected');
-      $scope.selectedAddress = address;
-    }
-  };
-
   $scope.toggleCheckoutOption = function($event) {
     $event.preventDefault();
     var removeOption = document.getElementById('checkout-options').getElementsByClassName('selected')[0];
@@ -140,10 +127,16 @@ angular.module('angularApp')
     });
   };
 
-  $scope.chooseAddress = function(e) {
+  $scope.chooseAddress = function(e, address) {
     if(e.target.parentNode.classList.contains('options-btn')) return;
     var target = e.target;
     while(!target.classList.contains('select-address')) target = target.parentNode;
+    if(target.classList.contains('selected')) $scope.selectedAddress = null;
+    else {
+      var curSelection = document.querySelector('.select-address.selected');
+      if(curSelection != null) curSelection.classList.remove('selected');
+      $scope.selectedAddress = address;
+    }
     target.classList.toggle('selected');
   };
 

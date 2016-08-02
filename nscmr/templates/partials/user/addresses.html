@@ -4,7 +4,7 @@
 </div>
 <p ng-hide="addressesService.addresses.length" id="no-address-text">Nenhum endereço registrado.</p>
 <div class="address-panel" ng-repeat="address in addressesService.addresses track by address._id">
-  <div class="select-address" ng-click="chooseAddress($event)">
+  <div class="select-address" ng-click="chooseAddress($event, address)">
     <div class="address">
       <span class='field-value'>{a address['street_address_1'] a}, </span>
       <span class="field-value" ng-if="address['street_address_2'] != ''">{a address['street_address_2'] a}, </span>
