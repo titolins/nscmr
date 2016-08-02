@@ -4,27 +4,31 @@
 </div>
 <p ng-hide="addressesService.addresses.length" id="no-address-text">Nenhum endereço registrado.</p>
 <div class="address-panel" ng-repeat="address in addressesService.addresses track by address._id">
-  <span class='field-value'>{a address['street_address_1'] a}, </span>
-  <span class="field-value" ng-if="address['street_address_2'] != ''">{a address['street_address_2'] a}, </span>
-  <span class="field-value">{a address['neighbourhood'] a}, </span>
-  <span class="field-value">{a address['city'] a}, </span>
-  <span class="field-value">{a address['state'] a} - </span>
-  <span class="field-value">{a address['zip_code'] a}</span>
-  <div class="options-btn text-right">
-    <a class="pointer" data-toggle="modal" data-target="#edit-{a address['_id'] a}-modal">
-      <i class="fa fa-edit"></i>
-      Editar
-    </a>
-    <a class="pointer" ng-click="addressesService.deleteAddress(address['_id']); $event.preventDefault();" href="#">
-      <i class="fa fa-close"></i>
-      Remover
-    </a>
+  <div class="select-address" ng-click="chooseAddress($event)">
+    <div class="address">
+      <span class='field-value'>{a address['street_address_1'] a}, </span>
+      <span class="field-value" ng-if="address['street_address_2'] != ''">{a address['street_address_2'] a}, </span>
+      <span class="field-value">{a address['neighbourhood'] a}, </span>
+      <span class="field-value">{a address['city'] a}, </span>
+      <span class="field-value">{a address['state'] a} - </span>
+      <span class="field-value">{a address['zip_code'] a}</span>
+    </div>
+    <div class="options-btn">
+      <a class="pointer" data-toggle="modal" data-target="#edit-{a address['_id'] a}-modal">
+        <i class="fa fa-edit"></i>
+        Editar
+      </a>
+      <a class="pointer" ng-click="addressesService.deleteAddress(address['_id']); $event.preventDefault();" href="#">
+        <i class="fa fa-close"></i>
+        Remover
+      </a>
+    </div>
   </div>
   <div id="edit-{a address['_id'] a}-modal" class="modal fade address-modal" role="dialog">
     <div class="modal-dialog">
       <div class="modal-header">
         <h4 class="inline">Editar endereço</h4>
-        <button type="button" class="close inline" data-dismiss="modal">&times;</button>
+        <button ng-click="addressesService.reset();" type="button" class="close inline" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body" ng-controller="AddressController">
         <form id="create-address-form" ng-submit="addAddress()" method="post">
@@ -52,7 +56,7 @@
             <span class="capitalize">Estado: </span>
             <input type="text" class="form-control" ng-model="address['state']"/>
           </div>
-          <div class="duvet-btn-wrapper add-address-btn text-right">
+          <div class="duvet-btn-wrapper text-right">
             <a href="#" ng-click="editAddress(address, $index); $event.preventDefault();" class="duvet-btn">Editar</a>
           </div>
         </form>

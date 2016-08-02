@@ -128,6 +128,40 @@ $font-sizes: (
   cursor: pointer;
 }
 
+//
+// border for double column panelsborder for double column panels
+//
+.double-column {
+  &.border-left {
+    & > [class^='col-']:first-child,
+    & > [class*=' col-']:first-child {
+      @media screen and (min-width: 320px) {
+        border-bottom: 1px solid $dark;
+        margin-bottom: 2em;
+      }
+      @media screen and (min-width: 992px) {
+        margin-bottom: 0;
+        border-bottom: 0;
+        border-right: 1px solid $dark;
+      }
+    }
+  }
+  &.border-right {
+    & > [class^='col-']:last-child,
+    & > [class*=' col-']:last-child {
+      @media screen and (min-width: 320px) {
+        border-top: 1px solid $dark;
+        margin-top: 2em;
+      }
+      @media screen and (min-width: 992px) {
+        margin-top: 0;
+        border-top: 0;
+        border-left: 1px solid $dark;
+      }
+    }
+  }
+}
+
 /**
  * styling checkboxes to use font awesome icons
  * taken from: https://codepen.io/jamesbarnett/pen/yILjk/
@@ -668,28 +702,6 @@ hr { width: 100%; }
   }
 }
 
-/*
-#oauth-btns-wrapper {
-  width: 100%;
-  @media screen and (min-width: 320px) {
-    text-align: left;
-  }
-  @media screen and (min-width: 480px) {
-    text-align: center;
-  }
-  & > .oauth-btn {
-    @media screen and (min-width: 320px) {
-      margin-top: 15px;
-      margin-bottom: 15px;
-    }
-    @media screen and (min-width: 480px) {
-      margin-top: 0;
-      float: left;
-      width: 50%;
-    }
-  }
-}
-*/
 #oauth-btns-wrapper {
   width: 100%;
   text-align: center;
@@ -1107,6 +1119,7 @@ select {
 .options-btn {
   margin-top: 10px;
   margin-bottom: 10px;
+  float: right;
 }
 
 /*
@@ -1171,13 +1184,6 @@ select {
 
 #addresses-data {
   min-height: 300px;
-  @media screen and (min-width: 320px) {
-    padding-top: 15px;
-  }
-  @media screen and (min-width: 992px) {
-    border-left: 1px solid $dark;
-    padding-top: 0;
-  }
 }
 
 .address-modal {
@@ -1191,29 +1197,26 @@ select {
 }
 
 .address-panel {
-  padding: 25px 15px 25px 15px;
-  border: 1px solid $dark;
-  margin-top: 15px;
-  &.selected {
-    background-color: $light-grey;
-    border: 1px solid $dark;
-  }
-  .options-btn {
+  & > div.select-address {
     margin: 0;
-    font-size: .8em;
-    & a:hover {
-      text-decoration: underline;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    padding: 25px 15px 25px 15px;
+    border: 1px solid $dark;
+    margin-top: 15px;
+    .options-btn {
+      margin: 0;
+      font-size: .8em;
+      & a:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
 
 #no-address-text {
   margin-bottom: 110px;
-}
-
-.add-address-btn {
-  margin-top: 17px;
-  cursor: pointer;
 }
 
 .field {
@@ -1237,17 +1240,6 @@ select {
         width: 60px;
       }
     }
-  }
-}
-
-#profile-data {
-  @media screen and (min-width: 320px) {
-    border-bottom: 1px solid $dark;
-    padding-bottom: 2em;
-  }
-  @media screen and (min-width: 992px) {
-    border-bottom: 0;
-    padding-bottom: 0;
   }
 }
 
@@ -1275,15 +1267,14 @@ select {
  * checkout
  */
 
-#cart-table-wrapper {
-  @media screen and (min-width: 320px) {
-    border-bottom: 1px solid $dark;
-    margin-bottom: 2em;
-  }
-  @media screen and (min-width: 992px) {
-    margin-bottom: 0;
-    border-bottom: 0;
-    border-right: 1px solid $dark;
+#checkout {
+  .address-panel {
+    & > div.select-address {
+      cursor: pointer;
+      &.selected {
+        background-color: $light-grey;
+      }
+    }
   }
 }
 
@@ -1471,6 +1462,7 @@ select {
 }
 
 .duvet-btn-wrapper {
+  margin-top: 17px;
   width: 100%;
   .align-fix {
     line-height: normal !important;
@@ -1482,6 +1474,7 @@ select {
     &:last-child {
       margin-left: 15px;
     }
+    @extend .pointer;
     border: 1px solid $dark;
     padding: 15px 30px 15px 30px;
     @include align-vertical(50px);

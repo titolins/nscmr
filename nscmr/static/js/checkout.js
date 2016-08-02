@@ -140,4 +140,11 @@ angular.module('angularApp')
     });
   };
 
+  $scope.chooseAddress = function(e) {
+    if(e.target.parentNode.classList.contains('options-btn')) return;
+    var target = e.target;
+    while(!target.classList.contains('select-address')) target = target.parentNode;
+    target.classList.toggle('selected');
+  };
+
 }]);
