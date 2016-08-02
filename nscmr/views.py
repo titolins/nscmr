@@ -183,10 +183,11 @@ def user():
 @login_required
 def edit_user():
     data = {}
-    for field in request.json:
+    edit_data = request.json
+    for field in edit_data:
         if field in ('name', 'email'):
             data[field] = request.json[field].lower()
-        elif field == 'dob':
+        elif field == 'dob' and edit_data[field] is not '':
             data[field] = datetime.strptime(request.json[field], "%d/%m/%Y")
         else:
             #ignore unwanted fields
