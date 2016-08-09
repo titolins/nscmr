@@ -29,11 +29,11 @@ from pymongo.errors import DuplicateKeyError
 from oauth2client import client, crypt
 
 #mundipagg
-from data_contracts import creditcard, creditcard_transaction, \
-    creditcard_transaction_options, create_sale_request, order
-from mundipaggOnePython import GatewayServiceClient
-from enum_types import PlatformEnvironment, HttpContentTypeEnum
-import uuid
+#from data_contracts import creditcard, creditcard_transaction, \
+#    creditcard_transaction_options, create_sale_request, order
+#from mundipaggOnePython import GatewayServiceClient
+#from enum_types import PlatformEnvironment, HttpContentTypeEnum
+#import uuid
 
 from functools import wraps
 import requests
@@ -572,6 +572,7 @@ def confirm():
     card = request.json['card']
     cart = request.json['cart']
     # https://github.com/mundipagg/mundipagg-one-python/wiki/Create-a-Transaction
+    '''
     creditcard_data = creditcard(
         creditcard_number = card['number'],
         creditcard_brand = card['brand'],
@@ -611,6 +612,8 @@ def confirm():
 
     response.headers['Content-Type'] = 'application/json'
     return response
+    '''
+    return 'ok'
 
 ###################
 # end checkout    #
