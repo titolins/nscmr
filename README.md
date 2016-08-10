@@ -9,10 +9,23 @@ As the admin panel, we chose [flat admin v.2] because of it's neat design :)
 As per the above, nscmr is still under development and not ready for use.
 
 ## Instructions
+* Install python3, mongodb, apache and apache mod_wsgi (for python3)
+    * after installing apache, you need to change the python-path parameter in
+        nscmr.conf passed to the daemon process to reflect the python library
+        path (if using a venv tool -- if using system python you probably won't
+        have to do this). Then...
+    ```
+    sudo rm /etc/apache2/sites-enabled/*
+    sudo cp nscmr.conf /etc/apache2/sites-available
+    sudo ln -s /etc/apache2/sites-available/nscmr.conf \
+        /etc/apache2/sites-enabled/
+    ```
+* Run deploy script (will simply copy the files over to the right directory)
+    * nscmr.wsgi paths may need to be changed as well
 * Install pip
 * Install requirements with `pip install -r requirements.txt`
 * Create instance and uploads folder
-* Generate secret key 
+* Generate secret key
 * Install gem and then sass:
     ```
     gem install sass
