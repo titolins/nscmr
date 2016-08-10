@@ -20,8 +20,8 @@ As per the above, nscmr is still under development and not ready for use.
     sudo ln -s /etc/apache2/sites-available/nscmr.conf \
         /etc/apache2/sites-enabled/
     ```
-* Run deploy script (will simply copy the files over to the right directory)
-    * nscmr.wsgi paths may need to be changed as well
+* Run deploy script (will simply copy the files over to the right directory and
+    set permissions) -- nscmr.wsgi paths may need to be changed as well
 * Install pip
 * Install requirements with `pip install -r requirements.txt`
 * Create instance and uploads folder
