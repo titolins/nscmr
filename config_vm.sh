@@ -20,3 +20,5 @@ ln -sf /vagrant /var/www
 #ssh-keygen -t rsa -b 4096 -C "tito@blinx.com.br" -P "" -f ~/.ssh/id_rsa ;
 #eval $(ssh-agent /bin/bash <<< ssh-add ~/.ssh/id_rsa)
 #EOF
+git config --global user.email "tito@blinx.com.br"
+git config --global user.name "Tito Lins"
