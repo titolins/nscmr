@@ -79,7 +79,6 @@ for the desired app's mode.
 
 ## TODO's
 ### controller
-    * see how to correctly [send static files].
     * slugs should be checked against the id of the object to see if they are
       correct!!
     * create custom error in case of wrong login/password

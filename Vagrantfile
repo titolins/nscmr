@@ -16,6 +16,7 @@ Vagrant.configure("2") do |config|
     config.vm.synced_folder ".", "/vagrant",
         owner: "vagrant", group: "www-data"
 
+    #config.ssh.private_key_path = '~/.ssh/id_rsa'
     config.ssh.forward_agent = true
 end
 
