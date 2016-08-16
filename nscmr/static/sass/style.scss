@@ -1633,6 +1633,10 @@ div#connect {
       color: $light-red;
     }
     .duvet-input {
+      text-align: right;
+      a {
+        text-align: center;
+      }
       input {
         border: 1px solid $light-grey;
         font-style: italic;
