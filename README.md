@@ -9,43 +9,53 @@ As the admin panel, we chose [flat admin v.2] because of it's neat design :)
 As per the above, nscmr is still under development and not ready for use.
 
 ## Instructions
-* Install python3, mongodb, apache and apache mod_wsgi (for python3)
-    * after installing apache, you need to change the python-path parameter in
-        nscmr.conf passed to the daemon process to reflect the python library
-        path (if using a venv tool -- if using system python you probably won't
-        have to do this). Then...
-    ```
-    sudo rm /etc/apache2/sites-enabled/*
-    sudo cp nscmr.conf /etc/apache2/sites-available
-    sudo ln -s /etc/apache2/sites-available/nscmr.conf \
-        /etc/apache2/sites-enabled/
-    ```
-* Run set_permissions.sh
-* Install pip
-* Install requirements with `pip install -r requirements.txt`
 * Create instance and uploads folder
 * Generate secret key
-* Install gem and then sass:
-    ```
-    gem install sass
-    ```
 * Install npm:
     * install bower and then install jquery, bootstrap font-awesome and angular:
     ```
     sudo npm install -g bower
+    # bower needs to be initialized in the uppermost nscmr folder
+    cd nscmr
     bower init
-    bower install -S jquery
-    bower install -S bootstrap
-    bower install -S font-awesome
-    bower install -S angular
-    bower install -S angular-ui-mask
-    bower install -S angular-i18n
+    # may be required to create a symlink, as per the below
+    ln -s /usr/bin/nodejs /usr/bin/node
+    bower install -S jquery bootstrap font-awesome angular angular-ui-mask \
+        angular-i18n
     ```
     * copy glyphicon fonts to static dir:
     ```
     mkdir static/fonts
     cp bower_components/bootstrap/fonts/* static/fonts/
     cp bower_components/font-awesome/fonts/* static/fonts/
+    ```
+* Install docker:
+    ```
+    apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys \
+        58118E89F3A912897C070ADBF76221572C52609D
+    echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > \
+        /etc/apt/sources.list.d/docker.list
+
+    apt-get update && apt-get install docker-engine
+
+    ```
+* Create a volume to store the db data and the app container:
+    ```
+    docker volume create --driver local --name dbdata
+    docker build -t nscmr .
+    ```
+* Run the nscmr docker container indicating the volume and mongodb path:
+    ```
+    docker run -v dbdata:/var/lib/mongodb -d -p 8000:80 --name nscmr nscmr
+    ```
+* Lastly, we have to get a shell of the container to start the mongod:
+    ```
+    $ docker exec -it nscmr /bin/bash
+
+    # service mongod start
+    # exit
+
+    $
     ```
 
 ### App modes
@@ -82,13 +92,6 @@ for the desired app's mode.
     * slugs should be checked against the id of the object to see if they are
       correct!!
     * create custom error in case of wrong login/password
-
-### models
-    * see python currencies
-    * see python countries -> _not necessary right now_
-    * see python [login/user management] -> *OK*
-    * see python [auth]
-    * see python phone -> _not necessary as of now_
 
 #### user
     * implement ssl support.

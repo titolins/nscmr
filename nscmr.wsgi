@@ -1,8 +1,6 @@
-import os, sys
+import os
 
 # change this to indicate the correct configuration
-os.environ['APP_CONFIG_FILE'] = '/var/www/nscmr/nscmr/config/testing.py'
-sys.path.insert (0,'/var/www/nscmr')
-os.chdir("/var/www/nscmr")
+os.environ['APP_CONFIG_FILE'] = '/app/nscmr/config/testing.py'
 
 from nscmr import app as application
