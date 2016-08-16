@@ -1633,7 +1633,12 @@ div#connect {
       color: $light-red;
     }
     .duvet-input {
-      text-align: right;
+      &#social {
+        text-align: right;
+      }
+      &#newsletter {
+        text-align: left;
+      }
       a {
         text-align: center;
       }
