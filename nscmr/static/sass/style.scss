@@ -683,6 +683,9 @@ hr { width: 100%; }
  */
 
 #login {
+  h3 {
+    text-align: center;
+  }
   div.col-md-6:first-child {
     @media screen and (min-width: 320px) {
       border-bottom: 1px solid $dark;
@@ -1482,6 +1485,7 @@ select {
     background-color: $light-blue;
     color: white !important;
     text-transform: lowercase;
+    border: 0;
     border-radius: 25px;
     &:hover {
       background-color: $light-grey;
