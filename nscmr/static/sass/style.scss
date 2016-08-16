@@ -1625,7 +1625,9 @@ div#connect {
   height: 100px;
   span {
     &#social {
-      text-align: right;
+      .duvet-input {
+        text-align: right;
+      }
     }
     &#newsletter {
       text-align: left;
