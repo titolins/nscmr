@@ -1624,6 +1624,12 @@ div#connect {
   width: 100%;
   height: 100px;
   span {
+    &#social {
+      text-align: right;
+    }
+    &#newsletter {
+      text-align: left;
+    }
     .duvet-input,
     p {
       text-align: left;
@@ -1633,12 +1639,6 @@ div#connect {
       color: $light-red;
     }
     .duvet-input {
-      &#social {
-        text-align: right;
-      }
-      &#newsletter {
-        text-align: left;
-      }
       a {
         text-align: center;
       }
