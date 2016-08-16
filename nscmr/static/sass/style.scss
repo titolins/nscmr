@@ -376,6 +376,13 @@ hr { width: 100%; }
 }
 
 .item-dropdown {
+  a {
+    font-family: Arial;
+    font-weight: lighter;
+    font-size: .8em;
+    text-transform: lowercase;
+    letter-spacing: 1px;
+  }
   z-index: 800;
   @extend .light;
   position: absolute;
@@ -395,7 +402,7 @@ hr { width: 100%; }
   &#categories-dropdown {
     @media screen and (min-width: 320px) {
       min-height: 60px;
-      width: 250px;
+      width: 130px;
       @include transformY(-282px);
       @include transition(500ms);
       &.open {

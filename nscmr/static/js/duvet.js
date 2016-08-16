@@ -38,8 +38,8 @@ $(document).ready(function(e) {
       else {
         var rect = this.getBoundingClientRect();
         var left = rect.right - (target.offsetWidth - (rect.left - rect.right));
-        target.style.left = "" + rect.left + "px";
-        target.style.right = "" + rect.right + "px";
+        target.style.left = "" + (rect.left - (rect.width/2)) + "px";
+        target.style.right = "" + (rect.right - (rect.width/2)) + "px";
       }
     }
     else {
