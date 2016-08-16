@@ -29,6 +29,7 @@ As per the above, nscmr is still under development and not ready for use.
     cp bower_components/bootstrap/fonts/* static/fonts/
     cp bower_components/font-awesome/fonts/* static/fonts/
     ```
+
 ### Development server
 * Import mongodb repo key and add .list file:
     ```
