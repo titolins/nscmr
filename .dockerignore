@@ -1,0 +1,14 @@
+.git
+.gitignore
+config_vm.sh
+layout/
+nscmr.conf
+.python-version
+README.md
+runserver.py
+set_permissions.sh
+uml.uxf
+.vagrant
+Vagrantfile
+**/.*
+
