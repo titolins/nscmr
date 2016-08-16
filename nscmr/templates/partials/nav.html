@@ -27,6 +27,10 @@
     </span>
     <div class="clearfix"></div>
   </div>
+  {% if current_user.is_authenticated %}
+    {% include 'partials/useroptions.html' %}
+  {% endif %}
+  {% include 'partials/cartdropdown.html' %}
 </nav>
 <div id="navbar-menu">
   <ul class="list-inline capitalize">
@@ -41,8 +45,4 @@
     <li><a href="{{ url_for('contact') }}">Contato</a></li>
   </ul>
 </div>
-{% if current_user.is_authenticated %}
-  {% include 'partials/useroptions.html' %}
-{% endif %}
-{% include 'partials/cartdropdown.html' %}
 {% include 'partials/categoriesdropdown.html' %}
