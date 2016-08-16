@@ -58,6 +58,23 @@ As per the above, nscmr is still under development and not ready for use.
     $
     ```
 
+### Updating
+* To update the application you must stop the currently running container,
+    remove it, delete it's image, then rebuild it and restart the container:
+    ```
+    docker stop nscmr
+    docker rm nscmr
+    docker rmi nscmr
+    docker built -t nscmr .
+    docker run -v dbdata:/var/lib/mongodb -d -p 8000:80 --name nscmr nscmr
+    ```
+* Access a tty to start the mongod again:
+    ```
+    $ docker exec -it nscmr /bin/bash
+
+    # service mongod start
+    ```
+
 ### App modes
 The app may be run in development, testing or production modes. To trigger the
 correct configuration for each mode, the user must point the APP_CONFIG_FILE
