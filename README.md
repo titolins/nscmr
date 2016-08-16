@@ -29,6 +29,43 @@ As per the above, nscmr is still under development and not ready for use.
     cp bower_components/bootstrap/fonts/* static/fonts/
     cp bower_components/font-awesome/fonts/* static/fonts/
     ```
+### Development server
+* Import mongodb repo key and add .list file:
+    ```
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+    echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" \
+        > /etc/apt/sources.list.d/mongodb-org-3.2.list
+    apt-get update
+    ```
+* Install required dependencies:
+    ```
+    apt-get -qqy install npm apt-transport-https ca-certificates docker-engine \
+        git make build-essential libssl-dev zlib1g-dev libbz2-dev \
+        libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+        libncursesw5-dev xz-utils libjpeg-dev mongodb-org ruby
+    gem install sass
+    ```
+* Install pyenv, python and requirements:
+    ```
+    $ git clone https://github.com/yyuu/pyenv.git ~/.pyenv
+    $ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile
+    $ echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
+    $ echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
+    $ exec $SHELL
+    $ pyenv install 3.4.5
+    $ pyenv global 3.4.5
+    $ pip install -r requirements.txt
+    ```
+* Start mongod:
+    ```
+    update-rc.d mongod enable
+    service mongod start
+    ```
+* Change the APP_CONFIG_FILE env var inside start to the correct config file
+    path.
+* Run the server with `./start.sh`
+
+### Production server
 * Install docker:
     ```
     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys \
@@ -58,8 +95,8 @@ As per the above, nscmr is still under development and not ready for use.
     $
     ```
 
-### Updating
-* To update the application you must stop the currently running container,
+### Upgrade
+* To upgrade the application you must stop the currently running container,
     remove it, delete it's image, then rebuild it and restart the container:
     ```
     docker stop nscmr
