@@ -376,7 +376,8 @@ hr { width: 100%; }
 }
 
 .item-dropdown {
-  a {
+  &#categories-dropdown a,
+  &#cart-dropdown li {
     font-family: Arial;
     font-weight: lighter;
     font-size: .8em;
