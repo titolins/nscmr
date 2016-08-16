@@ -73,6 +73,10 @@ As per the above, nscmr is still under development and not ready for use.
     $ docker exec -it nscmr /bin/bash
 
     # service mongod start
+
+    # // if server responding 500, removing cache files may be necessary
+    # cd nscmr/static
+    # rm -rf .webassets-cache/
     ```
 
 ### App modes
