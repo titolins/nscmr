@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APP_NAME=nscmr
-APP_CONFIG_PATH=/app/nscmr/config
+APP_CONFIG_PATH=/vagrant/nscmr/config
 
 function usage()
 {
