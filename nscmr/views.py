@@ -657,7 +657,10 @@ def login():
         flash("E-mail ou senha incorreto(s)")
         # test code
         #form.errors['form'].append("E-mail ou senha incorreto(s)")
-        return back.redirect()
+        return render_template(
+                'login.html',
+                categories=Category.get_all(),
+                login_form=form)
     else:
         if request.method == 'POST':
             # if we have a json, the request wasn't made through a form but
