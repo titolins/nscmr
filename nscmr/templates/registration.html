@@ -3,7 +3,7 @@
 
 {% block title %}
   {{ super() }}
-  Registro
+  Cadastro
 {% endblock %}
 
 {% block styles %}
@@ -12,7 +12,7 @@
 
 {% block single_content %}
   <div class="table-container">
-    <h3>Registre-se no nosso site!</h3>
+    <h3>Faça seu cadastro!</h3>
     <hr>
     <form action="{{ url_for('registration') }}" method="post">
       <div class="table">
@@ -48,24 +48,29 @@
           {{ registration_form.has_address(**{'data-toggle':'#input-address'})|safe }}
           {{ registration_form.has_address.label }}
         </div>
-        <div class="col-xs-12 col-sm-6 table-cell">
-          <div id="input-address" ng-controller="AddressController">
-            <p>Para pesquisar seu endereço pelo cep, preencha-o abaixo e clique em 'Buscar'</p>
-            {{render_field(registration_form.address.zip_code, **{'ng-model': 'form.zip_code','ui-mask':'99999-999'}) }}
+        <div id="input-address" class="col-xs-12 col-sm-6 table-cell" ng-controller="AddressController">
+          <div class="cep-input duvet-input">
+            {{ registration_form.address.zip_code(**{'ng-model': 'form.zip_code','ui-mask':'99999-999'}) }}
+            <button id="zip-code-btn" ng-click="getAddressByCep();$event.preventDefault()">
+              <i class="fa fa-angle-double-right"></i>
+            </button>
+            <p>Pesquise pelo seu cep!</p>
+            {#
             <a class="btn btn-default btn-success" href="#" ng-click="getAddressByCep(); $event.preventDefault();">
               Buscar
             </a>
+            #}
+          </div>
             {{ render_field(registration_form.address.street_address_1,**{'ng-model': 'form.street_address_1'}) }}
-            {{
-            render_field(registration_form.address.street_address_2,**{'ng-model': 'form.street_address_2'}) }}
+            {{ render_field(registration_form.address.street_address_2,**{'ng-model': 'form.street_address_2'}) }}
             {{ render_field(registration_form.address.neighbourhood,**{'ng-model': 'form.neighbourhood'}) }}
             {{ render_field(registration_form.address.city,**{'ng-model':'form.city'}) }}
             {{ render_field(registration_form.address.state, **{'ng-model':'form.state'}) }}
           </div>
         </div>
       </div>
-      <div class="col-xs-12 table-cell">
-        <p><input class="btn btn-default btn-ns" id="register-btn" type="submit" value="Registrar"></input></p>
+      <div class="col-xs-12 table-cell duvet-btn-wrapper">
+        <input class="duvet-btn align-fix" id="register-btn" type="submit" value="Registrar"></input>
       </div>
       <hr>
     </form>
