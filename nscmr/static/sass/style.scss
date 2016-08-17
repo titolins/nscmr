@@ -130,6 +130,10 @@ $font-sizes: (
   cursor: pointer;
 }
 
+.no-margin {
+  margin: 0 !important;
+}
+
 //
 // border for double column panelsborder for double column panels
 //
@@ -1580,6 +1584,9 @@ select {
   textarea,
   input {
     margin-bottom: 20px;
+    &:not(.duvet-btn) {
+      border-radius: 1px;
+    }
   }
   hr {
     border-top: 1px solid $dark;
