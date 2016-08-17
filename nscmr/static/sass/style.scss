@@ -1619,6 +1619,37 @@ ul#info {
   }
 }
 
+#input-address {
+  .cep-input {
+    height: 54px;
+    width: 100%;
+    input {
+      width: 48%;
+    }
+  }
+  p {
+    margin-top: 1px;
+    width: 100%;
+    color: $light-red;
+  }
+  .duvet-input,
+  p {
+    text-align: left;
+    font-weight: lighter;
+    font-size: .8em;
+    button { color: $dark; }
+  }
+  .duvet-input {
+    a {
+      text-align: center;
+    }
+    input {
+      border: 1px solid $light-grey;
+      font-style: italic;
+    }
+  }
+}
+
 div#connect {
   text-align: center;
   width: 100%;
