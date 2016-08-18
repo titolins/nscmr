@@ -398,9 +398,9 @@ hr { width: 100%; }
   &#cart-dropdown li {
     font-family: Arial;
     font-weight: lighter;
-    font-size: .8em;
-    text-transform: lowercase;
-    letter-spacing: 1px;
+    font-size: 50%;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
   z-index: 800;
   @extend .light;
