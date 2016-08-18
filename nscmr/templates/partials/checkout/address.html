@@ -1,9 +1,12 @@
-<div id="checkout-addresses" class="col-md-12 hidden double-column border-right">
-  <div class="col-md-6">
-    {% include 'partials/user/addresses.html' %}
-  </div>
-  <div class="col-md-6">
-    {% include 'partials/checkout/payment.html' %}
+<div id="checkout-addresses" class="col-md-12 hidden">
+  {% include 'partials/user/addresses.html' %}
+  <div class="duvet-btn-wrapper text-right">
+    <a ng-if="selectedAddress == null || (!selectedAddress['valid'])" ng-click="$event.preventDefault();" href="#" class="duvet-btn disabled">
+      Selecione o endereço de entrega
+    </a>
+    <a ng-if="selectedAddress['valid']" ng-click="moveOptions('next'); $event.preventDefault();" href="#" class="duvet-btn">
+      Escolher meio de pagamento
+    </a>
   </div>
 </div>
 <!-- /#checkout-addresses -->
