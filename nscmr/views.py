@@ -571,6 +571,8 @@ def checkout():
 def confirm():
     card = request.json['card']
     cart = request.json['cart']
+    print('cart = {}'.format(cart))
+    print('card = {}'.format(card))
     # https://github.com/mundipagg/mundipagg-one-python/wiki/Create-a-Transaction
     '''
     creditcard_data = creditcard(
