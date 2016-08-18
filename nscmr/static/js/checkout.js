@@ -136,6 +136,12 @@ angular.module('angularApp')
       var curSelection = document.querySelector('.select-address.selected');
       if(curSelection != null) curSelection.classList.remove('selected');
       $scope.selectedAddress = address;
+      if(address['zip_code'] != $scope.cartService.cart.zipCode) {
+        $scope.selectedAddress['valid'] = false;
+      } else {
+        $scope.selectedAddress['valid'] = true;
+      }
+      console.log($scope.selectedAddress);
     }
     target.classList.toggle('selected');
   };
