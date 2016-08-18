@@ -1240,7 +1240,7 @@ select {
       position: absolute;
       top: 0;
       left: 0;
-      background-color: $light-blue;
+      background-color: $light-blue !important;
       width: 6px;
       height: 100%;
     }
@@ -1316,9 +1316,10 @@ select {
   .address-panel {
     div.select-address {
       cursor: pointer;
-      &.selected {
-        background-color: $light-grey;
-      }
+    }
+    &.selected {
+      background-color: $light-grey;
+      margin-left: 5px;
     }
   }
 }

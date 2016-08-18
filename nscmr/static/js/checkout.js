@@ -130,10 +130,10 @@ angular.module('angularApp')
   $scope.chooseAddress = function(e, address) {
     if(e.target.parentNode.classList.contains('options-btn')) return;
     var target = e.target;
-    while(!target.classList.contains('select-address')) target = target.parentNode;
+    while(!target.classList.contains('address-panel')) target = target.parentNode;
     if(target.classList.contains('selected')) $scope.selectedAddress = null;
     else {
-      var curSelection = document.querySelector('.select-address.selected');
+      var curSelection = document.querySelector('.address-panel.selected');
       if(curSelection != null) curSelection.classList.remove('selected');
       $scope.selectedAddress = address;
       if(address['zip_code'] != $scope.cartService.cart.zipCode) {
