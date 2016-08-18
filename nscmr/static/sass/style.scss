@@ -1541,7 +1541,7 @@ select {
       background-color: $fade-dark;
     }
     &.disabled {
-      background-color: $fade-dark;
+      background-color: $light-red;
       cursor: not-allowed;
       &:hover { background-color: $fade-dark; }
     }
