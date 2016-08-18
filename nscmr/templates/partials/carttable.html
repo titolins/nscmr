@@ -15,6 +15,7 @@
         </div>
         <div class="product-info">
           <p><b>{a item['name'] a}</b></p>
+          <p>{a item['description'] a}</p>
           <div class="product-attributes" ng-if="item['attributes'] != null">
             <div ng-repeat="(attr, value) in item['attributes']">
               <b>{a attr a}:</b> {a value a}

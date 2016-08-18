@@ -426,6 +426,7 @@ class CartLine(object):
             '_id': cart_item['_id'],
             'name': product.name,
             'permalink': product.permalink,
+            'description': product.description,
             'category': {
                 '_id': category['_id'],
                 'name': category['name'],
