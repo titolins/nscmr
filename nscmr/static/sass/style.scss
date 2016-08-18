@@ -131,6 +131,10 @@ $font-sizes: (
   text-transform: uppercase;
 }
 
+.italic {
+  font-style: italic;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -1256,7 +1260,8 @@ select {
 }
 
 #no-address-text {
-  margin-bottom: 110px;
+  font-size: 80%;
+  font-color: $light-grey;
 }
 
 .field {

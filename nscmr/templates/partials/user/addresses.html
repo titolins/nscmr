@@ -2,7 +2,7 @@
   <h3 class="uppercase"><b>Endereços</b></h3>
   <hr>
 </div>
-<p ng-hide="addressesService.addresses.length" id="no-address-text">Nenhum endereço registrado.</p>
+<p ng-hide="addressesService.addresses.length" id="no-address-text" class="italic">Nenhum endereço registrado.</p>
 <div class="addresses-background" ng-if="addressesService.addresses.length > 0">
   <div class="address-panel" ng-repeat="address in addressesService.addresses track by address._id">
     <div class="address-bar"></div>
