@@ -33,7 +33,9 @@
           <i class="fa fa-edit"></i>
           Editar
         </a>
-        <a class="pointer" ng-click="addressesService.deleteAddress(address['_id']); $event.preventDefault();" href="#">
+        <a class="pointer"
+          ng-click="addressesService.deleteAddress(address['_id']);
+          $event.preventDefault();" href="#">
           <i class="fa fa-close"></i>
           Remover
         </a>
@@ -84,7 +86,7 @@
 <div id="add-address-modal" class="modal fade address-modal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-header">
-      <h4 class="inline">Cadastrar endereço</h4>
+      <h4 class="inline uppercase">Cadastrar endereço</h4>
       <button type="button" class="close inline" data-dismiss="modal">&times;</button>
     </div>
     <div class="modal-body" ng-controller="AddressController">
@@ -93,7 +95,7 @@
           <li>{a form_success a}</li>
         </ul>
         {{ form.hidden_tag() }}
-        <p>Para pesquisar seu endereço pelo cep, preencha-o abaixo e clique em 'Buscar'</p>
+        <p>Pesquise pelo seu cep!</p>
         <div id="user-cep-address" class="cep-input duvet-input">
           <span class="capitalize">{{ form.zip_code.label }}: </span>
           {{ form.zip_code(**{'ng-model':'form.zip_code', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}

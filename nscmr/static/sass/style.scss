@@ -143,6 +143,16 @@ $font-sizes: (
   margin: 0 !important;
 }
 
+.no-border {
+  border: 0 !important;
+}
+
+.border-bottom {
+  input {
+    border-bottom: 1px solid $dark;
+  }
+}
+
 //
 // border for double column panelsborder for double column panels
 //
@@ -1448,6 +1458,7 @@ select {
 }
 
 .address-input {
+  @extend .no-effect;
   width: 100%;
   margin-bottom: 15px;
   span {
@@ -1455,6 +1466,7 @@ select {
     min-width: 30%;
   }
   input {
+    border-bottom: 1px solid $dark !important;
     margin: 0;
     width: 65%;
     display: inline;
@@ -1473,10 +1485,14 @@ select {
       }
     }
   }
+  @extend .no-effect;
+}
+
+.no-effect {
   input {
     display: inline;
     text-align: center;
-    border: 0 !important;
+    border: 0;
     margin: 0 !important;
     box-shadow: 0 !important;
     -webkit-box-shadow: 0 !important;
@@ -1485,7 +1501,7 @@ select {
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     &:active {
-      border: 0 !important;
+      border: 0;
       margin: 0 !important;
       box-shadow: 0 !important;
       -webkit-box-shadow: 0 !important;
@@ -1533,7 +1549,6 @@ select {
     color: white !important;
     text-transform: lowercase;
     border: 0;
-    border-radius: 25px;
     &:hover {
       background-color: $light-grey;
     }
@@ -1662,6 +1677,7 @@ ul#info {
     width: 100%;
     input {
       width: 48%;
+      border: 0 !important;
     }
   }
   p {
