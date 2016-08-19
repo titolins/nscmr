@@ -14,11 +14,15 @@
       <div>
         <span>preço:</span><span> {a item.price | currency a}</span>
       </div>
+      <div ng-repeat="(attr, value) in item['attributes']">
+        <span>{a attr a}:</span><span> {a value a}</span>
+      </div>
     </div>
+    <div class="clearfix"></div>
   </div>
   <hr>
   <div class="duvet-btn-wrapper">
-    <a class="duvet-btn" href="#">finalizar compra</div>
+    <a class="duvet-btn" href="{{ url_for('checkout') }}">finalizar compra</a>
   </div>
 </div>
 

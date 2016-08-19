@@ -118,6 +118,8 @@ $font-sizes: (
 
 .clearfix {
   clear: both;
+  height: 0 !important;
+  line-height: 0 !important;
 }
 
 .capitalize {
@@ -316,8 +318,7 @@ hr { width: 100%; }
   @media screen and (min-width: 768px) {
     height: 200px;
   }
-  div {
-    @include align-vertical(30px);
+  & > div {
   }
   .logo {
     img {
@@ -454,9 +455,20 @@ hr { width: 100%; }
     }
   }
   &#cart-dropdown {
+    .duvet-btn-wrapper {
+      margin-bottom: 17px;
+    }
+    hr {
+      width: 90%;
+    }
     & > .cart-line {
-      padding: 15px 15px 95px 15px;
-      height: 100px;
+      &:first-child {
+        padding-top: 12px !important;
+      }
+      &:last-child {
+        padding-bottom: 12px !important;
+      }
+      padding: 6px 15px 6px 15px;
       width: 100%;
       display: inline-block;
       .cart-line-img,
@@ -465,6 +477,7 @@ hr { width: 100%; }
         text-align: left;
       }
       .cart-line-img {
+        float: left;
         width: 40%;
         img {
           width: 100%;
@@ -488,7 +501,7 @@ hr { width: 100%; }
       }
     }
     @media screen and (min-width: 320px) {
-      min-height: 250px;
+      min-height: 100px;
       width: 320px;
       @include transformY(-400px);
       @include transition(500ms);
@@ -1571,7 +1584,7 @@ select {
     &.no-margin {
       margin-left: 0 !important;
     }
-    &:last-child {
+    &:nth-child(2) {
       margin-left: 15px;
     }
     @extend .pointer;
@@ -1591,7 +1604,7 @@ select {
     &.disabled {
       background-color: $light-red;
       cursor: not-allowed;
-      &:hover { background-color: $fade-dark; }
+      &:hover { background-color: $light-red; }
     }
   }
 }
