@@ -2,29 +2,30 @@
 <div id="checkout-payment" class="col-md-12 hidden">
   <h3><b>PAGAMENTO</b></h3>
   <hr>
-
-  <div id="brand-selectors">
-    <p>Selecione a bandeira do seu cartão</p>
-    <a id='mastercard-selector' ng-click="toggleCardBrand($event);" href="#" class="card-brand">
-      <i class='fa fa-cc-mastercard'></i> MasterCard
-    </a>
-    <a id='visa-selector' ng-click="toggleCardBrand($event);" href="#" class="card-brand">
-      <i class='fa fa-cc-visa'></i> Visa
-    </a>
+  <div id="card">
+    <input id="number" ng-model="card.number" ng-keyup="checkCardBrand();"
+    class="form-control" type="text" placeholder="Número"></input>
+    <input id="name" ng-model="card.holderName" class="form-control"
+    type="text" placeholder="Nome do titular"></input>
+    <input id="cvv" ng-model="card.cvv" class="form-control"
+    placeholder="Código de segurança" type="text"></input>
+    <select id="exp-month" ng-model="card.expMonth" class="form-control"
+    placeholder="Código de segurança" type="text">
+      <option value="" disabled selected>Mês</option>
+      <option value="1">Janeiro</option>
+      <option value="2">Fevereiro</option>
+      <option value="3">Março</option>
+      <option value="4">Abril</option>
+      <option value="5">Maio</option>
+      <option value="6">Junho</option>
+      <option value="7">Julho</option>
+      <option value="8">Agosto</option>
+      <option value="9">Setembro</option>
+      <option value="10">Outubro</option>
+      <option value="11">Novembro</option>
+      <option value="12">Dezembro</option>
+    </select>
+    <input id="exp-year" ng-model="card.expYear" class="form-control" placeholder="Ano" type="number" step="1">
+    </input>
   </div>
-  <form action="#" method="post">
-    {{ card_form.hidden_tag() }}
-    {% if card_form.csrf_token.errors %}
-      <ul class="alert alert-danger alert-login">
-        {% for error in card_form.csrf_token.errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-    {{ render_field(card_form.holder_name, **{'ng-model':'card.holderName'}) }}
-    {{ render_field(card_form.number, **{'ng-model':'card.number'}) }}
-    {{ render_field(card_form.security_code, **{'ng-model':'card.securityCode'}) }}
-    {{ render_field(card_form.exp_month, **{'ng-model':'card.expMonth'}) }}
-    {{ render_field(card_form.exp_year, **{'ng-model':'card.expYear'}) }}
-  </form>
 </div>
