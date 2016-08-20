@@ -28,8 +28,8 @@
               </div>
               <div class="col-xs-12 col-md-5">
                 <div class="variant-details">
-                  <h5>{{ product['name'] }}</h5>
-                  <h4>R$ {{ variant['price'] }}</h4>
+                  <h4 class="product-name">{{ product['name'] }}</h4>
+                  <h3 class="capitalize-no-bold font-medium">R$ {{ variant.price }}</h3>
                   <hr>
                   <div class="details-text text-right">
                     <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink'], v_id = variant['_id']) }}">+ Detalhes</a>
