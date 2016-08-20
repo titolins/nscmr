@@ -5,12 +5,12 @@
         <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink'], v_id = variant['_id']) }}"></a>
         <div class="img-view"><a data-toggle="modal" data-target="#{{ variant['_id'] }}-images" href="#">+ Visualização rápida</a></div>
       </div>
-      <div id="variant-info" class="panel-footer">
+      <div id="variant-info" class="panel-footer capitalize-no-bold">
         <a class="cart-btn" href="#" ng-click='cartService.addToCart("{{ variant['_id'] }}"); $event.preventDefault();'>
           <i class="fa fa-shopping-bag"></i>
         </a>
-        <p>R$ {{ variant['price'] }}</p>
         <p>{{ product.name }}</p>
+        <p>R$ {{ variant['price'] }}</p>
       </div>
     </div>
   </div>

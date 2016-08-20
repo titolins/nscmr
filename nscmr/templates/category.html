@@ -16,9 +16,9 @@
 
 {% block sidebar_content %}
   {% if category is none %}
-    <h4>Catálogo</h4>
+    <h4 class="uppercase">Catálogo</h4>
   {% else %}
-    <h4>{{ category.name }} ›</h4>
+    <h4 class="uppercase">{{ category.name }} ›</h4>
   {% endif %}
   <ul>
     {% for c in categories %}
