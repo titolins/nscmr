@@ -18,6 +18,7 @@ SESSION_MONGODB_DB = MONGODB_DB
 # sandbox
 PAGSEGURO_TOKEN = "41224F4E00B840BEBD649FE0569333A6"
 PAGSEGURO_ENDPOINT = "https://ws.sandbox.pagseguro.uol.com.br/v2/checkout/"
+PAGSEGURO_SESSIONS_EP = "https://ws.sandbox.pagseguro.uol.com.br/v2/sessions/"
 
 GOOGLE_CLIENT_ID = "883320219445-ejvh51karin9m6dg9mbql56vjn0vp2ls.apps.googleusercontent.com"
 

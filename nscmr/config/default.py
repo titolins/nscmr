@@ -17,6 +17,7 @@ SESSION_MONGODB_DB = MONGODB_DB
 
 PAGSEGURO_TOKEN = "3D4DEFEA09EA4B4B9887D15EA19915CA"
 PAGSEGURO_ENDPOINT = "https://ws.pagseguro.uol.com.br/v2/checkout/"
+PAGSEGURO_SESSIONS_EP = "https://ws.pagseguro.uol.com.br/v2/sessions/"
 
 GOOGLE_CLIENT_ID = "883320219445-ejvh51karin9m6dg9mbql56vjn0vp2ls.apps.googleusercontent.com"
 
