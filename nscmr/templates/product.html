@@ -25,13 +25,13 @@
                 › {{ product['name'] }}
               </span>
             </p>
-            <h4>{{ product['name'] }}</h4>
-            <h3>R$ {{ '{:.2f}'.format(variant.price)|replace('.',',') }}</h3>
+            <h4 class="product-name">{{ product['name'] }}</h4>
+            <h3 class="capitalize-no-bold font-medium">R$ {{ '{:.2f}'.format(variant.price)|replace('.',',') }}</h3>
             <hr>
           </div>
           <div class="col-md-12">
-            <p><b>Detalhes</b></br>
-            {{ product.description }}
+            <p><span class="capitalize-light">Detalhes</span></br>
+            <span class="font-small">{{ product.description }}</span>
             </p>
             {% if product.attributes is not none %}
               {% for attr in product.attributes.keys() %}
@@ -48,12 +48,18 @@
             <hr>
           </div>
           <div class="col-md-12">
-            <a href="#" ng-click="addToWishlist(' {{ variant.id|string }}'); $event.preventDefault();" class="product-btn">
-              <i class="fa fa-heart-o"></i> Wishlist
-            </a>
-            <a href="#" ng-click="cartService.addToCart('{{ variant.id|string }}'); $event.preventDefault();" class="product-btn">
+            <div class="duvet-btn-wrapper">
+              <a href="#" ng-click="addToWishlist(' {{ variant.id|string }}');
+                $event.preventDefault();" class="duvet-btn">
+                <i class="fa fa-heart-o"></i> Wishlist
+              </a>
+            </div>
+            <div class="duvet-btn-wrapper">
+            <a href="#" ng-click="cartService.addToCart('{{ variant.id|string
+              }}'); $event.preventDefault();" class="duvet-btn">
               <i class="fa fa-shopping-bag"></i> Adicionar ao carrinho
             </a>
+            </div>
           </div>
         </div>
       </div>
