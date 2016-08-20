@@ -122,6 +122,10 @@ $font-sizes: (
   line-height: 0 !important;
 }
 
+.font-light {
+  color: $fade-dark !important;
+}
+
 .font-small {
   font-size: 80%;
 }
