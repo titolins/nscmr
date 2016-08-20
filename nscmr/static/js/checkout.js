@@ -1,5 +1,6 @@
 angular.module('angularApp')
 .controller("CheckoutController", ["$scope","$http","addressesService", "cartService", function($scope, $http, addressesService, cartService) {
+  $scope.availableCards = null;
   $scope.addressesService = addressesService;
   $scope.addressesService.update(getAddressesUri);
   $scope.cartService = cartService;
@@ -35,12 +36,35 @@ angular.module('angularApp')
       target = currentOption.previousSibling.previousSibling;
     }
     if (target === null) return;
+    if (target.id == "pay-btn") getAvailableCards();
     currentOption.classList.remove('selected');
     target.classList.add('selected');
     document.getElementById(currentOption.dataset.target).classList.add('hidden');
     document.getElementById(target.dataset.target).classList.remove('hidden');
   };
 
+  $scope.checkCardBrand = function() {
+    if($scope.card.number.length == 6) {
+      console.log('length == 6');
+      console.log($scope.card.number);
+      PagSeguroDirectPayment.getBrand({
+        cardBin: $scope.card.number,
+        success: function(response) {
+          console.log(response);
+        },
+        error: function(response) {
+          console.log(response);
+        },
+        complete: function(response) {
+          console.log(response);
+        }
+      });
+    } else {
+      console.log('length != 6');
+      $scope.brand = null;
+    }
+  };
+  /*
   $scope.toggleCardBrand = function($event) {
     $event.preventDefault();
     var target = $event.target;
@@ -52,6 +76,7 @@ angular.module('angularApp')
     document.querySelector('input[name=brand]').value = brandName;
     $scope.card['brand'] = brandName;
   };
+  */
 
   $scope.confirmBuy = function() {
     var data = {
@@ -144,6 +169,22 @@ angular.module('angularApp')
       console.log($scope.selectedAddress);
     }
     target.classList.toggle('selected');
+  };
+
+  function getAvailableCards() {
+    PagSeguroDirectPayment.getPaymentMethods({
+      success: function(response) {
+        console.log(response);
+        $scope.availableCards = response['paymentMethods']['CREDIT_CARD'];
+        window.cards = $scope.availableCards;
+      },
+      error: function(response) {
+        console.log(response);
+      },
+      complete: function(response) {
+        console.log(response);
+      }
+    });
   };
 
 }]);
