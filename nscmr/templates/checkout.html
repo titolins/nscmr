@@ -37,9 +37,15 @@
     var editCartUri = "{{ url_for('edit_cart') }}";
     var confirmUri = "{{ url_for('confirm') }}";
     var shippingUri = "{{ url_for('shipping') }}";
+    var pagseguroSessionId = "{{ session_id }}";
   </script>
   <script src="{{ url_for('static', filename='js/addressesService.js') }}"></script>
   <script src="{{ url_for('static', filename='js/cartservice.js') }}"></script>
   <script src="{{ url_for('static', filename='js/address.js') }}"></script>
   <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+  <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+  <script>
+    PagSeguroDirectPayment.setSessionId("{{ session_id }}");
+    //var buyerId = PagSeguroDirectPayment.getSenderHash();
+  </script>
 {% endblock %}

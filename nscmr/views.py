@@ -560,12 +560,23 @@ def checkout():
                 categories=Category.get_all(),
                 login_form=form)
     else:
+        import xmltodict
+        data = {
+            'email': app.config.get('SUPPORT_CONTACT'),
+            'token': app.config.get('PAGSEGURO_TOKEN'),
+        }
+        r = requests.post(
+                app.config.get('PAGSEGURO_SESSIONS_EP'),
+                data = data,
+                verify = False)
+        r_dict = xmltodict.parse(str(r.content, 'utf-8'))
         form = AddressForm()
         #return choose address page
         return render_template('checkout.html',
                 form=form,
                 card_form=CreditCardForm(),
-                categories=Category.get_all())
+                categories=Category.get_all(),
+                session_id=r_dict['session']['id'])
 
 @app.route('/confirmarcompra', methods=['POST'])
 def confirm():
