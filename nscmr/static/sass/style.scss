@@ -122,10 +122,33 @@ $font-sizes: (
   line-height: 0 !important;
 }
 
+.font-small {
+  font-size: 80%;
+}
+
+.font-medium {
+  font-size: 100% !important;
+}
+
+.capitalize-light {
+    font-family: Arial;
+    font-weight: lighter;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 80%;
+}
+
+.capitalize-no-bold {
+  font-family: 'Arial Rounded MT';
+  text-transform: uppercase;
+  font-size: 80%;
+  letter-spacing: 2px;
+}
+
 .capitalize {
   font-family: 'Arial Rounded MT Bold';
   text-transform: uppercase;
-  font-size: .6em;
+  font-size: 70%;
   letter-spacing: 2px;
 }
 
@@ -407,11 +430,8 @@ hr { width: 100%; }
   &#categories-dropdown a,
   &#user-options-dropdown a,
   &#cart-dropdown li {
-    font-family: Arial;
-    font-weight: lighter;
-    font-size: 50%;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    @extend .capitalize-light;
+    font-size: 50% !important;
   }
   z-index: 800;
   @extend .light;
@@ -503,7 +523,7 @@ hr { width: 100%; }
     @media screen and (min-width: 320px) {
       min-height: 100px;
       width: 320px;
-      @include transformY(-400px);
+      @include transformY(-450px);
       @include transition(500ms);
     }
     &.open {
@@ -1105,6 +1125,12 @@ select {
   @media screen and (min-width: 1200px) {
     font-size: 1em;
   }
+}
+
+.product-name {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 140%;
 }
 
 /*
