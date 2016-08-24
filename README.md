@@ -21,7 +21,7 @@ As per the above, nscmr is still under development and not ready for use.
     # may be required to create a symlink, as per the below
     ln -s /usr/bin/nodejs /usr/bin/node
     bower install -S jquery bootstrap font-awesome angular angular-ui-mask \
-        angular-i18n angular-credit-cards
+        angular-i18n
     ```
     * copy glyphicon fonts to static dir:
     ```
