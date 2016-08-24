@@ -1897,8 +1897,54 @@ form[name='paymentForm'] {
     width: 100%;
   }
   .card-field {
+    width: 100%;
+    margin-bottom: 20px;
+    & > .card-field-group > .field-group-name,
+    & > .card-field-group > .card-field-item > .field-name,
+    & > .field-name {
+      @extend .capitalize-light;
+    }
+    & > .card-field-group > .card-field-item > .field-name,
+    & > .field-name {
+      padding-top: 10px;
+      float: left;
+      @media screen and (min-width: 320px) {
+        width: 25%;
+      }
+    }
+    & > .card-field-group > .card-field-item > input,
     & > input {
-      display: inline;
+      margin: 0 !important;
+      float: right;
+      @media screen and (min-width: 320px) {
+        width: calc(75%);
+      }
+    }
+    & > .card-field-group {
+      @media screen and (min-width: 320px) {
+        width: 100%;
+      }
+      @media screen and (min-width: 768px) {
+        width: 50%;
+        &:first-child {
+          float: left;
+        }
+        &:nth-child(2) {
+          float: right;
+        }
+      }
+      & > input {
+        width: 100%;
+      }
+      & > .card-field-item {
+        width: 50%;
+        &:first-child {
+          float: left;
+        }
+        &:nth-child(2) {
+          float: right;
+        }
+      }
     }
   }
 }

@@ -16,7 +16,9 @@ angular.module('angularApp')
   };
 
   $scope.checkNumberSize = function() {
-    if($scope.paymentService.card.brandInfo.config != undefined) {
+    if($scope.paymentService.card.number.length < 6) {
+      $scope.paymentForm.cardNumber.$setValidity("size", false);
+    } else if($scope.paymentService.card.brandInfo.config != undefined) {
       if($scope.paymentService.card.brandInfo.config.acceptedLengths.indexOf($scope.paymentService.card.number.length) != -1) {
         $scope.paymentForm.cardNumber.$setValidity("size", true);
       } else {
@@ -57,6 +59,7 @@ angular.module('angularApp')
   };
 
   function getAvailableCards() {
+    $scope.paymentService.availableCards = {};
     PagSeguroDirectPayment.getPaymentMethods({
       success: function(response) {
         console.log(response);

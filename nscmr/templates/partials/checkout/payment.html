@@ -1,5 +1,5 @@
 {% from "macros/formhelpers.html" import render_field %}
-<div id="checkout-payment" class="col-md-12 hidden">
+<div id="checkout-payment" class="col-md-12 hidden checkout-tab">
   <h3><b>PAGAMENTO</b></h3>
   <hr>
   <form name="paymentForm" ng-controller="PagSeguroController" ng-submit="confirmCard()">
@@ -7,36 +7,55 @@
       <img src="{a getImgSrc(paymentService.card.brandInfo.name) a}"></img>
     </span>
     <div class="card-field">
-      <span>Número:</span>
+      <p class="field-name">Número</p>
       <input name="cardNumber" ng-model="paymentService.card.number" class="form-control" ng-change="checkNumber()"
-      type="text" ng-required="true" name="cardNumber"
-      ng-blur="checkNumberSize()"></input>
+      type="text" ng-required="true" name="cardNumber" ng-blur="checkNumberSize()"></input>
+      <div class="clearfix"></div>
       <p class="alert alert-danger" ng-show="paymentForm.cardNumber.$error.size || paymentForm.cardNumber.$error.size">
         Número inválido. Por favor, confira se você digitou corretamente.
       </p>
     </div>
-    <input name="holderName" ng-model="paymentService.card.holderName" class="form-control"
-    type="text" placeholder="Nome do titular" required minlength="6"></input>
-    <ul class="alert alert-danger" ng-show="paymentForm.holdercardInfo.error">
-      <li ng-repeat="error in cardInfo.errors.holderName">{a error a}</li>
-    </ul>
-    <input name="cardCvv" ng-model="paymentService.card.cvv" class="form-control" ng-change="checkCvv()"
-    placeholder="Código de segurança" type="text" required maxlength="4"></input>
-    <p class="alert alert-danger" ng-show="paymentForm.cardCvv.$error.size">
-      Número de segurança inválido
-    </p>
-    <input name="cardMonth" ng-model="paymentService.card.expMonth" class="form-control" type="text"
-    placeholder="Mês" required maxlength="2" ng-keypress="isNumeric($event)"
-    ng-blur="checkDate($event)"></input>
-    <p class="alert alert-danger" ng-show="paymentForm.cardMonth.$error.outOfRange">
-      Mês inválido
-    </p>
-    <input name="cardYear" ng-model="paymentService.card.expYear" class="form-control" placeholder="Ano"
-    type="text" required ng-keypress="isNumeric($event)" maxlength="2"
-    ng-blur="checkDate($event)"></input>
-    <p class="alert alert-danger" ng-show="paymentForm.cardYear.$error.outOfRange">
-      Ano inválido
-    </p>
+    <div class="card-field">
+      <p class="field-name">Nome do titular</p>
+      <input name="holderName" ng-model="paymentService.card.holderName" class="form-control"
+      type="text" required minlength="6"></input>
+      <div class="clearfix"></div>
+    </div>
+    <div class="card-field">
+      <div class="card-field-group">
+        <p class="field-group-name">Código de segurança</p>
+        <input name="cardCvv" ng-model="paymentService.card.cvv" class="form-control"
+        ng-change="checkCvv()" type="text" required maxlength="4"></input>
+        <div class="clearfix"></div>
+        <p class="alert alert-danger" ng-show="paymentForm.cardCvv.$error.size">
+          Código de segurança inválido
+        </p>
+      </div>
+      <div class="card-field-group">
+        <p class="field-group-name">Validade</p>
+        <div class="card-field-item">
+          <div class="field-name">Ano</div>
+          <input name="cardYear" ng-model="paymentService.card.expYear" class="form-control"
+          type="text" required ng-keypress="isNumeric($event)" maxlength="2"
+          ng-blur="checkDate($event)"></input>
+          <div class="clearfix"></div>
+          <p class="alert alert-danger" ng-show="paymentForm.cardYear.$error.outOfRange">
+            Ano inválido
+          </p>
+        </div>
+        <div class="card-field-item">
+          <div class="field-name">Mês</div>
+          <input name="cardMonth" ng-model="paymentService.card.expMonth" class="form-control" type="text"
+          required maxlength="2" ng-keypress="isNumeric($event)" ng-blur="checkDate($event)"></input>
+          <div class="clearfix"></div>
+          <p class="alert alert-danger" ng-show="paymentForm.cardMonth.$error.outOfRange">
+            Mês inválido
+          </p>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
     <div class="duvet-btn-wrapper" ng-show="paymentForm.$invalid">
       <div class="disabled duvet-btn align-fix">preencha o formulário para continuar</div>
     </div>

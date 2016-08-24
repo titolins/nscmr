@@ -20,7 +20,7 @@ angular.module('angularApp')
   };
 
   $scope.moveOptions = function(direction) {
-    var currentOption = document.getElementById('checkout-options').getElementsByClassName('selected')[0];
+    var currentOption = document.getElementsByClassName('checkout-tab selected')[0];
     var target;
     if (direction === 'next') {
       target = currentOption.nextSibling.nextSibling;
@@ -29,9 +29,9 @@ angular.module('angularApp')
     }
     if (target != null) {
       currentOption.classList.remove('selected');
+      currentOption.classList.add('hidden');
+      target.classList.remove('hidden');
       target.classList.add('selected');
-      document.getElementById(currentOption.dataset.target).classList.add('hidden');
-      document.getElementById(target.dataset.target).classList.remove('hidden');
     }
   };
 
