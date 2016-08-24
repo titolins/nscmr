@@ -1882,3 +1882,24 @@ footer {
   height: 100%;
 }
 
+
+/*
+ * payment stuff
+ */
+form[name='paymentForm'] {
+  .ng-valid.ng-touched {
+    border-color: $light-blue;
+  }
+  .ng-invalid.ng-touched {
+    border-color: $light-red;
+  }
+  input[name='submit'] {
+    width: 100%;
+  }
+  .card-field {
+    & > input {
+      display: inline;
+    }
+  }
+}
+

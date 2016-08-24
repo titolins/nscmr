@@ -98,6 +98,7 @@ def build_app():
             'angular/angular.min.js',
             'angular-i18n/angular-locale_pt-br.js',
             'angular-ui-mask/dist/mask.min.js',
+            'angular-credit-cards/release/angular-credit-cards.js',
             'duvet.js'),
         output='js/base.js')
 

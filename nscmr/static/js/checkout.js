@@ -1,19 +1,11 @@
+//angular.module('angularApp').requires.push('credit-cards');
 angular.module('angularApp')
-.controller("CheckoutController", ["$scope","$http","addressesService", "cartService", function($scope, $http, addressesService, cartService) {
-  $scope.availableCards = null;
+.controller("CheckoutController", ["$scope","$http","addressesService", "cartService", "paymentService", function($scope, $http, addressesService, cartService, paymentService) {
+  $scope.paymentService = paymentService;
   $scope.addressesService = addressesService;
   $scope.addressesService.update(getAddressesUri);
   $scope.cartService = cartService;
   $scope.selectedAddress = null;
-  $scope.initialCard = {
-    'brand': '',
-    'number': '',
-    'holderName': '',
-    'securityCode': '',
-    'expMonth': '',
-    'expYear': ''
-  };
-  $scope.card = angular.copy($scope.initialCard);
 
   $scope.toggleCheckoutOption = function($event) {
     $event.preventDefault();
@@ -35,54 +27,19 @@ angular.module('angularApp')
     } else if (direction === 'prev') {
       target = currentOption.previousSibling.previousSibling;
     }
-    if (target === null) return;
-    if (target.id == "pay-btn") getAvailableCards();
-    currentOption.classList.remove('selected');
-    target.classList.add('selected');
-    document.getElementById(currentOption.dataset.target).classList.add('hidden');
-    document.getElementById(target.dataset.target).classList.remove('hidden');
-  };
-
-  $scope.checkCardBrand = function() {
-    if($scope.card.number.length == 6) {
-      console.log('length == 6');
-      console.log($scope.card.number);
-      PagSeguroDirectPayment.getBrand({
-        cardBin: $scope.card.number,
-        success: function(response) {
-          console.log(response);
-        },
-        error: function(response) {
-          console.log(response);
-        },
-        complete: function(response) {
-          console.log(response);
-        }
-      });
-    } else {
-      console.log('length != 6');
-      $scope.brand = null;
+    if (target != null) {
+      currentOption.classList.remove('selected');
+      target.classList.add('selected');
+      document.getElementById(currentOption.dataset.target).classList.add('hidden');
+      document.getElementById(target.dataset.target).classList.remove('hidden');
     }
   };
-  /*
-  $scope.toggleCardBrand = function($event) {
-    $event.preventDefault();
-    var target = $event.target;
-    var selectedBrand = document.getElementsByClassName('card-brand selected')[0];
-    if (selectedBrand !== undefined) selectedBrand.classList.remove('selected');
-    while (!target.classList.contains('card-brand')) target = target.parentNode;
-    target.classList.add('selected');
-    var brandName = target.id.split('-')[0];
-    document.querySelector('input[name=brand]').value = brandName;
-    $scope.card['brand'] = brandName;
-  };
-  */
 
   $scope.confirmBuy = function() {
     var data = {
       'cart': $scope.cartService.cart,
       'address': $scope.selectedAddress,
-      'card': $scope.card,
+      'card': $scope.paymentService.card,
     };
     // hide checkout and toggle spinner
     document.getElementById('checkout').classList.add('hidden');
@@ -171,16 +128,16 @@ angular.module('angularApp')
     target.classList.toggle('selected');
   };
 
-  function getAvailableCards() {
-    PagSeguroDirectPayment.getPaymentMethods({
+  $scope.confirmCard = function() {
+    //total = $scope.cartService.cart.total
+    PagSeguroDirectPayment.getInstallments({
+      amount: $scope.cartService.cart.total,
+      maxInstallmentsNoInterest: 12,
+      brand: $scope.paymentService.card.brandInfo.name,
       success: function(response) {
-        console.log(response);
-        $scope.availableCards = response['paymentMethods']['CREDIT_CARD'];
-        window.cards = $scope.availableCards;
+        $scope.paymentService.availablePaymentOptions = response.installments;
       },
-      error: function(response) {
-        console.log(response);
-      },
+      error: function(response) {},
       complete: function(response) {
         console.log(response);
       }
