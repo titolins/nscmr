@@ -6,6 +6,14 @@ angular.module('angularApp')
   $scope.addressesService.update(getAddressesUri);
   $scope.cartService = cartService;
   $scope.selectedAddress = null;
+  $scope.selectedCard = null;
+  /*
+  window.setTimeout(function() {
+    $scope.$apply(function () {
+      $scope.selectedAddress = $scope.addressesService.addresses[0];
+    });
+  }, 10000);
+  */
 
   $scope.toggleCheckoutOption = function($event) {
     $event.preventDefault();
@@ -39,11 +47,12 @@ angular.module('angularApp')
     var data = {
       'cart': $scope.cartService.cart,
       'address': $scope.selectedAddress,
-      'card': $scope.paymentService.card,
+      'card': $scope.selectedCard,
     };
-    // hide checkout and toggle spinner
+    /* hide checkout and toggle spinner
     document.getElementById('checkout').classList.add('hidden');
     document.getElementById('checkout-conclusion').classList.remove('hidden');
+    */
     console.log(data);
     $http({
       method: 'POST',
@@ -112,7 +121,7 @@ angular.module('angularApp')
   $scope.chooseAddress = function(e, address) {
     if(e.target.parentNode.classList.contains('options-btn')) return;
     var target = e.target;
-    while(!target.classList.contains('address-panel')) target = target.parentNode;
+    while(!target.classList.contains('card-panel')) target = target.parentNode;
     if(target.classList.contains('selected')) $scope.selectedAddress = null;
     else {
       var curSelection = document.querySelector('.address-panel.selected');
@@ -129,13 +138,40 @@ angular.module('angularApp')
   };
 
   $scope.confirmCard = function() {
-    //total = $scope.cartService.cart.total
+    // get card token, then get installments and move on to confirmation page
+    PagSeguroDirectPayment.createCardToken({
+      cardNumber: $scope.paymentService.card.number,
+      brand: $scope.paymentService.card.brandInfo.name,
+      cvv: $scope.paymentService.card.cvv,
+      expirationMonth: $scope.paymentService.card.expMonth,
+      expirationYear: "20" + $scope.paymentService.card.expYear,
+      success: function(response) {
+        $scope.$apply(function() {
+          $scope.selectedCard = $scope.paymentService.card;
+          $scope.selectedCard.token = response.card.token;
+        });
+       checkPaymentOptions();
+      },
+      error: function(response) {
+        console.log("[ERROR] confirmCard");
+      },
+      complete: function(response) {
+        console.log(response);
+      },
+    });
+  }
+
+  function checkPaymentOptions() {
     PagSeguroDirectPayment.getInstallments({
       amount: $scope.cartService.cart.total,
       maxInstallmentsNoInterest: 12,
-      brand: $scope.paymentService.card.brandInfo.name,
+      brand: $scope.selectedCard.brandInfo.name,
       success: function(response) {
-        $scope.paymentService.availablePaymentOptions = response.installments;
+        $scope.$apply(function() {
+          $scope.availableInstallments = response.installments[$scope.selectedCard.brandInfo.name];
+          $scope.installments = $scope.availableInstallments[0];
+        });
+        $scope.moveOptions('next');
       },
       error: function(response) {},
       complete: function(response) {

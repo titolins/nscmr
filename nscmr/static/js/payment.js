@@ -1,6 +1,5 @@
 angular.module('angularApp')
 .controller('PagSeguroController', ["$scope", "$http", "paymentService", function($scope, $http, paymentService) {
-  //$scope.paymentForm.cardNumber.$setValidity("invalidBin", false);
   $scope.paymentService = paymentService;
 
   $scope.checkCvv = function() {
@@ -36,6 +35,7 @@ angular.module('angularApp')
         success: function(response) {
           console.log(response);
           $scope.paymentService.card.brandInfo = response.brand;
+          $scope.paymentService.card.brandInfo.img = getImgSrc(response.brand.name);
           $scope.paymentForm.cardNumber.$setValidity("bin", true);
         },
         error: function(response) {
@@ -49,7 +49,7 @@ angular.module('angularApp')
     }
   };
 
-  $scope.getImgSrc = function(cardType) {
+  function getImgSrc(cardType) {
     var rootPath = 'https://stc.pagseguro.uol.com.br';
     if(cardType != undefined) {
       return rootPath +
@@ -104,7 +104,6 @@ angular.module('angularApp')
       }
     }
   };
-
 
 }]);
 

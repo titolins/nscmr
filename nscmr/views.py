@@ -582,9 +582,27 @@ def checkout():
 def confirm():
     card = request.json['card']
     cart = request.json['cart']
+    user = current_user
+    order_id = uuid.uuid4()
     print('cart = {}'.format(cart))
     print('card = {}'.format(card))
-    # https://github.com/mundipagg/mundipagg-one-python/wiki/Create-a-Transaction
+    # http://download.uol.com.br/pagseguro/docs/pagseguro-checkout-transparente.pdf
+    transaction_data = {
+        'email': app.config.get('SUPPORT_CONTACT'),
+        'token': app.config.get('PAGSEGURO_TOKEN'),
+        'currency': BRL,
+        'paymentMethod': 'creditCard',
+        'paymentMode': 'default',
+        'reference': order_id,
+        'senderEmail': user.email,
+        'senderName': user.name,
+    }
+    for i,item in enumerate(cart['items']):
+        transaction_data['itemId{}'.format(i)] = item['_id']
+        transaction_data['itemDescription{}'.format(i)] = item['description']
+        transaction_data['itemAmount{}'.format(i)] = float(item['price'])
+        transaction_data['itemQuantity{}'.format(i)] = int(item['quantity'])
+
     '''
     creditcard_data = creditcard(
         creditcard_number = card['number'],

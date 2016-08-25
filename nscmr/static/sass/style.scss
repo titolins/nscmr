@@ -195,8 +195,8 @@ $font-sizes: (
 //
 .double-column {
   &.border-left {
-    & > [class^='col-']:first-child,
-    & > [class*=' col-']:first-child {
+    & [class^='col-']:first-child,
+    & [class*=' col-']:first-child {
       @media screen and (min-width: 320px) {
         border-bottom: 1px solid $dark;
         margin-bottom: 2em;
@@ -209,8 +209,8 @@ $font-sizes: (
     }
   }
   &.border-right {
-    & > [class^='col-']:last-child,
-    & > [class*=' col-']:last-child {
+    & [class^='col-']:last-child,
+    & [class*=' col-']:last-child {
       @media screen and (min-width: 320px) {
         border-top: 1px solid $dark;
         margin-top: 2em;
@@ -1319,17 +1319,17 @@ select {
   margin-left: 50px;
 }
 
-.addresses-background {
+.card-background {
   width: 100%;
   min-height: 110px;;
   padding: 30px 15px 30px 15px;
   background-color: $background;
-  .address-panel {
+  .card-panel {
     position: relative;
     min-height: 50px;
     margin-bottom: 30px;
     background-color: $light;
-    .address-bar {
+    .card-bar {
       position: absolute;
       top: 0;
       left: 0;
@@ -1337,6 +1337,7 @@ select {
       width: 6px;
       height: 100%;
     }
+    div.select-card,
     div.select-address {
       width: calc(100% - 30px);
       padding: 10px 10px 10px 20px;
@@ -1406,10 +1407,7 @@ select {
  */
 
 #checkout {
-  .address-panel {
-    div.select-address {
-      cursor: pointer;
-    }
+  .card-panel {
     &.selected {
       background-color: $light-grey;
       margin-left: 5px;
@@ -1946,6 +1944,12 @@ form[name='paymentForm'] {
         }
       }
     }
+  }
+}
+
+#payment-address {
+  span {
+    @extend .capitalize-light;
   }
 }
 
