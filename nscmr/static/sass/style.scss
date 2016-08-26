@@ -1904,18 +1904,22 @@ form[name='paymentForm'] {
     }
     & > .card-field-group > .card-field-item > .field-name,
     & > .field-name {
-      padding-top: 10px;
-      float: left;
-      @media screen and (min-width: 320px) {
+      @media screen and (min-width: 480px) {
+        padding-top: 10px;
+        float: left;
         width: 25%;
       }
     }
     & > .card-field-group > .card-field-item > input,
     & > input {
-      margin: 0 !important;
-      float: right;
-      @media screen and (min-width: 320px) {
-        width: calc(75%);
+      @media screen and (min-width: 480px) {
+        margin: 0 !important;
+        float: right;
+        width: 75%;
+        &[name=cardYear],
+        &[name=cardMonth] {
+          width: 55% !important;
+        }
       }
     }
     & > .card-field-group {
@@ -1930,9 +1934,20 @@ form[name='paymentForm'] {
         &:nth-child(2) {
           float: right;
         }
+        &.increased-width {
+          width: 80% !important;
+        }
+        &.decreased-width {
+          width: 20% !important;
+        }
       }
       & > input {
         width: 100%;
+        @media screen and (min-width: 480px) {
+          &[name=cardCvv] {
+            width: 55% !important;
+          }
+        }
       }
       & > .card-field-item {
         width: 50%;
