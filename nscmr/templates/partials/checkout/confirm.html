@@ -22,7 +22,7 @@
           <td>Frete</td>
           <td></td>
           <td></td>
-          <td>{a cartService.cart.shipping | currency a}</td>
+          <td>{a cartService.cart.shipping.cost | currency a}</td>
         </tr>
         <tr>
           <td>Total das compras</td>
@@ -42,7 +42,7 @@
           <div class="address">
             <div class="float-left">
               <div>
-                <span class="field-value"><b>{a selectedAddress['street_address_1'] a}</b></span>
+                <span class="field-value"><b>{a selectedAddress['street_address_1'] + ', ' + selectedAddress['street_number'] a}</b></span>
               </div>
               <div>
                 <span class="field-value" ng-if="selectedAddress['street_address_2'] != ''"><b>{a selectedAddress['street_address_2'] a}</b></span>
