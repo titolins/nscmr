@@ -106,7 +106,7 @@ angular.module('angularApp')
     if(cart.shipping === undefined) {
       return cart.subTotal;
     } else {
-      return (cart.shipping + cart.subTotal);
+      return (cart.shipping.cost + cart.subTotal);
     }
   };
 

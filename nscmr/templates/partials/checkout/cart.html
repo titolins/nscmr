@@ -29,7 +29,9 @@
         <tr>
           <td>Frete</td>
           <td ng-if="cartService.cart.shipping == undefined">R$0,00</td>
-          <td ng-if="cartService.cart.shipping != undefined">{a cartService.cart.shipping | currency a}</td>
+          <td ng-if="cartService.cart.shipping != undefined">
+            {a cartService.cart.shipping.cost | currency a}
+          </td>
         </tr>
         <tr>
           <td><b>Total</b></td>
