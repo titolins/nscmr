@@ -10,7 +10,7 @@
       <div class="address">
         <div class="float-left">
           <div>
-            <span class="field-value"><b>{a address['street_address_1'] a}</b></span>
+            <span class="field-value"><b>{a address['street_address_1'] + ', ' + address['street_number'] a}</b></span>
           </div>
           <div>
             <span class="field-value" ng-if="address['street_address_2'] != ''"><b>{a address['street_address_2'] a}</b></span>
@@ -57,6 +57,10 @@
             <div class="duvet-input address-input">
               <span class="capitalize">Endereço: </span>
               <input type="text" class="form-control" ng-model="address['street_address_1']"/>
+            </div>
+            <div class="duvet-input address-input">
+              <span class="capitalize">Número: </span>
+              <input type="number" class="form-control"ng-model="address['street_number']"/>
             </div>
             <div class="duvet-input address-input">
               <span class="capitalize">Complemento: </span>
@@ -110,6 +114,13 @@
           {{ form.street_address_1(**{'ng-model':'form.street_address_1'})|safe }}
           <ul class="alert alert-danger" ng-show="form_errors.street_address_1">
             <li ng-repeat="error in form_errors.street_address_1">{a error a}</li>
+          </ul>
+        </div>
+        <div class="duvet-input address-input">
+          <span class="capitalize">{{ form.street_number.label }}: </span>
+          {{ form.street_number(**{'ng-model':'form.street_number'})|safe }}
+          <ul class="alert alert-danger" ng-show="form_errors.street_number">
+            <li ng-repeat="error in form_errors.street_number">{a error a}</li>
           </ul>
         </div>
         <div class="duvet-input address-input">
