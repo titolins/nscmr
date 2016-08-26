@@ -288,6 +288,9 @@ class AddressForm(Form):
     street_address_1 = StringField('Endereço',
         widget=NsTextInput(),
         validators=[input_required("Campo 'endereço' necessário!")])
+    street_number = IntegerField('Número',
+        widget=NsNumberInput(),
+        validators=[input_required("Campo 'número' necessário!")])
     street_address_2 = StringField('Complemento', widget=NsTextInput())
     neighbourhood = StringField('Bairro', widget=NsTextInput())
     city = StringField('Cidade',

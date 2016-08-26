@@ -70,6 +70,7 @@ class ProfileForm(Form):
 
 class AddressForm(Form):
     street_address_1 = StringField('Endereço', widget=NsTextInput())
+    street_number = IntegerField('Número', widget=NsNumberInput())
     street_address_2 = StringField('Complemento', widget=NsTextInput())
     neighbourhood = StringField('Bairro', widget=NsTextInput())
     city = StringField('Cidade', widget=NsTextInput())
@@ -121,7 +122,7 @@ class RegistrationForm(Form):
         if self.has_address.data:
             address_data = self.address.data
             for field,value in address_data.items():
-                if value in (None, 'None', ''):
+                if field != 'street_address_2' and value in (None, 'None', ''):
                     getattr(self.address, field).errors = ['Campo necessário!']
                     address_fields_errors = True
                 if field == 'zip_code':
