@@ -5,5 +5,5 @@ docker run -v dbdata:/var/lib/mongodb -v $SSH_AUTH_SOCK:/ssh-agent --env \
 
 docker exec -it nscmr service mongod start
 
-sudo docker exec -it nscmr rm -rf /app/nscmr/static/.webassets-cache
+#sudo docker exec -it nscmr rm -rf /app/nscmr/static/.webassets-cache
 
