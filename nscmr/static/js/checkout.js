@@ -44,10 +44,12 @@ angular.module('angularApp')
   };
 
   $scope.confirmBuy = function() {
+    $scope.selectedCard.installments = $scope.installments;
     var data = {
       'cart': $scope.cartService.cart,
       'address': $scope.selectedAddress,
       'card': $scope.selectedCard,
+      'senderHash': PagSeguroDirectPayment.getSenderHash(),
     };
     /* hide checkout and toggle spinner
     document.getElementById('checkout').classList.add('hidden');
@@ -112,7 +114,11 @@ angular.module('angularApp')
     });
     $scope.cartService.shippingOpts.forEach(function(shipping) {
       if(shipping.Codigo == target.id) {
-        $scope.cartService.cart.shipping = shipping.Valor;
+        $scope.cartService.cart.shipping = {
+          cost: shipping.Valor,
+          type: shipping.Tipo,
+          code: shipping.Codigo,
+        };
         $scope.cartService.cart.total = $scope.cartService.getTotal($scope.cartService.cart);
       }
     });
@@ -164,7 +170,7 @@ angular.module('angularApp')
   function checkPaymentOptions() {
     PagSeguroDirectPayment.getInstallments({
       amount: $scope.cartService.cart.total,
-      maxInstallmentsNoInterest: 12,
+      //maxInstallmentsNoInterest: 12,
       brand: $scope.selectedCard.brandInfo.name,
       success: function(response) {
         $scope.$apply(function() {
