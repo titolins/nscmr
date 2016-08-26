@@ -81,7 +81,11 @@ class User(Document):
                     elif k == 'address':
                         if form_data['has_address']:
                             address = {
-                                k: v.lower() for k,v in form_data[k].items() }
+                                k: v.lower() for k,v in form_data[k].items() \
+                                    if k is not 'street_number' }
+                            address['street_number'] = \
+                                form_data[k]['street_number']
+                            address['_id'] = ObjectId()
                             data['addresses'] = [ address, ]
                         continue
                     else:
