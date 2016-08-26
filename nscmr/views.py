@@ -33,7 +33,7 @@ from oauth2client import client, crypt
 #    creditcard_transaction_options, create_sale_request, order
 #from mundipaggOnePython import GatewayServiceClient
 #from enum_types import PlatformEnvironment, HttpContentTypeEnum
-#import uuid
+import uuid
 
 from functools import wraps
 import requests
@@ -61,6 +61,7 @@ from nscmr.admin.forms import AddressForm
 
 # helpers
 from nscmr.helper.back import Back
+from nscmr.helper.pagseguro import get_pagseguro_shipping_code
 from nscmr.admin.helper import get_cart_info
 
 # app
@@ -128,7 +129,7 @@ def registration():
                     categories=categories)
         except Exception as e:
             flash(
-                ('Ocorreu um erro. Por favor, tente novamente. Se o erro, '
+                ('Ocorreu um erro. Por favor, tente novamente. Se o erro '
                 'persistir, contate-nos em: {}\nMensagem de erro:\n{}').\
                         format(app.config.get(
                             'SUPPORT_CONTACT', ''), str(e)))
@@ -580,29 +581,83 @@ def checkout():
 
 @app.route('/confirmarcompra', methods=['POST'])
 def confirm():
+    import xmltodict
     card = request.json['card']
     cart = request.json['cart']
+    address = request.json['address']
+    sender_hash = request.json['senderHash']
+    shipping_code = get_pagseguro_shipping_code(int(cart['shipping']['code']))
     user = current_user
     order_id = uuid.uuid4()
+    billing_address = (
+        address if card['address']['deliveryAddress'] in ('true', True) else \
+        card['address']['deliveryAddress'])
     print('cart = {}'.format(cart))
     print('card = {}'.format(card))
     # http://download.uol.com.br/pagseguro/docs/pagseguro-checkout-transparente.pdf
     transaction_data = {
         'email': app.config.get('SUPPORT_CONTACT'),
         'token': app.config.get('PAGSEGURO_TOKEN'),
-        'currency': BRL,
+        'currency': 'BRL',
         'paymentMethod': 'creditCard',
         'paymentMode': 'default',
         'reference': order_id,
         'senderEmail': user.email,
-        'senderName': user.name,
+        'senderName': card['holderName'],
+        'senderCPF': '',
+        #'senderCNPJ': '',
+        'senderAreaCode': '',
+        'senderPhone': '',
+        'senderHash': sender_hash,
+        'shippingType': shipping_code,
+        'shippingCost': "{:.2f}".format(cart['shipping']['cost']),
+        'shippingAddressCountry': 'BRA',
+        'shippingAddressCity': address['city'],
+        'shippingAddressState': address['state'].upper(),
+        'shippingAddressPostalCode': ''.join(address['zip_code'].split('-')),
+        'shippingAddressDistrict': address['neighbourhood'],
+        'shippingAddressStreet': address['street_address_1'],
+        'shippingAddressNumber': address['street_number'],
+        'shippingAddressComplement': address['street_address_2'],
+        'creditCardToken': card['token'],
+        'installmentQuantity': card['installments']['quantity'],
+        'installmentValue': "{:.2f}".format(
+            card['installments']['installmentAmount']),
+        'creditCardHolderName': card['holderName'],
+        'creditCardHolderBirthData': '',
+        'creditCardHolderCPF': '',
+        'creditCardHolderAreaCode': '',
+        'creditCardHolderPhone': '',
+        'billingAddressPostalCode': ''.join(
+            billing_address['zip_code'].split('-')),
+        'billingAddressStreet': billing_address['street_address_1'],
+        'billingAddressNumber': billing_address['street_number'],
+        'billingAddressComplement': billing_address['street_address_2'],
+        'billingAddressDistrict': billing_address['neighbourhood'],
+        'billingAddressCity': billing_address['city'],
+        'billingAddressState': billing_address['state'].upper(),
+        'billingAddressCountry': 'BRA',
     }
     for i,item in enumerate(cart['items']):
-        transaction_data['itemId{}'.format(i)] = item['_id']
-        transaction_data['itemDescription{}'.format(i)] = item['description']
-        transaction_data['itemAmount{}'.format(i)] = float(item['price'])
-        transaction_data['itemQuantity{}'.format(i)] = int(item['quantity'])
+        transaction_data['itemId{}'.format(i+1)] = item['_id']
+        transaction_data['itemDescription{}'.format(i+1)] = item['description']
+        transaction_data['itemAmount{}'.format(i+1)] = \
+            "{:.2f}".format(item['price'])
+        transaction_data['itemQuantity{}'.format(i+1)] = int(item['quantity'])
 
+    def print_dict(d):
+        print("{")
+        for k,v in d.items():
+            print("{}: {}".format(k,v))
+        print("}")
+
+    print_dict(transaction_data)
+    r = requests.post(
+        app.config.get('PAGSEGURO_ENDPOINT'),
+        data = transaction_data,
+        verify = False)
+    r_dict = xmltodict.parse(str(r.content, 'utf-8'))
+    print_dict(r_dict)
     '''
     creditcard_data = creditcard(
         creditcard_number = card['number'],
