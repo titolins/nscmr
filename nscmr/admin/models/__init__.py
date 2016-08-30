@@ -358,7 +358,11 @@ class Variant(Document):
                     field_data = []
                     for img in form_data[field]:
                         if img.filename not in ('', None):
-                            img_filename = "{}.".format(product.permalink)
+                            ext = img.filename.rsplit('.',1)[1]
+                            if ext.lower() == 'jpg':
+                                ext = 'jpeg'
+                            img_filename = "{}.{}".format(
+                                product.permalink, ext)
                             # save the regular image
                             img_filename = product_images.save(img,
                                 name=img_filename)
