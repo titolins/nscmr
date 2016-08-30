@@ -486,6 +486,10 @@ hr { width: 100%; }
     }
   }
   &#cart-dropdown {
+    .empty-cart {
+      @extend .capitalize-light;
+      padding-top: 2em;
+    }
     .duvet-btn-wrapper {
       margin-bottom: 17px;
     }
@@ -1415,6 +1419,23 @@ select {
   }
 }
 
+.confirm-table {
+  tbody td:not(:first-child) {
+    text-align: center;
+  }
+  tr.shipping {
+    border-bottom: 1px solid $light-grey;
+  }
+  tr.shipping,
+  tr.total {
+    > td:first-child {
+      color: $light-grey;
+      font-weight: bold;
+    }
+  }
+}
+
+.confirm-table,
 .shipping-table,
 .cart-table,
 .summary-table {
