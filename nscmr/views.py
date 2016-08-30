@@ -602,12 +602,16 @@ def confirm():
         'paymentMethod': 'creditCard',
         'paymentMode': 'default',
         'reference': order_id,
-        'senderEmail': user.email,
-        'senderName': card['holderName'],
-        'senderCPF': '',
+        #'senderEmail': user.email, # this is the right one, but sandbox
+                                    # requires the below
+        'senderEmail': user.name + "@sandbox.pagseguro.com.br",
+        #'senderName': user.name,   # correct one. registration should enforce
+                                    # at least two names
+        'senderName': user.name + " silva",
+        'senderCPF': '00000000000',
         #'senderCNPJ': '',
-        'senderAreaCode': '',
-        'senderPhone': '',
+        'senderAreaCode': '11',
+        'senderPhone': '999999999',
         'senderHash': sender_hash,
         'shippingType': shipping_code,
         'shippingCost': "{:.2f}".format(cart['shipping']['cost']),
@@ -624,10 +628,10 @@ def confirm():
         'installmentValue': "{:.2f}".format(
             card['installments']['installmentAmount']),
         'creditCardHolderName': card['holderName'],
-        'creditCardHolderBirthData': '',
-        'creditCardHolderCPF': '',
-        'creditCardHolderAreaCode': '',
-        'creditCardHolderPhone': '',
+        'creditCardHolderBirthDate': '01/01/1980',
+        'creditCardHolderCPF': '00000000000',
+        'creditCardHolderAreaCode': '11',
+        'creditCardHolderPhone': '999999999',
         'billingAddressPostalCode': ''.join(
             billing_address['zip_code'].split('-')),
         'billingAddressStreet': billing_address['street_address_1'],
@@ -658,6 +662,20 @@ def confirm():
         verify = False)
     r_dict = xmltodict.parse(str(r.content, 'utf-8'))
     print_dict(r_dict)
+    if 'errors' in r_dict.keys():
+        for error in r_dict['errors']:
+            print(error)
+    else:
+        order_data = {
+            'reference': order_id,
+            'date': r_dict['transaction']['date'],
+            'pagseguro_code': r_dict['transaction']['code'],
+            'status': r_dict['transaction']['status'],
+        }
+        if r_dict['transaction']['status'] == 3:
+            print('transacao paga')
+        else:
+            print('transacao sob analise')
     '''
     creditcard_data = creditcard(
         creditcard_number = card['number'],
