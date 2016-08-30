@@ -592,8 +592,6 @@ def confirm():
     billing_address = (
         address if card['address']['deliveryAddress'] in ('true', True) else \
         card['address']['deliveryAddress'])
-    print('cart = {}'.format(cart))
-    print('card = {}'.format(card))
     # http://download.uol.com.br/pagseguro/docs/pagseguro-checkout-transparente.pdf
     transaction_data = {
         'email': app.config.get('SUPPORT_CONTACT'),
@@ -649,6 +647,7 @@ def confirm():
             "{:.2f}".format(item['price'])
         transaction_data['itemQuantity{}'.format(i+1)] = int(item['quantity'])
 
+    '''
     def print_dict(d):
         print("{")
         for k,v in d.items():
@@ -656,26 +655,42 @@ def confirm():
         print("}")
 
     print_dict(transaction_data)
+    '''
     r = requests.post(
         app.config.get('PAGSEGURO_ENDPOINT'),
         data = transaction_data,
         verify = False)
     r_dict = xmltodict.parse(str(r.content, 'utf-8'))
-    print_dict(r_dict)
+    response_data = {}
+    print(r_dict)
     if 'errors' in r_dict.keys():
+        response_data['errors'] = []
         for error in r_dict['errors']:
             print(error)
+            response_data['errors'].append(error)
     else:
-        order_data = {
-            'reference': order_id,
-            'date': r_dict['transaction']['date'],
-            'pagseguro_code': r_dict['transaction']['code'],
-            'status': r_dict['transaction']['status'],
-        }
+        order = Order.from_form(r_dict, cart)
+        order.insert()
+        response_data['status'] = r_dict['transaction']['status']
         if r_dict['transaction']['status'] == 3:
             print('transacao paga')
+            response_data['msg'] = (
+                'Sua compra foi concluída! ',
+                'Um e-mail de confirmação vai ser enviado em instantes ',
+                'com os detalhes.\n',
+                'Muito obrigado!'
+            )
         else:
             print('transacao sob analise')
+            response_data['msg'] = (
+                'Seu pagamento foi enviado e está sob análise! ',
+                'Um e-mail com os dados da sua compra e detalhes de como ',
+                'acompanhar seu andamento vai ser enviado em instantes.\n',
+                'Muito obrigado!'
+            )
+    return make_response(json.dumps(response_data), 200) if \
+        'errors' not in response_data.keys() else \
+        make_response(json.dumps(response_data), 500)
     '''
     creditcard_data = creditcard(
         creditcard_number = card['number'],
