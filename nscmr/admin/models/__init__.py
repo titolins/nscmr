@@ -366,6 +366,7 @@ class Variant(Document):
                             # save the regular image
                             img_filename = product_images.save(img,
                                 name=img_filename)
+                            print(img_filename)
                             # get it's url
                             img = product_images.url(img_filename)
                             # create the thumbnail and get it's url
