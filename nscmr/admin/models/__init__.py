@@ -284,9 +284,10 @@ class Product(SlugDocument):
                 summary_data['category'] = {
                     '_id': category_info[0],
                     'permalink': category_info[1] }
-            elif field in ('description', 'meta_description'):
+            elif field == 'description':
                 product_data[field] = form_data[field]
-            elif field == 'shipping':
+                summary_data[field] = form_data[field]
+            elif field in ('shipping', 'meta_description'):
                 product_data[field] = form_data[field]
             # skip variants related info
             else:
