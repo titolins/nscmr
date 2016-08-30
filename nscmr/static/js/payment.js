@@ -29,13 +29,20 @@ angular.module('angularApp')
   $scope.checkNumber = function() {
     if($scope.paymentService.availableCards === null) getAvailableCards();
     console.log($scope.paymentService.card.number.length);
-    if($scope.paymentService.card.number.length === 6) {
+    if($scope.paymentService.card.brandInfo != null &&
+        $scope.paymentService.card.number.length < 6) {
+      $scope.paymentService.card.brandInfo = null;
+    }
+    else if($scope.paymentService.card.number.length >= 6 &&
+        $scope.paymentService.card.brandInfo == null) {
       PagSeguroDirectPayment.getBrand({
         cardBin: $scope.paymentService.card.number,
         success: function(response) {
           console.log(response);
           $scope.paymentService.card.brandInfo = response.brand;
-          $scope.paymentService.card.brandInfo.img = getImgSrc(response.brand.name);
+          $scope.$apply(function () {
+            $scope.paymentService.card.brandInfo.img = getImgSrc(response.brand.name);
+          });
           $scope.paymentForm.cardNumber.$setValidity("bin", true);
         },
         error: function(response) {
