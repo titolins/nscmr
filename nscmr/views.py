@@ -671,6 +671,7 @@ def confirm():
     else:
         order = Order.from_form(r_dict, cart)
         order.insert()
+        #User.clean_cart(current_user.id)
         response_data['status'] = r_dict['transaction']['status']
         if r_dict['transaction']['status'] == 3:
             print('transacao paga')
@@ -688,6 +689,7 @@ def confirm():
                 'acompanhar seu andamento vai ser enviado em instantes.\n',
                 'Muito obrigado!'
             )
+    # send confirmation e-mail
     return make_response(json.dumps(response_data), 200) if \
         'errors' not in response_data.keys() else \
         make_response(json.dumps(response_data), 500)
