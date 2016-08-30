@@ -52,9 +52,9 @@ angular.module('angularApp')
       'senderHash': PagSeguroDirectPayment.getSenderHash(),
     };
     /* hide checkout and toggle spinner
+    */
     document.getElementById('checkout').classList.add('hidden');
     document.getElementById('checkout-conclusion').classList.remove('hidden');
-    */
     console.log(data);
     $http({
       method: 'POST',
@@ -67,11 +67,11 @@ angular.module('angularApp')
     }).then(function success(response) {
       console.log(response);
       document.getElementById('checkout-spinner').classList.add('hidden');
-      document.getElementById('checkout-result').innerHTML = response.data;
+      document.getElementById('checkout-result').innerHTML = response.data.msg;
     }, function error(response) {
       console.log(response);
       document.getElementById('checkout-spinner').classList.add('hidden');
-      document.getElementById('checkout-result').innerHTML = response.data;
+      document.getElementById('checkout-result').innerHTML = response.data.errors;
     });
   };
 
