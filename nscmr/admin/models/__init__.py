@@ -15,10 +15,6 @@ from ..forms import product_images, category_images
 
 from ..helper import make_thumb
 
-PAYMENT_OPTIONS = {
-    'CREDIT_CARD': 1,
-}
-
 class User(Document):
     '''User class
     '''
@@ -456,16 +452,16 @@ class Order(Document):
     __collection__ = 'orders'
     fields = ['cart_info', 'order_info', 'transaction_info', 'user_id']
 
-    def from_form(form_data, cart, transaction_type=PAYMENT_OPTIONS['CREDIT_CARD']):
+    def from_form(form_data, cart):
         # parse response_json from mundipagg, add user info and return
         data = {
             'user_id': current_user.id,
-            'order_info': form_data['OrderResult'],
+            'date': form_data['transaction']['date'],
+            'reference': form_data['transaction']['reference'],
+            'pagseguro_code': form_data['transaction']['code'],
+            'status': form_data['transaction']['status'],
             'cart_info': cart,
         }
-        if transaction_type == PAYMENT_OPTIONS['CREDIT_CARD']:
-            data['transaction_info'] = \
-                form_data['CreditCardTransactionResultCollection']
 
         return Order(data)
 
