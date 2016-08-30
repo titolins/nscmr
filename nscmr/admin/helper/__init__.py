@@ -25,6 +25,7 @@ def slugify(text, delim=u'-'):
 def make_thumb(image, path, size=(350,480)):
     full_img_path = os.path.join(path, image)
     ext = image.rsplit('.',1)[1]
+    print(ext)
     filename = image.split('.',1)[0]
     thumb_filename = '{}_{}.{}'.format(filename, 'thumbnail', ext)
     output_file = os.path.join(path, thumb_filename)
