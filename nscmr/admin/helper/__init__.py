@@ -32,7 +32,7 @@ def make_thumb(image, path, size=(350,480)):
     try:
         im = Image.open(full_img_path)
         im.thumbnail(size)
-        im.save(output_file, ext)
+        im.save(output_file)
         return thumb_filename
     except IOError as e:
         print('Erro criando thumbnail de {}'.format(image))
