@@ -4,7 +4,7 @@ angular.module('angularApp')
   self.availableCards = null;
   self.availablePaymentOptions = null;
   self.initialCard = {
-    'brandInfo': {},
+    'brandInfo': null,
     'number': '',
     'holderName': '',
     'cvv': '',
