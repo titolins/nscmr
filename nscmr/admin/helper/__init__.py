@@ -27,7 +27,8 @@ def make_thumb(image, path, size=(350,480)):
     ext = image.rsplit('.',1)[1]
     if ext.lower() == 'jpg':
         ext = 'jpeg'
-    image = '{}.{}'.format(filename, ext)
+    formatted_image = '{}.{}'.format(filename, ext)
+    print(formatted_image)
     full_img_path = os.path.join(path, image)
     thumb_filename = '{}_{}.{}'.format(filename, 'thumbnail', ext)
     print(thumb_filename)
