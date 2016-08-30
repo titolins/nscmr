@@ -23,8 +23,6 @@ from wtforms.validators import (
 
 from flask.ext.uploads import UploadSet, IMAGES
 
-CASED_IMAGES = (.JPG, .JPE, .JPEG, .PNG, .GIF, .SVG, .BMP)
-DEFAULT_IMAGES = IMAGES + CASED_IMAGES
 
 EXT_ALLOWED_MSG = ' '.join([
     'Extensão de arquivo não permitida. Por favor,',
@@ -33,13 +31,13 @@ EXT_ALLOWED_MSG = ' '.join([
 
 category_images = UploadSet(
         'categoryImages',
-        DEFAULT_IMAGES,
+        IMAGES,
         default_dest=\
             lambda app: os.path.join(app.instance_path,'uploads/img/category'))
 
 product_images = UploadSet(
         'productImages',
-        DEFAULT_IMAGES,
+        IMAGES,
         default_dest=\
             lambda app: os.path.join(app.instance_path,'uploads/img/product'))
 
