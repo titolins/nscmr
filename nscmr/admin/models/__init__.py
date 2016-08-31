@@ -450,7 +450,7 @@ class CartLine(object):
 
 class Order(Document):
     __collection__ = 'orders'
-    fields = ['cart_info', 'order_info', 'transaction_info', 'user_id']
+    fields = ['cart_info',  'user_id', 'reference']
 
     def from_form(form_data, cart):
         # parse response_json from mundipagg, add user info and return
