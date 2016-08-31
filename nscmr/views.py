@@ -59,6 +59,9 @@ from nscmr.forms import (
 
 from nscmr.admin.forms import AddressForm
 
+# sendgrid
+from nscmr.helper.sendgrid import send_confirmation_mail
+
 # helpers
 from nscmr.helper.back import Back
 from nscmr.helper.pagseguro import get_pagseguro_shipping_code
@@ -602,7 +605,7 @@ def confirm():
         'reference': order_id,
         #'senderEmail': user.email, # this is the right one, but sandbox
                                     # requires the below
-        'senderEmail': user.name + "@sandbox.pagseguro.com.br",
+        'senderEmail': user.name.split()[0] + "@sandbox.pagseguro.com.br",
         #'senderName': user.name,   # correct one. registration should enforce
                                     # at least two names
         'senderName': user.name + " silva",
@@ -671,7 +674,7 @@ def confirm():
     else:
         order = Order.from_form(r_dict, cart)
         order.insert()
-        #User.clean_cart(current_user.id)
+        User.clean_cart(current_user.id)
         response_data['status'] = r_dict['transaction']['status']
         if r_dict['transaction']['status'] == 3:
             print('transacao paga')
@@ -689,10 +692,17 @@ def confirm():
                 'acompanhar seu andamento vai ser enviado em instantes.\n',
                 'Muito obrigado!'
             )
-    # send confirmation e-mail
-    return make_response(json.dumps(response_data), 200) if \
-        'errors' not in response_data.keys() else \
-        make_response(json.dumps(response_data), 500)
+        # send confirmation e-mail
+        try:
+            send_confirmation_mail(user, order)
+        except Exception as e:
+            print(str(e))
+            print(e.read())
+
+    return \
+        make_response(json.dumps(response_data), 200) if \
+            'errors' not in response_data.keys() else \
+            make_response(json.dumps(response_data), 500)
     '''
     creditcard_data = creditcard(
         creditcard_number = card['number'],
