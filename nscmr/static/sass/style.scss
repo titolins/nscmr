@@ -1419,6 +1419,16 @@ select {
   }
 }
 
+.order-reference {
+  margin-top: 40px;
+  margin-bottom: 5px;
+}
+
+.order-table {
+  margin-bottom: 20px;
+}
+
+.order-table,
 .confirm-table {
   tbody td:not(:first-child) {
     text-align: center;
@@ -1435,6 +1445,7 @@ select {
   }
 }
 
+.order-table,
 .confirm-table,
 .shipping-table,
 .cart-table,
