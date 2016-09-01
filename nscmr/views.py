@@ -650,15 +650,6 @@ def confirm():
             "{:.2f}".format(item['price'])
         transaction_data['itemQuantity{}'.format(i+1)] = int(item['quantity'])
 
-    '''
-    def print_dict(d):
-        print("{")
-        for k,v in d.items():
-            print("{}: {}".format(k,v))
-        print("}")
-
-    print_dict(transaction_data)
-    '''
     r = requests.post(
         app.config.get('PAGSEGURO_ENDPOINT'),
         data = transaction_data,
@@ -677,7 +668,6 @@ def confirm():
         User.clean_cart(current_user.id)
         response_data['status'] = r_dict['transaction']['status']
         if r_dict['transaction']['status'] == 3:
-            print('transacao paga')
             response_data['msg'] = (
                 'Sua compra foi concluída! ',
                 'Um e-mail de confirmação vai ser enviado em instantes ',
@@ -685,7 +675,6 @@ def confirm():
                 'Muito obrigado!'
             )
         else:
-            print('transacao sob analise')
             response_data['msg'] = (
                 'Seu pagamento foi enviado e está sob análise! ',
                 'Um e-mail com os dados da sua compra e detalhes de como ',
@@ -696,6 +685,7 @@ def confirm():
         try:
             send_confirmation_mail(user, order)
         except Exception as e:
+            response_data['email_error'] = str(e)
             print(str(e))
             print(e.read())
 
