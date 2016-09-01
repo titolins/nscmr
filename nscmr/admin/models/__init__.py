@@ -452,15 +452,21 @@ class Order(Document):
     __collection__ = 'orders'
     fields = ['cart_info',  'user_id', 'reference']
 
-    def from_form(form_data, cart):
+    def from_form(form_data, cart, address):
         # parse response_json from mundipagg, add user info and return
         data = {
             'user_id': current_user.id,
             'date': form_data['transaction']['date'],
             'reference': form_data['transaction']['reference'],
             'pagseguro_code': form_data['transaction']['code'],
-            'status': form_data['transaction']['status'],
+            'status': {
+                'code': form_data['transaction']['status'],
+                'msg': 'Pagamento confirmado' if \
+                        form_data['transaction']['status'] == 3 else \
+                        'Pagamento em análise'
+            },
             'cart_info': cart,
+            'address': address,
         }
 
         return Order(data)
