@@ -672,7 +672,7 @@ def confirm():
             print(error)
             response_data['errors'].append(error)
     else:
-        order = Order.from_form(r_dict, cart)
+        order = Order.from_form(r_dict, cart, address)
         order.insert()
         User.clean_cart(current_user.id)
         response_data['status'] = r_dict['transaction']['status']
