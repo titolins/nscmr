@@ -26,3 +26,6 @@ GOOGLE_CLIENT_ID = "883320219445-ejvh51karin9m6dg9mbql56vjn0vp2ls.apps.googleuse
 FB_APP_ID = "1050879885027789"
 FB_APP_SECRET = "826f7fca7e04f05e9d4bae3de5a8e7a2"
 FB_APP_SCOPE = "public_profile,email"
+
+SENDGRID_API_KEY = \
+    "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"
