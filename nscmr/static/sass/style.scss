@@ -209,8 +209,8 @@ $font-sizes: (
     }
   }
   &.border-right {
-    & [class^='col-']:last-child,
-    & [class*=' col-']:last-child {
+    & [class^='col-']:nth-child(2),
+    & [class*=' col-']:nth-child(2) {
       @media screen and (min-width: 320px) {
         border-top: 1px solid $dark;
         margin-top: 2em;
