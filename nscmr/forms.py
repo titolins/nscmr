@@ -18,7 +18,8 @@ from wtforms.validators import (
     equal_to,
     Optional,
     Regexp,
-    length)
+    length,
+    ValidationError)
 
 from .admin.forms import (
     NsTextInput,
@@ -113,30 +114,43 @@ class RegistrationForm(Form):
     address = FormField(AddressForm)
     # address and phone as custom fields, perhaps...
 
+    def validate_name(form, field):
+        names = field.data.split()
+        if len(names) < 2:
+            raise ValidationError(
+                'Seu nome deve conter pelo menos um sobrenome')
+
     def validate(self):
-        rv = super().validate()
-        default_fields_errors = False
-        address_fields_errors = False
-        if not rv:
-            default_field_errors = True
-        if self.has_address.data:
-            address_data = self.address.data
-            for field,value in address_data.items():
-                if field != 'street_address_2' and value in (None, 'None', ''):
-                    getattr(self.address, field).errors = ['Campo necessário!']
-                    address_fields_errors = True
-                if field == 'zip_code':
-                    field = getattr(self.address, field)
-                    validator = Regexp(r'[0-9]{5}-[0-9]{3}',
-                        message="Formato inválido")
-                    try:
-                        validator(self.address, field)
-                    except:
-                        field.errors.append(validator.message)
+        try:
+            rv = super().validate()
+            default_fields_errors = False
+            address_fields_errors = False
+            if not rv:
+                print('not rv')
+                default_fields_errors = True
+            if self.has_address.data:
+                address_data = self.address.data
+                for field,value in address_data.items():
+                    if field != 'street_address_2' and value in (None, 'None', ''):
+                        getattr(self.address, field).errors = ['Campo necessário!']
                         address_fields_errors = True
+                    if field == 'zip_code':
+                        field = getattr(self.address, field)
+                        validator = Regexp(r'[0-9]{5}-[0-9]{3}',
+                            message="Formato inválido")
+                        try:
+                            validator(self.address, field)
+                        except:
+                            field.errors.append(validator.message)
+                            address_fields_errors = True
+            print(default_fields_errors)
             if default_fields_errors or address_fields_errors:
+                print('ok')
                 return False
-        return True
+            return True
+        except ValidationError:
+            print('val error')
+            return False
 
 
 class ContactForm(Form):
