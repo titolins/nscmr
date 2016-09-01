@@ -1941,80 +1941,60 @@ form[name='paymentForm'] {
   .ng-invalid.ng-touched {
     border-color: $light-red;
   }
-  input[name='submit'] {
-    width: 100%;
+  .duvet-btn {
+    width: auto;
+    float: right;
   }
-  .card-field {
+  .payment-address-toggle-wrapper {
+    margin-top: 15px;
+  }
+  .form-field {
     width: 100%;
-    margin-bottom: 20px;
-    & > .card-field-group > .field-group-name,
-    & > .card-field-group > .card-field-item > .field-name,
-    & > .field-name {
-      @extend .capitalize-light;
-    }
-    & > .card-field-group > .card-field-item > .field-name,
-    & > .field-name {
-      @media screen and (min-width: 480px) {
-        padding-top: 10px;
-        float: left;
-        width: 25%;
-      }
-    }
-    & > .card-field-group > .card-field-item > input,
-    & > input {
-      @media screen and (min-width: 480px) {
-        margin: 0 !important;
-        float: right;
-        width: 75%;
-        &[name=cardYear],
-        &[name=cardMonth] {
-          width: 55% !important;
-        }
-      }
-    }
-    & > .card-field-group {
+    display: table;
+    & > .form-field-group {
       @media screen and (min-width: 320px) {
         width: 100%;
       }
-      @media screen and (min-width: 768px) {
+      @media screen and (min-width: 480px) {
         width: 50%;
-        &:first-child {
-          float: left;
-        }
-        &:nth-child(2) {
-          float: right;
-        }
-        &.increased-width {
-          width: 80% !important;
-        }
-        &.decreased-width {
-          width: 20% !important;
-        }
       }
-      & > input {
+      display: inline-table;
+      .dual-input {
+        display: table;
         width: 100%;
-        @media screen and (min-width: 480px) {
-          &[name=cardCvv] {
-            width: 55% !important;
-          }
-        }
       }
-      & > .card-field-item {
-        width: 50%;
-        &:first-child {
-          float: left;
-        }
-        &:nth-child(2) {
-          float: right;
-        }
-      }
+    }
+    & .divisor,
+    & .form-field-title {
+      @include align-vertical(34px);
+      @extend .capitalize-light;
+      display: table-cell;
+      width: 1px;
+      padding-right: 5px;
+    }
+    input {
+      display: table-cell;
+      width: calc(100% - 5px);
+    }
+  }
+  input:not([type="submit"]) {
+    border: 0;
+    border-bottom: 1px solid $dark;
+    transition: none;
+    -webkit-transition: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    padding-top: 20px;
+    &:focus {
+      box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+    &[name="zipCode"] {
+      border: 0 !important;
+      padding-top: 24px;
+      margin-left: -9px;
     }
   }
 }
 
-#payment-address {
-  span {
-    @extend .capitalize-light;
-  }
-}
 

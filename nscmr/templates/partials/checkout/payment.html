@@ -1,9 +1,5 @@
 {% from "macros/formhelpers.html" import render_field %}
 <div id="checkout-payment" class="col-md-12 hidden checkout-tab double-column border-right">
-  {#
-  <h3><b>PAGAMENTO</b></h3>
-  <hr>
-  #}
   <form name="paymentForm" ng-controller="PagSeguroController" ng-submit="confirmCard()">
     <div class="col-sm-12 col-md-6">
       <h3 class="uppercase"><b>Cartão</b></h3>
@@ -11,74 +7,78 @@
       <span ng-show="paymentService.card.brandInfo.name">
         <img src="{a paymentService.card.brandInfo.img a}"></img>
       </span>
-      <div class="card-field">
-        <p class="field-name">Número</p>
+      <div class="form-field">
+        <p class="form-field-title">Número</p>
         <input name="cardNumber" ng-model="paymentService.card.number" class="form-control" ng-change="checkNumber()"
         type="text" ng-required="true" name="cardNumber" ng-blur="checkNumberSize()"></input>
-        <div class="clearfix"></div>
         <p class="alert alert-danger" ng-show="paymentForm.cardNumber.$error.size">
           Número inválido. Por favor, confira se você digitou corretamente.
         </p>
       </div>
-      <div class="card-field">
-        <p class="field-name">Nome do titular</p>
+      <div class="form-field">
+        <p class="form-field-title">Titular</p>
         <input name="holderName" ng-model="paymentService.card.holderName" class="form-control"
         type="text" required minlength="6"></input>
-        <div class="clearfix"></div>
       </div>
-      <div class="card-field">
-        <div class="card-field-group">
-          <p class="field-group-name">Código de segurança</p>
+      <div class="form-field">
+        <div class="form-field-group">
+          <p class="form-field-title">CVC</p>
           <input name="cardCvv" ng-model="paymentService.card.cvv" class="form-control"
           ng-change="checkCvv()" type="text" required maxlength="4"></input>
-          <div class="clearfix"></div>
           <p class="alert alert-danger" ng-show="paymentForm.cardCvv.$error.size">
             Código de segurança inválido
           </p>
         </div>
-        <div class="card-field-group">
-          <p class="field-group-name">Validade</p>
-          <div class="card-field-item">
-            <div class="field-name">Ano</div>
-            <input name="cardYear" ng-model="paymentService.card.expYear" class="form-control"
-            type="text" required ng-keypress="isNumeric($event)" maxlength="2"
-            ng-blur="checkDate($event)"></input>
-            <div class="clearfix"></div>
-            <p class="alert alert-danger" ng-show="paymentForm.cardYear.$error.outOfRange">
-              Ano inválido
-            </p>
-          </div>
-          <div class="card-field-item">
-            <div class="field-name">Mês</div>
+        <div class="form-field-group">
+          <p class="form-field-title">Val.</p>
+          <div class="dual-input">
             <input name="cardMonth" ng-model="paymentService.card.expMonth" class="form-control" type="text"
             required maxlength="2" ng-keypress="isNumeric($event)" ng-blur="checkDate($event)"></input>
-            <div class="clearfix"></div>
-            <p class="alert alert-danger" ng-show="paymentForm.cardMonth.$error.outOfRange">
-              Mês inválido
-            </p>
+            <span class="divisor">/</span>
+            <input name="cardYear" ng-model="paymentService.card.expYear" class="form-control"
+            type="text" required ng-keypress="isNumeric($event)" maxlength="2" ng-blur="checkDate($event)">
+            </input>
           </div>
-          <div class="clearfix"></div>
+          <p class="alert alert-danger" ng-show="paymentForm.cardYear.$error.outOfRange">
+            Ano inválido
+          </p>
+          <p class="alert alert-danger" ng-show="paymentForm.cardMonth.$error.outOfRange">
+            Mês inválido
+          </p>
         </div>
-        <div>
-          <input id="payment-address-toggle" ng-model="paymentService.card.address.deliveryAddress" type="checkbox"></input>
-          <label for="payment-address-toggle">usar o endereço de entrega para a cobrança?</label>
-        </div>
-        <div class="clearfix"></div>
+      </div>
+      <div class="payment-address-toggle-wrapper">
+        <input id="payment-address-toggle" ng-model="paymentService.card.address.deliveryAddress" type="checkbox"></input>
+        <label for="payment-address-toggle">usar o endereço de entrega para a cobrança?</label>
       </div>
     </div>
     <div id="payment-address" class="col-xs-12 col-md-6">
       <h3 class="uppercase"><b>Endereço de cobrança</b></h3>
       <hr>
-      <div class="card-field">
-        <div class="card-field-group increased-width">
-          <p class="field-group-name">Endereço</p>
-          <input name="streetAddress1"
-          ng-required="!paymentService.card.address.deliveryAddress"
-          ng-disabled="paymentService.card.address.deliveryAddress"
-          ng-model="paymentService.card.address.streetAddress1" class="form-control" type="text"></input>
-        </div>
-        <div class="card-field-group decreased-width">
-          <p class="field-group-name">Número</p>
+      <div class="form-field">
+        <p class="form-field-title">cep</p>
+        <input name="zipCode"
+        ng-required="!paymentService.card.address.deliveryAddress"
+        ng-disabled="paymentService.card.address.deliveryAddress" ui-mask="99999-999"
+        ng-model="paymentService.card.address.zipCode" class="form-control" type="text"></input>
+      </div>
+      <div class="form-field">
+        <p class="form-field-title">Endereço</p>
+        <input name="streetAddress1"
+        ng-required="!paymentService.card.address.deliveryAddress"
+        ng-disabled="paymentService.card.address.deliveryAddress"
+        ng-model="paymentService.card.address.streetAddress1" class="form-control" type="text"></input>
+      </div>
+      <div class="form-field">
+        <p class="form-field-title">Bairro</p>
+        <input name="neighbourhood"
+        ng-required="!paymentService.card.address.deliveryAddress"
+        ng-disabled="paymentService.card.address.deliveryAddress"
+        ng-model="paymentService.card.address.neighbourhood" class="form-control" type="text"></input>
+      </div>
+      <div class="form-field">
+        <div class="form-field-group">
+          <p class="form-field-title">Número</p>
           <input name="streetNumber"
           ng-required="!paymentService.card.address.deliveryAddress"
           ng-disabled="paymentService.card.address.deliveryAddress"
@@ -86,39 +86,28 @@
           class="form-control" type="text" maxlength="6"
           ng-keypress="isNumeric($event)"></input>
         </div>
+        <div class="form-field-group">
+          <p class="form-field-title">Complemento</p>
+          <input name="streetAddress2"
+          ng-disabled="paymentService.card.address.deliveryAddress"
+          ng-model="paymentService.card.address.streetAddress2" class="form-control" type="text"></input>
+        </div>
       </div>
-      <span>Complemento</span>
-      <input name="streetAddress2"
-      ng-disabled="paymentService.card.address.deliveryAddress"
-      ng-model="paymentService.card.address.streetAddress2" class="form-control" type="text"></input>
-      <span>Bairro</span>
-      <input name="neighbourhood"
-      ng-required="!paymentService.card.address.deliveryAddress"
-      ng-disabled="paymentService.card.address.deliveryAddress"
-      ng-model="paymentService.card.address.neighbourhood" class="form-control" type="text"></input>
-      <div class="card-field">
-        <p class="field-name">cep</p>
-        <input name="zipCode"
-        ng-required="!paymentService.card.address.deliveryAddress"
-        ng-disabled="paymentService.card.address.deliveryAddress" ui-mask="99999-999"
-        ng-model="paymentService.card.address.zipCode" class="form-control" type="text"></input>
-        <div class="clearfix"></div>
-      </div>
-      <div class="card-field">
-        <p class="field-name">cidade</p>
-        <input name="city"
-        ng-required="!paymentService.card.address.deliveryAddress"
-        ng-disabled="paymentService.card.address.deliveryAddress"
-        ng-model="paymentService.card.address.city" class="form-control" type="text"></input>
-        <div class="clearfix"></div>
-      </div>
-      <div class="card-field">
-        <p class="field-name">estado</p>
-        <input name="state"
-        ng-required="!paymentService.card.address.deliveryAddress"
-        ng-disabled="paymentService.card.address.deliveryAddress" maxlength="2"
-        ng-model="paymentService.card.address.state" class="form-control" type="text"></input>
-        <div class="clearfix"></div>
+      <div class="form-field">
+        <div class="form-field-group">
+          <p class="form-field-title">cidade</p>
+          <input name="city"
+          ng-required="!paymentService.card.address.deliveryAddress"
+          ng-disabled="paymentService.card.address.deliveryAddress"
+          ng-model="paymentService.card.address.city" class="form-control" type="text"></input>
+        </div>
+        <div class="form-field-group">
+          <p class="form-field-title">estado</p>
+          <input name="state"
+          ng-required="!paymentService.card.address.deliveryAddress"
+          ng-disabled="paymentService.card.address.deliveryAddress" maxlength="2"
+          ng-model="paymentService.card.address.state" class="form-control" type="text"></input>
+        </div>
       </div>
     </div>
     <div class="clearfix"></div>
