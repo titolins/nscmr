@@ -1491,7 +1491,7 @@ select {
     }
     .product-info {
       width: 100%;
-      padding-left: 8px;
+      padding-left: 15px;
     }
   }
   @media screen and (min-width: 768px) {
@@ -1504,6 +1504,9 @@ select {
       text-align: left;
       width: 40%;
     }
+  }
+  .product-data {
+    padding-top: 5px;
   }
   .item-price {
     height: 34px;
@@ -1685,6 +1688,21 @@ select {
       color: $fade-dark;
       &:hover { color: $dark; }
     }
+  }
+}
+
+#checkout-addresses {
+  .add-address-btn {
+    float: left !important;
+  }
+  .duvet-btn-wrapper {
+    width: auto !important;
+    display: inline;
+    float: right;
+    margin-top: 0 !important;
+  }
+  .card-background {
+    margin-bottom: 17px;
   }
 }
 
