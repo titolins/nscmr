@@ -488,6 +488,9 @@ hr { width: 100%; }
   &#cart-dropdown {
     .cart-dropdown-btns {
       margin-top: 10px;
+      & > a:hover {
+        text-decoration: underline;
+      }
     }
     .empty-cart {
       @extend .capitalize-light;
@@ -1965,6 +1968,10 @@ form[name='paymentForm'] {
   }
   .user-field {
     height: 34px;
+    & > .form-field-title,
+    & > .form-field-value {
+      vertical-align: bottom;
+    }
   }
   .form-field {
     width: 100%;
