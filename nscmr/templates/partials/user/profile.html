@@ -5,42 +5,36 @@
         <h3 class="uppercase">Perfil</h3>
         <hr>
       </div>
-      <div class="field">
-        <div class='field-title inline'>Nome: </div>
-        <div class="field-value inline" id="name-field">
+      <div class="form-field user-field">
+        <p class='form-field-title'>Nome</p>
+        <div class="form-field-value" id="name-field">
           {a user['name'] a}
         </div>
-        <div class="field-input inline hidden" id="name-input">
-          <input name="name" type="text" class="form-control" ng-model="user['name']">
-        </div>
+        <input id="name-input" name="name" type="text" class="hidden form-control" ng-model="user['name']">
       </div>
-      <div class="field">
-        <div class='field-title inline'>Email: </div>
-        <div class='field-value inline' id="email-field">
+      <div class="form-field user-field">
+        <p class='form-field-title'>Email</p>
+        <div class='form-field-value' id="email-field">
           {a user['email'] a}
         </div>
-        <div class='field-input inline hidden' id="email-input">
-          <input name="email" type="text" class="form-control" ng-model="user['email']">
-        </div>
+        <input id="email-input" name="email" type="text" class="form-control hidden" ng-model="user['email']">
       </div>
-      <div class="field">
-        <div class='field-title inline'>Data de nascimento: </div>
-        <div class="field-value inline" id="dob-field">
+      <div class="form-field user-field">
+        <p class='form-field-title'>nascimento: </p>
+        <div class="form-field-value" id="dob-field">
           <span ng-if="user['dob'] != null">{a parseDate(user['dob']) a}</span>
           <span ng-if="user['dob'] == null">Não informada</span>
         </div>
-        <div class="field-input inline hidden" id="dob-input">
-          <input name="dob" type="date" class="form-control" ng-model="user['dob']">
-        </div>
+        <input id="dob-input" name="dob" type="date" class="form-control hidden" ng-model="user['dob']">
       </div>
       <div class="duvet-btn-wrapper text-right">
-        <a class="duvet-btn edit-user-btn" href="#" ng-click="toggleEditUser(); $event.preventDefault();">
+        <a class="duvet-btn edit-user-btn align-fix" href="#" ng-click="toggleEditUser(); $event.preventDefault();">
           <i class="fa fa-edit"></i> Editar
         </a>
-        <a class="duvet-btn edit-user-btn hidden" href="#" ng-click="toggleEditUser(); $event.preventDefault();">
+        <a class="duvet-btn edit-user-btn align-fix hidden" href="#" ng-click="toggleEditUser(); $event.preventDefault();">
           <i class="fa fa-edit"></i> Cancelar
         </a>
-        <a class="duvet-btn edit-user-btn hidden" href="#" ng-click="editUser(); $event.preventDefault();">
+        <a class="duvet-btn edit-user-btn align-fix hidden" href="#" ng-click="editUser(); $event.preventDefault();">
           <i class="fa fa-check"></i> Salvar
         </a>
       </div>

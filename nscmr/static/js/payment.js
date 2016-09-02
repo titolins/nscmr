@@ -81,17 +81,6 @@ angular.module('angularApp')
     });
   };
 
-  $scope.isNumeric = function(evt) {
-    var theEvent = evt;
-    window.theEvent = theEvent;
-    var key = theEvent.keyCode || theEvent.which;
-    key = String.fromCharCode(key);
-    var regex = /[0-9]/;
-    if(!regex.test(key)) {
-      theEvent.returnValue = false;
-      if(theEvent.preventDefault) theEvent.preventDefault();
-    }
-  };
 
   $scope.checkDate = function(evt) {
     var target = evt.target;
@@ -110,6 +99,21 @@ angular.module('angularApp')
         }
       }
     }
+  };
+
+  $scope.getAddressByCep = function() {
+    var apiUri = 'http://api.postmon.com.br/v1/cep/' + $scope.paymentService.card.address.zipCode;
+    $http({url:apiUri}).then(function success(response) {
+      $scope.paymentService.card.address.streetAddress1 = response.data['logradouro'];
+      $scope.paymentService.card.address.neighbourhood = response.data['bairro'];
+      $scope.paymentService.card.address.city = response.data['cidade'];
+      $scope.paymentService.card.address.state = response.data['estado'];
+    }, function error(response) {
+      console.log(response);
+      //alert(response.statusText);
+      if ($scope.form_errors['zip_code'] === undefined) $scope.form_errors['zip_code'] = [];
+      $scope.form_errors['zip_code'].push(response.statusText);
+    });
   };
 
 }]);

@@ -15,7 +15,6 @@ function toggleAddress(checkbox) {
   }
 };
 
-
 $(document).ready(function() {
   $("#confirm-password").change(checkPassword);
 

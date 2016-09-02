@@ -58,7 +58,7 @@ class ProfileForm(Form):
             input_required("Campo necessário!"),
             email("Email inválido!")])
     dob = DateField(
-            "Data de nascimento",
+            "nascimento",
             validators=[Optional()])
     password = PasswordField(
             'Senha',
@@ -71,7 +71,7 @@ class ProfileForm(Form):
 
 class AddressForm(Form):
     street_address_1 = StringField('Endereço', widget=NsTextInput())
-    street_number = IntegerField('Número', widget=NsNumberInput())
+    street_number = StringField('Número', widget=NsTextInput())
     street_address_2 = StringField('Complemento', widget=NsTextInput())
     neighbourhood = StringField('Bairro', widget=NsTextInput())
     city = StringField('Cidade', widget=NsTextInput())
@@ -94,7 +94,7 @@ class RegistrationForm(Form):
             email("Email inválido!")],
         widget=NsTextInput())
     dob = DateField(
-        "Data de nascimento",
+        "nascimento",
         validators=[Optional()],
         widget=NsDateInput())
     password = PasswordField(
@@ -108,9 +108,11 @@ class RegistrationForm(Form):
             equal_to('confirm', message="As senhas precisam ser iguais")],
         widget=NsPasswordInput())
     confirm = PasswordField(
-        'Confirme sua senha', [input_required("Campo necessário!")],
+        'Confirme', [input_required("Campo necessário!")],
         widget=NsPasswordInput())
-    has_address = BooleanField('Gostaria de cadastrar algum endereço?')
+    has_address = BooleanField(
+        'gostaria de cadastrar um endereço?',
+        validators=[Optional()])
     address = FormField(AddressForm)
     # address and phone as custom fields, perhaps...
 
@@ -143,8 +145,21 @@ class RegistrationForm(Form):
                         except:
                             field.errors.append(validator.message)
                             address_fields_errors = True
-            print(default_fields_errors)
             if default_fields_errors or address_fields_errors:
+                print('name')
+                print(self.name.errors)
+                print('email')
+                print(self.email.errors)
+                print('password')
+                print(self.password.errors)
+                print('confirm')
+                print(self.confirm.errors)
+                print('has_address')
+                print(self.has_address.errors)
+                print('address')
+                print(self.address.errors)
+                print('self')
+                print(self.errors)
                 print('ok')
                 return False
             return True

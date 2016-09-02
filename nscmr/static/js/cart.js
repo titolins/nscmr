@@ -23,5 +23,6 @@ angular.module('angularApp', ['ui.mask'])
     });
   }
 
+
 }]);
 

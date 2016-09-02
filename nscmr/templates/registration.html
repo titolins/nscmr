@@ -11,12 +11,12 @@
 {% endblock %}
 
 {% block single_content %}
-  <div class="table-container">
+  <div>
     <h3>Faça seu cadastro!</h3>
     <hr>
-    <form action="{{ url_for('registration') }}" method="post">
-      <div class="table">
-        <div class="col-xs-12 col-sm-6 table-cell">
+    <form id="registration-form" action="{{ url_for('registration') }}" method="post">
+      <div>
+        <div class="col-xs-12 col-sm-6">
           {{ registration_form.hidden_tag() }}
           {% if registration_form.csrf_token.errors %}
             <ul class="alert alert-danger alert-login">
@@ -39,39 +39,61 @@
             {% endif %}
           {% endwith %}
           <dl>
-            {{ render_field(registration_form.name) }}
-            {{ render_field(registration_form.email) }}
+            {{ render_field(registration_form.name,**{'required':''}) }}
+            {{ render_field(registration_form.email,**{'required':''}) }}
             {{ render_field(registration_form.dob) }}
-            {{ render_field(registration_form.password) }}
-            {{ render_field(registration_form.confirm) }}
+            {{ render_field(registration_form.password,**{'required':''}) }}
+            {{ render_field(registration_form.confirm,**{'required':''}) }}
           </dl>
-          {{ registration_form.has_address(**{'data-toggle':'#input-address'})|safe }}
+          {{ registration_form.has_address(**{'ng-model': 'hasAddress', 'data-toggle':'#input-address'})|safe }}
           {{ registration_form.has_address.label }}
         </div>
-        <div id="input-address" class="col-xs-12 col-sm-6 table-cell" ng-controller="AddressController">
-          <div class="cep-input duvet-input">
-            {{ registration_form.address.zip_code(**{'ng-model': 'form.zip_code','ui-mask':'99999-999'}) }}
-            <button id="zip-code-btn" ng-click="getAddressByCep();$event.preventDefault()">
+        <div id="input-address" class="col-xs-12 col-sm-6" ng-controller="AddressController">
+          <div class="form-field">
+            <p class="form-field-title">
+              <label for="address-zip_code">cep</label>
+            </p>
+            {{ registration_form.address.zip_code(**{'ng-required': 'hasAddress', 'class': 'cep', 'ng-model': 'form.zip_code','ui-mask':'99999-999'}) }}
+            <button class="search-cep" ng-click="getAddressByCep();$event.preventDefault()">
               <i class="fa fa-angle-double-right"></i>
             </button>
-            <p>Pesquise pelo seu cep!</p>
-            {#
-            <a class="btn btn-default btn-success" href="#" ng-click="getAddressByCep(); $event.preventDefault();">
-              Buscar
-            </a>
-            #}
           </div>
-            {{ render_field(registration_form.address.street_address_1,**{'ng-model': 'form.street_address_1'}) }}
-            {{
-            render_field(registration_form.address.street_number,**{'ng-model': 'form.street_number'}) }}
-            {{ render_field(registration_form.address.street_address_2,**{'ng-model': 'form.street_address_2'}) }}
-            {{ render_field(registration_form.address.neighbourhood,**{'ng-model': 'form.neighbourhood'}) }}
-            {{ render_field(registration_form.address.city,**{'ng-model':'form.city'}) }}
-            {{ render_field(registration_form.address.state, **{'ng-model':'form.state'}) }}
+          {{ render_field(registration_form.address.street_address_1,**{'ng-required': 'hasAddress', 'ng-model': 'form.street_address_1'}) }}
+          {{ render_field(registration_form.address.neighbourhood,**{'ng-required': 'hasAddress', 'ng-model': 'form.neighbourhood'}) }}
+          <div class="form-field">
+            <div class="form-field-group">
+              <p class="form-field-title">
+                {{ registration_form.address.street_number.label }}
+              </p>
+              {{ registration_form.address.street_number(**{'maxlength':'6',
+                'ng-keypress': 'addressesService.isNumeric($event);', 'ng-required': 'hasAddress',
+                'ng-model': 'form.street_number'}) }}
+            </div>
+            <div class="form-field-group">
+              <p class="form-field-title">
+                {{ registration_form.address.street_address_2.label }}
+              </p>
+              {{ registration_form.address.street_address_2(**{'ng-model': 'form.street_address_2'}) }}
+            </div>
+          </div>
+          <div class="form-field">
+            <div class="form-field-group">
+              <p class="form-field-title">
+                {{ registration_form.address.city.label }}
+              </p>
+              {{ registration_form.address.city(**{'ng-required': 'hasAddress', 'ng-model':'form.city'}) }}
+            </div>
+            <div class="form-field-group">
+              <p class="form-field-title">
+                {{ registration_form.address.state.label }}
+              </p>
+              {{ registration_form.address.state( **{'ng-required': 'hasAddress', 'ng-model':'form.state'}) }}
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-xs-12 table-cell duvet-btn-wrapper">
+      <div class="clearfix"></div>
+      <div class="duvet-btn-wrapper">
         <input class="duvet-btn align-fix" id="register-btn" type="submit" value="Registrar"></input>
       </div>
       <hr>

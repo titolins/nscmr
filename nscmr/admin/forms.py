@@ -288,8 +288,8 @@ class AddressForm(Form):
     street_address_1 = StringField('Endereço',
         widget=NsTextInput(),
         validators=[input_required("Campo 'endereço' necessário!")])
-    street_number = IntegerField('Número',
-        widget=NsNumberInput(),
+    street_number = StringField('Número',
+        widget=NsTextInput(),
         validators=[input_required("Campo 'número' necessário!")])
     street_address_2 = StringField('Complemento', widget=NsTextInput())
     neighbourhood = StringField('Bairro', widget=NsTextInput())
@@ -315,7 +315,7 @@ class NewUserForm(Form):
     name = StringField('Nome',
         validators=[input_required("Campo necessário!")],
         widget=NsTextInput())
-    dob = DateField("Data de nascimento", validators=[Optional()],
+    dob = DateField("nascimento", validators=[Optional()],
         widget=NsDateInput())
     is_admin = BooleanField(
         'Esse usuário é um administrador do sistema?')

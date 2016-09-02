@@ -45,7 +45,7 @@ angular.module('angularApp', ['ui.mask'])
     var i;
     $scope.user = angular.copy($scope.initialUser);
     userFields.forEach(function(fieldName) {
-      relevantEls = document.querySelectorAll('div[id*='+fieldName+'-]');
+      relevantEls = document.querySelectorAll('[id*='+fieldName+'-]');
       relevantEls.forEach(function(el) {
         el.classList.toggle('hidden');
       });

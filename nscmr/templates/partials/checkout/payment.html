@@ -1,5 +1,5 @@
 {% from "macros/formhelpers.html" import render_field %}
-<div id="checkout-payment" class="col-md-12 hidden checkout-tab double-column border-right">
+<div id="checkout-payment" class="col-md-12 hidden checkout-tab">
   <form name="paymentForm" ng-controller="PagSeguroController" ng-submit="confirmCard()">
     <div class="col-sm-12 col-md-6">
       <h3 class="uppercase"><b>Cartão</b></h3>
@@ -33,10 +33,10 @@
           <p class="form-field-title">Val.</p>
           <div class="dual-input">
             <input name="cardMonth" ng-model="paymentService.card.expMonth" class="form-control" type="text"
-            required maxlength="2" ng-keypress="isNumeric($event)" ng-blur="checkDate($event)"></input>
+            required maxlength="2" ng-keypress="addressesService.isNumeric($event)" ng-blur="checkDate($event)"></input>
             <span class="divisor">/</span>
             <input name="cardYear" ng-model="paymentService.card.expYear" class="form-control"
-            type="text" required ng-keypress="isNumeric($event)" maxlength="2" ng-blur="checkDate($event)">
+            type="text" required ng-keypress="addressesService.isNumeric($event)" maxlength="2" ng-blur="checkDate($event)">
             </input>
           </div>
           <p class="alert alert-danger" ng-show="paymentForm.cardYear.$error.outOfRange">
@@ -61,6 +61,7 @@
         ng-required="!paymentService.card.address.deliveryAddress"
         ng-disabled="paymentService.card.address.deliveryAddress" ui-mask="99999-999"
         ng-model="paymentService.card.address.zipCode" class="form-control" type="text"></input>
+        <button type="button" class="search-cep" ng-click="getAddressByCep();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
       </div>
       <div class="form-field">
         <p class="form-field-title">Endereço</p>
@@ -84,7 +85,7 @@
           ng-disabled="paymentService.card.address.deliveryAddress"
           ng-model="paymentService.card.address.streetNumber"
           class="form-control" type="text" maxlength="6"
-          ng-keypress="isNumeric($event)"></input>
+          ng-keypress="addressesService.isNumeric($event)"></input>
         </div>
         <div class="form-field-group">
           <p class="form-field-title">Complemento</p>
