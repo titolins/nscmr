@@ -486,6 +486,9 @@ hr { width: 100%; }
     }
   }
   &#cart-dropdown {
+    .cart-dropdown-btns {
+      margin-top: 10px;
+    }
     .empty-cart {
       @extend .capitalize-light;
       padding-top: 2em;
