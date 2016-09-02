@@ -108,7 +108,7 @@
         <p class="form-field-title outer">Pesquise pelo seu cep!</p>
         <div class="form-field">
           <p class="form-field-title">{{ form.zip_code.label }}</p>
-          {{ form.zip_code(**{'ng-model':'form.zip_code', 'ui-mask':'99999-999', 'model-view-value': 'true', 'class':'cep'})|safe }}
+          {{ form.zip_code(**{'required':'','ng-model':'form.zip_code', 'ui-mask':'99999-999', 'model-view-value': 'true', 'class':'cep'})|safe }}
           <button class="search-cep" ng-click="getAddressByCep();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
           <ul class="alert alert-danger" ng-show="form_errors.zip_code">
             <li ng-repeat="error in form_errors.zip_code">{a error a}</li>
@@ -117,14 +117,14 @@
         <p class="form-field-title outer">não sabe seu cep? <a target="busca_cep" href="http://www.buscacep.correios.com.br/sistemas/buscacep/">clique aqui!</a></p>
         <div class="form-field">
           <p class="form-field-title">{{ form.street_address_1.label }}</p>
-          {{ form.street_address_1(**{'ng-model':'form.street_address_1'})|safe }}
+          {{ form.street_address_1(**{'required':'','ng-model':'form.street_address_1'})|safe }}
           <ul class="alert alert-danger" ng-show="form_errors.street_address_1">
             <li ng-repeat="error in form_errors.street_address_1">{a error a}</li>
           </ul>
         </div>
         <div class="form-field">
           <p class="form-field-title">{{ form.neighbourhood.label }}</p>
-          {{ form.neighbourhood(**{'ng-model':'form.neighbourhood'})|safe }}
+          {{ form.neighbourhood(**{'required':'','ng-model':'form.neighbourhood'})|safe }}
           <ul class="alert alert-danger" ng-show="form_errors.neighbourhood">
             <li ng-repeat="error in form_errors.neighbourhood">{a error a}</li>
           </ul>
@@ -132,7 +132,7 @@
         <div class="form-field">
           <div class="form-field-group">
             <p class="form-field-title">{{ form.street_number.label }}</p>
-            {{ form.street_number(**{'maxlength':'6',
+            {{ form.street_number(**{'required':'','maxlength':'6',
             'ng-keypress':'addressesService.isNumeric($event);', 'ng-model':'form.street_number'})|safe }}
             <ul class="alert alert-danger" ng-show="form_errors.street_number">
               <li ng-repeat="error in form_errors.street_number">{a error a}</li>
@@ -149,14 +149,14 @@
         <div class="form-field">
           <div class="form-field-group">
             <p class="form-field-title">{{ form.city.label }}</p>
-            {{ form.city(**{'ng-model':'form.city'})|safe }}
+            {{ form.city(**{'required':'','ng-model':'form.city'})|safe }}
             <ul class="alert alert-danger" ng-show="form_errors.city">
               <li ng-repeat="error in form_errors.city">{a error a}</li>
             </ul>
           </div>
           <div class="form-field-group">
             <p class="form-field-title">{{ form.state.label }}</p>
-            {{ form.state(**{'ng-model':'form.state'})|safe }}
+            {{ form.state(**{'required':'','ng-model':'form.state'})|safe }}
             <ul class="alert alert-danger" ng-show="form_errors.state">
               <li ng-repeat="error in form_errors.state">{a error a}</li>
             </ul>

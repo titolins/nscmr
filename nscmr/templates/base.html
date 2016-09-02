@@ -69,16 +69,16 @@
     <div id="footer-wrapper">
       <footer class="container-fluid">
         <div id="connect">
-          <span id="newsletter">
+          <div id="newsletter">
             <p class="uppercase font-regular">Receba nossa newsletter e fique por dentro das nossas novidades!</p>
             <div class="form-field">
               <p class="form-field-title">email</p>
               <input id="newsletter-email" type="email"></input>
               <button class="register-email"><i class="fa fa-angle-double-right"></i></button>
             </div>
-          </span>
-          <span id="social">
-            <div class="duvet-input">
+          </div>
+          <div id="social">
+            <div class="media-btns">
               <a href="https://www.facebook.com/DuvetStudio/">
                 <i class="fa fa-facebook" aria-hidden="true"></i>
               </a>
@@ -86,8 +86,9 @@
                 <i class="fa fa-instagram" aria-hidden="true"></i>
               </a>
             </div>
-          </span>
+          </div>
         </div>
+        <div class="clearfix"></div>
         <div class="engine text-right full-width">
           <p>powered by nscmr&reg</p>
         </div>
@@ -102,8 +103,6 @@
     individually (such as OAuth scripts) #}
     <script>
       var csrfToken = $('meta[name=csrf-token]').attr('content');
-    </script>
-    <script>
       var addToCartUri = "{{ url_for('add_to_cart') }}";
       var getCartUri = "{{ url_for('cart') }}";
       var addToWishlistUri = "{{ url_for('add_to_wishlist') }}";

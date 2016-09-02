@@ -241,44 +241,6 @@ input[type=checkbox] + label:before { letter-spacing: 10px; } /* space between l
 input[type=checkbox]:checked + label:before { content: "\f046"; } /* checked */
 input[type=checkbox]:checked + label:before { letter-spacing: 5px; }
 
-.duvet-input {
-  @include align-vertical(30px);
-  //display: inline-block;
-  span {
-    font-size: .8em;
-  }
-  input {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    border: 0;
-    padding: 0;
-    border-bottom: 1px solid $dark;
-    border-radius: 0;
-    height: 30px;
-  }
-  div {
-    margin-left: 5px;
-  }
-  button {
-    box-sizing: content-box;
-    padding: 0;
-    text-align: center;
-    margin-left: 2px;
-    height: 30px;
-    width: 30px;
-    background: $light;
-    border: 1px solid $light;
-    &:hover {
-      background-color: $light-grey;
-    }
-    &:active {
-      border: 1px solid $light-grey;
-      background-color: $fade-dark;
-    }
-  }
-}
-
 /*
  * apparently, bootstrap uses exactly the same fonts. So redefining is not
  * required..
@@ -1843,45 +1805,37 @@ ul#info {
 
 div#connect {
   text-align: center;
-  width: 100%;
+  width: 50%;
+  margin: 0 auto;
   height: 100px;
-  span {
+  & > div {
+    position: relative;
     &#social {
-      .duvet-input {
-        text-align: right;
+      & > .media-btns {
+        text-align: center;
+        position: absolute;
+        bottom: 10px;
       }
     }
     &#newsletter {
       text-align: left;
-    }
-    .duvet-input,
-    p {
-      text-align: left;
-      font-weight: lighter;
-      font-size: .8em;
-      width: 100%;
       color: $light-red;
       button { color: $dark; }
     }
-    .duvet-input {
-      a {
-        text-align: center;
-      }
-      input {
-        border: 1px solid $light-grey;
-        font-style: italic;
-        color: $light-grey;
-      }
+    .media-btns,
+    p {
+      font-weight: lighter;
+      font-size: .8em;
+      width: 100%;
     }
+    float: left;
     padding: 10px 15px 10px 15px;
     height: 110px;
     @media screen and (min-width: 320px) {
-      display: block;
       width: 100%;
     }
     @media screen and (min-width: 768px) {
-      display: inline-block;
-      width: 35%;
+      width: 50%;
     }
     a {
       i {
