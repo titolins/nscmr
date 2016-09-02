@@ -51,6 +51,12 @@
         <input id="payment-address-toggle" ng-model="paymentService.card.address.deliveryAddress" type="checkbox"></input>
         <label for="payment-address-toggle">usar o endereço de entrega para a cobrança?</label>
       </div>
+      <div ng-if="availableInstallments != null" class="installments-opts capitalize-light">
+        <span>Em quantas parcelas deseja pagar?</span>
+        <select required ng-model="paymentService.card.installments"
+          ng-options="inst as (inst.quantity+'x'+(inst.installmentAmount|currency)+' = '+(inst.totalAmount|currency)) for inst in availableInstallments">
+        </select>
+      </div>
     </div>
     <div id="payment-address" class="col-xs-12 col-md-6">
       <h3 class="uppercase"><b>Endereço de cobrança</b></h3>

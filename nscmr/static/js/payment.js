@@ -1,6 +1,8 @@
 angular.module('angularApp')
-.controller('PagSeguroController', ["$scope", "$http", "paymentService", function($scope, $http, paymentService) {
+.controller('PagSeguroController', ["$scope", "$http", "paymentService", "cartService", function($scope, $http, paymentService, cartService) {
   $scope.paymentService = paymentService;
+  $scope.cartService = cartService;
+  $scope.availableInstallments = null;
 
   $scope.checkCvv = function() {
     if($scope.paymentService.card.brandInfo.config != undefined) {
@@ -32,6 +34,7 @@ angular.module('angularApp')
     if($scope.paymentService.card.brandInfo != null &&
         $scope.paymentService.card.number.length < 6) {
       $scope.paymentService.card.brandInfo = null;
+      $scope.availableInstallments = null;
     }
     else if($scope.paymentService.card.number.length >= 6 &&
         $scope.paymentService.card.brandInfo == null) {
@@ -44,6 +47,7 @@ angular.module('angularApp')
             $scope.paymentService.card.brandInfo.img = getImgSrc(response.brand.name);
           });
           $scope.paymentForm.cardNumber.$setValidity("bin", true);
+          checkPaymentOptions();
         },
         error: function(response) {
           console.log(response);
@@ -113,6 +117,25 @@ angular.module('angularApp')
       //alert(response.statusText);
       if ($scope.form_errors['zip_code'] === undefined) $scope.form_errors['zip_code'] = [];
       $scope.form_errors['zip_code'].push(response.statusText);
+    });
+  };
+
+
+  function checkPaymentOptions() {
+    PagSeguroDirectPayment.getInstallments({
+      amount: $scope.cartService.cart.total,
+      //maxInstallmentsNoInterest: 12,
+      brand: $scope.paymentService.card.brandInfo.name,
+      success: function(response) {
+        $scope.$apply(function() {
+          $scope.availableInstallments = response.installments[$scope.paymentService.card.brandInfo.name];
+          $scope.installments = $scope.availableInstallments[0];
+        });
+      },
+      error: function(response) {},
+      complete: function(response) {
+        console.log(response);
+      }
     });
   };
 

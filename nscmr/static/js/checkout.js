@@ -44,7 +44,7 @@ angular.module('angularApp')
   };
 
   $scope.confirmBuy = function() {
-    $scope.selectedCard.installments = $scope.installments;
+    //$scope.selectedCard.installments = $scope.installments;
     var data = {
       'cart': $scope.cartService.cart,
       'address': $scope.selectedAddress,
@@ -156,7 +156,7 @@ angular.module('angularApp')
           $scope.selectedCard = $scope.paymentService.card;
           $scope.selectedCard.token = response.card.token;
         });
-       checkPaymentOptions();
+        $scope.moveOptions('next');
       },
       error: function(response) {
         console.log("[ERROR] confirmCard");
@@ -167,23 +167,6 @@ angular.module('angularApp')
     });
   }
 
-  function checkPaymentOptions() {
-    PagSeguroDirectPayment.getInstallments({
-      amount: $scope.cartService.cart.total,
-      //maxInstallmentsNoInterest: 12,
-      brand: $scope.selectedCard.brandInfo.name,
-      success: function(response) {
-        $scope.$apply(function() {
-          $scope.availableInstallments = response.installments[$scope.selectedCard.brandInfo.name];
-          $scope.installments = $scope.availableInstallments[0];
-        });
-        $scope.moveOptions('next');
-      },
-      error: function(response) {},
-      complete: function(response) {
-        console.log(response);
-      }
-    });
-  };
+  
 
 }]);

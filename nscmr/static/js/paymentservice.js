@@ -9,7 +9,8 @@ angular.module('angularApp')
     'holderName': '',
     'cvv': '',
     'expMonth': '',
-    'expYear': ''
+    'expYear': '',
+    'installments': null,
   };
   self.card = angular.copy(self.initialCard);
   self.save = function() {

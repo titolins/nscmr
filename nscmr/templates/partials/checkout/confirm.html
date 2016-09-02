@@ -30,6 +30,17 @@
           <td></td>
           <td><b>{a cartService.cart.total | currency a}</b></td>
         </tr>
+        <tr ng-if="paymentService.card.installments.quantity > 1" class="installments">
+          <td>
+            Parcelamento
+          </td>
+          <td></td>
+          <td>
+           {a paymentService.card.installments.quantity a}x
+           {a paymentService.card.installments.installmentAmount|currency a}
+          </td>
+          <td><b>{a paymentService.card.installments.totalAmount|currency a}</b></td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -96,11 +107,6 @@
             </div>
             <div class="clearfix"></div>
           </div>
-        </div>
-        <div class="installments-opts">
-          <span>Em quantas parcelas deseja pagar?</span>
-          <select ng-model="installments" ng-options="inst as inst.quantity for inst in availableInstallments">
-          </select>
         </div>
       </div>
     </div>

@@ -1439,6 +1439,7 @@ select {
   tr.shipping {
     border-bottom: 1px solid $light-grey;
   }
+  tr.installments,
   tr.shipping,
   tr.total {
     > td:first-child {
@@ -2034,6 +2035,10 @@ form[name='paymentForm'] {
     padding-top: 24px;
     margin-left: -9px;
   }
+}
+
+.installment-opts {
+  margin-top: 15px;
 }
 
 
