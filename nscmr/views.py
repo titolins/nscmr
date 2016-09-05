@@ -600,17 +600,22 @@ def checkout():
 def confirm():
     import xmltodict
     card = request.json['card']
-    cart = request.json['cart']
     user_cart = get_cart()
-    address = request.json['address']
+    address = User.get_address_by_id(request.json['address'])
     sender_hash = request.json['senderHash']
-    shipping_code = get_pagseguro_shipping_code(int(cart['shipping']['code']))
+    shipping_code = get_pagseguro_shipping_code(
+        int(user_cart['shipping']['code']))
     user = current_user
     order_id = uuid.uuid4()
-    billing_address = (
-        address if card['address']['deliveryAddress'] in ('true', True) else \
-        card['address']['deliveryAddress'])
+    try:
+        billing_address = (
+            address if card['address']['delivery_address'] in ('true', True) \
+                else card['address'])
+    except KeyError:
+        billing_address = card['address']
+
     # http://download.uol.com.br/pagseguro/docs/pagseguro-checkout-transparente.pdf
+    print(billing_address)
     transaction_data = {
         'email': app.config.get('SUPPORT_CONTACT'),
         'token': app.config.get('PAGSEGURO_TOKEN'),
@@ -630,7 +635,7 @@ def confirm():
         'senderPhone': '999999999',
         'senderHash': sender_hash,
         'shippingType': shipping_code,
-        'shippingCost': "{:.2f}".format(cart['shipping']['cost']),
+        'shippingCost': "{:.2f}".format(user_cart['shipping']['cost']),
         'shippingAddressCountry': 'BRA',
         'shippingAddressCity': address['city'],
         'shippingAddressState': address['state'].upper(),
@@ -652,7 +657,8 @@ def confirm():
             billing_address['zip_code'].split('-')),
         'billingAddressStreet': billing_address['street_address_1'],
         'billingAddressNumber': billing_address['street_number'],
-        'billingAddressComplement': billing_address['street_address_2'],
+        'billingAddressComplement': billing_address['street_address_2'] if \
+            'street_address_2' in billing_address.keys() else '',
         'billingAddressDistrict': billing_address['neighbourhood'],
         'billingAddressCity': billing_address['city'],
         'billingAddressState': billing_address['state'].upper(),
@@ -678,7 +684,7 @@ def confirm():
             print(error)
             response_data['errors'].append(error)
     else:
-        order = Order.from_form(r_dict, cart, address)
+        order = Order.from_form(r_dict, user_cart, address)
         order.insert()
         User.clean_cart(current_user.id)
         response_data['status'] = r_dict['transaction']['status']

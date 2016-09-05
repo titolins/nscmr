@@ -49,8 +49,7 @@ angular.module('angularApp')
   $scope.confirmBuy = function() {
     //$scope.selectedCard.installments = $scope.installments;
     var data = {
-      'cart': $scope.cartService.cart,
-      'address': $scope.selectedAddress,
+      'address': $scope.selectedAddress['_id'],
       'card': $scope.selectedCard,
       'senderHash': PagSeguroDirectPayment.getSenderHash(),
     };

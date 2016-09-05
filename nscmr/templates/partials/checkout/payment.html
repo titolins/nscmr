@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="payment-address-toggle-wrapper">
-        <input id="payment-address-toggle" ng-model="paymentService.card.address.deliveryAddress" type="checkbox"></input>
+        <input id="payment-address-toggle" ng-model="paymentService.card.address.delivery_address" type="checkbox"></input>
         <label for="payment-address-toggle">usar o endereço de entrega para a cobrança?</label>
       </div>
       <div ng-if="availableInstallments != null" class="installments-opts capitalize-light">
@@ -64,55 +64,55 @@
       <div class="form-field">
         <p class="form-field-title">cep</p>
         <input name="zipCode"
-        ng-required="!paymentService.card.address.deliveryAddress"
-        ng-disabled="paymentService.card.address.deliveryAddress" ui-mask="99999-999"
-        ng-model="paymentService.card.address.zipCode" class="form-control" type="text"></input>
-        <button ng-disabled="paymentService.card.address.deliveryAddress" type="button" class="search-cep" ng-click="getAddressByCep();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
+        ng-required="!paymentService.card.address.delivery_address"
+        ng-disabled="paymentService.card.address.delivery_address" ui-mask="99999-999"
+        ng-model="paymentService.card.address.zip_code" class="form-control" type="text"></input>
+        <button ng-disabled="paymentService.card.address.delivery_address" type="button" class="search-cep" ng-click="getAddressByCep();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
       </div>
       <div class="form-field">
         <p class="form-field-title">Endereço</p>
         <input name="streetAddress1"
-        ng-required="!paymentService.card.address.deliveryAddress"
-        ng-disabled="paymentService.card.address.deliveryAddress"
-        ng-model="paymentService.card.address.streetAddress1" class="form-control" type="text"></input>
+        ng-required="!paymentService.card.address.delivery_address"
+        ng-disabled="paymentService.card.address.delivery_address"
+        ng-model="paymentService.card.address.street_address_1" class="form-control" type="text"></input>
       </div>
       <div class="form-field">
         <p class="form-field-title">Bairro</p>
         <input name="neighbourhood"
-        ng-required="!paymentService.card.address.deliveryAddress"
-        ng-disabled="paymentService.card.address.deliveryAddress"
+        ng-required="!paymentService.card.address.delivery_address"
+        ng-disabled="paymentService.card.address.delivery_address"
         ng-model="paymentService.card.address.neighbourhood" class="form-control" type="text"></input>
       </div>
       <div class="form-field">
         <div class="form-field-group">
           <p class="form-field-title">Número</p>
           <input name="streetNumber"
-          ng-required="!paymentService.card.address.deliveryAddress"
-          ng-disabled="paymentService.card.address.deliveryAddress"
-          ng-model="paymentService.card.address.streetNumber"
+          ng-required="!paymentService.card.address.delivery_address"
+          ng-disabled="paymentService.card.address.delivery_address"
+          ng-model="paymentService.card.address.street_number"
           class="form-control" type="text" maxlength="6"
           ng-keypress="addressesService.isNumeric($event)"></input>
         </div>
         <div class="form-field-group">
           <p class="form-field-title">Complemento</p>
           <input name="streetAddress2"
-          ng-disabled="paymentService.card.address.deliveryAddress"
-          ng-model="paymentService.card.address.streetAddress2" class="form-control" type="text"></input>
+          ng-disabled="paymentService.card.address.delivery_address"
+          ng-model="paymentService.card.address.street_address_2" class="form-control" type="text"></input>
         </div>
       </div>
       <div class="form-field">
         <div class="form-field-group">
           <p class="form-field-title">cidade</p>
           <input name="city"
-          ng-required="!paymentService.card.address.deliveryAddress"
-          ng-disabled="paymentService.card.address.deliveryAddress"
+          ng-required="!paymentService.card.address.delivery_address"
+          ng-disabled="paymentService.card.address.delivery_address"
           ng-model="paymentService.card.address.city" class="form-control" type="text"></input>
         </div>
         <div class="form-field-group">
           <p class="form-field-title">estado</p>
           <input name="state"
-          ng-required="!paymentService.card.address.deliveryAddress"
-          ng-disabled="paymentService.card.address.deliveryAddress" maxlength="2"
+          ng-required="!paymentService.card.address.delivery_address"
+          ng-disabled="paymentService.card.address.delivery_address" maxlength="2"
           ng-model="paymentService.card.address.state" class="form-control" type="text"></input>
         </div>
       </div>

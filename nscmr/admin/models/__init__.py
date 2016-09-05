@@ -128,8 +128,19 @@ class User(Document):
     def update_address_by_id(addr_id, set_data):
         return User._update_one(
             {"addresses._id": addr_id if isinstance(addr_id, ObjectId) \
-                    else ObjectId(addr_id) },
+                else ObjectId(addr_id) },
             set_data=set_data)
+
+    @staticmethod
+    def get_address_by_id(addr_id):
+        return User._get_one(
+            False,
+            {'addresses._id': addr_id if isinstance(addr_id, ObjectId) \
+                else ObjectId(addr_id)},
+            {
+                'addresses.$': 1,
+                '_id': 0,
+            })['addresses'][0]
 
     @property
     def is_active(self):

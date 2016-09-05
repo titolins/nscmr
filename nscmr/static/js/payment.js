@@ -106,9 +106,9 @@ angular.module('angularApp')
   };
 
   $scope.getAddressByCep = function() {
-    var apiUri = 'http://api.postmon.com.br/v1/cep/' + $scope.paymentService.card.address.zipCode;
+    var apiUri = 'http://api.postmon.com.br/v1/cep/' + $scope.paymentService.card.address.zip_code;
     $http({url:apiUri}).then(function success(response) {
-      $scope.paymentService.card.address.streetAddress1 = response.data['logradouro'];
+      $scope.paymentService.card.address.street_address_1 = response.data['logradouro'];
       $scope.paymentService.card.address.neighbourhood = response.data['bairro'];
       $scope.paymentService.card.address.city = response.data['cidade'];
       $scope.paymentService.card.address.state = response.data['estado'];
