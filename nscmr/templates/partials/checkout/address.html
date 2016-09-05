@@ -5,4 +5,10 @@
       escolher pagamento
     </a>
   </div>
+  <div class="clearfix"></div>
+  <div class="duvet-btn-wrapper float-left">
+    <a ng-if="!selectedAddress['valid']" ng-click="moveOptions('prev'); $event.preventDefault();" href="#" class="duvet-btn">
+      voltar
+    </a>
+  </div>
 </div>

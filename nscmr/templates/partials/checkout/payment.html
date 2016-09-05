@@ -67,7 +67,7 @@
         ng-required="!paymentService.card.address.deliveryAddress"
         ng-disabled="paymentService.card.address.deliveryAddress" ui-mask="99999-999"
         ng-model="paymentService.card.address.zipCode" class="form-control" type="text"></input>
-        <button type="button" class="search-cep" ng-click="getAddressByCep();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
+        <button ng-disabled="paymentService.card.address.deliveryAddress" type="button" class="search-cep" ng-click="getAddressByCep();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
       </div>
       <div class="form-field">
         <p class="form-field-title">Endereço</p>
