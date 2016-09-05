@@ -4,6 +4,7 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 from wtforms.fields import (
     StringField,
+    TextAreaField,
     PasswordField,
     SelectField,
     BooleanField,
@@ -183,9 +184,9 @@ class NewProductForm(Form):
     name = StringField('Nome',
         validators=[input_required("Campo necessário!")],
         widget=NsTextInput())
-    description = StringField('Descrição',
+    description = TextAreaField('Descrição',
         validators=[input_required("Campo necessário!")],
-        widget=NsTextInput())
+        widget=NsTextAreaInput())
     category = SelectField('Categoria',
         validators=[input_required("Campo necessário!")])
     has_variants = BooleanField(
