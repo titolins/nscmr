@@ -4,11 +4,14 @@
     <hr>
     {% include 'partials/carttable.html' %}
     <div id="frete-calc" class="cep-input duvet-input">
-      <span>Calcule seu frete:</span>
-      {{ form.zip_code(**{'ng-model':'cartService.cart.zipCode', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
-      <button id="frete-btn" ng-click="getShipping();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
-      <div id="load-frete" class="hidden inline"><i class="fa fa-cog fa-spin fa-1x fa-fw"></i></div>
-      <p>não sabe seu cep? <a target="busca_cep" href="http://www.buscacep.correios.com.br/sistemas/buscacep/">clique aqui!</a></p>
+      <p class="form-field-title outer">Calcule seu frete</p>
+      <div class="form-field">
+        <p class="form-field-title">cep</p>
+        {{ form.zip_code(**{'class':'cep','ng-model':'cartService.cart.zipCode', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
+        <button id="frete-btn" class="search-cep" ng-click="getShipping();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
+        <div id="load-frete" class="hidden inline"><i class="fa fa-cog fa-spin fa-1x fa-fw"></i></div>
+      </div>
+      <p class="form-field-title outer">não sabe seu cep? <a target="busca_cep" href="http://www.buscacep.correios.com.br/sistemas/buscacep/">clique aqui!</a></p>
     </div>
   </div>
   <div class="col-xs-12 col-md-4" id="cart-total-wrapper">

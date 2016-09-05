@@ -1519,6 +1519,7 @@ select {
   text-transform: capitalize;
 }
 
+/*
 #frete-calc {
   @media screen and (min-width: 320px) {
     margin-bottom: 6em;
@@ -1600,6 +1601,7 @@ select {
     }
   }
 }
+*/
 
 #user-cep-address {
   margin-bottom: 28px;
@@ -1895,6 +1897,7 @@ footer {
 /*
  * payment stuff
  */
+#frete-calc,
 #newsletter,
 #profile,
 form#login-form,
@@ -2005,4 +2008,6 @@ form[name='paymentForm'] {
   margin-top: 15px;
 }
 
+#checkout-conclusion {
+}
 
