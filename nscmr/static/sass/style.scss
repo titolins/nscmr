@@ -176,6 +176,10 @@ $font-sizes: (
   cursor: pointer;
 }
 
+.underline:hover {
+  text-decoration: underline !important;
+}
+
 .no-margin {
   margin: 0 !important;
 }
@@ -1879,6 +1883,7 @@ form[name='paymentForm'] {
       width: 40%;
       display: table-cell;
     }
+    #load-frete,
     button {
       position: absolute;
       background: $light;
@@ -1899,7 +1904,7 @@ form[name='paymentForm'] {
       }
     }
   }
-  input:not(.duvet-btn) {
+  input {
     border: 0;
     border-bottom: 1px solid $dark;
     transition: none;
@@ -1916,7 +1921,7 @@ form[name='paymentForm'] {
   input[name="zipCode"] {
     border: 0 !important;
     padding-top: 24px;
-    margin-left: -9px;
+    margin-left: -8px;
   }
 }
 

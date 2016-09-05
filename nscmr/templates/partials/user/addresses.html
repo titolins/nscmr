@@ -114,7 +114,9 @@
             <li ng-repeat="error in form_errors.zip_code">{a error a}</li>
           </ul>
         </div>
-        <p class="form-field-title outer">não sabe seu cep? <a target="busca_cep" href="http://www.buscacep.correios.com.br/sistemas/buscacep/">clique aqui!</a></p>
+        <p class="form-field-title outer">não sabe seu cep?
+          <a class="underline" target="busca_cep" href="http://www.buscacep.correios.com.br/sistemas/buscacep/">clique aqui!</a>
+        </p>
         <div class="form-field">
           <p class="form-field-title">{{ form.street_address_1.label }}</p>
           {{ form.street_address_1(**{'required':'','ng-model':'form.street_address_1'})|safe }}
