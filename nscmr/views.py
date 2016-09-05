@@ -668,19 +668,19 @@ def confirm():
         User.clean_cart(current_user.id)
         response_data['status'] = r_dict['transaction']['status']
         if r_dict['transaction']['status'] == 3:
-            response_data['msg'] = (
-                'Sua compra foi concluída! ',
-                'Um e-mail de confirmação vai ser enviado em instantes ',
-                'com os detalhes.\n',
-                'Muito obrigado!'
-            )
+            response_data['msg'] = '''
+                Sua compra foi concluída!\n
+                Um e-mail de confirmação vai ser enviado em instantes
+                com os detalhes.\n
+                Muito obrigado!
+            '''
         else:
-            response_data['msg'] = (
-                'Seu pagamento foi enviado e está sob análise! ',
-                'Um e-mail com os dados da sua compra e detalhes de como ',
-                'acompanhar seu andamento vai ser enviado em instantes.\n',
-                'Muito obrigado!'
-            )
+            response_data['msg'] = '''
+                Seu pagamento foi enviado e está sob análise!\n\n
+                Um e-mail com os dados da sua compra e detalhes de como
+                acompanhar seu andamento vai ser enviado em instantes.\n\n
+                Muito obrigado!
+            '''
         # send confirmation e-mail
         try:
             send_confirmation_mail(user, order)
@@ -694,6 +694,7 @@ def confirm():
             'errors' not in response_data.keys() else \
             make_response(json.dumps(response_data), 500)
     '''
+    #mundipagg stuff
     creditcard_data = creditcard(
         creditcard_number = card['number'],
         creditcard_brand = card['brand'],
