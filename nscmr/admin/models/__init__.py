@@ -27,7 +27,7 @@ class User(Document):
         'addresses': [],
         'wishlist': [],
         #'orders': [],
-        'cart': []
+        'cart': {}
     }
     # required fields
     required_fields = ['name', 'email', 'password']
@@ -43,7 +43,7 @@ class User(Document):
             'oauth': {},
             'addresses': [],
             'wishlist': [],
-            'cart': [],
+            'cart': { 'items': [] },
             'name': form_data['name'].lower(),
             'email': form_data['email'].lower() }#,
             #'orders': [] }
@@ -98,23 +98,23 @@ class User(Document):
         return User._get_one(to_obj,
             {
                 '_id': id_ if isinstance(id_, ObjectId) else ObjectId(id_),
-                'cart._id': var_id
+                'cart.items._id': var_id
             },
             {
                 '_id': 0,
-                'cart': { '$elemMatch': {'_id': var_id } }
-            })
+                'cart.items.$': 1
+            })['cart']['items'][0]
 
     @staticmethod
     def clean_cart(id_):
         user = User.get_by_id(id_)
-        for item in user['cart']:
+        for item in user['cart']['items']:
             Variant.update_by_id(
                 item['_id'],
                 inc_data={
                     'reserved': -(item['quantity'])
                 })
-        return User.update_by_id(id_, set_data={'cart':[]})
+        return User.update_by_id(id_, set_data={'cart':{}})
 
     @staticmethod
     def remove_from_wishlists(var_id):
@@ -122,7 +122,7 @@ class User(Document):
 
     @staticmethod
     def remove_from_carts(var_id):
-        return User._update_many({}, pull_data={'cart':{'_id': var_id}})
+        return User._update_many({}, pull_data={'cart.items':{'_id': var_id}})
 
     @staticmethod
     def update_address_by_id(addr_id, set_data):

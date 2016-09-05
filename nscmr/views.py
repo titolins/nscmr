@@ -409,10 +409,11 @@ def remove_from_wishlist():
 
 def get_cart():
     if current_user.is_anonymous:
-        cart = session.get('cart', [])
+        cart = session.get('cart', { 'items': [] })
     else:
         cart = current_user.cart
-    return [CartLine(item)() for item in cart]
+    cart['items'] = [CartLine(item)() for item in cart['items']]
+    return cart
 
 @app.route('/usuario/compras')
 def cart():
@@ -436,20 +437,24 @@ def add_to_cart():
     cart_line = { '_id': variant_id, 'quantity': qty }
     if current_user.is_anonymous:
         if session.get('cart', None) is None:
-            session['cart'] = []
+            session['cart'] = {
+                'items': [],
+            }
         inc = False
-        for item in session['cart']:
+        for item in session['cart']['items']:
             if item['_id'] == variant_id:
                 item['quantity'] += 1
                 inc = True
         if not inc:
-            session['cart'].append(cart_line)
+            session['cart']['items'].append(cart_line)
     else:
         result = User._update_one(
-                {'_id': current_user.id, 'cart._id': variant_id},
-                inc_data = {'cart.$.quantity': 1 })
+                {'_id': current_user.id, 'cart.items._id': variant_id},
+                inc_data = {'cart.items.$.quantity': 1 })
         if result.modified_count == 0:
-            result = User.update_by_id(current_user.id, push_data={'cart': cart_line})
+            result = User.update_by_id(
+                current_user.id,
+                push_data={'cart.items': cart_line})
     response = make_response(
         json.dumps('Produto adicionado às suas compras'), 200)
     response.headers['Content-Type'] = 'application/json'
@@ -468,11 +473,12 @@ def edit_cart():
     #elif qty == 0:
         variant_id = request.json['id']
         cart_item = User.get_cart_item(current_user.id, request.json['id'])
-        qty_in_cart = cart_item['cart'][0]['quantity']
+        print(cart_item)
+        qty_in_cart = cart_item['quantity']
         if qty == 0:
             # remove item from cart
             res = User.update_by_id(current_user.id,
-                    pull_data={'cart': {'_id': request.json['id'] }})
+                    pull_data={'cart.items': {'_id': request.json['id'] }})
             # check if the cart has in fact been updated
             if res.modified_count > 0:
                 Variant.update_by_id(variant_id, inc_data = {
@@ -496,8 +502,9 @@ def edit_cart():
             else:
                 # decrement/increment
                 res = User._update_one(
-                    {'_id': current_user.id, 'cart._id': request.json['id'] },
-                    inc_data={'cart.$.quantity': inc_qty })
+                    {'_id': current_user.id,
+                    'cart.items._id': request.json['id'] },
+                    inc_data={'cart.items.$.quantity': inc_qty })
                 if res.modified_count > 0:
                     response = make_response(
                         json.dumps('Quantidade do produto alterada'), 200)
@@ -514,8 +521,8 @@ def shipping():
     if zip_code in ('', None):
         response = make_response(json.dumps('Preencha o cep!'), 500)
     else:
-        cart = current_user.cart
-        box_size, weight, val = get_cart_info(cart)
+        cart_items = current_user.cart['items']
+        box_size, weight, val = get_cart_info(cart_items)
         data = {
             'nCdEmpresa': '',
             'sDsSenha': '',
@@ -644,7 +651,7 @@ def confirm():
         'billingAddressState': billing_address['state'].upper(),
         'billingAddressCountry': 'BRA',
     }
-    for i,item in enumerate(user_cart):
+    for i,item in enumerate(user_cart['items']):
         transaction_data['itemId{}'.format(i+1)] = item['_id']
         transaction_data['itemDescription{}'.format(i+1)] = item['description']
         transaction_data['itemAmount{}'.format(i+1)] = \
@@ -766,12 +773,12 @@ def login():
                     identity=Identity(str(user.id)))
             # update user cart with cart from session, if existing
             if session.get('cart', None) is not None:
-                for item in session['cart']:
+                for item in session['cart']['items']:
                     if User._update_one({'cart._id': item['_id']}, inc_data=\
-                        {'cart.$.quantity': item['quantity'] }).\
+                        {'cart.items.$.quantity': item['quantity'] }).\
                             modified_count == 0:
                         User.update_by_id(current_user.id,
-                            push_data={'cart': item})
+                            push_data={'cart.items': item})
                 del(session['cart'])
             flash('Log-in bem sucedido! Você já pode fazer suas compras')
             return back.redirect()

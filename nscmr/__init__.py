@@ -139,7 +139,7 @@ if __name__ == '__main__':
             'email': email.lower(),
             'password': generate_password_hash(password),
             'roles': roles,
-            'cart': [],
+            'cart': { 'items': [] },
             'addresses': [],
             'orders': [],
             'wishlist': [],

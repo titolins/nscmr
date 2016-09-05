@@ -15,9 +15,9 @@ angular.module('angularApp')
       url: getCartUri,
     }).then(function successCallback(response) {
       console.log(response.data);
-      self.initialCart.items = response.data;
-      self.initialCart.totalItems = self.getTotalItems(response.data);
-      self.initialCart.subTotal = self.getSubtotal(response.data);
+      self.initialCart.items = response.data.items;
+      self.initialCart.totalItems = self.getTotalItems(response.data.items);
+      self.initialCart.subTotal = self.getSubtotal(response.data.items);
       self.initialCart.total = self.getTotal(self.initialCart);
       self.cart = angular.copy(self.initialCart);
       self.shippingOpts = [];
