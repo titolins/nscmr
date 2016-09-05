@@ -32,9 +32,6 @@ angular.module('angularApp')
     var target;
     if (direction === 'next') {
       target = currentOption.nextSibling.nextSibling;
-      if(target.id === "checkout-addresses") {
-        $scope.setShipping();
-      }
     } else if (direction === 'prev') {
       target = currentOption.previousSibling.previousSibling;
     }
@@ -122,6 +119,7 @@ angular.module('angularApp')
           code: shipping.Codigo,
         };
         $scope.cartService.cart.total = $scope.cartService.getTotal($scope.cartService.cart);
+        $scope.setShipping();
       }
     });
   };

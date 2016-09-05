@@ -615,7 +615,6 @@ def confirm():
         billing_address = card['address']
 
     # http://download.uol.com.br/pagseguro/docs/pagseguro-checkout-transparente.pdf
-    print(billing_address)
     transaction_data = {
         'email': app.config.get('SUPPORT_CONTACT'),
         'token': app.config.get('PAGSEGURO_TOKEN'),
@@ -627,7 +626,8 @@ def confirm():
                                     # requires the below
         'senderEmail': user.name.split()[0] + "@sandbox.pagseguro.com.br",
         #'senderName': user.name,   # correct one. registration should enforce
-                                    # at least two names
+                                    # at least two names (done, but admin is
+                                    # admin only)
         'senderName': user.name + " silva",
         'senderCPF': '00000000000',
         #'senderCNPJ': '',
