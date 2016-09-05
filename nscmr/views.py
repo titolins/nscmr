@@ -587,6 +587,7 @@ def confirm():
     import xmltodict
     card = request.json['card']
     cart = request.json['cart']
+    user_cart = get_cart()
     address = request.json['address']
     sender_hash = request.json['senderHash']
     shipping_code = get_pagseguro_shipping_code(int(cart['shipping']['code']))
@@ -643,7 +644,7 @@ def confirm():
         'billingAddressState': billing_address['state'].upper(),
         'billingAddressCountry': 'BRA',
     }
-    for i,item in enumerate(cart['items']):
+    for i,item in enumerate(user_cart):
         transaction_data['itemId{}'.format(i+1)] = item['_id']
         transaction_data['itemDescription{}'.format(i+1)] = item['description']
         transaction_data['itemAmount{}'.format(i+1)] = \
