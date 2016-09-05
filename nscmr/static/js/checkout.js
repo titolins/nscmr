@@ -32,6 +32,9 @@ angular.module('angularApp')
     var target;
     if (direction === 'next') {
       target = currentOption.nextSibling.nextSibling;
+      if(target.id === "checkout-addresses") {
+        $scope.setShipping();
+      }
     } else if (direction === 'prev') {
       target = currentOption.previousSibling.previousSibling;
     }
@@ -167,6 +170,22 @@ angular.module('angularApp')
     });
   }
 
-  
+  $scope.setShipping = function() {
+    console.log('setShipping');
+    //$scope.cartService.cart.shipping = {
+    $http({
+      method: 'POST',
+      url: setShippingUri,
+      data: $scope.cartService.cart.shipping,
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/json;utf-8"
+      }
+    }).then(function success(response) {
+      console.log(response);
+    }, function error(response) {
+      console.log(response);
+    });
+  };
 
 }]);

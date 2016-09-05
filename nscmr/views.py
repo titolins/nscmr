@@ -551,6 +551,13 @@ def shipping():
     response.headers['Content-Type'] = 'application/json'
     return response
 
+@app.route('/usuario/compras/selecionar_frete', methods=['POST'])
+def set_shipping():
+    print(request.json)
+    User.update_by_id(
+        current_user.id,
+        set_data={'cart.shipping': request.json})
+    return make_response(json.dumps('ok'), 200)
 
 
 ######################
