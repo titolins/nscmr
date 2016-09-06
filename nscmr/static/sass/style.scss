@@ -91,6 +91,12 @@ $font-sizes: (
   width: 100%;
 }
 
+.justify {
+  * {
+    text-align: justify !important;
+  }
+}
+
 .text-left {
   text-align: left;
 }

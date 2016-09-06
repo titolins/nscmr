@@ -15,6 +15,9 @@ from ..forms import product_images, category_images
 
 from ..helper import make_thumb
 
+from markdown import markdown
+
+
 class User(Document):
     '''User class
     '''
@@ -292,8 +295,10 @@ class Product(SlugDocument):
                     '_id': category_info[0],
                     'permalink': category_info[1] }
             elif field == 'description':
-                product_data[field] = form_data[field]
-                summary_data[field] = form_data[field]
+                html_description = markdown(
+                    form_data[field],
+                    extensions=['markdown.extensions.nl2br'])
+                product_data[field] = summary_data[field] = html_description
             elif field in ('shipping', 'meta_description'):
                 product_data[field] = form_data[field]
             # skip variants related info

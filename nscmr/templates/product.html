@@ -31,7 +31,7 @@
           </div>
           <div class="col-md-12">
             <p><span class="capitalize-light">Detalhes</span></br>
-            <span class="font-small">{{ product.description }}</span>
+            <span class="justify font-small">{{ product.description|safe }}</span>
             </p>
             {% if product.attributes is not none %}
               {% for attr in product.attributes.keys() %}

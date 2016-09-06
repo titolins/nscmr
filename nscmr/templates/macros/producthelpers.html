@@ -30,7 +30,7 @@
                 <div class="variant-details">
                   <h4 class="product-name">{{ product['name'] }}</h4>
                   <h3 class="capitalize-no-bold font-medium">R$ {{ variant.price }}</h3>
-                  <p>{{ product['description'] }}</p>
+                  <span class="justify font-small">{{ product['description']|safe }}</span>
                   <hr>
                   <div class="details-text text-right">
                     <a href="{{ url_for('product', c_permalink = product['category']['permalink'], p_permalink = product['permalink'], v_id = variant['_id']) }}">+ Detalhes</a>
