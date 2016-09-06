@@ -32,9 +32,9 @@
     {% assets "js_base" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
-    <!-- google oauth sdk -->
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
     <script>
+      <!-- google oauth sdk -->
       var googleUser = {};
       var startApp = function() {
         gapi.load('auth2', function(){
@@ -61,9 +61,7 @@
 
       startApp();
 
-    </script>
-    <!-- facebook oauth sdk -->
-    <script>
+      <!-- facebook oauth sdk -->
       window.fbAsyncInit = function() {
         FB.init({
           appId      : '1050879885027789',
@@ -134,6 +132,9 @@
       var editCartUri = "{{ url_for('edit_cart') }}";
       var loginUri = "{{ url_for('login') }}";
     </script>
+    {% assets "angular" %}
+      <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
     {% block angular_script %}
       <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
       <script src="{{ url_for('static', filename='js/cartservice.js') }}"></script>
