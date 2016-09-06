@@ -29,6 +29,7 @@ $(document).ready(function(e) {
     else target.toggleClass('open');
     return false;
   });
+
   $(".item-dropdown-toggle").on('click', function() {
     var target = document.getElementById($(this).data('toggle'));
     var closeSelection;
@@ -57,4 +58,9 @@ $(document).ready(function(e) {
     return false;
   });
 
+  $(document).click(function(event) { 
+      if(!$(event.target).closest('.item-dropown').length) {
+        document.getElementsByClassName('item-dropdown open')[0].classList.remove('open');
+      }
+  });
 });
