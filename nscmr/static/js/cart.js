@@ -2,7 +2,13 @@ angular.module('angularApp', ['ui.mask'])
 .config(['$interpolateProvider', function($interpolateProvider) {
   $interpolateProvider.startSymbol('{a');
   $interpolateProvider.endSymbol('a}');
-}]).controller("CartController", ["$scope","$http","cartService", function($scope, $http, cartService) {
+}])
+.filter("safe", ['$sce', function($sce) {
+  return function(htmlCode){
+    return $sce.trustAsHtml(htmlCode);
+  }
+}])
+.controller("CartController", ["$scope","$http","cartService", function($scope, $http, cartService) {
   $scope.cartService = cartService;
   $scope.addToWishlist = function(variantId) {
     var data = { 'variant_id': variantId };
@@ -23,6 +29,5 @@ angular.module('angularApp', ['ui.mask'])
     });
   }
 
-
+  $scope.cartService.update();
 }]);
-
