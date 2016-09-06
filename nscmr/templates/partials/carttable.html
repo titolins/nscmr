@@ -2,14 +2,14 @@
 <table ng-if="cartService.cart.totalItems != 0" class="cart-table">
   <thead>
     <tr>
-      <th>Produto</th>
+      <th class="product-data">Produto</th>
       <th>Quantidade</th>
       <th>Preço</th>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="item in cartService.cart.items">
-      <td>
+      <td class="product-data">
         <div class="product-data">
           <div class="product-image">
             <img class="img-responsive" src="{a item.thumb a}"></img>

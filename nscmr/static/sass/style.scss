@@ -536,7 +536,7 @@ a:focus:not(.link) {
     @media screen and (min-width: 320px) {
       min-height: 100px;
       width: 320px;
-      @include transformY(-450px);
+      @include transformY(-800px);
       @include transition(500ms);
     }
     &.open {
@@ -1280,10 +1280,6 @@ select {
   }
 }
 
-.item-price {
-  margin-left: 50px;
-}
-
 .card-background {
   width: 100%;
   min-height: 110px;;
@@ -1407,48 +1403,26 @@ select {
 
 .cart-table {
   margin-bottom: 2em;
-  thead {
-    th {
-      &:first-child {
-        width: 80%;
-      }
-      &:nth-child(2) {
-        width: 15%;
-      }
-      &:nth-child(3) {
-        width: 5%;
-      }
+  th,
+  td {
+    &:first-child {
+      width: 50%;
     }
-  }
-  td:not(:first-child) {
-    text-align: center;
-  }
-  @media screen and (min-width: 320px) {
-    .product-image {
-      width: 100%;
+    &:nth-child(2) {
+      width: 25%;
     }
-    .product-info {
-      width: 100%;
-      padding-left: 15px;
+    &:nth-child(3) {
+      width: 25%;
     }
-  }
-  @media screen and (min-width: 768px) {
-    .product-image {
-      float: left;
-      width: 60%;
+    &:not(.product-data) {
+      text-align: center;
     }
-    .product-info {
-      float: right;
-      text-align: left;
-      width: 40%;
+    & > .product-info {
+      margin-top: 10px;
     }
   }
   .product-data {
     padding-top: 5px;
-  }
-  .item-price {
-    height: 34px;
-    line-height: 34px;
   }
 }
 
