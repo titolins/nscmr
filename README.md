@@ -77,9 +77,10 @@ As per the above, nscmr is still under development and not ready for use.
     apt-get update && apt-get install docker-engine
 
     ```
-* Create a volume to store the db data and the app container:
+* Create a volume to store the db and instance data and the app container:
     ```
     docker volume create --driver local --name dbdata
+    docker volume create --driver local --name instancedata
     docker build -t nscmr .
     ```
 * Run the nscmr docker container indicating the volume and mongodb path:
