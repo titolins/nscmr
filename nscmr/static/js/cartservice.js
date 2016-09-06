@@ -83,8 +83,6 @@ angular.module('angularApp')
     editCart(data);
   };
 
-  this.update();
-
   this.getTotalItems = function(cartItems) {
     var sum = 0;
     cartItems.forEach(function(item) {
@@ -120,5 +118,4 @@ angular.module('angularApp')
     field.getElementsByClassName('field-value')[0].classList.toggle('hidden');
     field.getElementsByClassName('field-input')[0].classList.toggle('hidden');
   }
-
 }]);
