@@ -1,49 +1,92 @@
-var validEmail = false
+// Google login functions
+function gSignIn(user) {
+  var profile = user.getBasicProfile();
+  console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+  console.log('Full Name: ' + profile.getName());
+  console.log('Given Name: ' + profile.getGivenName());
+  console.log('Family Name: ' + profile.getFamilyName());
+  console.log("Image URL: " + profile.getImageUrl());
+  console.log("Email: " + profile.getEmail());
 
-function validateEmail() {
-  // get the email field and the error element
-  var email = $("#email");
-  var err = $("#email-error");
-  // regex for emails
-  var re = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-  // if email is valid, set variable to true (used in validateForm)
-  if (re.test(email.val())) {
-    validEmail = true
-    // avoid adding the same class twice, which could leed us to difficulty to
-    // remove it afterwards
-    if (!err.hasClass("hidden")) {
-      err.addClass("hidden");
+  // The ID token you need to pass to your backend:
+  var id_token = user.getAuthResponse().id_token;
+  console.log("ID Token: " + id_token);
+  user = {
+    name: profile.getName(),
+    email: profile.getEmail(),
+    oauth: {
+      userToken: user.getAuthResponse().id_token,
+      provider: 'google',
     }
-  // if it isn't, set to false
-  } else {
-    validEmail = false
-    // remove hidden if exists and writes error msg
-    if (err.hasClass("hidden")) {
-      err.removeClass("hidden");
-      $("#email-error li").html("Email inválido!");
-    }
-  }
-  // tries to validate the form (we do not check the password field in this
-  // method)
-  validateForm();
+  };
+  console.log(user);
+  logOAuthUser(user);
 };
 
-function validateForm() {
-  // simple required validator
-  var blankPass = $("#password").val() == "";
-  if (validEmail && !blankPass) {
-    $("#login-btn").removeAttr("disabled");
+// Facebook login functions
+
+FB.getLoginStatus(function(response) {
+  statusChangeCallback(response);
+});
+
+function statusChangeCallback(response) {
+  console.log('fb statusChangeCallback');
+  if (response.status === 'connected') {
+    console.log("Logged in to fb and authorized");
+    fbLogin();
+  } else if (response.status === 'not_authorized') {
+    console.log("Logged in to fb but not authorized");
   } else {
-    $("#login-btn").attr("disabled", "disabled");
+    console.log("Not logged in to fb");
   }
-}
+};
 
-/*
-$(document).ready(function() {
-  $("#email").change(validateEmail);
-});
+function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+};
 
-$(document).ready(function() {
-  $("#password").change(validateForm);
-});
-*/
+function fbLogin() {
+  FB.api('/me', {fields:['name','email','picture']},function(response) {
+    /*
+    var welcomeEl = document.getElementById('fb-welcome');
+    var loginEl = document.getElementById('login');
+    var welcome = "<img src='" + response['picture'] + "'/>" +
+      "<h5>Bem vindo, " + response['name'] + "!</h5>";
+    welcomeEl.innerHtml = welcome;
+    loginEl.classList.add('hidden');
+    welcomeEl.classList.remove('hidden');
+    */
+    user = {
+      name: response['name'],
+      email: response['email'],
+      oauth: {
+        userToken: FB.getAuthResponse()['accessToken'],
+        provider: 'fb',
+      }
+    };
+    console.log(user);
+    logOAuthUser(user);
+  });
+};
+
+function logOAuthUser(user) {
+  $.ajax({
+    type: "POST",
+    url: loginUri,
+    data: JSON.stringify(user, null, '\t'),
+    headers: {
+      "Content-Type": 'application/json;charset=UTF-8',
+      "X-CSRFToken": csrfToken
+    },
+    success: function(data) {
+      console.log(data);
+      window.location.href = data['redirect'];
+    },
+    error: function(data) {
+      console.log(data);
+      //FB.logout();
+    },
+  });
+};

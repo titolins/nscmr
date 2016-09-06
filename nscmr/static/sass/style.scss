@@ -159,7 +159,7 @@ $font-sizes: (
 .capitalize-no-bold {
   font-family: 'Arial Rounded MT';
   text-transform: uppercase;
-  font-size: 80%;
+  font-size: 70%;
   letter-spacing: 2px;
 }
 
@@ -377,13 +377,16 @@ hr { width: 100%; }
   width: 100%;
   text-align: center;
   margin-top: -1px;
-  li {
-    margin-left: 8px;
-    margin-right: 8px;
-    &:hover {
-      color: $grey;
+  ul {
+    @extend .capitalize-no-bold;
+    li {
+      margin-left: 8px;
+      margin-right: 8px;
+      &:hover {
+        color: $grey;
+      }
+      a { display: block; }
     }
-    a { display: block; }
   }
   @media screen and (min-width: 320px) {
     position: absolute;
@@ -1340,32 +1343,6 @@ select {
   font-size: 80%;
   color: $fade-dark;
 }
-
-/*
-.field {
-  @include align-vertical(34px);
-  margin-bottom: 10px;
-  .field-title {
-    font-weight: bold;
-    @extend .capitalize;
-  }
-  .field-input {
-    input {
-      display: inline;
-      &[name=name],
-      &[name=email] {
-        width: 70%;
-      }
-      &[name=dob] {
-        width: 50%;
-      }
-      &[name=quantity] {
-        width: 60px;
-      }
-    }
-  }
-}
-*/
 
 #cart {
   .cart-line {
