@@ -1,4 +1,4 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function(event) { 
   // listeners for the custom btns
   document.getElementById("fb").addEventListener('click', function() {
     fb();
