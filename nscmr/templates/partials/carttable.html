@@ -8,22 +8,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="item in cartService.cart.items">
-      <td class="product-data">
-        <div class="product-data">
-          <div class="product-image">
-            <img class="img-responsive" src="{a item.thumb a}"></img>
-          </div>
-          <div class="product-info">
-            <p><b>{a item['name'] a}</b></p>
-            <span ng-bind-html="item['description']|safe"></span>
-            <div class="product-attributes" ng-if="item['attributes'] != null">
-              <div ng-repeat="(attr, value) in item['attributes']">
-                <b>{a attr a}:</b> {a value a}
-              </div>
-            </div>
-          </div>
-          <div class="clearfix"></div>
+    <tr ng-repeat-start="item in cartService.cart.items">
+      <td width="100%" class="product-data">
+        <div class="product-image">
+          <img class="img-responsive" src="{a item.thumb a}"></img>
         </div>
       </td>
       <!-- Quantity -->
@@ -55,6 +43,17 @@
       <!-- Price -->
       <td>
         <div class="item-price">{a item['price'] | currency a}</div>
+      </td>
+    </tr>
+    <tr ng-repeat-end>
+      <td colspan="3" class="product-info product-data wrapword">
+        <p><b>{a item['name'] a}</b></p>
+        <span ng-bind-html="item['description']|safe"></span>
+        <div class="product-attributes" ng-if="item['attributes'] != null">
+          <div ng-repeat="(attr, value) in item['attributes']">
+            <b>{a attr a}:</b> {a value a}
+          </div>
+        </div>
       </td>
     </tr>
   </tbody>

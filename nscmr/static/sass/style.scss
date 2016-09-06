@@ -110,6 +110,18 @@ $font-sizes: (
   padding-right: 0;
 }
 
+.wrapword {
+  white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  white-space: pre-wrap;       /* css-3 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+  word-break: break-all;
+  white-space: normal;
+}
+
+
 .inline {
   display: inline;
 }
@@ -1405,7 +1417,12 @@ select {
   margin-bottom: 2em;
   th,
   td {
-    &:first-child {
+    &.product-info {
+      text-align: justify;
+      margin-top: 10px;
+      padding-bottom: 20px !important;
+    }
+    &:first-child:not(.product-info) {
       width: 50%;
     }
     &:nth-child(2) {
@@ -1416,9 +1433,6 @@ select {
     }
     &:not(.product-data) {
       text-align: center;
-    }
-    & > .product-info {
-      margin-top: 10px;
     }
   }
   .product-data {
