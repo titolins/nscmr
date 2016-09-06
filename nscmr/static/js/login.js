@@ -1,3 +1,17 @@
+$(document).ready(function() {
+  // listeners for the custom btns
+  document.getElementById("fb").addEventListener('click', function() {
+    fb();
+  });
+});
+
+function fb() {
+  FB.login(function(response) {
+    console.log(response);
+    statusChangeCallback(response);
+  });
+};
+
 // Google login functions
 function gSignIn(user) {
   var profile = user.getBasicProfile();
@@ -39,12 +53,6 @@ function statusChangeCallback(response) {
   } else {
     console.log("Not logged in to fb");
   }
-};
-
-function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
 };
 
 function fbLogin() {

@@ -37,20 +37,24 @@
             </ul>
           {% endif %}
         {% endwith %}
-        <dl>
-          {{ render_field(login_form.email) }}
-          {{ render_field(login_form.password) }}
-        </dl>
-        <div class="duvet-btn-wrapper text-right">
+        {{ render_field(login_form.email) }}
+        {{ render_field(login_form.password) }}
+        <div id="login-btn" class="duvet-btn-wrapper text-right">
           <input class="duvet-btn align-fix" type="submit" value="Entrar">&nbsp;</input>
         </div>
       </form>
       <div id="oauth-btns-wrapper">
-        <fb:login-button class="oauth-btn" data-size="xlarge" scope="public_profile,email" onlogin="checkLoginState();">
-        </fb:login-button>
+        <a href="#" id="fb">
+          <img src="{{ url_for('static', filename='imgs/fb.png') }}">
+        </a>
+        <a href="#" id="google">
+          <img src="{{ url_for('static', filename='imgs/google.png') }}">
+        </a>
+        {#
         <div class="oauth-btn">
           <div class="g-signin2" data-onsuccess="gSignIn" data-theme="dark"></div>
         </div>
+        #}
         <div class="clearfix"></div>
       </div>
     </div>
@@ -62,9 +66,5 @@
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block scripts %}
-  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}
 
