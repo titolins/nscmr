@@ -251,6 +251,11 @@ input[type=checkbox] + label:before { letter-spacing: 10px; } /* space between l
 input[type=checkbox]:checked + label:before { content: "\f046"; } /* checked */
 input[type=checkbox]:checked + label:before { letter-spacing: 5px; }
 
+hr {
+  border-top: 1px solid $dark;
+  width: 100%;
+}
+
 /*
  * apparently, bootstrap uses exactly the same fonts. So redefining is not
  * required..
@@ -296,8 +301,6 @@ a:focus:not(.link) {
   text-decoration: none;
   color: inherit;
 }
-
-hr { width: 100%; }
 
 /*
  * navbar
@@ -475,7 +478,7 @@ hr { width: 100%; }
       margin-bottom: 17px;
     }
     hr {
-      width: 90%;
+      width: 90% !important;
     }
     & > .cart-line {
       &:first-child {
@@ -564,57 +567,30 @@ hr { width: 100%; }
 {
   @media screen and (min-width: 320px) {
     height: 400px;
-    /*
-    background-image:url("http://placehold.it/320x400");
-    */
   }
   @media screen and (min-width: 480px) {
     height: 500px;
-    /*
-    background-image:url("http://placehold.it/480x500");
-    */
   }
   @media screen and (min-width: 720px) {
     height: 600px;
-    /*
-    background-image:url("http://placehold.it/720x600");
-    */
   }
   @media screen and (min-width: 768px) {
     height: 700px;
-    /*
-    background-image:url("http://placehold.it/768x700");
-    */
   }
   @media screen and (min-width: 920px) {
     height: 700px;
-    /*
-    background-image:url("http://placehold.it/920x700");
-    */
   }
   @media screen and (min-width: 992px) {
     height: 700px;
-    /*
-    background-image:url("http://placehold.it/990x700");
-    */
   }
   @media screen and (min-width: 1200px) {
     height: 750px;
-    /*
-    background-image:url("http://placehold.it/1200x800");
-    */
   }
   @media screen and (min-width: 1440px) {
     height: 800px;
-    /*
-    background-image:url("http://placehold.it/1440x850");
-    */
   }
   @media screen and (min-width: 1600px) {
     height: 800px;
-    /*
-    background-image:url("http://placehold.it/1600x900");
-    */
   }
 }
 
@@ -989,7 +965,6 @@ hr { width: 100%; }
         @media screen and (min-width: 992px) {
           padding-top: 220px;
         }
-        hr { border-top: 1px solid $fade-dark; }
         .details-text {
           margin-right: 15px;
           a:hover { color: $light-grey; }
@@ -1069,9 +1044,6 @@ select {
 
 #product-page {
   @extend .full-height;
-  hr {
-    border-top: 1px solid $fade-dark;
-  }
   @media screen and (min-width: 320px) {
     padding-top: 15px;
   }
@@ -1266,9 +1238,6 @@ select {
     width: 98%;
     h3 {
       font-weight: bold;
-    }
-    hr {
-      border-top: 1px solid $dark;
     }
   }
   @media screen and (min-width: 992px) {
@@ -1604,32 +1573,6 @@ select {
   margin-top: 20px;
 }
 
-/*
- * contact/custommade page
- */
-
-.field-row {
-  .input input {
-    width: 15%;
-    display: inline;
-  }
-  .input,
-  .field,
-  .contact-field {
-    @media screen and (min-width: 480px) {
-      float: left;
-      width: 50%;
-      &:first-child {
-        padding-right: 15px;
-      }
-      &:last-child {
-        padding-left: 15px;
-      }
-    }
-  }
-}
-
-
 #returns,
 #custom-made,
 #contact,
@@ -1637,8 +1580,8 @@ select {
   #message {
     height: 280px;
   }
-  hr {
-    border-top: 1px solid $dark;
+  .margin-bottom {
+    margin-bottom: 30px;
   }
 }
 
@@ -1674,39 +1617,6 @@ ul#info {
     }
   }
 }
-
-/*
-#input-address {
-  .cep-input {
-    height: 54px;
-    width: 100%;
-    input {
-      width: 48%;
-      border: 0 !important;
-    }
-  }
-  p {
-    margin-top: 1px;
-    width: 100%;
-    color: $light-red;
-  }
-  .duvet-input,
-  p {
-    text-align: left;
-    font-weight: lighter;
-    font-size: .8em;
-    button { color: $dark; }
-  }
-  .duvet-input {
-    a {
-      text-align: center;
-    }
-    input {
-      border: 1px solid $light-grey;
-      font-style: italic;
-    }
-  }
-}*/
 
 div#connect {
   text-align: center;
@@ -1803,10 +1713,7 @@ footer {
 #frete-calc,
 #newsletter,
 #profile,
-form#login-form,
-form#registration-form,
-form.address-form,
-form[name='paymentForm'] {
+form {
   .form-field-title {
     @extend .capitalize-light;
     &.outer {
@@ -1889,15 +1796,22 @@ form[name='paymentForm'] {
   }
   input:not(.duvet-btn) {
     border: 0;
-    border-bottom: 1px solid $dark;
-    transition: none;
-    -webkit-transition: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
+    border-bottom: 1px solid $fade-dark;
     padding-top: 20px;
+  }
+  textarea {
+    border: 1px solid $fade-dark;
+    border-radius: 0 !important;
+  }
+  textarea,
+  input:not(.duvet-btn) {
+    transition: none !important;
+    -webkit-transition: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
     &:focus {
-      box-shadow: none;
-      -webkit-box-shadow: none;
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
     }
   }
   input.cep,

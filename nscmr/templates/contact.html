@@ -19,18 +19,25 @@
           {% endfor %}
         </ul>
       {% endif %}
-      <dl>
-        <div class='field-row'>
-          <div class='contact-field'>{{ render_field(form.name) }}</div>
-          <div class='contact-field'>{{ render_field(form.email) }}</div>
+      <div class="form-field">
+        <div class="form-field-group">
+          <p class="form-field-title">Nome</p>
+          {{ form.name()|safe }}
         </div>
-        {{ render_field(form.subject) }}
-        {{ render_field(form.message) }}
-      </dl>
+        <div class="form-field-group">
+          <p class="form-field-title">Email</p>
+          {{ form.email()|safe }}
+        </div>
+      </div>
+      <div class="form-field">
+        <p class="form-field-title">Assunto</p>
+        {{ form.subject(class='margin-bottom')|safe }}
+      </div>
+      <p class="form-field-title outer">Mensagem</p>
+      {{ form.message()|safe }}
       <div class="duvet-btn-wrapper">
         <input class="duvet-btn align-fix no-margin" id="contact-btn" type="submit" value="Enviar"></input>
       </div>
     </form>
-    <hr>
   </div>
 {% endblock %}
