@@ -1904,7 +1904,7 @@ form[name='paymentForm'] {
       }
     }
   }
-  input {
+  input:not(.duvet-btn) {
     border: 0;
     border-bottom: 1px solid $dark;
     transition: none;
