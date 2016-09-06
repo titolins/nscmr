@@ -1,6 +1,6 @@
 //angular.module('angularApp').requires.push('credit-cards');
 angular.module('angularApp')
-.controller("CheckoutController", ["$scope","$http","addressesService", "cartService", "paymentService", function($scope, $http, addressesService, cartService, paymentService) {
+.controller("CheckoutController", ["$scope", "$http", "addressesService", "cartService", "paymentService", function($scope, $http, addressesService, cartService, paymentService) {
   $scope.paymentService = paymentService;
   $scope.addressesService = addressesService;
   $scope.addressesService.update(getAddressesUri);
