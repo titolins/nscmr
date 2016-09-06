@@ -95,11 +95,16 @@ def build_app():
         Bundle(
             'jquery/dist/jquery.min.js',
             'bootstrap/dist/js/bootstrap.min.js',
-            'angular/angular.min.js',
-            'angular-i18n/angular-locale_pt-br.js',
-            'angular-ui-mask/dist/mask.min.js',
             'duvet.js'),
         output='js/base.js')
+
+    assets.register(
+        'angular',
+        Bundle(
+            'angular/angular.js',
+            'angular-i18n/angular-locale_pt-br.js',
+            'angular-ui-mask/dist/mask.js'),
+        output='js/angular-bundle.js')
 
     assets.register(
         'css_all',
