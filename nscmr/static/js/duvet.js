@@ -59,7 +59,7 @@ $(document).ready(function(e) {
   });
 
   $(document).click(function(event) { 
-      if(!$(event.target).closest('.item-dropown').length) {
+      if(!$(event.target).closest('.item-dropdown').length) {
         document.getElementsByClassName('item-dropdown open')[0].classList.remove('open');
       }
   });
