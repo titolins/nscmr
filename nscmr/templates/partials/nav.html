@@ -1,8 +1,8 @@
 <nav id="navbar">
   <div id="navbar-btns">
     <div id="options-btns">
-      <span id="navbar-menu-btn" class="collapse-item nav-item item-left trigger-menu" data-target="#navbar-menu">
-        <a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+      <span id="navbar-menu-btn" class="collapse-item nav-item item-left">
+        <a class="item-dropdown-toggle" data-toggle="navbar-menu" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
       </span>
       <span id="bag-btn" class="nav-item item-right">
         <a class="item-dropdown-toggle" data-toggle="cart-dropdown" href="#"><i class="fa fa-shopping-bag"></i><span class="caret"></span></a>
@@ -33,18 +33,18 @@
     {% include 'partials/useroptions.html' %}
   {% endif %}
   {% include 'partials/cartdropdown.html' %}
+  <div id="navbar-menu">
+    <ul class="list-inline">
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li>
+        <a class="item-dropdown-toggle" data-toggle="categories-dropdown" href="#">
+          Comprar<span class="caret"></span>
+        </a>
+      </li>
+      <li><a href="{{ url_for('about') }}">Quem somos</a></li>
+      <li><a href="{{ url_for('custom_made') }}">Sob medida</a></li>
+      <li><a href="{{ url_for('contact') }}">Contato</a></li>
+    </ul>
+  </div>
+  {% include 'partials/categoriesdropdown.html' %}
 </nav>
-<div id="navbar-menu">
-  <ul class="list-inline">
-    <li><a href="{{ url_for('index') }}">Home</a></li>
-    <li>
-      <a class="item-dropdown-toggle" data-toggle="categories-dropdown" href="#">
-        Comprar<span class="caret"></span>
-      </a>
-    </li>
-    <li><a href="{{ url_for('about') }}">Quem somos</a></li>
-    <li><a href="{{ url_for('custom_made') }}">Sob medida</a></li>
-    <li><a href="{{ url_for('contact') }}">Contato</a></li>
-  </ul>
-</div>
-{% include 'partials/categoriesdropdown.html' %}

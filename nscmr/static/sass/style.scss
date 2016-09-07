@@ -14,9 +14,9 @@ $light-red: #d84d6b;
 $background: rgba(237, 237, 237, .4);
 
 $font-sizes: (
-  null: 0.8em !important,
-  480px: 0.9em !important,
-  720px: 1em !important
+  null: 0.8em,
+  480px: 0.9em,
+  720px: 1em
 );
 
 @font-face {
@@ -152,8 +152,16 @@ $font-sizes: (
   color: $fade-dark !important;
 }
 
+.font-large {
+  font-size: 120% !important;
+}
+
 .font-small {
   font-size: 80%;
+}
+
+.font-smaller {
+  font-size: 60%;
 }
 
 .font-medium {
@@ -165,20 +173,17 @@ $font-sizes: (
     font-weight: lighter;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-size: 70%;
 }
 
 .capitalize-no-bold {
   font-family: 'Arial Rounded MT';
   text-transform: uppercase;
-  font-size: 70%;
   letter-spacing: 2px;
 }
 
 .capitalize {
   font-family: 'Arial Rounded MT Bold';
   text-transform: uppercase;
-  font-size: 70%;
   letter-spacing: 2px;
 }
 
@@ -326,7 +331,12 @@ a:focus:not(.link) {
       @media screen and (min-width: 320px) {
         width: 100%;
         height: 50px;
-        font-size: 2em;
+        #account-btn {
+          font-size: 130%;
+        }
+        & > span:not(#account-btn) {
+          font-size: 150%;
+        }
         .item-left {
           padding-left: 10px;
         }
@@ -346,13 +356,13 @@ a:focus:not(.link) {
   background: $light;
   color: $dark;
   @media screen and (min-width: 320px) {
-    height: 130px;
+    height: 180px;
   }
   @media screen and (min-width: 480px) {
-    height: 150px;
+    height: 200px;
   }
   @media screen and (min-width: 768px) {
-    height: 200px;
+    height: 230px;
   }
   & > div {
   }
@@ -401,9 +411,9 @@ a:focus:not(.link) {
 }
 
 #navbar-menu {
-  z-index: 900;
+  //z-index: 900;
   background-color: $light;
-  width: 100%;
+  width: 250px;
   text-align: center;
   margin-top: -1px;
   ul {
@@ -419,21 +429,21 @@ a:focus:not(.link) {
   }
   @media screen and (min-width: 320px) {
     position: absolute;
-    @include transformY(-180px);
+    @include transformY(-220px);
     @include transition(500ms);
     &.open {
       @include transformY(0px);
     }
     li {
-      font-size: 2em;
       display: block;
       @include align-vertical(30px);
     }
   }
   @media screen and (min-width: 768px) {
     position: relative;
-    @include transformY(0px);
+    @include transformY(150px);
     height: 30px;
+    width: 100%;
     li {
       font-size: 1em;
       display: inline-block;
@@ -443,17 +453,15 @@ a:focus:not(.link) {
 
 .item-dropdown {
   &#categories-dropdown a,
-  &#user-options-dropdown a,
-  &#cart-dropdown li {
-    @extend .capitalize-light;
-    font-size: 50% !important;
+  &#user-options-dropdown a {
+    @extend .capitalize-no-bold;
   }
   z-index: 800;
   @extend .light;
   position: absolute;
   margin: 0;
   padding: 0;
-  border: 1px solid $grey;
+  //border: 1px solid $grey;
   li {
     list-style: none;
     padding: 0 10px 0 10px;
@@ -467,16 +475,16 @@ a:focus:not(.link) {
   &#categories-dropdown {
     @media screen and (min-width: 320px) {
       min-height: 60px;
-      width: 130px;
-      @include transformY(-300px);
+      width: 250px;
+      @include transformY(-800px);
       @include transition(500ms);
       &.open {
-        @include transformY(159px);
+        @include transformY(-1px);
       }
     }
     @media screen and (min-width: 768px) {
       &.open {
-        @include transformY(0);
+        @include transformY(150px);
       }
     }
   }
@@ -531,7 +539,6 @@ a:focus:not(.link) {
       .cart-line-info {
         width: 50%;
         float: right;
-        font-size: 60%;
         text-transform: uppercase;
         & > span {
           height: 15px;
@@ -542,6 +549,15 @@ a:focus:not(.link) {
           & > span:first-child {
             color: $fade-dark;
           }
+        }
+        @media screen and (min-width: 320px) {
+          font-size: 120% !important;
+        }
+        @media screen and (min-width: 480px) {
+          font-size: 90% !important;
+        }
+        @media screen and (min-width: 768px) {
+          font-size: 60% !important;
         }
       }
     }
@@ -744,7 +760,7 @@ a:focus:not(.link) {
   left: 30%;
   margin: 0;
   padding: 0;
-
+  @extend .font-small;
 }
 
 #page-content {
@@ -770,7 +786,7 @@ a:focus:not(.link) {
     background-repeat: no-repeat;
     background-size: cover;
     & > [class*="col-"] {
-      padding: 50px;
+      padding: 0 50px;
       margin-bottom: 0;
       background-color: $light;
     }
@@ -1435,9 +1451,14 @@ select {
       text-align: center;
     }
   }
+  th,
   .product-data {
     padding-top: 5px;
   }
+}
+
+#cart-total-wrapper > table > thead > tr {
+  height: 27px !important;
 }
 
 .shipping-table,
@@ -1510,7 +1531,7 @@ select {
     text-align: center;
     background-color: $light-blue;
     color: white !important;
-    text-transform: lowercase;
+    text-transform: uppercase;
     border: 0;
     &:hover {
       background-color: $light-grey;
@@ -1576,7 +1597,7 @@ select {
 #contact,
 #single-content-wrapper{
   #message {
-    height: 280px;
+    height: 200px;
   }
   .margin-bottom {
     margin-bottom: 30px;
@@ -1602,6 +1623,7 @@ select {
  */
 
 ul#info {
+  @extend .font-smaller;
   display: inline-block;
   text-align: center;
   width: 100%;
@@ -1708,6 +1730,10 @@ footer {
 /*
  * payment stuff
  */
+#frete-calc {
+  margin-bottom: 10px;
+}
+
 #frete-calc,
 #newsletter,
 #profile,
@@ -1822,6 +1848,18 @@ form {
 
 .installment-opts {
   margin-top: 15px;
+}
+
+#checkout-cart > #cart-table-wrapper,
+#checkout-cart > #cart-total-wrapper,
+#checkout-cart {
+  @media screen and (min-width: 320px) {
+    padding: 0;
+  }
+  @media screen and (min-width: 480px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 #checkout-conclusion {
