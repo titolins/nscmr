@@ -450,6 +450,7 @@ a:focus:not(.link) {
     }
     li {
       display: block;
+      font-size: 12px;
       @include align-vertical(30px);
     }
   }
@@ -459,7 +460,6 @@ a:focus:not(.link) {
     height: 30px;
     width: 100%;
     li {
-      font-size: 12px;
       display: inline-block;
     }
   }
