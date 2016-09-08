@@ -1864,6 +1864,7 @@ form {
       }
     }
   }
+  select,
   input:not(.duvet-btn) {
     border: 0;
     border-bottom: 1px solid $fade-dark;
@@ -1892,10 +1893,6 @@ form {
   }
 }
 
-.installment-opts {
-  margin-top: 15px;
-}
-
 #checkout-cart > #cart-table-wrapper,
 #checkout-cart > #cart-total-wrapper,
 #checkout-cart {
@@ -1908,6 +1905,4 @@ form {
   }
 }
 
-#checkout-conclusion {
-}
 

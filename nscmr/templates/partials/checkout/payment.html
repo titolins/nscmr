@@ -11,9 +11,11 @@
         <p class="form-field-title">Número</p>
         <input name="cardNumber" ng-model="paymentService.card.number" class="form-control" ng-change="checkNumber()"
         type="text" ng-required="true" name="cardNumber" ng-blur="checkNumberSize()"></input>
+        {#
         <p class="alert alert-danger" ng-show="paymentForm.cardNumber.$error.size">
           Número inválido. Por favor, confira se você digitou corretamente.
         </p>
+        #}
       </div>
       <div class="form-field">
         <p class="form-field-title">Titular</p>
@@ -25,9 +27,11 @@
           <p class="form-field-title">CVC</p>
           <input name="cardCvv" ng-model="paymentService.card.cvv" class="form-control"
           ng-change="checkCvv()" type="text" required maxlength="4"></input>
+          {#
           <p class="alert alert-danger" ng-show="paymentForm.cardCvv.$error.size">
             Código de segurança inválido
           </p>
+          #}
         </div>
         <div class="form-field-group">
           <p class="form-field-title">Val.</p>
@@ -39,19 +43,21 @@
             type="text" required ng-keypress="addressesService.isNumeric($event)" maxlength="2" ng-blur="checkDate($event)">
             </input>
           </div>
+          {#
           <p class="alert alert-danger" ng-show="paymentForm.cardYear.$error.outOfRange">
             Ano inválido
           </p>
           <p class="alert alert-danger" ng-show="paymentForm.cardMonth.$error.outOfRange">
             Mês inválido
           </p>
+          #}
         </div>
       </div>
       <div class="payment-address-toggle-wrapper">
         <input id="payment-address-toggle" ng-model="paymentService.card.address.delivery_address" type="checkbox"></input>
         <label for="payment-address-toggle">usar o endereço de entrega para a cobrança?</label>
       </div>
-      <div ng-if="availableInstallments != null" class="installments-opts capitalize-light">
+      <div ng-if="availableInstallments != null" class="capitalize-light font-small">
         <span>Em quantas parcelas deseja pagar?</span>
         <select required ng-model="paymentService.card.installments"
           ng-options="inst as (inst.quantity+'x'+(inst.installmentAmount|currency)+' = '+(inst.totalAmount|currency)) for inst in availableInstallments">
