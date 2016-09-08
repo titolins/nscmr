@@ -559,6 +559,14 @@ def set_shipping():
         set_data={'cart.shipping': request.json})
     return make_response(json.dumps('ok'), 200)
 
+@app.route('/usuario/compras/selecionar_parcelas', methods=['POST'])
+def set_installments():
+    print(request.json)
+    User.update_by_id(
+        current_user.id,
+        set_data={'cart.installments': request.json})
+    return make_response(json.dumps('ok'), 200)
+
 
 ######################
 # end Cart/Orders    #
