@@ -344,7 +344,7 @@ a:focus:not(.link) {
       @media screen and (min-width: 768px) {
         height: 100%;
         & > span {
-          font-size: 14px !important;
+          font-size: 12px !important;
         }
       }
     }
@@ -447,7 +447,7 @@ a:focus:not(.link) {
     height: 30px;
     width: 100%;
     li {
-      font-size: 1em;
+      font-size: 14px;
       display: inline-block;
     }
   }
@@ -457,6 +457,7 @@ a:focus:not(.link) {
   &#categories-dropdown a,
   &#user-options-dropdown a {
     @extend .capitalize-no-bold;
+    font-size: 12px;
   }
   z-index: 800;
   @extend .light;
