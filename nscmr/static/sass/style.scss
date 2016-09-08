@@ -269,7 +269,12 @@ input[type=checkbox]:checked + label:before { content: "\f046"; } /* checked */
 input[type=checkbox]:checked + label:before { letter-spacing: 5px; }
 
 hr {
-  border-top: 1px solid $dark;
+  &:not(.grey) {
+    border-top: 1px solid $dark;
+  }
+  &.grey {
+    border-top: 1px solid $light-grey;
+  }
   width: 100%;
 }
 
@@ -1641,12 +1646,12 @@ ul#info {
   text-align: center;
   width: 100%;
   margin: 0;
-  color: $grey;
+  color: $dark;
   li {
     float: left;
     width: 20%;
     & a:hover {
-      color: $dark-grey;
+      color: $light-grey;
     }
   }
 }
@@ -1752,9 +1757,13 @@ footer {
 #profile,
 form {
   .form-field-title {
-    @extend .capitalize-light;
+    @extend .capitalize-no-bold;
+    font-size: 12px;
     &.outer {
       margin: 0 !important;
+    }
+    & > label {
+      font-weight: normal;
     }
   }
   .ng-valid.ng-touched {
