@@ -328,8 +328,11 @@ a:focus:not(.link) {
     height: 50px;
     padding-top: 20px;
     #options-btns {
+      width: 100%;
+      .item-left {
+        padding-left: 10px;
+      }
       @media screen and (min-width: 320px) {
-        width: 100%;
         height: 50px;
         #account-btn {
           font-size: 130%;
@@ -337,13 +340,12 @@ a:focus:not(.link) {
         & > span:not(#account-btn) {
           font-size: 150%;
         }
-        .item-left {
-          padding-left: 10px;
-        }
       }
       @media screen and (min-width: 768px) {
         height: 100%;
-        font-size: 90%;
+        & > span {
+          font-size: 90% !important;
+        }
       }
     }
   }
