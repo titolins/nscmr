@@ -1100,12 +1100,6 @@ a:focus:not(.link) {
   }
 }
 
-select {
-  background-color: $light;
-  border: 2px solid $dark;
-  margin-left: 5px;
-}
-
 #product-page {
   @extend .full-height;
   @media screen and (min-width: 320px) {
@@ -1863,11 +1857,20 @@ form {
       }
     }
   }
+  select {
+    vertical-align: middle;
+    padding: 0 !important;
+    background-color: $light;
+    color: $dark;
+  }
   select,
   input:not(.duvet-btn) {
     border: 0;
     border-bottom: 1px solid $fade-dark;
     padding-top: 20px;
+    @extend .capitalize-no-bold;
+    font-size: 12px;
+    color: $dark;
   }
   textarea {
     border: 1px solid $fade-dark;
@@ -1904,4 +1907,7 @@ form {
   }
 }
 
+#available-installments {
+  margin-top: 20px;
+}
 
