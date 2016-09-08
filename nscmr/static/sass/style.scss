@@ -987,6 +987,18 @@ a:focus:not(.link) {
   }
 }
 
+.variant-btns {
+  a i {
+    @include align-vertical(50px);
+    width: 50px;
+    text-align: center;
+    background-color: $dark;
+    color: $light;
+    border-radius: 25px;
+    &:hover { background-color: $grey; }
+  }
+}
+
 .variant-modal {
   .modal-dialog {
     @media screen and (min-width: 320px) {
@@ -1108,6 +1120,11 @@ a:focus:not(.link) {
   @media screen and (min-width: 992px) {
     padding: 60px 0px 40px 0px;
   }
+  select {
+    background-color: $light;
+    border: 0;
+    border-bottom: 1px solid $dark;
+  }
 }
 
 #product-thumbs-carousel {
@@ -1205,6 +1222,12 @@ a:focus:not(.link) {
     @extend .text-center;
     p {
       margin-bottom: 0;
+      @media screen and (min-width: 320px) {
+        font-size: 14px;
+      }
+      @media screen and (min-width: 480px) {
+        font-size: 12px;
+      }
     }
     .cart-btn {
       i {

@@ -48,10 +48,10 @@
             <hr>
           </div>
           <div class="col-md-12">
-            <div class="duvet-btn-wrapper">
-              <a href="#" ng-click="addToWishlist(' {{ variant.id|string }}');
-                $event.preventDefault();" class="duvet-btn">
-                <i class="fa fa-heart-o"></i> Wishlist
+            <div class="variant-btns text-left">
+              <a class="like-btn"
+                ng-click="addToWishlist('{{ variant['_id']|string }}'); $event.preventDefault();" href="#">
+                <i class="fa fa-heart-o"></i>
               </a>
             </div>
             <div class="duvet-btn-wrapper">
