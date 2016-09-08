@@ -40,14 +40,28 @@
               R$ {{ ('%.2f' % order['cart_info']['shipping']['cost'])|string|replace('.',',') }}
             </td>
           </tr>
-          <tr class="total">
-            <td>Total</td>
-            <td></td>
-            <td></td>
-            <td><b>
-              R$ {{ ('%.2f' % order['cart_info']['total'])|string|replace('.',',') }}
-            </b></td>
-          </tr>
+          {% if order['cart_info']['installments']['quantity'] > 1 %}
+            <tr class="installments">
+              <td>Parcelamento</td>
+              <td></td>
+              <td>
+                {{ order['cart_info']['installments']['quantity'] }}x
+                R${{ order['cart_info']['installments']['installmentAmount']|string|replace('.',',') }}
+              </td>
+              <td><b>
+                R$ {{ ('%.2f' % order['cart_info']['installments']['totalAmount'])|string|replace('.',',') }}
+              </b></td>
+            </tr>
+          {% else %}
+            <tr class="total">
+              <td>Total</td>
+              <td></td>
+              <td></td>
+              <td><b>
+                R$ {{ ('%.2f' % order['cart_info']['installments']['totalAmount'])|string|replace('.',',') }}
+              </b></td>
+            </tr>
+          {% endif %}
         <tbody>
       </table>
       <div class="order-address">
