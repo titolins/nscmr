@@ -185,4 +185,22 @@ angular.module('angularApp')
     });
   };
 
+  $scope.setInstallments = function() {
+    console.log('setInstallments');
+    //$scope.cartService.cart.shipping = {
+    $http({
+      method: 'POST',
+      url: setInstallmentsUri,
+      data: $scope.paymentService.card.installments,
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/json;utf-8"
+      }
+    }).then(function success(response) {
+      console.log(response);
+    }, function error(response) {
+      console.log(response);
+    });
+  };
+
 }]);
