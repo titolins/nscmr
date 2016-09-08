@@ -55,7 +55,7 @@
       </div>
       <div ng-if="availableInstallments != null" id="available-installments" class="capitalize-no-bold font-small">
         <span>Em quantas parcelas deseja pagar?</span>
-        <select required ng-model="paymentService.card.installments"
+        <select ng-change="setInstallments()" required ng-model="paymentService.card.installments"
           ng-options="inst as (inst.quantity+'x'+(inst.installmentAmount|currency)+' = '+(inst.totalAmount|currency)) for inst in availableInstallments">
         </select>
       </div>
