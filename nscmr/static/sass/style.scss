@@ -371,8 +371,6 @@ a:focus:not(.link) {
   @media screen and (min-width: 768px) {
     height: 230px;
   }
-  & > div {
-  }
   .logo {
     img {
       width: 100%;
@@ -798,6 +796,17 @@ a:focus:not(.link) {
       margin-bottom: 0;
       background-color: $light;
     }
+  }
+}
+
+[class="col-xs-12"] {
+  @media screen and (min-width:320px) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  @media screen and (min-width:768px) {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
   }
 }
 
