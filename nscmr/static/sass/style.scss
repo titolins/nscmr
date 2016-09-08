@@ -222,8 +222,8 @@ $font-sizes: (
 //
 .double-column {
   &.border-left {
-    & [class^='col-']:first-child,
-    & [class*=' col-']:first-child {
+    & > [class^='col-']:first-child,
+    & > [class*=' col-']:first-child {
       @media screen and (min-width: 320px) {
         border-bottom: 1px solid $dark;
         margin-bottom: 2em;
@@ -236,8 +236,8 @@ $font-sizes: (
     }
   }
   &.border-right {
-    & [class^='col-']:nth-child(2),
-    & [class*=' col-']:nth-child(2) {
+    & > [class^='col-']:nth-child(2),
+    & > [class*=' col-']:nth-child(2) {
       @media screen and (min-width: 320px) {
         border-top: 1px solid $dark;
         margin-top: 2em;
@@ -1380,6 +1380,14 @@ select {
   }
 }
 
+#frete-calc-title {
+  font-weight: bold !important;
+  border-bottom: 1px solid $light-grey;
+  color: $light-grey;
+  padding-top: 5px;
+  height: 27px;
+}
+
 .order-reference {
   margin-top: 40px;
   margin-bottom: 5px;
@@ -1413,13 +1421,15 @@ select {
 .cart-table,
 .summary-table {
   width: 100%;
-  thead {
-    color: $light-grey;
-    border-bottom: 1px solid $light-grey;
-    th {
-      height: 21px;
-      &:not(:first-child) {
-        text-align: center;
+  &:not(.summary-table) {
+    thead {
+      color: $light-grey;
+      border-bottom: 1px solid $light-grey;
+      th {
+        height: 21px;
+        &:not(:first-child) {
+          text-align: center;
+        }
       }
     }
   }
@@ -1427,6 +1437,10 @@ select {
     padding-top: 1em;
     vertical-align: top;
   }
+}
+
+#shipping-opts {
+  padding-top: 10px;
 }
 
 .cart-table {
@@ -1455,10 +1469,6 @@ select {
   .product-data {
     padding-top: 5px;
   }
-}
-
-#cart-total-wrapper > table > thead > tr {
-  height: 27px !important;
 }
 
 .shipping-table,
@@ -1731,7 +1741,7 @@ footer {
  * payment stuff
  */
 #frete-calc {
-  margin-bottom: 10px;
+  margin-bottom: 40px;
 }
 
 #frete-calc,

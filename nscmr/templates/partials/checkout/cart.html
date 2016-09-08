@@ -3,20 +3,49 @@
     <h3 class="inline"><b>CARRINHO</b></h3><h5 class="inline"> ({a cartService.cart.totalItems a})</h5>
     <hr>
     {% include 'partials/carttable.html' %}
-    <div id="frete-calc" class="cep-input duvet-input">
-      <p class="form-field-title outer">Calcule seu frete</p>
-      <div class="form-field">
-        <p class="form-field-title">cep</p>
-        {{ form.zip_code(**{'class':'cep','ng-model':'cartService.cart.zipCode', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
-        <button id="frete-btn" class="search-cep" ng-click="getShipping();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
-        <div id="load-frete" class="search-cep hidden"><i class="fa fa-cog fa-spin fa-1x fa-fw"></i></div>
-      </div>
-      <p class="form-field-title outer">não sabe seu cep?
-        <a class="underline" target="busca_cep" href="http://www.buscacep.correios.com.br/sistemas/buscacep/">clique aqui!</a>
-      </p>
-    </div>
   </div>
   <div class="col-xs-12 col-md-4" id="cart-total-wrapper">
+    <div class="col-xs-12">
+      <h3 class="inline"><b>FRETE</b></h3>
+      <hr>
+      <div id="frete-calc">
+        <p id="frete-calc-title">Calcule seu frete</p>
+        <div class="form-field">
+          <p class="form-field-title">cep</p>
+          {{ form.zip_code(**{'class':'cep','ng-model':'cartService.cart.zipCode', 'ui-mask':'99999-999', 'model-view-value': 'true'})|safe }}
+          <button id="frete-btn" class="search-cep" ng-click="getShipping();$event.preventDefault()"><i class="fa fa-angle-double-right"></i></button>
+          <div id="load-frete" class="search-cep hidden"><i class="fa fa-cog fa-spin fa-1x fa-fw"></i></div>
+        </div>
+        <p class="form-field-title outer font-smaller">não sabe seu cep?
+          <a class="underline" target="busca_cep" href="http://www.buscacep.correios.com.br/sistemas/buscacep/">clique aqui!</a>
+        </p>
+        <div id="shipping-opts">
+          <p class="alert alert-danger" ng-if="cartService.correiosErrorMsg != undefined">
+            {a cartService.correiosErrorMsg a}
+          </p>
+          <table class="shipping-table" ng-if="cartService.shippingOpts.length > 0">
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Prazo</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="shipping in cartService.shippingOpts" ng-if="shipping.Erro == 0">
+                <td>
+                  <input id="{a shipping.Codigo a}" type="checkbox" ng-click="selectShipping($event)"></input>
+                  <label for="{a shipping.Codigo a}">{a shipping.Tipo a}</label>
+                </td>
+                <td>{a shipping.PrazoEntrega a} dias(s)</td>
+                <td>{a shipping.Valor | currency a}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12">
     <h3 class="inline"><b>TOTAL</b></h3>
     <hr>
     <table class="summary-table">
@@ -44,31 +73,8 @@
         </tr>
       </tbody>
     </table>
-    <div id="shipping-opts">
-      <p class="alert alert-danger" ng-if="cartService.correiosErrorMsg != undefined">
-        {a cartService.correiosErrorMsg a}
-      </p>
-      <table class="shipping-table" ng-if="cartService.shippingOpts.length > 0">
-        <thead>
-          <tr>
-            <th>Tipo</th>
-            <th>Prazo</th>
-            <th>Valor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="shipping in cartService.shippingOpts" ng-if="shipping.Erro == 0">
-            <td>
-              <input id="{a shipping.Codigo a}" type="checkbox" ng-click="selectShipping($event)"></input>
-              <label for="{a shipping.Codigo a}">{a shipping.Tipo a}</label>
-            </td>
-            <td>{a shipping.PrazoEntrega a} dias(s)</td>
-            <td>{a shipping.Valor | currency a}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-    <div class="duvet-btn-wrapper text-center">
+    <div class="col-xs-12 duvet-btn-wrapper text-center">
       <a ng-if="cartService.shippingOpts.length <= 0" ng-click="$event.preventDefault();" href="#" class="duvet-btn disabled">
         Calcule o frete
       </a>
