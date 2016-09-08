@@ -1786,6 +1786,12 @@ form {
       vertical-align: bottom;
     }
   }
+  .msg-field {
+    padding-top: 16px;
+    & > .form-field-title {
+      vertical-align: top;
+    }
+  }
   .form-field {
     width: 100%;
     display: table;

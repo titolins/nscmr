@@ -33,8 +33,10 @@
         <p class="form-field-title">Assunto</p>
         {{ form.subject(class='margin-bottom')|safe }}
       </div>
-      <p class="form-field-title outer">Mensagem</p>
-      {{ form.message()|safe }}
+      <div class="form-field msg-field">
+        <p class="form-field-title">Mensagem</p>
+        {{ form.message()|safe }}
+      </div>
       <div class="duvet-btn-wrapper">
         <input class="duvet-btn align-fix no-margin" id="contact-btn" type="submit" value="Enviar"></input>
       </div>

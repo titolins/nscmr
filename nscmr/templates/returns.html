@@ -30,12 +30,13 @@
         </div>
       </div>
       {{ render_field(form.subject) }}
-      <p class="form-field-title outer">Mensagem</p>
-      {{ form.message() }}
+      <div class="form-field msg-field">
+        <p class="form-field-title">Mensagem</p>
+        {{ form.message() }}
+      </div>
       <div class="duvet-btn-wrapper text-right">
         <input class="duvet-btn align-fix" id="contact-btn" type="submit" value="Enviar"></input></p>
       </div>
     </form>
-    <hr>
   </div>
 {% endblock %}

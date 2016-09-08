@@ -40,8 +40,10 @@
             {{ form.sizes()|safe }}
           </div>
         </div>
-        <p class="form-field-title outer">Mensagem</p>
-        {{ form.message()|safe }}
+        <div class="form-field msg-field">
+          <p class="form-field-title">Mensagem</p>
+          {{ form.message()|safe }}
+        </div>
       </dl>
       <div class="duvet-btn-wrapper">
         <input class="duvet-btn align-fix no-margin" id="custom-btn" type="submit" value="Enviar"></input>
