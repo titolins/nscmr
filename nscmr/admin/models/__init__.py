@@ -23,13 +23,13 @@ class User(Document):
     '''
     __collection__ = 'users'
     fields = ['email', 'name', 'dob', 'roles', 'addresses', 'wishlist',
-        'cart', 'oauth']
+        'cart', 'oauth', 'orders']
             #'orders']
     defaults = {
         'roles': ['user'],
         'addresses': [],
         'wishlist': [],
-        #'orders': [],
+        'orders': [],
         'cart': {}
     }
     # required fields
