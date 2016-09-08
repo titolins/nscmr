@@ -1790,6 +1790,7 @@ footer {
 #newsletter,
 #profile,
 form {
+  .form-field-value,
   .form-field-title {
     @extend .capitalize-no-bold;
     font-size: 12px;
@@ -1818,6 +1819,9 @@ form {
     & > .form-field-title,
     & > .form-field-value {
       vertical-align: bottom;
+    }
+    .form-field-value {
+      padding-left: 12px;
     }
   }
   .msg-field {
