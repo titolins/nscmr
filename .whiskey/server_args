@@ -1,0 +1,4 @@
+--url-alias /static nscmr/static
+--url-alias /admin/static nscmr/admin/static
+
+nscmr.wsgi

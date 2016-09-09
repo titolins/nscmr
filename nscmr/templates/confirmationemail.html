@@ -1,0 +1,145 @@
+<img src="{{ url_for('static', filename='imgs/logo_studio.png', _external=True) }}"></img>
+<h3 style="font-weight: lighter; text-transform: uppercase;">PARABÉNS PELA SUA COMPRA</h3>
+<hr>
+<p style="text-align: justify;">
+  Prezado(a) {{ user['name']|capitalize }},
+</p>
+<p style="text-align: justify;">
+  Sua compra n. {{ order['reference'] }} foi concluída com sucesso.
+</p>
+<p style="text-align: justify;">
+  Agradecemos por nos escolher! Abaixo seguem os detalhes da sua compra. Para acompanhar o seu andamento,
+  entre na sua conta no site do StudioDuvet e acesse seu perfil clicando no
+  link com seu nome na barra superior.
+</p>
+<div style="margin-top: 20px;">
+  <table width="100%" style="margin-bottom: 50px">
+    <thead style="
+      color: #6e7175;
+      border-bottom: 1px solid #6e7175">
+      <tr>
+        <th style="text-align:left;">Nome</th>
+        <th style="text-align: center">Preço unitário</th>
+        <th style="text-align: center">Quantidade</th>
+        <th style="text-align: center">Total do produto</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in order['cart_info']['items'] %}
+        <tr>
+          <td style="text-align: left; padding-top: 1em; vertical-align: top;">
+            {{ item['name'] }}
+          </td>
+          <td style="text-align: center; padding-top: 1em; vertical-align: top;">
+            R$ {{ ('%.2f' % (item['price']))|string|replace('.',',') }}
+          </td>
+          <td style="text-align: center; padding-top: 1em; vertical-align: top;">
+            {{ item['quantity'] }}
+          </td>
+          <td style="text-align: center;right; padding-top: 1em; vertical-align: top;">
+            R$ {{ ('%.2f' % (item['quantity']*item['price']))|string|replace('.',',') }}
+          </td>
+        </tr>
+      {% endfor %}
+      <tr class="shipping">
+        <td style="text-align:left; font-weight: bold; color:#6e7175;">Frete</td>
+        <td></td>
+        <td></td>
+        <td>
+          R$ {{ ('%.2f' % order['cart_info']['shipping']['cost'])|string|replace('.',',') }}
+        </td>
+      </tr>
+      {% if order['cart_info']['installments']['quantity'] == 1 %}
+        <tr>
+          <td style="text-align:left; font-weight: bold; color:#6e7175;">Total</td>
+          <td></td>
+          <td></td>
+          <td><b>
+            R$ {{ ('%.2f' % order['cart_info']['installments']['totalAmount'])|string|replace('.',',') }}
+          </b></td>
+        </tr>
+      {% else %}
+        <tr>
+          <td style="text-align:left; font-weight: bold; color:#6e7175;">
+            Parcelamento
+          </td>
+          <td></td>
+          <td>
+            {{ order['cart_info']['installments']['quantity'] }}x
+            R${{ order['cart_info']['installments']['installmentAmount']|string|replace('.',',') }}
+          </td>
+          <td><b>
+            R$ {{ ('%.2f' % order['cart_info']['installments']['totalAmount'])|string|replace('.',',') }}
+          </b></td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+<div style="display: table; width: 100%;">
+  <div style="display: table-cell; margin-top: 20px;">
+    <p><b>Endereço</b></p>
+    <div style="
+      width: 100%;
+      min-height: 110px;
+      padding: 30px 15px 30px 15px;
+      background-color: rgba(237, 237, 237, .4);
+      ">
+      <div style="
+        display: table;
+        width: 100%;
+        min-height: 50px;
+        margin-bottom: 30px;
+        background-color: #FFF;
+        ">
+        <div style="
+          display: table-cell;
+          background-color: #04cccc;
+          width: 6px;
+          height: 100%;
+          "></div>
+        <div style="
+          display: table-cell
+          font-size: 80%;
+          height: 100%;
+          ">
+          <div style="display:table;">
+            <div style="
+              display: table-cell;
+              padding-right: 60px;
+              padding-top: 8px;
+              padding-left: 5px;
+              ">
+              <div>
+                <span><b>{{ order['address']['street_address_1'] + ', ' +
+                    order['address']['street_number'] }}</b></span>
+              </div>
+              <div>
+                <span><b>{{ order['address']['street_address_2'] }}</b></span>
+                <span>{{ order['address']['zip_code'] }}</span>
+              </div>
+            </div>
+            <div style="display: table-cell">
+              <b>
+              <div>
+                <span>{{ order['address']['city'] }}, </span>
+                <span>{{ order['address']['state'] }}</span>
+              </div>
+              <span>{{ order['address']['neighbourhood'] }}</span>
+              </b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p>
+Agradecemos novamente pela preferência!
+</p>
+<p>
+Um grande abraço,
+</p>
+<p>
+Studio Duvet
+</p>
