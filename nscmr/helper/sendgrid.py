@@ -16,6 +16,7 @@ TEXT_EMAIL_CONTENT = '''
 
 
 def send_confirmation_mail(user, order):
+    order = order.__dict__['_content']
     sg = sendgrid.SendGridAPIClient(apikey=app.config.get('SENDGRID_API_KEY'))
     from_email = Email(
         email=app.config.get('SUPPORT_CONTACT'),
