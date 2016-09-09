@@ -12,10 +12,7 @@ TEXT_EMAIL_CONTENT = '''
         Agradecemos novamente pela preferência!\n
         Um grande abraço,\n
         Studio Duvet
-    '''.format(
-            user['name'].capitalize(),
-            order['reference']
-        )
+    '''
 
 
 def send_confirmation_mail(user, order):
@@ -30,7 +27,9 @@ def send_confirmation_mail(user, order):
 
     text_content = Content(
         type="text/plain",
-        value=TEXT_EMAIL_CONTENT)
+        value=TEXT_EMAIL_CONTENT.format(
+            user['name'].capitalize(),
+            order['reference']))
 
     html_content= Content(
         type="text/html",
