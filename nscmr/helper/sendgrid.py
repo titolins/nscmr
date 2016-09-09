@@ -28,7 +28,7 @@ def send_confirmation_mail(user, order):
     text_content = Content(
         type="text/plain",
         value=TEXT_EMAIL_CONTENT.format(
-            user['name'].capitalize(),
+            user.name.capitalize(),
             order['reference']))
 
     html_content= Content(
