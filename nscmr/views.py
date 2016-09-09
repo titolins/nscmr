@@ -716,7 +716,6 @@ def confirm():
         except Exception as e:
             response_data['email_error'] = str(e)
             print(str(e))
-            print(e.read())
 
     return \
         make_response(json.dumps(response_data), 200) if \
