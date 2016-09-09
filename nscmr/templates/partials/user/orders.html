@@ -25,7 +25,9 @@
           {% for item in order['cart_info']['items'] %}
             <tr>
               <td>{{ item['name'] }}</td>
-              <td>R$ {{ item['price'] }}</td>
+              <td>
+                R$ {{ ('%.2f' % (item['price']))|string|replace('.',',') }}
+              </td>
               <td>{{ item['quantity'] }}</td>
               <td>
                 R$ {{ ('%.2f' % (item['quantity']*item['price']))|string|replace('.',',') }}
