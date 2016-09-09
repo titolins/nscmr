@@ -466,7 +466,7 @@ class CartLine(object):
 
 class Order(Document):
     __collection__ = 'orders'
-    fields = ['cart_info',  'user_id', 'reference']
+    fields = ['cart_info',  'user_id', 'reference', 'address']
 
     def from_form(form_data, cart, address):
         # parse response_json from mundipagg, add user info and return
