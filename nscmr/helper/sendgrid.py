@@ -12,7 +12,7 @@ def send_confirmation_mail(user, order):
     to_email = Email(
         email=user.email,
         name=user.name)
-    text, html = build_confirmation_mail_content(user.name, order.reference)
+    html, text = build_confirmation_mail_content(user.name, order.reference)
     text_content = Content(
         type="text/plain",
         value=text)
@@ -30,6 +30,9 @@ def send_confirmation_mail(user, order):
     print(mail.get())
 
     r = sg.client.mail.send.post(request_body=mail.get())
+    print(r.status_code)
+    print(r.body)
+    print(r.headers)
 
 
 def build_confirmation_mail_content(name, order_reference):
