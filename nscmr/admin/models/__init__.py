@@ -471,7 +471,10 @@ class Order(Document):
     def from_form(form_data, cart, address):
         # parse response_json from mundipagg, add user info and return
         data = {
-            'user_id': current_user.id,
+            'user': { 
+                '_id': current_user.id,
+                'name': current_user.name,
+            },
             'date': form_data['transaction']['date'],
             'reference': form_data['transaction']['reference'],
             'pagseguro_code': form_data['transaction']['code'],
@@ -489,5 +492,15 @@ class Order(Document):
 
     @staticmethod
     def get_by_user_id(user_id, to_obj=False):
-        return Order._get_many(to_obj, { "user_id": user_id })
+        return Order._get_many(to_obj, { "user._id": user_id })
+
+    @staticmethod
+    def get_by_reference(reference, to_obj=False):
+        return Order._get_one(to_obj, { 'reference': reference })
+
+    @staticmethod
+    def update_order_status(reference, status_data):
+        return Order._update_one(to_obj, set_data={
+            'status': status_data
+        })
 

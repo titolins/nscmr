@@ -21,6 +21,7 @@ from flask.ext.principal import (
     Identity,
     AnonymousIdentity)
 
+import xmltodict
 from datetime import datetime
 from bson.objectid import ObjectId
 from pymongo.errors import DuplicateKeyError
@@ -60,11 +61,15 @@ from nscmr.forms import (
 from nscmr.admin.forms import AddressForm
 
 # sendgrid
-from nscmr.helper.sendgrid import send_confirmation_mail
+from nscmr.helper.sendgrid import (
+    send_confirmation_email,
+    send_status_change_email)
 
 # helpers
 from nscmr.helper.back import Back
-from nscmr.helper.pagseguro import get_pagseguro_shipping_code
+from nscmr.helper.pagseguro import (
+    get_pagseguro_shipping_code,
+    PAGSEGURO_STATUS)
 from nscmr.admin.helper import get_cart_info
 
 # app
@@ -516,7 +521,6 @@ def edit_cart():
 
 @app.route('/usuario/compras/frete', methods=['POST'])
 def shipping():
-    import xmltodict
     zip_code = request.json['zipCode']
     if zip_code in ('', None):
         response = make_response(json.dumps('Preencha o cep!'), 500)
@@ -586,7 +590,6 @@ def checkout():
                 categories=Category.get_all(),
                 login_form=form)
     else:
-        import xmltodict
         data = {
             'email': app.config.get('SUPPORT_CONTACT'),
             'token': app.config.get('PAGSEGURO_TOKEN'),
@@ -606,7 +609,6 @@ def checkout():
 
 @app.route('/confirmarcompra', methods=['POST'])
 def confirm():
-    import xmltodict
     card = request.json['card']
     user_cart = get_cart()
     address = User.get_address_by_id(request.json['address'])
@@ -630,13 +632,13 @@ def confirm():
         'paymentMethod': 'creditCard',
         'paymentMode': 'default',
         'reference': order_id,
-        #'senderEmail': user.email, # this is the right one, but sandbox
+        'senderEmail': user.email, # this is the right one, but sandbox
                                     # requires the below
-        'senderEmail': user.name.split()[0] + "@sandbox.pagseguro.com.br",
-        #'senderName': user.name,   # correct one. registration should enforce
+        #'senderEmail': user.name.split()[0] + "@sandbox.pagseguro.com.br",
+        'senderName': user.name,   # correct one. registration should enforce
                                     # at least two names (done, but admin is
                                     # admin only)
-        'senderName': user.name + " silva",
+        #'senderName': user.name + " silva",
         'senderCPF': '00000000000',
         #'senderCNPJ': '',
         'senderAreaCode': '11',
@@ -712,7 +714,7 @@ def confirm():
             '''
         # send confirmation e-mail
         try:
-            send_confirmation_mail(user, order)
+            send_confirmation_email(user, order)
         except Exception as e:
             response_data['email_error'] = str(e)
             print(str(e))
@@ -762,12 +764,47 @@ def confirm():
 
     response.headers['Content-Type'] = 'application/json'
     return response
-    '''
     return 'ok'
+    '''
 
 ###################
 # end checkout    #
 ###################
+
+@app.route('/checkout/notification', methods=['POST'])
+def notification_api():
+    print(request.form)
+    notification_code = request.form['notificationCode']
+    r = requests.get(
+        app.config.get('PAGSEGURO_NOTIFICATION_EP').format(notification_code),
+        params={
+            'email': app.config.get('SUPPORT_CONTACT'),
+            'token': app.config.get('PAGSEGURO_TOKEN')
+        }
+    )
+    r_dict = xmltodict.parse(str(r.content, 'utf-8'))
+    print(r_dict)
+    order = Order.get_by_reference(r_dict['transaction']['reference'])
+    print(order)
+    if order != None:
+        status = int(r_dict['transaction']['status'])
+        if status != int(order['status']['code']):
+            data = {
+                'code': status,
+                'msg': PAGSEGURO_STATUS[status]
+            }
+            if 5 <= status <= 9:
+                data['error'] = True
+                if status == 7:
+                    data['msg'] += ('pagseguro' if \
+                        r_dict['transaction']['cancellationSource'] == \
+                        'INTERNAL' else \
+                        'instituição financeira')
+            print(data)
+            res = Order.update_order_status(reference, data)
+            print(res)
+        # send emails
+        send_status_change_email(order, data)
 
 #########################################################
 ####################### end CRUD ########################
