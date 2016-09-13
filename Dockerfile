@@ -1,4 +1,10 @@
 FROM grahamdumpleton/mod-wsgi-docker:python-3.4-onbuild
 
-CMD [ "nscmr.wsgi" ]
+CMD [ "--url-alias", "/static", "nscmr/static", \
+      "--url-alias", "/admin/static", "nscmr/admin/static", \
+      "--url-alias", "/_uploads/productImages/", \
+        "instance/uploads/img/product/", \
+      "--url-alias", "/_uploads/categoryImages/", \
+        "instance/uploads/img/category/", \
+    "nscmr.wsgi" ]
 
