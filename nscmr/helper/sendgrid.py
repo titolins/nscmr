@@ -91,15 +91,15 @@ def send_confirmation_email(user, order):
         from_email=from_email,
         subject=subject,
         to_email=to_email,
-        content=text_content)
-    mail.add_content(html_content)
+        content=html_content)
+    #mail.add_content(html_content)
 
     duvet_mail = Mail(
         from_email=from_email,
         subject="StudioDuvet | Compra realizada",
         to_email=from_email,
-        content=text_content)
-    mail.add_content(html_content)
+        content=html_content)
+    #mail.add_content(html_content)
 
     print(mail.get())
 
@@ -107,9 +107,13 @@ def send_confirmation_email(user, order):
     send_email(duvet_mail)
 
 def send_email(mail):
-    sg = sendgrid.SendGridAPIClient(apikey=app.config.get('SENDGRID_API_KEY'))
-    r = sg.client.mail.send.post(request_body=mail.get())
-    print(r.status_code)
-    print(r.body)
-    print(r.headers)
+    try:
+        sg = sendgrid.SendGridAPIClient(apikey=app.config.get('SENDGRID_API_KEY'))
+        r = sg.client.mail.send.post(request_body=mail.get())
+        print(r.status_code)
+        print(r.body)
+        print(r.headers)
+    except Exception as e:
+        print(e.read())
+        print(e)
 
