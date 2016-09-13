@@ -4,8 +4,15 @@
 <p style="text-align: justify;">
   Prezado(a) {{ user.name|capitalize }},
 </p>
-<p style="text-align: justify;">
+
+<p style="text-align: justify">
+{% if order['status']['code']|int not in (3,4) %}
+  Sua compra n. {{ order['reference'] }} foi processada e o pagamento
+  encontra-se em análise. Seu pedido será liberado assim que recebermos a sua
+  confirmacão.
+{% else %}
   Sua compra n. {{ order['reference'] }} foi concluída com sucesso.
+{% endif %}
 </p>
 <p style="text-align: justify;">
   Agradecemos por nos escolher! Abaixo seguem os detalhes da sua compra. Para acompanhar o seu andamento,
