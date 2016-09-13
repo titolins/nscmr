@@ -596,8 +596,8 @@ def checkout():
         }
         r = requests.post(
                 app.config.get('PAGSEGURO_SESSIONS_EP'),
-                data = data,
-                verify = False)
+                data = data)
+                #verify = False)
         r_dict = xmltodict.parse(str(r.content, 'utf-8'))
         form = AddressForm()
         #return choose address page
@@ -683,8 +683,8 @@ def confirm():
 
     r = requests.post(
         app.config.get('PAGSEGURO_ENDPOINT'),
-        data = transaction_data,
-        verify = False)
+        data = transaction_data)
+        #verify = False)
     r_dict = xmltodict.parse(str(r.content, 'utf-8'))
     response_data = {}
     print(r_dict)
