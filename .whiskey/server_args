@@ -1,5 +1,5 @@
 --url-alias /static nscmr/static
 --url-alias /admin/static nscmr/admin/static
---server-name www.studioduvet.com.br
-
+--url-alias /_uploads/productImages/ instance/uploads/img/product/
+--url-alias /_uploads/categoryImages/ instance/uploads/img/category/
 nscmr.wsgi
