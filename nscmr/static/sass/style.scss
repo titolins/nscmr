@@ -226,12 +226,21 @@ $font-sizes: (
     & > [class*=' col-']:first-child {
       @media screen and (min-width: 320px) {
         border-bottom: 1px solid $dark;
-        margin-bottom: 2em;
+        padding-bottom: 2em;
       }
       @media screen and (min-width: 992px) {
-        margin-bottom: 0;
+        padding-bottom: 0;
         border-bottom: 0;
         border-right: 1px solid $dark;
+      }
+    }
+    & > [class^='col-']:nth-child(2),
+    & > [class*=' col-']:nth-child(2) {
+      @media screen and (min-width: 320px) {
+        padding-top: 2em;
+      }
+      @media screen and (min-width: 992px) {
+        padding-top: 0;
       }
     }
   }
@@ -240,12 +249,21 @@ $font-sizes: (
     & > [class*=' col-']:nth-child(2) {
       @media screen and (min-width: 320px) {
         border-top: 1px solid $dark;
-        margin-top: 2em;
+        padding-top: 2em;
       }
       @media screen and (min-width: 992px) {
-        margin-top: 0;
+        padding-top: 0;
         border-top: 0;
         border-left: 1px solid $dark;
+      }
+    }
+    & > [class^='col-']:first-child,
+    & > [class*=' col-']:first-child {
+      @media screen and (min-width: 320px) {
+        padding-bottom: 2em;
+      }
+      @media screen and (min-width: 992px) {
+        padding-bottom: 0;
       }
     }
   }
