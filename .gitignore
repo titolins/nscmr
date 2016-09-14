@@ -15,4 +15,4 @@ bower.json
 fonts/
 *.bak
 .python-version
-config/default.py
+**/config/default.py
