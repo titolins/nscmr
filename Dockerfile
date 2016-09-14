@@ -6,6 +6,5 @@ CMD [ "--url-alias", "/static", "nscmr/static", \
         "instance/uploads/img/product", \
       "--url-alias", "/_uploads/categoryImages", \
         "instance/uploads/img/category", \
-      "--server-name", "http://www.studioduvet.com.br", \
       "nscmr.wsgi" ]
 
