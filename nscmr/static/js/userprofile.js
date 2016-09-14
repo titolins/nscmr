@@ -2,7 +2,13 @@ angular.module('angularApp', ['ui.mask'])
 .config(['$interpolateProvider', function($interpolateProvider) {
   $interpolateProvider.startSymbol('{a');
   $interpolateProvider.endSymbol('a}');
-}]).controller("UserProfileController", ["$scope","$http","addressesService", "cartService", function($scope, $http, addressesService, cartService) {
+}])
+.filter("safe", ['$sce', function($sce) {
+  return function(htmlCode){
+    return $sce.trustAsHtml(htmlCode);
+  }
+}])
+.controller("UserProfileController", ["$scope","$http","addressesService", "cartService", function($scope, $http, addressesService, cartService) {
   $scope.addressesService = addressesService;
   $scope.cartService = cartService;
   $scope.user = {},
@@ -136,6 +142,8 @@ angular.module('angularApp', ['ui.mask'])
     var baseUrl = '/catalogo/';
     return baseUrl + catPermalink + '/' + prodPermalink + '/' + varId;
   };
+
+  $scope.cartService.update();
 
 }]);
 
