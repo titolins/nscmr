@@ -23,7 +23,7 @@ if [[ "$1" ]]; then
             FILE=testing.py
             ;;
         prod)
-            FILE=production.py
+            FILE=default.py
             ;;
         *)
             echo
