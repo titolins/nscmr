@@ -93,7 +93,20 @@ angular.module('angularApp')
       response.data.forEach(function(service) {
         if(service.Erro == "-3") $scope.cartService.correiosErrorMsg = service.MsgErro;
       });
-      if($scope.cartService.correiosErrorMsg == undefined) $scope.cartService.shippingOpts = response.data;
+      if($scope.cartService.correiosErrorMsg == undefined) {
+        // dev code
+        var freeShipping = {
+          Valor: 0.0,
+          Tipo: "GRATIS",
+          Codigo: "3",
+          Erro: 0,
+          PrazoEntrega: "0",
+        };
+        response.data.push(freeShipping);
+        console.log(response.data);
+        // end dev code
+        $scope.cartService.shippingOpts = response.data;
+      }
       document.getElementById('frete-btn').classList.remove('hidden');
       document.getElementById('load-frete').classList.add('hidden');
     }, function error(response) {
