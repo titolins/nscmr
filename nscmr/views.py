@@ -679,7 +679,7 @@ def confirm():
         transaction_data['itemAmount{}'.format(i+1)] = \
             "{:.2f}".format(item['price'])
         transaction_data['itemQuantity{}'.format(i+1)] = int(item['quantity'])
-        if len(item['name'] >= 100):
+        if len(item['name']) >= 100:
             item['name'] = item['name'][:99]
         transaction_data['itemDescription{}'.format(i+1)] = item['name']
 
