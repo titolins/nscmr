@@ -31,7 +31,6 @@
     var setShippingUri = "{{ url_for('set_shipping') }}";
     var setInstallmentsUri = "{{ url_for('set_installments') }}";
     //var pagseguroSessionId = "{{ session_id }}";
-    PagSeguroDirectPayment.setSessionId("{{ session_id }}");
   </script>
   <script src="{{ url_for('static', filename='js/addressesService.js') }}"></script>
   <script src="{{ url_for('static', filename='js/cartservice.js') }}"></script>
@@ -45,5 +44,6 @@
   #}
   <script>
     //var buyerId = PagSeguroDirectPayment.getSenderHash();
+    PagSeguroDirectPayment.setSessionId("{{ session_id }}");
   </script>
 {% endblock %}
