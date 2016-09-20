@@ -676,10 +676,12 @@ def confirm():
     }
     for i,item in enumerate(user_cart['items']):
         transaction_data['itemId{}'.format(i+1)] = item['_id']
-        transaction_data['itemDescription{}'.format(i+1)] = item['description']
         transaction_data['itemAmount{}'.format(i+1)] = \
             "{:.2f}".format(item['price'])
         transaction_data['itemQuantity{}'.format(i+1)] = int(item['quantity'])
+        if len(item['name'] >= 100):
+            item['name'] = item['name'][:99]
+        transaction_data['itemDescription{}'.format(i+1)] = item['name']
 
     r = requests.post(
         app.config.get('PAGSEGURO_ENDPOINT'),
