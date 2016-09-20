@@ -30,7 +30,8 @@
     var shippingUri = "{{ url_for('shipping') }}";
     var setShippingUri = "{{ url_for('set_shipping') }}";
     var setInstallmentsUri = "{{ url_for('set_installments') }}";
-    var pagseguroSessionId = "{{ session_id }}";
+    //var pagseguroSessionId = "{{ session_id }}";
+    PagSeguroDirectPayment.setSessionId("{{ session_id }}");
   </script>
   <script src="{{ url_for('static', filename='js/addressesService.js') }}"></script>
   <script src="{{ url_for('static', filename='js/cartservice.js') }}"></script>
@@ -38,9 +39,11 @@
   <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
   <script src="{{ url_for('static', filename='js/payment.js') }}"></script>
   <script src="{{ url_for('static', filename='js/paymentservice.js') }}"></script>
+  <script type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+  {# pagseguro js file for the sandbox
   <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+  #}
   <script>
-    PagSeguroDirectPayment.setSessionId("{{ session_id }}");
     //var buyerId = PagSeguroDirectPayment.getSenderHash();
   </script>
 {% endblock %}
