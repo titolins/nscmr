@@ -6,11 +6,18 @@ from flask import (
     abort,
     url_for,
     current_app,
+    session,
     make_response)
 
 from bson.objectid import ObjectId
 
+import os
 from datetime import datetime
+
+import httplib2
+from apiclient import discovery
+from oauth2client import client, crypt, tools
+from oauth2client.file import Storage
 
 from pymongo.errors import DuplicateKeyError
 
@@ -26,12 +33,14 @@ from .forms import (
     NewCategoryForm,
     category_images,
     NewProductForm,
-    NewUserForm)
+    NewUserForm,
+    ImportSheetForm)
 
 from .helper import make_thumb
 
 import json
 
+SHEETS_SCOPE = "https://www.googleapis.com/auth/spreadsheets.readonly"
 
 def build_admin_bp():
     bp = Blueprint(
@@ -240,6 +249,7 @@ def build_admin_bp():
     @bp.route('/produtos/gerenciar', methods=['GET', 'POST'])
     def products():
         categories = Category.get_all(to_obj=True)
+        import_form = ImportSheetForm()
         form = NewProductForm()
         form.category.choices = [
             ('_'.join([str(c.id), c.permalink, c.name]),
@@ -249,6 +259,7 @@ def build_admin_bp():
         if form.shipping.weight.data not in (None, ''):
             form.shipping.weight.data = float(form.shipping.weight.data)
         if form.validate_on_submit():
+            print(form.data)
             product, product_summary = Product.from_form(form.data)
             try:
                 product.insert()
@@ -295,7 +306,8 @@ def build_admin_bp():
             # import flash
             #flash("Produto criado!")
         return render_template('admin/products.html',
-                form=form)
+                form=form,
+                import_form=import_form)
 
 
     #Read
@@ -498,5 +510,72 @@ def build_admin_bp():
     @bp.route('/painel/license')
     def license():
         return render_template('admin/license.html')
+
+
+    ## import sheet from google sheets
+    @bp.route('/importar', methods=['POST', 'GET'])
+    def import_sheet():
+        form = ImportSheetForm()
+        flow = client.flow_from_clientsecrets(
+                os.path.join(current_app.instance_path,
+                                'sheets_api_secret.json'),
+                scope=SHEETS_SCOPE,
+                redirect_uri=url_for('admin.import_sheet', _external=True))
+        flow.user_agent = 'Sheets API'
+        if form.validate_on_submit():
+            session['sheet_data'] = form.data
+            auth_uri = flow.step1_get_authorize_url()
+            return redirect(auth_uri)
+        else:
+            auth_code = request.args['code']
+            credentials = flow.step2_exchange(auth_code)
+            http = credentials.authorize(httplib2.Http())
+            discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
+                    'version=v4')
+            service = discovery.build('sheets', 'v4', http=http,
+                                      discoveryServiceUrl=discoveryUrl)
+
+            result = service.spreadsheets().values().get(
+                    spreadsheetId=session['sheet_data']['sheet_id'],
+                    range=session['sheet_data']['sheet_name']).execute()
+            values = result.get('values', [])
+            category = ''
+            for v in values:
+                if v[1] in ('TOTAL EM ESTOQUE', 'CATEGORIA'):
+                    continue
+                elif v[1] != '':
+                    category = Category.get_by_name(v[1].lower(), to_obj=True)
+                    if not category:
+                        category = Category.from_form({
+                            'name': category_name
+                        })
+                        category.insert()
+                shipping_info = v[4].split('x')
+                if len(shipping_info) != 3:
+                    shipping_info = [0,0,0]
+                shipping_info.append(float(v[5]) if v[5] != '' else 0)
+                product, summary = Product.from_form({
+                    'has_variants': False,
+                    'name':         v[2].lower(),
+                    'sku':          v[3].lower(),
+                    'category':     '_'.join([
+                        str(category.id), category.permalink, category.name]),
+                    'shipping': {
+                        'width': int(shipping_info[0]),
+                        'height': int(shipping_info[1]),
+                        'length': int(shipping_info[2]),
+                        'weight': shipping_info[3]
+                    },
+                    'quantity': int(v[6]),
+                    'description': v[7],
+                    'price': float('.'.join(v[8].split(' ')[1].split(',')))
+
+                })
+                product.insert()
+                summary._content['_id'] = product._content['_id']
+                summary.insert()
+
+        return redirect(url_for('admin.products'))
+
 
     return bp

@@ -213,6 +213,10 @@ class Category(SlugDocument):
     def get_by_parent(parent_id, to_obj=False):
         return Category._get_many(to_obj, { "parent._id": str(parent_id) })
 
+    @staticmethod
+    def get_by_name(name, to_obj=False):
+        return Category._get_one(to_obj, { "name": name })
+
     def get_name(self):
         return self._content['name'].capitalize()
 

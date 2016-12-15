@@ -1,4 +1,5 @@
 {% extends 'admin/navigation.html' %}
+{% from "macros/formhelpers.html" import render_field %}
 
 {% block title %}
   {{ super() }}
@@ -18,13 +19,26 @@
         <div class="col-xs-12">
           <div class="card">
             <div class="card-header">
-              <div class="card-title"><div class="title">Criar produto</div></div>
+              <div class="card-title"><div class="title">Importar do google sheets</div></div>
             </div>
             <div class="card-body">
-              {% include 'admin/partials/productform.html' %}
+              <div class="text-indent">
+                Para importar algo do google sheets, precisamos do id da sua
+                tabela. Note, por favor, que o formato deve estar de acordo com
+                o esperado pelo programa. Para saber o formato correto, favor
+                consultar o suporte. Nao tente importar se voce nao tem certeza
+                do formato aceito.
+              </div>
+              <form method="post" action="{{ url_for('admin.import_sheet') }}" accept-charset="UTF-8">
+                {{ import_form.hidden_tag() }}
+                {{ render_field(import_form.sheet_id) }}
+                {{ render_field(import_form.sheet_name) }}
+                <button type="submit" class="btn btn-warning">Importar</button>
+              </form>
             </div>
           </div>
         </div>
+        {% include 'admin/partials/productform.html' %}
         <div class="col-xs-12">
           <div class="card">
             <div class="card-header">

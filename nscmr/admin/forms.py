@@ -329,3 +329,12 @@ class NewUserForm(Form):
         widget=NsPasswordInput(),
         validators=[input_required("Campo necessário!")])
     #addresses = FieldList(FormField(AddressForm), min_entries=1)
+
+
+class ImportSheetForm(Form):
+    sheet_id = StringField('Id da tabela',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())
+    sheet_name = StringField('Nome da tabela',
+        validators=[input_required("Campo necessário!")],
+        widget=NsTextInput())

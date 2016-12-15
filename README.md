@@ -85,7 +85,7 @@ As per the above, nscmr is still under development and not ready for use.
     ```
 * Run the nscmr docker container indicating the volume and mongodb path:
     ```
-    docker run -v dbdata:/var/lib/mongodb -d -p 8000:80 --name nscmr nscmr
+    docker run -v dbdata:/var/lib/mongodb -v instancedata:/app/instance -d -p 8000:80 --name nscmr nscmr
     ```
 * Lastly, we have to get a shell of the container to start the mongod:
     ```
@@ -105,7 +105,7 @@ As per the above, nscmr is still under development and not ready for use.
     docker rm nscmr
     docker rmi nscmr
     docker built -t nscmr .
-    docker run -v dbdata:/var/lib/mongodb -d -p 8000:80 --name nscmr nscmr
+    docker run -v dbdata:/var/lib/mongodb -v instancedata:/app/instance -d -p 8000:80 --name nscmr nscmr
     ```
 * Access a tty to start the mongod again:
     ```
