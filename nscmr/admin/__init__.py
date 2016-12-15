@@ -574,6 +574,7 @@ def build_admin_bp():
                 product.insert()
                 summary._content['_id'] = product._content['_id']
                 summary.insert()
+            del(session['sheet_data'])
 
         return redirect(url_for('admin.products'))
 
