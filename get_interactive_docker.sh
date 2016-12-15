@@ -32,7 +32,7 @@ if [[ "$1" ]]; then
             exit 1
             ;;
     esac
-    APP_CONFIG_FILE="$APP_CONFIG_PATH/$FILE" ipython -i "$APP_NAME"/__init__.py
+    APP_CONFIG_FILE="$APP_CONFIG_PATH/$FILE" ipython3 -i "$APP_NAME"/__init__.py
 else
     usage
     exit 0
