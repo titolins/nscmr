@@ -326,8 +326,10 @@ $(document).ready(function() {
     variants.forEach(function(variant) {
       var variantImages = '';
       variant.images.forEach(function(img) {
-        variantImages += '<a href="' + img['big'] + '">imagem</a> ';
+        //variantImages += '<a href="' + img['big'] + '">imagem</a> ';
+        variantImages += '<div class="col-xs-4">' + '<img src="' + img['thumb'] + '" class="img-responsive"></img></div>';
       });
+      variantImages += '<div class="clearfix"></div>';
       var variantAttributes = '';
       if (variant.attributes != null) {
         for (var attr in variant.attributes) {
@@ -360,8 +362,42 @@ $(document).ready(function() {
             '</a>' +
           '</td>' +
           '<td>' + variantAttributes + '</td>' +
-          '<td>' + variantImages + '</td>' +
-        '</tr>';
+          '<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#gallery-'+variant.id+'">Galeria</button>' +
+          //'<td>' + variantImages + '</td>' +
+        '</tr>' +
+        '<div class="modal fade" id="gallery-'+variant.id+'" tabindex="-1" role="dialog" aria-labelledby="gallery'+variant.id+'-title" aria-hidden="true">' +
+          '<div class="modal-dialog">' +
+            '<div class="modal-content">' +
+              '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">' +
+                  '<span aria-hidden="true">×</span>' +
+                '</button>' +
+                '<h4 class="modal-title" id="gallery-'+variant.id+'-title">Galeria de imagens</h4>' +
+              '</div>' +
+              '<div class="modal-body">' +
+                '<div class="tabpanel">' +
+                  '<ul class="nav nav-tabs" role="tablist">' +
+                    '<li role="presentation" class="active">' +
+                      '<a href="#variant-imgs" aria-controls="variant-imgs" role="tab" data-toggle="tab" aria-expanded="true">Imagens do produto</a>' +
+                    '</li>' +
+                    '<li role="presentation">' +
+                      '<a href="#img-gallery" aria-controls="img-gallery" role="tab" data-toggle="tab" aria-expanded="true">Galeria de imagens</a>' +
+                    '</li>' +
+                  '</ul>' +
+                  '<div class="tab-content">' +
+                    '<div role="tabpanel" class="tab-pane active" id="variant-imgs">' +
+                      variantImages +
+                    '</div>' +
+                    '<div role="tabpanel" class="tab-pane" id="img-gallery">' +
+                      'TESTE' +
+                      '<button type="button" class="btn btn-primary">Adicionar foto ao produto</button>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
     });
     variantsInfo += '</table>';
     return variantsInfo;

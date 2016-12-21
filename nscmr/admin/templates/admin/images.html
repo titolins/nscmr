@@ -1,0 +1,73 @@
+{% extends 'admin/navigation.html' %}
+{% from "macros/formhelpers.html" import render_field %}
+
+{% block title %}
+  {{ super() }}
+  Gerenciador de Imagens
+{% endblock %}
+
+{% block styles %}
+{#<link rel="stylesheet" type="text/css"
+href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css">#}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block main_content %}
+<!-- Main Content -->
+  <div class="container-fluid">
+    <div class="side-body">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><div class="title">Fazer upload de imagens</div></div>
+            </div>
+            <div class="card-body">
+              <form action="{{ url_for('admin.images') }}" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                {% if form.csrf_token.errors %}
+                  <ul class="alert alert-danger alert-login">
+                    {% for error in form.csrf_token.errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+                {{ form.images()|safe }}
+                {% if form.images.errors %}
+                  <ul class="alert alert-danger alert-login">
+                    {% for error in form.images.errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+                <p><input class="btn btn-primary" id="upload-img-btn" type="submit" value="Fazer upload"></input></p>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><div class="title">Galeria de imagens</div></div>
+            </div>
+            <div class="card-body img-gallery">
+              {% for img in imgs %}
+                <div class="col-xs-3">
+                  <img class="img-responsive" src="{{ img['thumb'] }}"></img>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
+<script>
+</script>
+<script src="{{ url_for('admin.static', filename='js/rest.js') }}"></script>
+<script src="{{ url_for('admin.static', filename='js/product.js') }}"></script>
+{% endblock %}

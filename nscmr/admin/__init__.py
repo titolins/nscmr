@@ -25,7 +25,7 @@ from flask.ext.principal import RoleNeed, Permission
 
 from werkzeug.security import generate_password_hash
 
-from .models import User, Category, Product, Variant, Summary
+from .models import User, Category, Product, Variant, Summary, Image
 
 from .helper import slugify
 
@@ -34,7 +34,8 @@ from .forms import (
     category_images,
     NewProductForm,
     NewUserForm,
-    ImportSheetForm)
+    ImportSheetForm,
+    ImageUploadForm)
 
 from .helper import make_thumb
 
@@ -259,7 +260,6 @@ def build_admin_bp():
         if form.shipping.weight.data not in (None, ''):
             form.shipping.weight.data = float(form.shipping.weight.data)
         if form.validate_on_submit():
-            print(form.data)
             product, product_summary = Product.from_form(form.data)
             try:
                 product.insert()
@@ -424,6 +424,27 @@ def build_admin_bp():
         response = make_response(json.dumps(response_json), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
+
+    ## Create/Read
+    @bp.route('/imagens/gerenciar', methods=['GET', 'POST'])
+    def images():
+        imgs = Image.get_all()
+        print(imgs)
+        form = ImageUploadForm()
+        if form.validate_on_submit():
+            images = Image.from_form(request.files.getlist('images'))
+            try:
+                for img in images:
+                    img.insert()
+                    #product_summary._content['_id'] = product._content['_id']
+                    #product_summary.insert()
+            except:
+                form.images.errors.append(
+                    'Erro ao fazer upload de imagem. Por favor, tente de novo')
+            #flash("Produto criado!")
+        return render_template('admin/images.html',
+                form=form,
+                imgs=imgs)
 
 
     ######################################

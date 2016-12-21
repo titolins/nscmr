@@ -6,6 +6,7 @@ from flask import current_app, session
 from flask.ext.login import current_user
 
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 from nscmr.admin.models.document import Document, SlugDocument
 
@@ -339,6 +340,62 @@ class Product(SlugDocument):
             p_dict[field] = field_data
         return p_dict
 
+class Image(Document):
+    __collection__ = 'images'
+    fields = ['variant_id', 'full', 'thumb']
+    @staticmethod
+    def from_form(form_data):
+        field_data = []
+        for img in form_data:
+            if img.filename not in ('', None):
+                filename = secure_filename(img.filename.rsplit('.',1)[0])
+                ext = img.filename.rsplit('.',1)[1]
+                if ext.lower() == 'jpg':
+                    ext = 'jpeg'
+                img_filename = "{}.{}".format(
+                    filename, ext)
+                # save the regular image
+                img_filename = product_images.save(img,
+                    name=img_filename)
+                print(img_filename)
+                # get it's url
+                img = product_images.url(img_filename)
+                # create the thumbnail and get it's url
+                thumb = product_images.url(make_thumb(img_filename,
+                    product_images.default_dest(current_app)))
+                # create this image dict and append to the whole
+                img_dict = {'full': img, 'thumb': thumb}
+                field_data.append(Image(img_dict))
+
+        return field_data
+    '''
+        elif field == 'images':
+            field_data = []
+            for img in form_data[field]:
+                if img.filename not in ('', None):
+                    ext = img.filename.rsplit('.',1)[1]
+                    if ext.lower() == 'jpg':
+                        ext = 'jpeg'
+                    img_filename = "{}.{}".format(
+                        product.permalink, ext)
+                    # save the regular image
+                    img_filename = product_images.save(img,
+                        name=img_filename)
+                    print(img_filename)
+                    # get it's url
+                    img = product_images.url(img_filename)
+                    # create the thumbnail and get it's url
+                    thumb = product_images.url(make_thumb(img_filename,
+                        product_images.default_dest(current_app)))
+                    # create this image dict and append to the whole
+                    img_dict = {'full': img, 'thumb': thumb}
+                    field_data.append(img_dict)
+                    if 'display_image' not in summary_data.keys():
+                        summary_data['display_image'] = img_dict['thumb']
+            summary_data[field] = var_data[field] = field_data
+            '''
+
+
 
 class Variant(Document):
     __collection__ = 'variants'
@@ -370,6 +427,7 @@ class Variant(Document):
                             var_data['attributes'] = {}
                         var_data['attributes'][form_data[field].lower()] = \
                             field_value.lower()
+                    '''
                 elif field == 'images':
                     field_data = []
                     for img in form_data[field]:
@@ -394,6 +452,7 @@ class Variant(Document):
                             if 'display_image' not in summary_data.keys():
                                 summary_data['display_image'] = img_dict['thumb']
                     summary_data[field] = var_data[field] = field_data
+                    '''
                 elif field == 'price':
                     var_data[field] = int(form_data['price']*100)
                     summary_data[field] = \

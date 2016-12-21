@@ -152,10 +152,18 @@ class VariantForm(Form):
         widget=NsNumberInput(step='1'))
     sku = StringField('SKU',
         widget=NsTextInput())
+    '''
     images = FieldList(
         FileField('Imagem',validators=[
             FileAllowed(product_images, message=EXT_ALLOWED_MSG)]),
         min_entries=4)
+    '''
+
+class ImageUploadForm(Form):
+    images = FileField(
+        'Imagem',
+        validators=[FileAllowed(product_images, message=EXT_ALLOWED_MSG)],
+        render_kw={'multiple':True})
 
 class ShippingForm(Form):
     weight = StringField("Peso (kg's)",
@@ -200,10 +208,12 @@ class NewProductForm(Form):
     quantity = IntegerField('Quantidade',
         validators=[Optional()],
         widget=NsNumberInput(step='1'))
+    '''
     images = FieldList(
         FileField('Imagem',validators=[
             FileAllowed(product_images, message=EXT_ALLOWED_MSG)]),
         min_entries=1)
+    '''
     meta_description = StringField('Meta-description', widget=NsTextInput())
     shipping = FormField(ShippingForm)
 
@@ -238,6 +248,7 @@ class NewProductForm(Form):
                     var.quantity.errors = ['Valor de quantidade inválido']
                 if var.sku.data in ('', None):
                     var.sku.errors = ['Campo de sku necessário!']
+                '''
                 n_img = len(var.images)
                 n_empty = 0
                 img_error = False
@@ -248,10 +259,11 @@ class NewProductForm(Form):
                     img_error = True
                     var.images.errors = [
                         'O produto precisa ter pelo menos uma imagem']
+                '''
                 if var.attr_1_name.errors or var.attr_1_value.errors or \
                         var.attr_2_name.errors or var.attr_2_value.errors or \
                         var.price.errors or var.quantity.errors or \
-                        var.sku.errors or img_error or default_fields_errors:
+                        var.sku.errors  or default_fields_errors:
                     return False
                 return True
         if self.sku.data in ('', None):
@@ -268,6 +280,7 @@ class NewProductForm(Form):
                 raise Exception
         except:
             self.quantity.errors = ['Valor inválido']
+        '''
         n_img = len(self.images)
         n_empty = 0
         img_error = False
@@ -278,8 +291,9 @@ class NewProductForm(Form):
             img_error = True
             self.images.errors = [
                 'O produto precisa ter pelo menos uma imagem']
+        '''
         if self.sku.errors or self.price.errors or self.quantity.errors or \
-                img_error or default_fields_errors or \
+                default_fields_errors or \
                 (not self.shipping.validate(self.shipping)):
             return False
         return True

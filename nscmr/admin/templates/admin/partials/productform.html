@@ -50,7 +50,6 @@
                     <th>Preço</th>
                     <th>Quantidade</th>
                     <th>SKU</th>
-                    <th>Imagens</th>
                     <th>Remover</th>
                   </tr>
                 </thead>
@@ -65,11 +64,6 @@
                       <td>{{ variant.quantity()|safe }}</td>
                       <td>{{ variant.sku()|safe }}</td>
                       <td>
-                        {% for image_field in variant.images %}
-                          {{ image_field()|safe }}
-                        {% endfor %}
-                      </td>
-                      <td>
                         <button class="btn btn-default" type="button" data-toggle="fieldset-remove-row" id="variants-{{loop.index0}}-remove">
                           <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                         </button>
@@ -79,7 +73,7 @@
                         {% if variant.attr_1_name.errors or variant.attr_1_value.errors or
                               variant.attr_2_name.errors or variant.attr_2_value.errors or
                               variant.price.errors or variant.quantity.errors or
-                              variant.sku.errors or variant.images.errors %}
+                              variant.sku.errors %}
                           <ul class="alert alert-danger alert-login">
                             {% for error in variant.attr_1_name.errors %}
                               <li>{{ error }}</li>
@@ -102,9 +96,6 @@
                             {% for error in variant.sku.errors %}
                               <li>{{ error }}</li>
                             {% endfor %}
-                            {% for error in variant.images.errors %}
-                              <li>{{ error }}</li>
-                            {% endfor %}
                           </ul>
                         {% endif %}
                     </tr>
@@ -117,26 +108,6 @@
             {{ render_field(form.price) }}
             {{ render_field(form.quantity) }}
             {{ render_field(form.sku) }}
-            <div data-toggle="fieldset" id="image-fieldset">
-              <button class="btn btn-default" type="button" data-toggle="fieldset-add-row" data-target="#image-fieldset">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar imagem
-              </button>
-              {% for image_field in form.images %}
-                <div data-toggle="fieldset-entry" data-id="{{ loop.index0 }}">
-                  {{ image_field()|safe }}
-                  <button class="btn btn-default" type="button" data-toggle="fieldset-remove-row" id="images-{{loop.index0}}-remove">
-                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                  </button>
-                </div>
-              {% endfor %}
-              {% if form.images.errors %}
-                <ul class="alert alert-danger alert-login">
-                  {% for error in form.images.errors %}
-                    <li>{{ error }}</li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            </div>
           </div>
           <p><input class="btn btn-default" id="create-category-btn" type="submit" value="Criar"></input></p>
         </div>
