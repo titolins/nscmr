@@ -429,7 +429,6 @@ def build_admin_bp():
     @bp.route('/imagens/gerenciar', methods=['GET', 'POST'])
     def images():
         imgs = Image.get_all()
-        print(imgs)
         form = ImageUploadForm()
         if form.validate_on_submit():
             images = Image.from_form(request.files.getlist('images'))

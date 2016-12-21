@@ -368,32 +368,6 @@ class Image(Document):
                 field_data.append(Image(img_dict))
 
         return field_data
-    '''
-        elif field == 'images':
-            field_data = []
-            for img in form_data[field]:
-                if img.filename not in ('', None):
-                    ext = img.filename.rsplit('.',1)[1]
-                    if ext.lower() == 'jpg':
-                        ext = 'jpeg'
-                    img_filename = "{}.{}".format(
-                        product.permalink, ext)
-                    # save the regular image
-                    img_filename = product_images.save(img,
-                        name=img_filename)
-                    print(img_filename)
-                    # get it's url
-                    img = product_images.url(img_filename)
-                    # create the thumbnail and get it's url
-                    thumb = product_images.url(make_thumb(img_filename,
-                        product_images.default_dest(current_app)))
-                    # create this image dict and append to the whole
-                    img_dict = {'full': img, 'thumb': thumb}
-                    field_data.append(img_dict)
-                    if 'display_image' not in summary_data.keys():
-                        summary_data['display_image'] = img_dict['thumb']
-            summary_data[field] = var_data[field] = field_data
-            '''
 
 
 
@@ -427,32 +401,6 @@ class Variant(Document):
                             var_data['attributes'] = {}
                         var_data['attributes'][form_data[field].lower()] = \
                             field_value.lower()
-                    '''
-                elif field == 'images':
-                    field_data = []
-                    for img in form_data[field]:
-                        if img.filename not in ('', None):
-                            ext = img.filename.rsplit('.',1)[1]
-                            if ext.lower() == 'jpg':
-                                ext = 'jpeg'
-                            img_filename = "{}.{}".format(
-                                product.permalink, ext)
-                            # save the regular image
-                            img_filename = product_images.save(img,
-                                name=img_filename)
-                            print(img_filename)
-                            # get it's url
-                            img = product_images.url(img_filename)
-                            # create the thumbnail and get it's url
-                            thumb = product_images.url(make_thumb(img_filename,
-                                product_images.default_dest(current_app)))
-                            # create this image dict and append to the whole
-                            img_dict = {'full': img, 'thumb': thumb}
-                            field_data.append(img_dict)
-                            if 'display_image' not in summary_data.keys():
-                                summary_data['display_image'] = img_dict['thumb']
-                    summary_data[field] = var_data[field] = field_data
-                    '''
                 elif field == 'price':
                     var_data[field] = int(form_data['price']*100)
                     summary_data[field] = \
