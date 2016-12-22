@@ -323,6 +323,34 @@ def build_admin_bp():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+    @bp.route('/produtos/imagem', methods=['DELETE'])
+    def remove_images():
+        for img in request.json['imgs']:
+            Variant.remove_image(request.json['variant_id'], img)
+
+        response = make_response("", 200)
+        response.headers['Content-Type'] = 'application/json;utf-8'
+        return response
+
+    @bp.route('/produtos/imagem', methods=['PUT'])
+    def add_images():
+        for img in request.json['imgs']:
+            Variant.add_image(request.json['variant_id'], img)
+
+        response = make_response("", 200)
+        return response
+
+    @bp.route('/produtos/imagem/<string:var_id>', methods=['GET'])
+    def get_variant_images(var_id):
+        imgs = []
+        var = Variant.get_by_id(var_id, to_obj=True).as_dict()
+        if 'images' in var.keys() and var['images'] is not None:
+            for img in var['images']:
+                imgs.append(Image.get_by_id(img, to_obj=True).as_dict())
+        print(imgs)
+        response = make_response(json.dumps(imgs), 200)
+        response.headers['Content-Type'] = 'application/json;utf-8'
+        return response
 
     #Delete
     @bp.route('/produtos/deletar', methods=['POST'])
@@ -444,6 +472,19 @@ def build_admin_bp():
         return render_template('admin/images.html',
                 form=form,
                 imgs=imgs)
+
+    #Read
+    @bp.route('/imagens/json', methods=['GET'])
+    def get_images():
+        imgs = Image.get_all(to_obj=True)
+        data = []
+        if len(imgs) > 0:
+            for img in imgs:
+                data.append(img.as_dict())
+        response = make_response(json.dumps(data), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+
 
 
     ######################################

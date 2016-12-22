@@ -236,6 +236,17 @@ $(document).ready(function() {
           else row.removeClass('selected');
         });
         $(this).addClass('shown');
+        // adding angular gallery
+        var targets = document.getElementsByClassName("gallery-img"),
+            //variantTargets = document.getElementsByClassName("variant-gallery"),
+            $injector = angular.injector(['ng', 'galleryApp']),
+            $compile = $injector.get('$compile'),
+            $scope = angular.element(targets[0]).scope();
+        for(i = 0; i < targets.length; i++) {
+          var target = targets[i];
+          target.appendChild($compile("<gallery></gallery")($scope)[0]);
+        }
+        //$scope.$digest();
       }
       return false;
     } else if ($(e.target).hasClass('edit-attribute')) {
@@ -325,11 +336,13 @@ $(document).ready(function() {
       '</tr></tfoot>';
     variants.forEach(function(variant) {
       var variantImages = '';
-      variant.images.forEach(function(img) {
-        //variantImages += '<a href="' + img['big'] + '">imagem</a> ';
-        variantImages += '<div class="col-xs-4">' + '<img src="' + img['thumb'] + '" class="img-responsive"></img></div>';
-      });
-      variantImages += '<div class="clearfix"></div>';
+      if(variant.images != null) {
+        variant.images.forEach(function(img) {
+          //variantImages += '<a href="' + img['big'] + '">imagem</a> ';
+          variantImages += '<div class="col-xs-4">' + '<img src="' + img['thumb'] + '" class="img-responsive"></img></div>';
+        });
+        variantImages += '<div class="clearfix"></div>';
+      }
       var variantAttributes = '';
       if (variant.attributes != null) {
         for (var attr in variant.attributes) {
@@ -363,40 +376,8 @@ $(document).ready(function() {
           '</td>' +
           '<td>' + variantAttributes + '</td>' +
           '<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#gallery-'+variant.id+'">Galeria</button>' +
-          //'<td>' + variantImages + '</td>' +
         '</tr>' +
-        '<div class="modal fade" id="gallery-'+variant.id+'" tabindex="-1" role="dialog" aria-labelledby="gallery'+variant.id+'-title" aria-hidden="true">' +
-          '<div class="modal-dialog">' +
-            '<div class="modal-content">' +
-              '<div class="modal-header">' +
-                '<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">' +
-                  '<span aria-hidden="true">×</span>' +
-                '</button>' +
-                '<h4 class="modal-title" id="gallery-'+variant.id+'-title">Galeria de imagens</h4>' +
-              '</div>' +
-              '<div class="modal-body">' +
-                '<div class="tabpanel">' +
-                  '<ul class="nav nav-tabs" role="tablist">' +
-                    '<li role="presentation" class="active">' +
-                      '<a href="#variant-imgs" aria-controls="variant-imgs" role="tab" data-toggle="tab" aria-expanded="true">Imagens do produto</a>' +
-                    '</li>' +
-                    '<li role="presentation">' +
-                      '<a href="#img-gallery" aria-controls="img-gallery" role="tab" data-toggle="tab" aria-expanded="true">Galeria de imagens</a>' +
-                    '</li>' +
-                  '</ul>' +
-                  '<div class="tab-content">' +
-                    '<div role="tabpanel" class="tab-pane active" id="variant-imgs">' +
-                      variantImages +
-                    '</div>' +
-                    '<div role="tabpanel" class="tab-pane" id="img-gallery">' +
-                      'TESTE' +
-                      '<button type="button" class="btn btn-primary">Adicionar foto ao produto</button>' +
-                    '</div>' +
-                  '</div>' +
-                '</div>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
+        '<div class="modal fade gallery-img" id="gallery-'+variant.id+'" tabindex="-1" role="dialog" aria-labelledby="gallery-title" aria-hidden="true">' +
         '</div>';
     });
     variantsInfo += '</table>';

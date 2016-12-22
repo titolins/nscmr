@@ -251,9 +251,34 @@ class Summary(Document):
                 'name': 1,
                 'permalink': 1,
                 'category': 1,
-                'variants': { '$elemMatch': {'_id': id_ } }
+                'variants': { '$elemMatch': {'_id': var_id } }
             })
 
+    @staticmethod
+    def insert_variant_img(var_id, img):
+        return Summary._update_one(
+            query={
+                'variants._id':
+                        var_id if isinstance(var_id,ObjectId) else \
+                                ObjectId(var_id)
+            },
+            push_data={
+                'variants.$.images': img
+            }
+        )
+
+    @staticmethod
+    def remove_variant_img(var_id, img):
+        return Summary._update_one(
+            query={
+                'variants._id':
+                        var_id if isinstance(var_id,ObjectId) else \
+                                ObjectId(var_id)
+            },
+            pull_data={
+                'variants.$.images': {'id': img }
+            }
+        )
 
 class Product(SlugDocument):
     __collection__ = 'products'
@@ -342,7 +367,7 @@ class Product(SlugDocument):
 
 class Image(Document):
     __collection__ = 'images'
-    fields = ['variant_id', 'full', 'thumb']
+    fields = ['full', 'thumb']
     @staticmethod
     def from_form(form_data):
         field_data = []
@@ -357,7 +382,6 @@ class Image(Document):
                 # save the regular image
                 img_filename = product_images.save(img,
                     name=img_filename)
-                print(img_filename)
                 # get it's url
                 img = product_images.url(img_filename)
                 # create the thumbnail and get it's url
@@ -369,7 +393,14 @@ class Image(Document):
 
         return field_data
 
-
+    def as_dict(self):
+        i_dict = {}
+        i_dict['id'] = str(self.id)
+        for field in self.fields:
+            if field == 'updated_at':
+                continue
+            i_dict[field] = getattr(self, field)
+        return i_dict
 
 class Variant(Document):
     __collection__ = 'variants'
@@ -410,6 +441,39 @@ class Variant(Document):
 
                 var_data['product_id'] = product.id
         return Variant(var_data), summary_data
+
+    @staticmethod
+    def get_by_img(variant_id, img_id, to_obj=False):
+        return Variant._get_one(to_obj,
+            {
+            '_id': variant_id if isinstance(variant_id, ObjectId) else \
+                    ObjectId(variant_id),
+            'images': img_id,
+            })
+
+    @staticmethod
+    def remove_image(variant_id, image):
+        print(variant_id)
+        print(image)
+        query = {
+            '_id': variant_id if isinstance(variant_id, ObjectId) else \
+                   ObjectId(variant_id)
+        }
+        Variant._update_one(query=query, pull_data={"images":image})
+        Summary.remove_variant_img(variant_id, image)
+
+
+    @staticmethod
+    def add_image(variant_id, image):
+        if Variant.get_by_img(variant_id, image,to_obj=True) is not None:
+            return
+        img = Image.get_by_id(image, to_obj=True)
+        query = {
+            '_id': variant_id if isinstance(variant_id, ObjectId) else \
+                   ObjectId(variant_id)
+        }
+        Variant._update_one(query=query, push_data={"images":image})
+        Summary.insert_variant_img(variant_id, img.as_dict())
 
     @staticmethod
     def delete_by_product(product_id):

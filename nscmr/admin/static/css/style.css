@@ -31,6 +31,10 @@ tr.edited, td.edited {
   background-color: #FFFFD2;
 }
 
-.img-gallery > .col-xs-3 {
+.img-gallery  .col-xs-3, .img-gallery .col-xs-4 {
   margin-bottom: 10px;
+}
+
+.img-selector.selected {
+  background-color: #D2E0FF;
 }

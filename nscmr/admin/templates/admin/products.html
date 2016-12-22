@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block styles %}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="{{ url_for('admin.static', filename='css/style.css') }}">
 {% endblock %}
@@ -39,7 +40,7 @@
           </div>
         </div>
         {% include 'admin/partials/productform.html' %}
-        <div class="col-xs-12">
+        <div class="col-xs-12" ng-app="galleryApp">
           <div class="card">
             <div class="card-header">
               <div class="card-title"><div class="title">Produtos</div></div>
@@ -47,35 +48,35 @@
             <div class="card-body">
               <button id="edit-btn" class="btn btn-default">Confirmar edições</button>
               <button id="delete-btn" class="btn btn-default">Deletar seleção</button>
-              <table id="datatable" class="display" width="100%">
+              <table ng-controller="GalleryController" id="datatable" class="display" width="100%">
                 <thead>
-                    <tr>
-                        <th>
-                          <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
-                            <input type="checkbox" data-toggle="select-all" id="select-all">
-                            <label for="select-all"></label>
-                          </div>
-                        </th>
-                        <th>Id</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Categoria</th>
-                        <th>Atributos</th>
-                        <th>Meta-description</th>
-                        <th>Permalink</th>
-                    </tr>
+                  <tr>
+                    <th>
+                      <div class="checkbox3 checkbox-inline checkbox-check checkbox-light">
+                        <input type="checkbox" data-toggle="select-all" id="select-all">
+                        <label for="select-all"></label>
+                      </div>
+                    </th>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Atributos</th>
+                    <th>Meta-description</th>
+                    <th>Permalink</th>
+                  </tr>
                 </thead>
                 <tfoot>
-                    <tr>
-                        <th></th>
-                        <th>Id</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Categoria</th>
-                        <th>Atributos</th>
-                        <th>Meta-description</th>
-                        <th>Permalink</th>
-                    </tr>
+                  <tr>
+                    <th></th>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Atributos</th>
+                    <th>Meta-description</th>
+                    <th>Permalink</th>
+                  </tr>
                 </tfoot>
               </table>
             </div>
@@ -86,11 +87,16 @@
   </div>
 {% endblock %}
 
+{% assets "angular" %}
+  <script src="{{ ASSET_URL }}"></script>
+{% endassets %}
 {% block scripts %}
+<script src="{{ url_for('admin.static', filename='js/gallery.js') }}"></script>
 <script src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
 <script>
 // items selection stuff (from viewer)
 // should stay here
+var csrfToken = $('meta[name=csrf-token]').attr('content');
 var editCategoryField = $('{{ form.category(style="width:100%")|safe }}');
 var editDescriptionField = $('{{ form.description()|safe }}');
 var editNameField = $('{{ form.name()|safe }}');
@@ -101,6 +107,10 @@ var editMetaField = $('{{ form.meta_description()|safe }}');
 var getUri = "{{ url_for('admin.get_products') }}";
 var deleteUri = "{{ url_for('admin.delete_products') }}";
 var editUri = "{{ url_for('admin.edit_products') }}";
+var getGalleryUri = "{{ url_for('admin.get_images') }}";
+var addImagesUri = "{{ url_for('admin.add_images') }}";
+console.log(addImagesUri);
+
 </script>
 <script src="{{ url_for('admin.static', filename='js/rest.js') }}"></script>
 <script src="{{ url_for('admin.static', filename='js/product.js') }}"></script>
