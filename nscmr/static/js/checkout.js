@@ -94,7 +94,7 @@ angular.module('angularApp')
         if(service.Erro == "-3") $scope.cartService.correiosErrorMsg = service.MsgErro;
       });
       if($scope.cartService.correiosErrorMsg == undefined) {
-        // dev code
+        /* dev code
         var freeShipping = {
           Valor: 0.0,
           Tipo: "GRATIS",
@@ -105,6 +105,7 @@ angular.module('angularApp')
         response.data.push(freeShipping);
         console.log(response.data);
         // end dev code
+        */
         $scope.cartService.shippingOpts = response.data;
       }
       document.getElementById('frete-btn').classList.remove('hidden');

@@ -646,5 +646,4 @@ def build_admin_bp():
 
         return redirect(url_for('admin.products'))
 
-
     return bp
