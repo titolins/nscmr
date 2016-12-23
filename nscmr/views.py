@@ -240,7 +240,6 @@ def add_address():
 @app.route('/usuario/enderecos/editar', methods=['POST'])
 @login_required
 def edit_address():
-    print(request.json)
     data = request.json
     set_data = {}
     field_format = "addresses.$.{}"
@@ -483,7 +482,6 @@ def edit_cart():
     #elif qty == 0:
         variant_id = request.json['id']
         cart_item = User.get_cart_item(current_user.id, request.json['id'])
-        print(cart_item)
         qty_in_cart = cart_item['quantity']
         if qty == 0:
             # remove item from cart
@@ -562,7 +560,6 @@ def shipping():
 
 @app.route('/usuario/compras/selecionar_frete', methods=['POST'])
 def set_shipping():
-    print(request.json)
     User.update_by_id(
         current_user.id,
         set_data={'cart.shipping': request.json})
@@ -570,7 +567,6 @@ def set_shipping():
 
 @app.route('/usuario/compras/selecionar_parcelas', methods=['POST'])
 def set_installments():
-    print(request.json)
     User.update_by_id(
         current_user.id,
         set_data={'cart.installments': request.json})
@@ -694,11 +690,9 @@ def confirm():
         #verify = False)
     r_dict = xmltodict.parse(str(r.content, 'utf-8'))
     response_data = {}
-    print(r_dict)
     if 'errors' in r_dict.keys():
         response_data['errors'] = []
         for error in r_dict['errors']:
-            print(error)
             response_data['errors'].append(error)
     else:
         order = Order.from_form(r_dict, user_cart, address)
@@ -724,7 +718,6 @@ def confirm():
             send_confirmation_email(user, order)
         except Exception as e:
             response_data['email_error'] = str(e)
-            print(str(e))
 
     return \
         make_response(json.dumps(response_data), 200) if \
@@ -780,7 +773,6 @@ def confirm():
 
 @app.route('/checkout/notification', methods=['POST'])
 def notification_api():
-    print(request.form)
     notification_code = request.form['notificationCode']
     r = requests.get(
         app.config.get('PAGSEGURO_NOTIFICATION_EP').format(notification_code),
@@ -790,9 +782,7 @@ def notification_api():
         }
     )
     r_dict = xmltodict.parse(str(r.content, 'utf-8'))
-    print(r_dict)
     order = Order.get_by_reference(r_dict['transaction']['reference'])
-    print(order)
     if order != None:
         status = int(r_dict['transaction']['status'])
         if status != int(order['status']['code']):
@@ -807,9 +797,7 @@ def notification_api():
                         r_dict['transaction']['cancellationSource'] == \
                         'INTERNAL' else \
                         'instituição financeira')
-            print(data)
             res = Order.update_order_status(reference, data)
-            print(res)
         # send emails
         send_status_change_email(order, data)
 
