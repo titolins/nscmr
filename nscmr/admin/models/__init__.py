@@ -517,6 +517,11 @@ class CartLine(object):
 
     def __init__(self, cart_item):
         variant = Variant.get_by_id(cart_item['_id'], to_obj=True)
+        if 'display_image' in variant._content.keys():
+            thumb = Image.get_by_id(variant.display_image)['thumb']
+        else:
+            thumb = Image.get_by_id(variant.images[0])['thumb']
+
         product = variant.product
         category = product._content['category']
         self._item_info = {
@@ -532,7 +537,7 @@ class CartLine(object):
             'price': variant.price,
             'attributes': variant.attributes,
             'quantity': cart_item['quantity'],
-            'thumb': variant.images[0]['thumb'],
+            'thumb': thumb,
             #'shipping': product.shipping
         }
 

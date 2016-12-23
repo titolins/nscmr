@@ -48,7 +48,8 @@ from nscmr.admin.models import (
     Variant,
     Summary,
     CartLine,
-    Order)
+    Order,
+    Image)
 
 # started forms
 from nscmr.forms import (
@@ -329,11 +330,15 @@ def product(c_permalink, p_permalink, v_id):
     categories = Category.get_all()
     product = Product.get_by_permalink(p_permalink, to_obj=True)
     var = Variant.get_by_id(v_id, to_obj=True)
+    imgs = []
+    for img in var.images:
+        imgs.append(Image.get_by_id(img, to_obj=True).as_dict())
     return render_template(
         'product.html',
         categories = categories,
         product = product,
         variant = var,
+        images = imgs,
         attributes = product.attributes,
         login_form=LoginForm())
 
