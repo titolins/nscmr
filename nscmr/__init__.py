@@ -129,6 +129,7 @@ def build_app():
 
 
 app = build_app()
+app.debug = True
 db = build_db(app)
 
 from nscmr import views
