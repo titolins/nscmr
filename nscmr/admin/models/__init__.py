@@ -440,6 +440,7 @@ class Variant(Document):
                     var_data[field] = form_data[field]
 
                 var_data['product_id'] = product.id
+        print(var_data)
         return Variant(var_data), summary_data
 
     @staticmethod

@@ -272,6 +272,7 @@ def build_admin_bp():
             # create a single variant with all additional product info (sku,
             # price, images, etc..)
             if not form.has_variants.data:
+                print(form.data)
                 variant, var_summary = Variant.from_form(form.data, product)
                 variant.insert()
                 var_summary['_id'] = variant.id
@@ -615,7 +616,7 @@ def build_admin_bp():
                 if len(shipping_info) != 3:
                     shipping_info = [0,0,0]
                 shipping_info.append(float(v[5]) if v[5] != '' else 0)
-                product, summary = Product.from_form({
+                form_data = {
                     'has_variants': False,
                     'name':         v[2].lower(),
                     'sku':          v[3].lower(),
@@ -631,10 +632,16 @@ def build_admin_bp():
                     'description': v[7],
                     'price': float('.'.join(v[8].split(' ')[1].split(',')))
 
-                })
+                }
+                product, summary = Product.from_form(form_data)
                 product.insert()
                 summary._content['_id'] = product._content['_id']
                 summary.insert()
+                variant, var_summary = Variant.from_form(form_data, product)
+                variant.insert()
+                var_summary['_id'] = variant.id
+                Summary.update_by_id(product.id, push_data=\
+                        {'variants': var_summary})
             del(session['sheet_data'])
 
         return redirect(url_for('admin.products'))
