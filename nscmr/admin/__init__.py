@@ -609,7 +609,7 @@ def build_admin_bp():
                     category = Category.get_by_name(v[1].lower(), to_obj=True)
                     if not category:
                         category = Category.from_form({
-                            'name': category_name
+                            'name': v[1].lower()
                         })
                         category.insert()
                 shipping_info = v[4].split('x')
