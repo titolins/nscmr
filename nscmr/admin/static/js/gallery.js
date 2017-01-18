@@ -169,6 +169,7 @@ angular.module('galleryApp', [])
       '</a>';
     });
     template += '' +
+      '<div class="clearfix"></div>' +
       '<button ng-click="addImages($event)" type="button" class="btn btn-primary">Adicionar foto ao produto</button>' +
       '</div></div></div></div></div></div>';
     return template;
