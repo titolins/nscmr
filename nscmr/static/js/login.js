@@ -1,6 +1,3 @@
-window.alert = function(msg) {debugger;};
-
-
 document.addEventListener("DOMContentLoaded", function(event) { 
   // listeners for the custom btns
   try {
