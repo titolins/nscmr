@@ -1,8 +1,15 @@
+window.alert = function(msg) {debugger;};
+
+
 document.addEventListener("DOMContentLoaded", function(event) { 
   // listeners for the custom btns
-  document.getElementById("fb").addEventListener('click', function() {
-    fb();
-  });
+  try {
+    document.getElementById("fb").addEventListener('click', function() {
+      fb();
+    });
+  } catch (e) {
+    console.log("No fb btn to attach: " + e);
+  }
 });
 
 function fb() {
@@ -39,9 +46,13 @@ function gSignIn(user) {
 
 // Facebook login functions
 
-FB.getLoginStatus(function(response) {
-  statusChangeCallback(response);
-});
+try {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+} catch(e) {
+  console.log("FB error: " + e);
+}
 
 function statusChangeCallback(response) {
   console.log('fb statusChangeCallback');
@@ -56,27 +67,31 @@ function statusChangeCallback(response) {
 };
 
 function fbLogin() {
-  FB.api('/me', {fields:['name','email','picture']},function(response) {
-    /*
-    var welcomeEl = document.getElementById('fb-welcome');
-    var loginEl = document.getElementById('login');
-    var welcome = "<img src='" + response['picture'] + "'/>" +
-      "<h5>Bem vindo, " + response['name'] + "!</h5>";
-    welcomeEl.innerHtml = welcome;
-    loginEl.classList.add('hidden');
-    welcomeEl.classList.remove('hidden');
-    */
-    user = {
-      name: response['name'],
-      email: response['email'],
-      oauth: {
-        userToken: FB.getAuthResponse()['accessToken'],
-        provider: 'fb',
-      }
-    };
-    console.log(user);
-    logOAuthUser(user);
-  });
+  try {
+    FB.api('/me', {fields:['name','email','picture']},function(response) {
+      /*
+      var welcomeEl = document.getElementById('fb-welcome');
+      var loginEl = document.getElementById('login');
+      var welcome = "<img src='" + response['picture'] + "'/>" +
+        "<h5>Bem vindo, " + response['name'] + "!</h5>";
+      welcomeEl.innerHtml = welcome;
+      loginEl.classList.add('hidden');
+      welcomeEl.classList.remove('hidden');
+      */
+      user = {
+        name: response['name'],
+        email: response['email'],
+        oauth: {
+          userToken: FB.getAuthResponse()['accessToken'],
+          provider: 'fb',
+        }
+      };
+      console.log(user);
+      logOAuthUser(user);
+    });
+  } catch(e) {
+    console.log("FB not defined: " + e);
+  }
 };
 
 function logOAuthUser(user) {

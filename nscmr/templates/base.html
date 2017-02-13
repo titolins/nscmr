@@ -54,7 +54,7 @@
           function(googleUser) {
             gSignIn(googleUser);
           }, function(error) {
-            alert(JSON.stringify(error, undefined, 2));
+            console.log("No gSignIn btn to attach: " + error['error']);
           });
       }
 
