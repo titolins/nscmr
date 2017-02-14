@@ -178,7 +178,7 @@ angular.module('galleryApp', [])
         ele.html(buildTemplate($scope));
         $compile(ele.contents())($scope);
       }, true);
-      $scope.watch('gallery', function() {
+      $scope.$watch('gallery', function() {
         ele.html(buildTemplate($scope));
         $compile(ele.contents())($scope);
       });
