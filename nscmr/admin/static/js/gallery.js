@@ -24,12 +24,13 @@ angular.module('galleryApp', [])
       }
     }).then(function successCallback(response) {
       console.log(response);
-      $scope.gallery = response.data;
+      $scope.$apply(function() {
+        $scope.gallery = response.data;
+      });
     }, function errorCallback(response) {
       console.log(response);
     });
   };
-  $scope.updateGallery();
 
   $scope.selectImage = function(event) {
     event.preventDefault();
@@ -128,6 +129,7 @@ angular.module('galleryApp', [])
     });
   };
 
+  $scope.updateGallery();
 }]).directive('gallery', function($compile, $timeout) {
   function buildTemplate($scope) {
     var template = '' +
@@ -176,6 +178,10 @@ angular.module('galleryApp', [])
         ele.html(buildTemplate($scope));
         $compile(ele.contents())($scope);
       }, true);
+      $scope.watch('gallery', function() {
+        ele.html(buildTemplate($scope));
+        $compile(ele.contents())($scope);
+      });
     }
   };
 });
