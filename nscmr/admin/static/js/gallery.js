@@ -10,7 +10,7 @@ angular.module('galleryApp', [])
   }
 }])
 */
-.controller("GalleryController", ["$scope","$http", "$timeout", function($scope, $http, $timeout) {
+.controller("GalleryController", ["$scope","$http", function($scope, $http) {
   $scope.gallery = [];
   $scope.variantImages = {};
   $scope.selectedImages = [];
@@ -74,11 +74,7 @@ angular.module('galleryApp', [])
       }
     }).then(function success(response) {
       console.log(response);
-      /*
-      $timeout(function() {
-        $scope.getVariantImages(variantId);
-      }, 1000);
-      */
+      $scope.getVariantImages(variantId);
     }, function error(response) {
       console.log(response);
     });
@@ -100,11 +96,7 @@ angular.module('galleryApp', [])
       }
     }).then(function success(response) {
       console.log(response);
-      /*
-      $timeout(function() {
-        $scope.getVariantImages(variantId);
-      }, 1000);
-      */
+      $scope.getVariantImages(variantId);
     }, function error(response) {
       console.log(response);
     });
@@ -121,15 +113,17 @@ angular.module('galleryApp', [])
   };
 
   $scope.getVariantImages = function(varId) {
-    console.log('ok');
+    console.log("varId inside function");
+    console.log(varId);
     $http({
       url: addImagesUri + '/' + varId,
       headers: {
         "Accept": "application/json;utf-8"
       }
     }).then(function success(response) {
-      $scope.variantImages[varId] = response.data;
-      console.log(response);
+      $scope.$apply(function() {
+        $scope.variantImages[varId] = response.data;
+      });
     }, function error(response) {
       console.log(response);
     });
@@ -175,24 +169,17 @@ angular.module('galleryApp', [])
     return template;
   }
   return {
+    controller: "GalleryController",
+    scope: {
+      varId: '@',
+    },
     link: function($scope, ele, attrs) {
-      $scope.$watch($scope.gallery, function() {
-        ele.html(buildTemplate($scope, ""));
+      $scope.variantImages[$scope.varId] = [];
+      $scope.getVariantImages($scope.varId);
+      $scope.$watch('variantImages', function(oldVal, newVal) {
+        ele.html(buildTemplate($scope, $scope.varId));
         $compile(ele.contents())($scope);
-      });
-      $timeout(function() {
-        console.log(ele[0]);
-        console.log(ele[0].parentNode);
-        window.ele = ele;
-        var varId = ele[0].parentNode.id.split('-')[1];
-        $scope.getVariantImages(varId);
-        $scope.$watch($scope.variantImages[varId], function() {
-          $timeout(function() {
-            ele.html(buildTemplate($scope, varId));
-            $compile(ele.contents())($scope);
-          });
-        });
-      }, 1000);
+      }, true);
     }
   };
 });

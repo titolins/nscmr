@@ -237,16 +237,26 @@ $(document).ready(function() {
         });
         $(this).addClass('shown');
         // adding angular gallery
-        var targets = document.getElementsByClassName("gallery-img"),
-            //variantTargets = document.getElementsByClassName("variant-gallery"),
-            $injector = angular.injector(['ng', 'galleryApp']),
-            $compile = $injector.get('$compile'),
-            $scope = angular.element(targets[0]).scope();
-        for(i = 0; i < targets.length; i++) {
-          var target = targets[i];
-          target.appendChild($compile("<gallery></gallery")($scope)[0]);
+        try {
+          //document.getElementsByClassName("gallery-img")
+          //was too broad and used to get the galleries from other products as
+          //well.. just need to test this with a product with several variants
+          //to see if it works as it should.
+          var targets = row.child()[0].getElementsByClassName("gallery-img"),
+              //variantTargets = document.getElementsByClassName("variant-gallery"),
+              $injector = angular.injector(['ng', 'galleryApp']),
+              $compile = $injector.get('$compile'),
+              $scope = angular.element(targets[0]).scope();
+          for(i = 0; i < targets.length; i++) {
+            var target = targets[i];
+            var varId = target.id.split('-')[1];
+            var gallery = '<gallery var-id="' + varId + '"></gallery>';
+            target.appendChild($compile(gallery)($scope)[0]);
+          }
+          $scope.$digest();
+        } catch(e) {
+          console.log("could not insert angular gallery: " + e);
         }
-        //$scope.$digest();
       }
       return false;
     } else if ($(e.target).hasClass('edit-attribute')) {
