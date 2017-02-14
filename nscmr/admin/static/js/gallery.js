@@ -144,22 +144,18 @@ angular.module('galleryApp', [])
     '<a href="#img-gallery-pane" aria-controls="img-gallery-pane" role="tab" data-toggle="tab" aria-expanded="true">Galeria de imagens</a>' +
     '</li></ul><div class="tab-content">' +
     '<div id="variant-imgs" role="tabpanel" class="tab-pane img-gallery active">';
-    $scope.variantImages[$scope.varId].map(function(p) {
-      template += '<a href="#" ng-click="selectVariantImage($event)">' +
-        '<div class="col-xs-4 img-selector" id="'+ p["id"]+'">' +
-        '<img src="' + p['thumb'] + '" class="img-responsive"></img></div></a>';
-    });
+    template += '<a ng-repeat="p in variantImages[varId]" href="#" ng-click="selectVariantImage($event)">' +
+      '<div class="col-xs-4 img-selector" id="{a p[\'id\'] a}">' +
+      '<img src="{a p[\'thumb\'] a}" class="img-responsive"></img></div></a>';
     template += '<div class="clearfix"></div>';
     template += '<button ng-click="removeImages($event)" type="button" class="btn btn-primary">Remover fotos do produto</button></div>' +
     '<div id="img-gallery-pane" role="tabpanel" class="tab-pane img-gallery">';
-    $scope.gallery.map(function(p) {
-      template += '' +
-      '<a href="#" ng-click="selectImage($event)">' +
-        '<div class="col-xs-4 img-selector" id="'+p["id"]+'">' +
-          '<img class="img-responsive" src="'+p['thumb']+'"></img>' +
-        '</div>' +
-      '</a>';
-    });
+    template += '' +
+    '<a ng-repeat="p in gallery" href="#" ng-click="selectImage($event)">' +
+      '<div class="col-xs-4 img-selector" id="{a p[\'id\'] a}">' +
+        '<img class="img-responsive" src="{a p[\'thumb\'] a}"></img>' +
+      '</div>' +
+    '</a>';
     template += '' +
       '<div class="clearfix"></div>' +
       '<button ng-click="addImages($event)" type="button" class="btn btn-primary">Adicionar foto ao produto</button>' +
@@ -174,14 +170,8 @@ angular.module('galleryApp', [])
     link: function($scope, ele, attrs) {
       $scope.variantImages[$scope.varId] = [];
       $scope.getVariantImages($scope.varId);
-      $scope.$watch('variantImages', function() {
-        ele.html(buildTemplate($scope));
-        $compile(ele.contents())($scope);
-      }, true);
-      $scope.$watch('gallery', function() {
-        ele.html(buildTemplate($scope));
-        $compile(ele.contents())($scope);
-      });
-    }
+      ele.html(buildTemplate($scope));
+      $compile(ele.contents())($scope);
+    1
   };
 });
