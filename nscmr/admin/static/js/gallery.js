@@ -176,7 +176,7 @@ angular.module('galleryApp', [])
     link: function($scope, ele, attrs) {
       $scope.variantImages[$scope.varId] = [];
       $scope.getVariantImages($scope.varId);
-      $scope.$watch('variantImages', function(oldVal, newVal) {
+      $scope.$watchGroup('[variantImages,gallery]', function(oldVal, newVal) {
         ele.html(buildTemplate($scope, $scope.varId));
         $compile(ele.contents())($scope);
       }, true);
