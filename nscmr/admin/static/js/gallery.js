@@ -172,6 +172,6 @@ angular.module('galleryApp', [])
       $scope.getVariantImages($scope.varId);
       ele.html(buildTemplate($scope));
       $compile(ele.contents())($scope);
-    1
+    }
   };
 });
